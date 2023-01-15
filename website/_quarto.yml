@@ -1,0 +1,26 @@
+project:
+  type: website
+
+website:
+  title: "Math 218: Spring 2023"
+  navbar:
+    background: primary
+    search: false
+    pinned: true
+    left:
+      - href: index.qmd
+        text: Home
+      - schedule.qmd
+      - icon: github
+        href: https://github.com
+
+      
+
+format:
+  html:
+    theme: lux
+    css: styles.css
+    toc: true
+
+editor: visual
+

@@ -1,0 +1,27 @@
+---
+title: "Math 218: Spring 2023"
+---
+
+## Course information
+
+-   Warner 104, TRF 8:40-9:25AM Eastern
+
+-   Professor Becky Tang
+
+    -   Office: Warner 214
+
+    -   Office hours: TBD
+
+-   Visit the [schedule](schedule.qmd) page to see the current course schedule, lecture notes, assignments, and due dates
+
+## Materials
+
+*There is no required textbook for this course.*
+
+You should have a fully-charged laptop, tablet with keyboard, or comparable device to every lecture and lab session.
+
+You should also have R and RStudio installed on your machine. If you do not have either, please follow these [instructions](files/R-installation.pdf).
+
+## Syllabus
+
+*Forthcoming*
