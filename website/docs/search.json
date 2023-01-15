@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Math 218: Spring 2023",
+    "section": "",
+    "text": "Warner 104, TRF 8:40-9:25AM Eastern\nProfessor Becky Tang\n\nOffice: Warner 214\nOffice hours: TBD\n\nVisit the schedule page to see the current course schedule, lecture notes, assignments, and due dates"
+  },
+  {
+    "objectID": "index.html#materials",
+    "href": "index.html#materials",
+    "title": "Math 218: Spring 2023",
+    "section": "Materials",
+    "text": "Materials\nThere is no required textbook for this course.\nYou should have a fully-charged laptop, tablet with keyboard, or comparable device to every lecture and lab session.\nYou should also have R and RStudio installed on your machine. If you do not have either, please follow these instructions."
+  },
+  {
+    "objectID": "index.html#syllabus",
+    "href": "index.html#syllabus",
+    "title": "Math 218: Spring 2023",
+    "section": "Syllabus",
+    "text": "Syllabus\nForthcoming"
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Week\nDate\nDescription\nMaterials\nAssignments\n\n\n\n\n\n2/14\nWelcome!\n\n\n\n\n1\n2/16\nWhat is statistical learning?\n\n\n\n\n\n2/17\nLab: coding in base R"
+  }
+]
