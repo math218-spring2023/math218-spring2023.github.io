@@ -1,0 +1,15 @@
+---
+title: "Lab 01"
+date: "February 14, 2023"
+description: "Intro to base R"
+editor: visual
+categories: "Labs"
+---
+
+This lab is intended to re-familiarize yourself with R and RStudio, as well as begin practicing to code in base R.
+
+## Indexing
+
+One of the most useful tools we will use is indexing and index notation. An index is essentially a numerical representation of an item's position in a list or vector. It is typically an integer, starting from either 0 or 1 depending on the programming language. In R, our index positions always start at 1.
+
+For example, in the word "learning", the l is at index 1. Similarly, in the following vector of numbers -- $(10, 11, 12)$ -- the value at index 1 is 10. We can confirm this with code:

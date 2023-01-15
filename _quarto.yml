@@ -12,9 +12,13 @@ website:
       - href: index.qmd
         text: Home
       - schedule.qmd
+      - href: labs.qmd
+        text: Labs
       - icon: github
         href: https://github.com
 
+
+  
       
 
 format:

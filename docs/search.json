@@ -1,5 +1,26 @@
 [
   {
+    "objectID": "lab-01.html",
+    "href": "lab-01.html",
+    "title": "Lab 01",
+    "section": "",
+    "text": "This lab is intended to re-familiarize yourself with R and RStudio, as well as begin practicing to code in base R."
+  },
+  {
+    "objectID": "lab-01.html#indexing",
+    "href": "lab-01.html#indexing",
+    "title": "Lab 01",
+    "section": "Indexing",
+    "text": "Indexing\nOne of the most useful tools we will use is indexing and index notation. An index is essentially a numerical representation of an item’s position in a list or vector. It is typically an integer, starting from either 0 or 1 depending on the programming language. In R, our index positions always start at 1.\nFor example, in the word “learning”, the l is at index 1. Similarly, in the following vector of numbers – \\((10, 11, 12)\\) – the value at index 1 is 10. We can confirm this with code:"
+  },
+  {
+    "objectID": "labs.html",
+    "href": "labs.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Math 218: Spring 2023",
@@ -25,6 +46,6 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Week\nDate\nDescription\nMaterials\nAssignments\n\n\n\n\n\n2/14\nWelcome!\n\n\n\n\n1\n2/16\nWhat is statistical learning?\n\n\n\n\n\n2/17\nLab: coding in base R"
+    "text": "Week\nDate\nDescription\nMaterials\nAssignments\n\n\n\n\n\n2/14\nWelcome!\n- Lab 01\n\n\n\n1\n2/16\nWhat is statistical learning?\n\n\n\n\n\n2/17\nLab: coding in base R"
   }
 ]

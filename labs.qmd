@@ -1,0 +1,12 @@
+---
+title: "Assignments"
+listing:
+  contents: 
+    - "lab-*.qmd"
+  type: grid
+  field-display-names: 
+    author: "Date"
+  date-format: medium
+  fields: [title, date, description]
+  categories: true
+---
