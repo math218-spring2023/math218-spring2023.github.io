@@ -4,12 +4,209 @@ date: "February 14, 2023"
 description: "Intro to base R"
 editor: visual
 categories: "Labs"
+draft: true
+format:
+  html: 
+    code-fold: false
 ---
 
-This lab is intended to re-familiarize yourself with R and RStudio, as well as begin practicing to code in base R.
+This lab is intended to re-familiarize yourself with R and RStudio, as well as begin practicing to code in base R. You will need the `tidyverse` package.
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+```
+
+## Vectors
+
+In R, a vector is a data structure that holds or stores elements of the same type. Type may be numeric, integer, character, boolean, etc.
+
+### The `c()` function
+
+Generally, we create vectors using the `c()` function and then save the vector into a variable. In the code below, I create a vector of three values (10, 11, and 12), and save the results into `v`:
+
+```{r}
+v <- c(10, 11, 12)
+```
+
+### The `:` operator
+
+Now, sometimes it's really useful to create a vector of consecutive numbers, for example, the values 1 through 10. Rather than type out every number explicitly and wrap it in `c()` , I can use the `:` operator, which looks like `a:b` where `a` and `b` are *integers* of your choosing. If `a < b`, `R` will then create a vector of numbers `a, a+1, a+2,…, b-1, b` .
+
+```{r}
+x <- 1:10
+x
+```
+
+What do you think happens if `a > b`? Try the following code for yourself:
+
+```{r}
+y <- -10:-1
+```
+
+### The `rep()` function
+
+One function that I personally use a lot to create vectors is the `rep(a,b)` function, which takes in two argument. The first is the value `a` you wish to `rep`eat, and the second argument is the number of times `b` you'd like to `rep`eat it. How would we create a vector of 20 0's? Think about it, and check:
+
+```{r}
+#| eval: false
+#| code-fold: true
+rep(0, 20)
+```
+
+## Data frames
+
+We will create a data frame called `my_df` here, which holds the two vectors we created before.
+
+```{r}
+my_df <- data.frame(xvar = x, yvar = y)
+```
+
+Now, if I wanted to only take the variable `xvar` from `my_df`, how would I do so using `dplyr` functions? Take a second to think about it, then check:
+
+```{r}
+#| code-fold: true 
+#| eval: false
+
+my_df %>%
+  select(xvar)
+
+```
+
+We will now use base R to access that `xvar` variable by using `$` notation: `<df>$<var_name>` . If you do this yourself, you should notice that immediately after typing the `$` , a menu pops up with all the variables contained in the data frame.
+
+```{r}
+#| eval: false
+my_df$xvar
+```
+
+Now, do you notice the difference between the two outputs?
+
+```{r}
+my_df %>%
+  select(xvar)
+
+my_df$xvar
+```
 
 ## Indexing
 
-One of the most useful tools we will use is indexing and index notation. An index is essentially a numerical representation of an item's position in a list or vector. It is typically an integer, starting from either 0 or 1 depending on the programming language. In R, our index positions always start at 1.
+One of the most useful tools we will use is *indexing* and index notation.
 
-For example, in the word "learning", the l is at index 1. Similarly, in the following vector of numbers -- $(10, 11, 12)$ -- the value at index 1 is 10. We can confirm this with code:
+An index is essentially a numerical representation of an item's position in a list or vector. It is typically an integer, starting from either 0 or 1 depending on the programming language. In R, our index positions always start at 1!
+
+For example, in the word "learning", the l is at index 1. Similarly, in our vector `v` of the numbers $(10, 11, 12)$, the value at index 1 is 10. We can confirm this with code:
+
+```{r indexing-1}
+v[1]
+```
+
+Notice that we access the item held in index 1 using the **square bracket notation** `[ ]`
+
+Now, I can also **replace** or **modify** an element at a given index. I will still access the location using `[ ]`, but now I will store/save the new value:
+
+```{r indexing-2}
+v[1] <- 13
+v
+```
+
+We can also modify multiple elements at once by passing in a vector of indices to modify, as well as a vector of new values:
+
+```{r}
+v[2:3] <- c(14, 15)
+```
+
+What does `v` look like now?
+
+We can also use indices to refer to elements or entire *rows* and *columns* of data frames! Unlike vectors, data frame are **two-dimensional**, i.e. there are both rows and columns. Thus, our index notation will need to adapt to accommodate this feature. We will still use `[ ]` notation, but now commas will be introduced:
+
+```{r}
+my_df[1,2]
+```
+
+Based on `my_df`, what do you think the `[1,2]` means?
+
+Now, we already saw how to access a column of a data frame using the `$` notation, but we can also use index notation. To access the first column, we would type:
+
+```{r}
+#| eval: false
+my_df[,1]
+```
+
+The `1` after the comma tells `R` that we want to focus on column `1`.
+
+As do not type anything before the comma, `R` reads this as: "since you did not want a specific row, so you must want all the rows".
+
+How do you think we would access the third row? How about both the first and second row?
+
+## Functions
+
+There are a lot of simple functions in `R` that we will rely on. We already saw `c()` and `rep()`. Most of the functions we will use take in a vector or matrix of numeric values, and return either a single number or vector in return.
+
+The function `mean()` takes in a vector, and returns the mean of the vector.
+
+```{r}
+mean(x)
+```
+
+The function `length()` takes in a vector, and returns the number of element of the vector:
+
+```{r}
+length(x)
+```
+
+The functions `max()` and `min()` return what you would expect them to!
+
+An extremely useful function we will use is the `which()` function. Unlike the previous functions, `which()` does not take in a numeric vector. Rather, it takes a vector of **boolean** values (i.e. TRUE/FALSE values). Then, it returns the indices of the TRUE values in the vector. For example, an input might be:
+
+```{r}
+y == -5
+```
+
+This is comparing each value in `y` to see if it equals `-5`. Notice that only one value evaluates to TRUE, specifically the element in index 6. Therefore, if we *wrap* the `which()` function around that argument, we should get `6` in return:
+
+```{r}
+which(y == -5)
+```
+
+Personally, I tend to read this line of code as a question: Which element(s) of `y` are exactly equal to `-5`?
+
+We know that `y` only holds negative values. What do you think happens if we try to evaluate the following. Try it yourself!
+
+```{r}
+#| eval: false
+which(y == 0)
+```
+
+It's also entirely possible that many values in the boolean vector are true, in which case the function would return multiple indices. For example, if I want to know which values in `y` are negative, I could code:
+
+```{r}
+which(y < 0)
+```
+
+### Indexing with boolean vectors
+
+Above, we saw how to access elements held at specific indices of interest. We can also use boolean vectors to return values. Recall our vector `v`:
+
+```{r}
+v
+```
+
+I can index `v` by indexing using `TRUE`'s for each value that I want, and `FALSE`'s otherwise.
+
+```{r}
+v[c(F, T, F)]
+```
+
+## Your turn!
+
+Please complete the following exercises in order:
+
+1.  Create a vector called `my_vec` that holds the values 50 through 100.
+2.  Create a new vector called `less60` where an element is `TRUE` if the corresponding element in `my_vec` is less than `60`, and `FALSE` otherwise.
+3.  Confirm that the length of your two vectors are the same.
+4.  Pass `less60` into the function `sum()` function. Relate the value obtained to the elements of `less60`.
+5.  Modify `my_vec` such that the value at index 10 is 100.
+6.  Obtain the index of the maximum values of `my_vec` using functions described above.
+7.  Now, pass `my_vec` into the `which.max()` function. Even though we haven't seen it before, based on the function name, the name of the function is intuitive. Does the result from `which.max()` differ from what you obtained in Ex. 6? How so?
