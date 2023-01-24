@@ -12,9 +12,9 @@ title: "Math 218: Spring 2023"
 
     -   Office hours: TBD
 
--   Visit the [schedule](schedule.qmd) page to see the current course schedule, lecture notes, and due dates
+Visit the [schedule](schedule.qmd) page to see the current course schedule, lecture notes, and due dates.
 
--   Visit the [assignments](assignments.qmd) page to see the current list of assignments
+Visit the [assignments](assignments.qmd) page to see the current list of assignments.
 
 ## Materials
 
