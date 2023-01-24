@@ -1,0 +1,37 @@
+---
+title: "Assignments"
+listing:
+  - id: live-code
+    contents: "live-code-*.qmd"
+    type: grid
+    date-format: medium
+    fields: [title, date, description]
+    sort: "date asc"
+  - id: labs
+    contents: "lab-*.qmd"
+    type: grid
+    date-format: medium
+    fields: [title, date, description]
+    sort: "date asc"
+  - id: implementations
+    contents: "*-implementation.qmd"
+    type: grid
+    date-format: medium
+    fields: [title, date, description]
+    sort: "date asc"
+---
+
+## Live coding
+
+::: {#live-code}
+:::
+
+## Labs
+
+::: {#labs}
+:::
+
+## Implementations
+
+::: {#implementations}
+:::

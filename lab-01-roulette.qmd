@@ -1,0 +1,64 @@
+---
+title: "Lab 01: Roulette"
+editor: visual
+description: "Coding roulette"
+categories: "Lab assignment"
+---
+
+## Introduction
+
+We will simulate the casino game of American roulette! On an American roulette wheel, there are 38 equally-sized spaces that differ in color and number value:
+
+-   Two spaces are green, and are labelled 0 and 00
+
+-   The remaining spaces alternate red and black and take on the values 1-36
+
+    -   There is no particular order to the numbers
+
+The game is simple: a ball is dropped and spins along the roulette until it settles in one of the 38 spaces. Each space has an equal chance of being landed on.
+
+![](figs/roulette.jpg){fig-align="center" width="250"}
+
+Differing wagers or bets can be made on where the ball will end up landing. For example, it is common to bet on a color. If you "bet on black", you think the ball will land in a black-colored space. Or you might "bet on 1-18", which means you think the ball will land in a space with a number between 1 and 18, inclusive.
+
+You wager some money when you make a bet. For example, if I bet \$5 and I win, I will get my original \$5 back and also gain \$5 from the house. So I *net* \$5. If I lose, then the house takes my \$5 and I net -\$5. In summary:
+
+-   If I win, I net the amount that I bet
+
+-   If I lose, I net the negative amount that I bet
+
+In either case, your net gain will be either positive or negative.
+
+Because this is a casino game, we *know* that the house always wins. So, the purpose of this assignment is to simulate/demonstrate that the player will always lose money in the long run.
+
+## Assignment
+
+Imagine that you have unlimited funds and will play roulette `n` number of times. [You will always bet on red and wager the same amount of money]{.underline}. For each one of the `n` rounds, keep track of the net gain. At the end of your gambling, make a plot showing the cumulative gains over the `n` iterations. That is, make a plot with 1, 2, ..., `n` on the x-axis. The y-coordinate associated with each x-coordinate is the total/net gains up to that point.
+
+### Details
+
+Assume that the red spaces take on the values (2, 4, 6, ..., 34, 36) and the black spaces take on the values (1, 3, 4, ..., 35). You can decide how you would like to represent the two green spaces.
+
+Here is some structure that might help you design your code: you will need to create a `for` loop where on every iteration you should:
+
+-   "Spin" the roulette
+
+-   Evaluate how the outcome of your spin compares to your bet
+
+-   Make note of the net gain
+
+To create the final plot, consider making a data frame that has two columns: one for the iterations, and another for the cumulative net gains.
+
+### Concepts used
+
+-   `for` loops
+
+-   Conditional statements
+
+-   Comparing `R` objects
+
+-   Creating and modifying vectors
+
+## Submission details
+
+TBD

@@ -12,8 +12,8 @@ website:
       - href: index.qmd
         text: Home
       - schedule.qmd
-      - href: labs.qmd
-        text: Labs
+      - href: assignments.qmd
+        text: Assignments
       - icon: github
         href: https://github.com
 

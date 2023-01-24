@@ -1,0 +1,117 @@
+---
+title: "Live code 2"
+editor: visual
+description: "Important coding skills"
+categories: "Live code"
+---
+
+We will continue working in base R, and begin learning about conditional statements and for loops!
+
+## New functions:
+
+-   The `%in%` function helps determine if a value is contained in a vector:
+
+    ```{r}
+    5 %in% 1:5
+    0 %in% c(1,3,5)
+    ```
+
+    -   Note: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?
+
+        ```{r}
+        #| code-fold: true
+        #| eval: false
+        5 == 1:5
+        sum(5 == 1:5)
+
+        sum(0 == c(1,3,5))
+        ```
+
+-   The `sample(vec, m)` function takes a random sample of size `m` from the vector `vec` . By default, we sample without replacement and each value in `vec` is equally likely. For example, I can draw one value between 1-5 at random as follows:
+
+    ```{r}
+    sample(1:5, 1)
+    sample(1:5, 1)
+    sample(1:5, 1)
+    ```
+
+As you see, running this code multiple times will lead to different values being `sample`-d!
+
+## Conditional statements
+
+Thus far, we have learned how to store values and relate different `R` objects. For example, we can obtain a boolean `TRUE` or `FALSE` value when we compare two objects as follows:
+
+```{r}
+x <- 3
+x <= 5
+```
+
+Most often, we want to use the results from these logical operators to change the behavior of our code. That is, *if* a certain condition is satisfied, we want our code to do something. *Else*, our code should do something else.
+
+### `if` statements
+
+The `if` statement takes in a condition. If the condition evaluates to `TRUE`, then the `R` code we associate with the `if` statement is executed. The syntax is as follows:
+
+```{r}
+#| eval: false
+if (condition){
+  code
+}
+```
+
+Notice that the condition goes in parentheses `( )`, and the relevant code goes within curly braces `{ }`.
+
+For example:
+
+```{r}
+#| eval: false
+if (x < 5){
+  print("x is less than 5")
+}
+```
+
+Try this yourself! Set `x` to be a number, then run this code. If you chose `x` to be greater than or equal to 5, then the condition evaluates to `FALSE` and so we do not run the code within the curly braces and nothing is printed.
+
+### `else` statements
+
+Now, maybe we want to a different block of code to run if the condition evaluates to `FALSE`. This is where the `else` statement comes in! Importantly, `else` statements **always** follows an `if` statement so there is no need to supply a conditional statement. The syntax is as follows:
+
+```{r}
+#| eval: false
+if (condition){
+  code associated with TRUE condition
+} else{
+  code associated with FALSE condition
+}
+```
+
+Try modifying the `if` statement above to have a corresponding block of code that corrently prints when `x` is greater than or equal to 5.
+
+## `for` loops
+
+It is quite simple to perform repetitive tasks in `R`. If we want to execute the same operations over and over again, we will use a loop. If we want to repeat the operations for a specific number of times, we use a `for` loop.
+
+Let's look at this code:
+
+```{r}
+#| eval: false
+for(i in 1:5){
+  print(i)
+}
+```
+
+The `for()` code is telling `R` that we want to run a `for` loop, which means we want to repeat the code within the curly braces. How many times do we want to repeat? The code says we want to do this for every value in `1:5`.
+
+The confusing part is the index `i`, which is essentially a placeholder. Instead of `i`, we could use any character we'd like! However, people tend to use `i` for "iteration". At the beginning, `i` is set to the first value in the vector `1:5`, (i.e. `i = 1` to begin with). All the code within the braces are executed with `i = 1` being the state of the world. Once we reach the end of the code within the braces, we go back to the top and set `i = 2`. We continue to do this until the last value in `1:5`, which would be 5.
+
+```{r}
+for(i in 1:5){
+  print(i)
+}
+```
+
+## Your turn!
+
+1.  Write code that outputs the square root of a number. If the number is negative, then print out an informative statement instead. *Note*: the square root of a number can be obtained via the `sqrt()` function.
+2.  Write a `for` loop that calculates the factorial of a whole number of your choice. As a quick refresher, `5!` (which we read as "5 factorial") is equal to `5 x 4 x 3 x 2 x 1`.
+3.  Obtain a vector `y` of 5 values by using the `sample` function, where the possible values to sample from are integers ranging between 1 and 5. **Here, I want you to sample with replacement**. Write a `for` loop that loops for 5 iterations and print the number of elements in `y` equal to the current iteration. If the current iteration value is not contained in `y`, please print out a useful statement for the user instead.

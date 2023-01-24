@@ -1,10 +1,9 @@
 ---
-title: "Lab 01"
+title: "Live code 1"
 date: "February 14, 2023"
 description: "Intro to base R"
 editor: visual
-categories: "Labs"
-draft: true
+categories: "Live code"
 format:
   html: 
     code-fold: false
@@ -54,6 +53,16 @@ One function that I personally use a lot to create vectors is the `rep(a,b)` fun
 #| code-fold: true
 rep(0, 20)
 ```
+
+## Matrices
+
+Matrices are the 2D extension of the one-dimensional vectors. When a matrix has `n` rows and `p` columns, we denote its dimensions as `n x p` or "n by p". We create matrices using the `matrix()` function. Because of the multiple dimensions, we need to specify the number of rows and the number of columns:
+
+```{r}
+matrix(NA, nrow = 2, ncol = 3)
+```
+
+This code above creates a `2 x 3` matrix of `NA` values. The first argument takes in the elements you want to fill the matrix with. This can either by a single value, or a single vector of values.
 
 ## Data frames
 
@@ -210,3 +219,4 @@ Please complete the following exercises in order:
 5.  Modify `my_vec` such that the value at index 10 is 100.
 6.  Obtain the index of the maximum values of `my_vec` using functions described above.
 7.  Now, pass `my_vec` into the `which.max()` function. Even though we haven't seen it before, based on the function name, the name of the function is intuitive. Does the result from `which.max()` differ from what you obtained in Ex. 6? How so?
+8.  Create a `2 x 5` matrix of the values 1 through 10, where the first row holds the values 1-5, and the second row holds the values 6-10. *Hint*: look at the help file for `matrix`.
