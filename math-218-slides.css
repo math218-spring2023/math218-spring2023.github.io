@@ -1,0 +1,23 @@
+/* css styles */
+
+
+.instructions {
+  color: #e4631c;
+  background-color: #ffe6b4;
+  font-size: 40px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding: 1px 16px;
+}
+
+html{
+  font-size: 10px; 
+}
+
+body { 
+  font-size: 10px;
+}
+
+p {
+  font-size: 10px;
+}

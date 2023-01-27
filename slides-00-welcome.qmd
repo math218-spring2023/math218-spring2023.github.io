@@ -1,0 +1,85 @@
+---
+title: "Welcome to statistical learning!"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+editor: visual
+---
+
+```{r setup, include=FALSE}
+# R options
+options(
+  htmltools.dir.version = FALSE, # for blogdown
+  show.signif.stars = FALSE,     # for regression output
+  warm = 1
+  )
+# Set dpi and height for images
+library(knitr)
+opts_chunk$set(fig.height = 2.65, dpi = 300) 
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+	fig.align = "center",
+	fig.height = 3.75,
+	fig.width = 6.25,
+	message = FALSE,
+	warning = FALSE,
+	echo = TRUE
+)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(rvest)
+```
+
+## Necessary background
+
+-   I assume you have taken Math 118 prior to this course, and are comfortable with `tidyverse` and RStudio. There is a large emphasis on computing.
+
+-   We will learn how to code in base `R`, and by the end of the course you should feel comfortable switching between base `R` and `tidyverse`.
+
+-   We will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses.
+
+------------------------------------------------------------------------
+
+## Your Turn!
+
+------------------------------------------------------------------------
+
+## Create a GitHub account
+
+::: instructions
+Go to https://github.com/, and create an account (unless you already have one). After you create your account, click [here](https://forms.gle/9McLQvHGTzWoqAeM7) and enter your GitHub username.
+:::
+
+Tips for creating a username from [Happy Git with R](http://happygitwithr.com/github-acct.html#username-advice).
+
+-   Incorporate your actual name!
+-   Reuse your username from other contexts if you can.
+-   Shorter is better than longer; be as unique as possible in as few characters as possible.
+-   Avoid words laden with special meaning in programming, like `NA`.
+
+# Course Policies
+
+## Class Meetings
+
+::: incremental
+-   Lecture
+    -   Focus on concepts behind statistical learning techniques
+    -   Interactive lecture that includes examples and hands-on exercises
+    -   Bring fully-charged laptop to every lecture
+        -   Please let me know as soon as possible if you do not have access to a laptop
+-   Lab
+    -   Typically occurs on Fridays
+    -   Focus on computing in R
+    -   Apply concepts from lecture to case study scenarios
+-   Implementation
+:::
+
+## Code
+
+```{r}
+#| eval: false
+library(tidyverse)
+```

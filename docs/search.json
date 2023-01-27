@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "labs.html",
-    "href": "labs.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nImportant coding skills\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Math 218: Spring 2023",
@@ -28,60 +21,25 @@
     "text": "Syllabus\nForthcoming"
   },
   {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
-    "title": "Schedule",
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
     "section": "",
-    "text": "Date\nContent & Materials\nDue dates\n\n\n\n\n\n\nWEEK 1\n\n\n\n\nT 2/14\nWelcome!\n\nInstallation and intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\n\n\n\nF 2/17\nLab day\n\nMore advanced coding\nLab 01: Roulette\n\n\n\n\n\n\nWEEK 2\n\n\n\n\nT 2/21\n\n\n\n\nR 2/23"
+    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nImportant coding skills\n\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "lab-01-roulette.html",
-    "href": "lab-01-roulette.html",
-    "title": "Lab 01: Roulette",
-    "section": "",
-    "text": "We will simulate the casino game of American roulette! On an American roulette wheel, there are 38 equally-sized spaces that differ in color and number value:\n\nTwo spaces are green, and are labelled 0 and 00\nThe remaining spaces alternate red and black and take on the values 1-36\n\nThere is no particular order to the numbers\n\n\nThe game is simple: a ball is dropped and spins along the roulette until it settles in one of the 38 spaces. Each space has an equal chance of being landed on.\n\n\n\n\n\nDiffering wagers or bets can be made on where the ball will end up landing. For example, it is common to bet on a color. If you “bet on black”, you think the ball will land in a black-colored space. Or you might “bet on 1-18”, which means you think the ball will land in a space with a number between 1 and 18, inclusive.\nYou wager some money when you make a bet. For example, if I bet $5 and I win, I will get my original $5 back and also gain $5 from the house. So I net $5. If I lose, then the house takes my $5 and I net -$5. In summary:\n\nIf I win, I net the amount that I bet\nIf I lose, I net the negative amount that I bet\n\nIn either case, your net gain will be either positive or negative.\nBecause this is a casino game, we know that the house always wins. So, the purpose of this assignment is to simulate/demonstrate that the player will always lose money in the long run."
+    "objectID": "assignments.html#labs",
+    "href": "assignments.html#labs",
+    "title": "Assignments",
+    "section": "Labs",
+    "text": "Labs\n\n\n\n\n\n\n\nLab 01: Roulette\n\n\nCoding roulette\n\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "lab-01-roulette.html#what-you-will-need-to-do",
-    "href": "lab-01-roulette.html#what-you-will-need-to-do",
-    "title": "Lab 01: Roulette",
-    "section": "What you will need to do",
-    "text": "What you will need to do\nAssume that you have unlimited funds and will play roulette n number of times, where you make the same kind of bet and bet the same amount every time. For each one of the n rounds, keep track of the net gain.\nWithout loss of generality, assume that the red spaces take on the values (2, 4, 6, …, 34, 36) and the black spaces take on the values (1, 3, 4, …, 35).\nHere is some structure that might help you design your code:\n\nYou will need to create a for loop where on every iteration, you will need to:\n\n“Spin” the roulette\nEvaluate how the outcome compares to your bet\nMake note of the net gain"
-  },
-  {
-    "objectID": "lab-00-pt2.html",
-    "href": "lab-00-pt2.html",
-    "title": "Live code 2",
-    "section": "",
-    "text": "We will continue working in base R, and begin learning about conditional statements and for loops!"
-  },
-  {
-    "objectID": "lab-00-pt2.html#new-functions",
-    "href": "lab-00-pt2.html#new-functions",
-    "title": "Live code 2",
-    "section": "New functions:",
-    "text": "New functions:\n\nThe %in% function helps determine if a value is contained in a vector:\n\n5 %in% 1:5\n\n[1] TRUE\n\n0 %in% c(1,3,5)\n\n[1] FALSE\n\n\n\nNote: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?\n\n\nCode\n5 == 1:5\nsum(5 == 1:5)\n\nsum(0 == c(1,3,5))\n\n\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random as follows:\n\nsample(1:5, 1)\n\n[1] 1\n\nsample(1:5, 1)\n\n[1] 1\n\nsample(1:5, 1)\n\n[1] 1\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!"
-  },
-  {
-    "objectID": "lab-00-pt2.html#conditional-statements",
-    "href": "lab-00-pt2.html#conditional-statements",
-    "title": "Live code 2",
-    "section": "Conditional statements",
-    "text": "Conditional statements\nThus far, we have learned how to store values and relate different R objects. For example, we can obtain a boolean TRUE or FALSE value when we compare two objects as follows:\n\nx <- 3\nx <= 5\n\n[1] TRUE\n\n\nMost often, we want to use the results from these logical operators to change the behavior of our code. That is, if a certain condition is satisfied, we want our code to do something. Else, our code should do something else.\n\nif statements\nThe if statement takes in a condition. If the condition evaluates to TRUE, then the R code we associate with the if statement is executed. The syntax is as follows:\n\nif (condition){\n  code\n}\n\nNotice that the condition goes in parentheses ( ), and the relevant code goes within curly braces { }.\nFor example:\n\nif (x < 5){\n  print(\"x is less than 5\")\n}\n\nTry this yourself! Set x to be a number, then run this code. If you chose x to be greater than or equal to 5, then the condition evaluates to FALSE and so we do not run the code within the curly braces and nothing is printed.\n\n\nelse statements\nNow, maybe we want to a different block of code to run if the condition evaluates to FALSE. This is where the else statement comes in! Importantly, else statements always follows an if statement so there is no need to supply a conditional statement. The syntax is as follows:\n\nif (condition){\n  code associated with TRUE condition\n} else{\n  code associated with FALSE condition\n}\n\nTry modifying the if statement above to have a corresponding block of code that corrently prints when x is greater than or equal to 5."
-  },
-  {
-    "objectID": "lab-00-pt2.html#for-loops",
-    "href": "lab-00-pt2.html#for-loops",
-    "title": "Live code 2",
-    "section": "for loops",
-    "text": "for loops\nIt is quite simple to perform repetitive tasks in R. If we want to execute the same operations over and over again, we will use a loop. If we want to repeat the operations for a specific number of times, we use a for loop.\nLet’s look at this code:\n\nfor(i in 1:5){\n  print(i)\n}\n\nThe for() code is telling R that we want to run a for loop, which means we want to repeat the code within the curly braces. How many times do we want to repeat? The code says we want to do this for every value in 1:5.\nThe confusing part is the index i, which is essentially a placeholder. Instead of i, we could use any character we’d like! However, people tend to use i for “iteration”. At the beginning, i is set to the first value in the vector 1:5, (i.e. i = 1 to begin with). All the code within the braces are executed with i = 1 being the state of the world. Once we reach the end of the code within the braces, we go back to the top and set i = 2. We continue to do this until the last value in 1:5, which would be 5.\n\nfor(i in 1:5){\n  print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5"
-  },
-  {
-    "objectID": "lab-00-pt2.html#your-turn",
-    "href": "lab-00-pt2.html#your-turn",
-    "title": "Live code 2",
-    "section": "Your turn!",
-    "text": "Your turn!\n\nWrite code that outputs the square root of a number. If the number is negative, then print out an informative statement instead. Note: the square root of a number can be obtained via the sqrt() function.\nWrite a for loop that calculates the factorial of a whole number of your choice. As a quick refresher, 5! (which we read as “5 factorial”) is equal to 5 x 4 x 3 x 2 x 1.\nObtain a vector y of 5 values by using the sample function, where the possible values to sample from are integers ranging between 1 and 5. Here, I want you to sample with replacement. Write a for loop that loops for 5 iterations and print the number of elements in y equal to the current iteration. If the current iteration value is not contained in y, please print out a useful statement for the user instead."
+    "objectID": "assignments.html#implementations",
+    "href": "assignments.html#implementations",
+    "title": "Assignments",
+    "section": "Implementations",
+    "text": "Implementations\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "live-code-2.html",
@@ -168,18 +126,32 @@
     "text": "Your turn!\nPlease complete the following exercises in order:\n\nCreate a vector called my_vec that holds the values 50 through 100.\nCreate a new vector called less60 where an element is TRUE if the corresponding element in my_vec is less than 60, and FALSE otherwise.\nConfirm that the length of your two vectors are the same.\nPass less60 into the function sum() function. Relate the value obtained to the elements of less60.\nModify my_vec such that the value at index 10 is 100.\nObtain the index of the maximum values of my_vec using functions described above.\nNow, pass my_vec into the which.max() function. Even though we haven’t seen it before, based on the function name, the name of the function is intuitive. Does the result from which.max() differ from what you obtained in Ex. 6? How so?\nCreate a 2 x 5 matrix of the values 1 through 10, where the first row holds the values 1-5, and the second row holds the values 6-10. Hint: look at the help file for matrix."
   },
   {
-    "objectID": "labs.html#labs",
-    "href": "labs.html#labs",
-    "title": "Assignments",
-    "section": "Labs",
-    "text": "Labs\n\n\n\n\n\n\n\nLab 01: Roulette\n\n\nCoding roulette\n\n\n\n\n\n\n\nNo matching items"
+    "objectID": "slides-01-what-is.html#necessary-background",
+    "href": "slides-01-what-is.html#necessary-background",
+    "title": "What is statistical learning?",
+    "section": "Necessary background",
+    "text": "Necessary background\n\nI assume you have taken Math 118 prior to this course, and are comfortable with tidyverse and RStudio. There is a large emphasis on computing.\nWe will learn how to code in base R, and by the end of the course you should feel comfortable switching between base R and tidyverse.\nWe will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses."
   },
   {
-    "objectID": "labs.html#implementations",
-    "href": "labs.html#implementations",
-    "title": "Assignments",
-    "section": "Implementations",
-    "text": "Implementations\n\n\n\n\n\nNo matching items"
+    "objectID": "slides-01-what-is.html#your-turn",
+    "href": "slides-01-what-is.html#your-turn",
+    "title": "What is statistical learning?",
+    "section": "Your Turn!",
+    "text": "Your Turn!"
+  },
+  {
+    "objectID": "slides-01-what-is.html#create-a-github-account",
+    "href": "slides-01-what-is.html#create-a-github-account",
+    "title": "What is statistical learning?",
+    "section": "Create a GitHub account",
+    "text": "Create a GitHub account\n\nGo to https://github.com/, and create an account (unless you already have one). After you create your account, click here and enter your GitHub username.\n\nTips for creating a username from Happy Git with R.\n\nIncorporate your actual name!\nReuse your username from other contexts if you can.\nPick a username you will be comfortable revealing to your future boss.\nShorter is better than longer.\nBe as unique as possible in as few characters as possible.\nMake it timeless.\nAvoid words laden with special meaning in programming, like NA.\n\n\nRaise your hand if you have any questions."
+  },
+  {
+    "objectID": "lab-01-roulette.html",
+    "href": "lab-01-roulette.html",
+    "title": "Lab 01: Roulette",
+    "section": "",
+    "text": "We will simulate the casino game of American roulette! On an American roulette wheel, there are 38 equally-sized spaces that differ in color and number value:\n\nTwo spaces are green, and are labelled 0 and 00\nThe remaining spaces alternate red and black and take on the values 1-36\n\nThere is no particular order to the numbers\n\n\nThe game is simple: a ball is dropped and spins along the roulette until it settles in one of the 38 spaces. Each space has an equal chance of being landed on.\n\n\n\n\n\nDiffering wagers or bets can be made on where the ball will end up landing. For example, it is common to bet on a color. If you “bet on black”, you think the ball will land in a black-colored space. Or you might “bet on 1-18”, which means you think the ball will land in a space with a number between 1 and 18, inclusive.\nYou wager some money when you make a bet. For example, if I bet $5 and I win, I will get my original $5 back and also gain $5 from the house. So I net $5. If I lose, then the house takes my $5 and I net -$5. In summary:\n\nIf I win, I net the amount that I bet\nIf I lose, I net the negative amount that I bet\n\nIn either case, your net gain will be either positive or negative.\nBecause this is a casino game, we know that the house always wins. So, the purpose of this assignment is to simulate/demonstrate that the player will always lose money in the long run."
   },
   {
     "objectID": "lab-01-roulette.html#assignment",
@@ -196,24 +168,87 @@
     "text": "Submission details\nTBD"
   },
   {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
     "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nImportant coding skills\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Date\nContent & Materials\nDue dates\n\n\n\n\n\n\nWEEK 1\n\n\n\n\nT 2/14\nWelcome!\n\nClass introduction and intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\n\n\n\nF 2/17\nLab day\n\nMore advanced coding\nLab 01: Roulette\n\n\n\n\n\n\nWEEK 2\n\n\n\n\nT 2/21\n\n\n\n\nR 2/23"
   },
   {
-    "objectID": "assignments.html#labs",
-    "href": "assignments.html#labs",
-    "title": "Assignments",
-    "section": "Labs",
-    "text": "Labs\n\n\n\n\n\n\n\nLab 01: Roulette\n\n\nCoding roulette\n\n\n\n\n\n\n\nNo matching items"
+    "objectID": "slides-01-what-is.html#course-policies",
+    "href": "slides-01-what-is.html#course-policies",
+    "title": "What is statistical learning?",
+    "section": "Course Policies",
+    "text": "Course Policies"
   },
   {
-    "objectID": "assignments.html#implementations",
-    "href": "assignments.html#implementations",
-    "title": "Assignments",
-    "section": "Implementations",
-    "text": "Implementations\n\n\n\n\n\nNo matching items"
+    "objectID": "slides-00-welcome.html#necessary-background",
+    "href": "slides-00-welcome.html#necessary-background",
+    "title": "Welcome to statistical learning!",
+    "section": "Necessary background",
+    "text": "Necessary background\n\nI assume you have taken Math 118 prior to this course, and are comfortable with tidyverse and RStudio. There is a large emphasis on computing.\nWe will learn how to code in base R, and by the end of the course you should feel comfortable switching between base R and tidyverse.\nWe will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses."
+  },
+  {
+    "objectID": "slides-00-welcome.html#your-turn",
+    "href": "slides-00-welcome.html#your-turn",
+    "title": "Welcome to statistical learning!",
+    "section": "Your Turn!",
+    "text": "Your Turn!"
+  },
+  {
+    "objectID": "slides-00-welcome.html#create-a-github-account",
+    "href": "slides-00-welcome.html#create-a-github-account",
+    "title": "Welcome to statistical learning!",
+    "section": "Create a GitHub account",
+    "text": "Create a GitHub account\n\nGo to https://github.com/, and create an account (unless you already have one). After you create your account, click here and enter your GitHub username.\n\nTips for creating a username from Happy Git with R.\n\nIncorporate your actual name!\nReuse your username from other contexts if you can.\nShorter is better than longer; be as unique as possible in as few characters as possible.\nAvoid words laden with special meaning in programming, like NA."
+  },
+  {
+    "objectID": "slides-00-welcome.html#course-policies",
+    "href": "slides-00-welcome.html#course-policies",
+    "title": "Welcome to statistical learning!",
+    "section": "Course Policies",
+    "text": "Course Policies"
+  },
+  {
+    "objectID": "slides-00-welcome.knit.html#necessary-background",
+    "href": "slides-00-welcome.knit.html#necessary-background",
+    "title": "Welcome to statistical learning!",
+    "section": "Necessary background",
+    "text": "Necessary background\n\nI assume you have taken Math 118 prior to this course, and are comfortable with tidyverse and RStudio. There is a large emphasis on computing.\nWe will learn how to code in base R, and by the end of the course you should feel comfortable switching between base R and tidyverse.\nWe will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses."
+  },
+  {
+    "objectID": "slides-00-welcome.knit.html#your-turn",
+    "href": "slides-00-welcome.knit.html#your-turn",
+    "title": "Welcome to statistical learning!",
+    "section": "Your Turn!",
+    "text": "Your Turn!"
+  },
+  {
+    "objectID": "slides-00-welcome.knit.html#create-a-github-account",
+    "href": "slides-00-welcome.knit.html#create-a-github-account",
+    "title": "Welcome to statistical learning!",
+    "section": "Create a GitHub account",
+    "text": "Create a GitHub account\n\nGo to https://github.com/, and create an account (unless you already have one). After you create your account, click here and enter your GitHub username.\n\nTips for creating a username from Happy Git with R.\n\nIncorporate your actual name!\nReuse your username from other contexts if you can.\nPick a username you will be comfortable revealing to your future boss.\nShorter is better than longer.\nBe as unique as possible in as few characters as possible.\nMake it timeless.\nAvoid words laden with special meaning in programming, like NA.\n\n\nRaise your hand if you have any questions."
+  },
+  {
+    "objectID": "slides-00-welcome.knit.html#course-policies",
+    "href": "slides-00-welcome.knit.html#course-policies",
+    "title": "Welcome to statistical learning!",
+    "section": "Course Policies",
+    "text": "Course Policies"
+  },
+  {
+    "objectID": "slides-00-welcome.html#class-meetings",
+    "href": "slides-00-welcome.html#class-meetings",
+    "title": "Welcome to statistical learning!",
+    "section": "Class Meetings",
+    "text": "Class Meetings\n\n\nLecture\n\nFocus on concepts behind statistical learning techniques\nInteractive lecture that includes examples and hands-on exercises\nBring fully-charged laptop to every lecture\n\nPlease let me know as soon as possible if you do not have access to a laptop\n\n\nLab\n\nTypically occurs on Fridays\nFocus on computing in R\nApply concepts from lecture to case study scenarios\n\nImplementation"
+  },
+  {
+    "objectID": "slides-00-welcome.html#code",
+    "href": "slides-00-welcome.html#code",
+    "title": "Welcome to statistical learning!",
+    "section": "Code",
+    "text": "Code\n\nlibrary(tidyverse)"
   }
 ]

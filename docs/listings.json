@@ -1,13 +1,5 @@
 [
   {
-    "listing": "/labs.html",
-    "items": [
-      "/live-code-1.html",
-      "/live-code-2.html",
-      "/lab-01-roulette.html"
-    ]
-  },
-  {
     "listing": "/assignments.html",
     "items": [
       "/live-code-1.html",
