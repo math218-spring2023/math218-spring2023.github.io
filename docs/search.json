@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Date\nContent & Materials\nDue dates\n\n\n\n\n\n\nWEEK 1\n\n\n\n\nT 2/14\nWelcome!\n\nClass introduction and intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\n\n\n\nF 2/17\nLab day\n\nMore advanced coding\nLab 01: Roulette\n\n\n\n\n\n\nWEEK 2\n\n\n\n\nT 2/21\n\n\n\n\nR 2/23"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Math 218: Spring 2023",
@@ -21,234 +28,255 @@
     "text": "Syllabus\nForthcoming"
   },
   {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nImportant coding skills\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "assignments.html#labs",
-    "href": "assignments.html#labs",
-    "title": "Assignments",
-    "section": "Labs",
-    "text": "Labs\n\n\n\n\n\n\n\nLab 01: Roulette\n\n\nCoding roulette\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "assignments.html#implementations",
-    "href": "assignments.html#implementations",
-    "title": "Assignments",
-    "section": "Implementations",
-    "text": "Implementations\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "live-code-2.html",
-    "href": "live-code-2.html",
-    "title": "Live code 2",
-    "section": "",
-    "text": "We will continue working in base R, and begin learning about conditional statements and for loops!"
-  },
-  {
-    "objectID": "live-code-2.html#new-functions",
-    "href": "live-code-2.html#new-functions",
-    "title": "Live code 2",
-    "section": "New functions:",
-    "text": "New functions:\n\nThe %in% function helps determine if a value is contained in a vector:\n\n5 %in% 1:5\n\n[1] TRUE\n\n0 %in% c(1,3,5)\n\n[1] FALSE\n\n\n\nNote: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?\n\n\nCode\n5 == 1:5\nsum(5 == 1:5)\n\nsum(0 == c(1,3,5))\n\n\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random as follows:\n\nsample(1:5, 1)\n\n[1] 4\n\nsample(1:5, 1)\n\n[1] 4\n\nsample(1:5, 1)\n\n[1] 5\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!"
-  },
-  {
-    "objectID": "live-code-2.html#conditional-statements",
-    "href": "live-code-2.html#conditional-statements",
-    "title": "Live code 2",
-    "section": "Conditional statements",
-    "text": "Conditional statements\nThus far, we have learned how to store values and relate different R objects. For example, we can obtain a boolean TRUE or FALSE value when we compare two objects as follows:\n\nx <- 3\nx <= 5\n\n[1] TRUE\n\n\nMost often, we want to use the results from these logical operators to change the behavior of our code. That is, if a certain condition is satisfied, we want our code to do something. Else, our code should do something else.\n\nif statements\nThe if statement takes in a condition. If the condition evaluates to TRUE, then the R code we associate with the if statement is executed. The syntax is as follows:\n\nif (condition){\n  code\n}\n\nNotice that the condition goes in parentheses ( ), and the relevant code goes within curly braces { }.\nFor example:\n\nif (x < 5){\n  print(\"x is less than 5\")\n}\n\nTry this yourself! Set x to be a number, then run this code. If you chose x to be greater than or equal to 5, then the condition evaluates to FALSE and so we do not run the code within the curly braces and nothing is printed.\n\n\nelse statements\nNow, maybe we want to a different block of code to run if the condition evaluates to FALSE. This is where the else statement comes in! Importantly, else statements always follows an if statement so there is no need to supply a conditional statement. The syntax is as follows:\n\nif (condition){\n  code associated with TRUE condition\n} else{\n  code associated with FALSE condition\n}\n\nTry modifying the if statement above to have a corresponding block of code that corrently prints when x is greater than or equal to 5."
-  },
-  {
-    "objectID": "live-code-2.html#for-loops",
-    "href": "live-code-2.html#for-loops",
-    "title": "Live code 2",
-    "section": "for loops",
-    "text": "for loops\nIt is quite simple to perform repetitive tasks in R. If we want to execute the same operations over and over again, we will use a loop. If we want to repeat the operations for a specific number of times, we use a for loop.\nLet’s look at this code:\n\nfor(i in 1:5){\n  print(i)\n}\n\nThe for() code is telling R that we want to run a for loop, which means we want to repeat the code within the curly braces. How many times do we want to repeat? The code says we want to do this for every value in 1:5.\nThe confusing part is the index i, which is essentially a placeholder. Instead of i, we could use any character we’d like! However, people tend to use i for “iteration”. At the beginning, i is set to the first value in the vector 1:5, (i.e. i = 1 to begin with). All the code within the braces are executed with i = 1 being the state of the world. Once we reach the end of the code within the braces, we go back to the top and set i = 2. We continue to do this until the last value in 1:5, which would be 5.\n\nfor(i in 1:5){\n  print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5"
-  },
-  {
-    "objectID": "live-code-2.html#your-turn",
-    "href": "live-code-2.html#your-turn",
-    "title": "Live code 2",
-    "section": "Your turn!",
-    "text": "Your turn!\n\nWrite code that outputs the square root of a number. If the number is negative, then print out an informative statement instead. Note: the square root of a number can be obtained via the sqrt() function.\nWrite a for loop that calculates the factorial of a whole number of your choice. As a quick refresher, 5! (which we read as “5 factorial”) is equal to 5 x 4 x 3 x 2 x 1.\nObtain a vector y of 5 values by using the sample function, where the possible values to sample from are integers ranging between 1 and 5. Here, I want you to sample with replacement. Write a for loop that loops for 5 iterations and print the number of elements in y equal to the current iteration. If the current iteration value is not contained in y, please print out a useful statement for the user instead."
-  },
-  {
-    "objectID": "live-code-1.html",
-    "href": "live-code-1.html",
-    "title": "Live code 1",
-    "section": "",
-    "text": "This lab is intended to re-familiarize yourself with R and RStudio, as well as begin practicing to code in base R. You will need the tidyverse package."
-  },
-  {
-    "objectID": "live-code-1.html#vectors",
-    "href": "live-code-1.html#vectors",
-    "title": "Live code 1",
-    "section": "Vectors",
-    "text": "Vectors\nIn R, a vector is a data structure that holds or stores elements of the same type. Type may be numeric, integer, character, boolean, etc.\n\nThe c() function\nGenerally, we create vectors using the c() function and then save the vector into a variable. In the code below, I create a vector of three values (10, 11, and 12), and save the results into v:\n\nv <- c(10, 11, 12)\n\n\n\nThe : operator\nNow, sometimes it’s really useful to create a vector of consecutive numbers, for example, the values 1 through 10. Rather than type out every number explicitly and wrap it in c() , I can use the : operator, which looks like a:b where a and b are integers of your choosing. If a < b, R will then create a vector of numbers a, a+1, a+2,…, b-1, b .\n\nx <- 1:10\nx\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\nWhat do you think happens if a > b? Try the following code for yourself:\n\ny <- -10:-1\n\n\n\nThe rep() function\nOne function that I personally use a lot to create vectors is the rep(a,b) function, which takes in two argument. The first is the value a you wish to repeat, and the second argument is the number of times b you’d like to repeat it. How would we create a vector of 20 0’s? Think about it, and check:\n\n\nCode\nrep(0, 20)"
-  },
-  {
-    "objectID": "live-code-1.html#matrices",
-    "href": "live-code-1.html#matrices",
-    "title": "Live code 1",
-    "section": "Matrices",
-    "text": "Matrices\nMatrices are the 2D extension of the one-dimensional vectors. When a matrix has n rows and p columns, we denote its dimensions as n x p or “n by p”. We create matrices using the matrix() function. Because of the multiple dimensions, we need to specify the number of rows and the number of columns:\n\nmatrix(NA, nrow = 2, ncol = 3)\n\n     [,1] [,2] [,3]\n[1,]   NA   NA   NA\n[2,]   NA   NA   NA\n\n\nThis code above creates a 2 x 3 matrix of NA values. The first argument takes in the elements you want to fill the matrix with. This can either by a single value, or a single vector of values."
-  },
-  {
-    "objectID": "live-code-1.html#data-frames",
-    "href": "live-code-1.html#data-frames",
-    "title": "Live code 1",
-    "section": "Data frames",
-    "text": "Data frames\nWe will create a data frame called my_df here, which holds the two vectors we created before.\n\nmy_df <- data.frame(xvar = x, yvar = y)\n\nNow, if I wanted to only take the variable xvar from my_df, how would I do so using dplyr functions? Take a second to think about it, then check:\n\n\nCode\nmy_df %>%\n  select(xvar)\n\n\nWe will now use base R to access that xvar variable by using $ notation: <df>$<var_name> . If you do this yourself, you should notice that immediately after typing the $ , a menu pops up with all the variables contained in the data frame.\n\nmy_df$xvar\n\nNow, do you notice the difference between the two outputs?\n\nmy_df %>%\n  select(xvar)\n\n   xvar\n1     1\n2     2\n3     3\n4     4\n5     5\n6     6\n7     7\n8     8\n9     9\n10   10\n\nmy_df$xvar\n\n [1]  1  2  3  4  5  6  7  8  9 10"
-  },
-  {
-    "objectID": "live-code-1.html#indexing",
-    "href": "live-code-1.html#indexing",
-    "title": "Live code 1",
-    "section": "Indexing",
-    "text": "Indexing\nOne of the most useful tools we will use is indexing and index notation.\nAn index is essentially a numerical representation of an item’s position in a list or vector. It is typically an integer, starting from either 0 or 1 depending on the programming language. In R, our index positions always start at 1!\nFor example, in the word “learning”, the l is at index 1. Similarly, in our vector v of the numbers \\((10, 11, 12)\\), the value at index 1 is 10. We can confirm this with code:\n\nv[1]\n\n[1] 10\n\n\nNotice that we access the item held in index 1 using the square bracket notation [ ]\nNow, I can also replace or modify an element at a given index. I will still access the location using [ ], but now I will store/save the new value:\n\nv[1] <- 13\nv\n\n[1] 13 11 12\n\n\nWe can also modify multiple elements at once by passing in a vector of indices to modify, as well as a vector of new values:\n\nv[2:3] <- c(14, 15)\n\nWhat does v look like now?\nWe can also use indices to refer to elements or entire rows and columns of data frames! Unlike vectors, data frame are two-dimensional, i.e. there are both rows and columns. Thus, our index notation will need to adapt to accommodate this feature. We will still use [ ] notation, but now commas will be introduced:\n\nmy_df[1,2]\n\n[1] -10\n\n\nBased on my_df, what do you think the [1,2] means?\nNow, we already saw how to access a column of a data frame using the $ notation, but we can also use index notation. To access the first column, we would type:\n\nmy_df[,1]\n\nThe 1 after the comma tells R that we want to focus on column 1.\nAs do not type anything before the comma, R reads this as: “since you did not want a specific row, so you must want all the rows”.\nHow do you think we would access the third row? How about both the first and second row?"
-  },
-  {
-    "objectID": "live-code-1.html#functions",
-    "href": "live-code-1.html#functions",
-    "title": "Live code 1",
-    "section": "Functions",
-    "text": "Functions\nThere are a lot of simple functions in R that we will rely on. We already saw c() and rep(). Most of the functions we will use take in a vector or matrix of numeric values, and return either a single number or vector in return.\nThe function mean() takes in a vector, and returns the mean of the vector.\n\nmean(x)\n\n[1] 5.5\n\n\nThe function length() takes in a vector, and returns the number of element of the vector:\n\nlength(x)\n\n[1] 10\n\n\nThe functions max() and min() return what you would expect them to!\nAn extremely useful function we will use is the which() function. Unlike the previous functions, which() does not take in a numeric vector. Rather, it takes a vector of boolean values (i.e. TRUE/FALSE values). Then, it returns the indices of the TRUE values in the vector. For example, an input might be:\n\ny == -5\n\n [1] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n\n\nThis is comparing each value in y to see if it equals -5. Notice that only one value evaluates to TRUE, specifically the element in index 6. Therefore, if we wrap the which() function around that argument, we should get 6 in return:\n\nwhich(y == -5)\n\n[1] 6\n\n\nPersonally, I tend to read this line of code as a question: Which element(s) of y are exactly equal to -5?\nWe know that y only holds negative values. What do you think happens if we try to evaluate the following. Try it yourself!\n\nwhich(y == 0)\n\nIt’s also entirely possible that many values in the boolean vector are true, in which case the function would return multiple indices. For example, if I want to know which values in y are negative, I could code:\n\nwhich(y < 0)\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\n\nIndexing with boolean vectors\nAbove, we saw how to access elements held at specific indices of interest. We can also use boolean vectors to return values. Recall our vector v:\n\nv\n\n[1] 13 14 15\n\n\nI can index v by indexing using TRUE’s for each value that I want, and FALSE’s otherwise.\n\nv[c(F, T, F)]\n\n[1] 14"
-  },
-  {
-    "objectID": "live-code-1.html#your-turn",
-    "href": "live-code-1.html#your-turn",
-    "title": "Live code 1",
-    "section": "Your turn!",
-    "text": "Your turn!\nPlease complete the following exercises in order:\n\nCreate a vector called my_vec that holds the values 50 through 100.\nCreate a new vector called less60 where an element is TRUE if the corresponding element in my_vec is less than 60, and FALSE otherwise.\nConfirm that the length of your two vectors are the same.\nPass less60 into the function sum() function. Relate the value obtained to the elements of less60.\nModify my_vec such that the value at index 10 is 100.\nObtain the index of the maximum values of my_vec using functions described above.\nNow, pass my_vec into the which.max() function. Even though we haven’t seen it before, based on the function name, the name of the function is intuitive. Does the result from which.max() differ from what you obtained in Ex. 6? How so?\nCreate a 2 x 5 matrix of the values 1 through 10, where the first row holds the values 1-5, and the second row holds the values 6-10. Hint: look at the help file for matrix."
-  },
-  {
-    "objectID": "slides-01-what-is.html#necessary-background",
-    "href": "slides-01-what-is.html#necessary-background",
+    "objectID": "slides-01-what-is.html#version-control",
+    "href": "slides-01-what-is.html#version-control",
     "title": "What is statistical learning?",
-    "section": "Necessary background",
-    "text": "Necessary background\n\nI assume you have taken Math 118 prior to this course, and are comfortable with tidyverse and RStudio. There is a large emphasis on computing.\nWe will learn how to code in base R, and by the end of the course you should feel comfortable switching between base R and tidyverse.\nWe will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses."
+    "section": "Version control",
+    "text": "Version control\n\nGit is a version control system – like “Track Changes” features from Microsoft Word.\nGitHub is the home for your Git-based projects on the internet (like DropBox but much better).\nThere are a lot of Git commands and very few people know them all. 99% of the time you will use git to add, commit, push, and pull.\nWe will be using the GitHub Desktop application to perform the Git commands in a beginner-friendly way. Our local project in RStudio will be sent to GitHub using the application."
   },
   {
-    "objectID": "slides-01-what-is.html#your-turn",
-    "href": "slides-01-what-is.html#your-turn",
+    "objectID": "slides-01-what-is.html#installation",
+    "href": "slides-01-what-is.html#installation",
     "title": "What is statistical learning?",
-    "section": "Your Turn!",
-    "text": "Your Turn!"
+    "section": "Installation",
+    "text": "Installation\n\nAccept the e-mailed GitHub invitation to join our course organization. If you did not receive an invitation, that means I do not have your GitHub username!\nCreate a folder on your desktop called “Math218”\nGo to https://desktop.github.com/ and download the GitHub Desktop application.\n\nContinue following the instructions found here"
   },
   {
-    "objectID": "slides-01-what-is.html#create-a-github-account",
-    "href": "slides-01-what-is.html#create-a-github-account",
+    "objectID": "slides-01-what-is.html#what-is-statistical-learning",
+    "href": "slides-01-what-is.html#what-is-statistical-learning",
     "title": "What is statistical learning?",
-    "section": "Create a GitHub account",
-    "text": "Create a GitHub account\n\nGo to https://github.com/, and create an account (unless you already have one). After you create your account, click here and enter your GitHub username.\n\nTips for creating a username from Happy Git with R.\n\nIncorporate your actual name!\nReuse your username from other contexts if you can.\nPick a username you will be comfortable revealing to your future boss.\nShorter is better than longer.\nBe as unique as possible in as few characters as possible.\nMake it timeless.\nAvoid words laden with special meaning in programming, like NA.\n\n\nRaise your hand if you have any questions."
+    "section": "What is statistical learning?",
+    "text": "What is statistical learning?\n\nSet of tools used to understand data\n\nSupervised and unsupervised methods\n\nUse data and build appropriate functions (models) to try and perform inference and make predictions\n\nData-centered approach\n\nCategories of statistical learning problems\n\nClassification\nLearning relationships\nPrediction"
   },
   {
-    "objectID": "lab-01-roulette.html",
-    "href": "lab-01-roulette.html",
-    "title": "Lab 01: Roulette",
+    "objectID": "slides-01-what-is.html#supervised-learning",
+    "href": "slides-01-what-is.html#supervised-learning",
+    "title": "What is statistical learning?",
+    "section": "Supervised Learning",
+    "text": "Supervised Learning\n\nNotation: let \\(i = 1,\\ldots, n\\) index the observation\nFor each observation \\(i\\), we have:\n\nOutcome/response: \\(y_{i}\\)\nVector of \\(p\\) predictors/covariates: \\(\\mathbf{x}_{i} = (x_{i1}, x_{i2}, \\ldots, x_{ip})'\\)\n\nRegression: the \\(y_{i}\\) are quantitative (e.g. height, price)\nClassification: the \\(y_{i}\\) are categorical/qualitative (e.g. education level, diagnosis)\nGoal: relate response \\(y_{i}\\) to the various predictors"
+  },
+  {
+    "objectID": "slides-01-what-is.html#objectives-in-supervised-learning",
+    "href": "slides-01-what-is.html#objectives-in-supervised-learning",
+    "title": "What is statistical learning?",
+    "section": "Objectives in Supervised Learning",
+    "text": "Objectives in Supervised Learning\n\nExplanatory: understand which predictors affect the response, and how\nPrediction: accurately predict unobserved cases for new measurements of predictors\nAssessment: quantify the quality of our predictions and inference"
+  },
+  {
+    "objectID": "slides-01-what-is.html#unsupervised-learning",
+    "href": "slides-01-what-is.html#unsupervised-learning",
+    "title": "What is statistical learning?",
+    "section": "Unsupervised Learning",
+    "text": "Unsupervised Learning\n\nWe only observe the \\(\\mathbf{x}_{i}\\), but no associated response \\(y_{i}\\)\n“Unsupervised” because there is no response variable guiding the analysis!\nObjective may not be as clearly defined\nDifficult to assess how well your are doing"
+  },
+  {
+    "objectID": "slides-01-what-is.html#lets-look-at-some-real-data",
+    "href": "slides-01-what-is.html#lets-look-at-some-real-data",
+    "title": "What is statistical learning?",
+    "section": "Let’s look at some real data!",
+    "text": "Let’s look at some real data!\n\nOribatid mite data: abundance data of 35 oribatid mite species observed at 70 sampling locations irregularly spaced within a study area of 2.6 × 10 m collected on the territory of the Station de biologie des Laurentides of Université de Montréal, Québec, Canada in June 1989\nVariables measured at each location:\n\nSubstrate density (quantitative)\nWater content (quantitative)\nMicrotopography (binary categorical)\nShrub density (ordinal categorical, three levels)\nSubstrate type (nominal categorical, seven levels)"
+  },
+  {
+    "objectID": "slides-01-what-is.html#section",
+    "href": "slides-01-what-is.html#section",
+    "title": "What is statistical learning?",
     "section": "",
-    "text": "We will simulate the casino game of American roulette! On an American roulette wheel, there are 38 equally-sized spaces that differ in color and number value:\n\nTwo spaces are green, and are labelled 0 and 00\nThe remaining spaces alternate red and black and take on the values 1-36\n\nThere is no particular order to the numbers\n\n\nThe game is simple: a ball is dropped and spins along the roulette until it settles in one of the 38 spaces. Each space has an equal chance of being landed on.\n\n\n\n\n\nDiffering wagers or bets can be made on where the ball will end up landing. For example, it is common to bet on a color. If you “bet on black”, you think the ball will land in a black-colored space. Or you might “bet on 1-18”, which means you think the ball will land in a space with a number between 1 and 18, inclusive.\nYou wager some money when you make a bet. For example, if I bet $5 and I win, I will get my original $5 back and also gain $5 from the house. So I net $5. If I lose, then the house takes my $5 and I net -$5. In summary:\n\nIf I win, I net the amount that I bet\nIf I lose, I net the negative amount that I bet\n\nIn either case, your net gain will be either positive or negative.\nBecause this is a casino game, we know that the house always wins. So, the purpose of this assignment is to simulate/demonstrate that the player will always lose money in the long run."
+    "text": "# from the vegan library\ndata(\"mite\")\nmite %>%\n  head()\n\n  Brachy PHTH HPAV RARD SSTR Protopl MEGR MPRO TVIE HMIN HMIN2 NPRA TVEL ONOV\n1     17    5    5    3    2       1    4    2    2    1     4    1   17    4\n2      2    7   16    0    6       0    4    2    0    0     1    3   21   27\n3      4    3    1    1    2       0    3    0    0    0     6    3   20   17\n4     23    7   10    2    2       0    4    0    1    2    10    0   18   47\n5      5    8   13    9    0      13    0    0    0    3    14    3   32   43\n6     19    7    5    9    3       2    3    0    0   20    16    2   13   38\n  SUCT LCIL Oribatl1 Ceratoz1 PWIL Galumna1 Stgncrs2 HRUF Trhypch1 PPEL NCOR\n1    9   50        3        1    1        8        0    0        0    0    0\n2   12  138        6        0    1        3        9    1        1    1    2\n3   10   89        3        0    2        1        8    0        3    0    2\n4   17  108       10        1    0        1        2    1        2    1    3\n5   27    5        1        0    5        2        1    0        1    0    0\n6   39    3        5        0    1        1        8    0        4    0    1\n  SLAT FSET Lepidzts Eupelops Miniglmn LRUG PLAG2 Ceratoz3 Oppiminu Trimalc2\n1    0    0        0        0        0    0     0        0        0        0\n2    2    2        1        0        0    0     0        0        0        0\n3    0    8        0        0        0    0     0        0        0        0\n4    2   12        0        0        0    0     0        0        0        0\n5    0   12        2        0        0    0     0        0        0        0\n6    0   10        0        0        0    0     0        0        0        0"
   },
   {
-    "objectID": "lab-01-roulette.html#assignment",
-    "href": "lab-01-roulette.html#assignment",
-    "title": "Lab 01: Roulette",
-    "section": "Assignment",
-    "text": "Assignment\nImagine that you have unlimited funds and will play roulette n number of times. You will always bet on red and wager the same amount of money. For each one of the n rounds, keep track of the net gain. At the end of your gambling, make a plot showing the cumulative gains over the n iterations. That is, make a plot with 1, 2, …, n on the x-axis. The y-coordinate associated with each x-coordinate is the total/net gains up to that point.\n\nDetails\nAssume that the red spaces take on the values (2, 4, 6, …, 34, 36) and the black spaces take on the values (1, 3, 4, …, 35). You can decide how you would like to represent the two green spaces.\nHere is some structure that might help you design your code: you will need to create a for loop where on every iteration you should:\n\n“Spin” the roulette\nEvaluate how the outcome of your spin compares to your bet\nMake note of the net gain\n\nTo create the final plot, consider making a data frame that has two columns: one for the iterations, and another for the cumulative net gains.\n\n\nConcepts used\n\nfor loops\nConditional statements\nComparing R objects\nCreating and modifying vectors"
-  },
-  {
-    "objectID": "lab-01-roulette.html#submission-details",
-    "href": "lab-01-roulette.html#submission-details",
-    "title": "Lab 01: Roulette",
-    "section": "Submission details",
-    "text": "Submission details\nTBD"
-  },
-  {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
-    "title": "Schedule",
-    "section": "",
-    "text": "Date\nContent & Materials\nDue dates\n\n\n\n\n\n\nWEEK 1\n\n\n\n\nT 2/14\nWelcome!\n\nClass introduction and intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\n\n\n\nF 2/17\nLab day\n\nMore advanced coding\nLab 01: Roulette\n\n\n\n\n\n\nWEEK 2\n\n\n\n\nT 2/21\n\n\n\n\nR 2/23"
-  },
-  {
-    "objectID": "slides-01-what-is.html#course-policies",
-    "href": "slides-01-what-is.html#course-policies",
+    "objectID": "slides-01-what-is.html#section-1",
+    "href": "slides-01-what-is.html#section-1",
     "title": "What is statistical learning?",
-    "section": "Course Policies",
-    "text": "Course Policies"
+    "section": "",
+    "text": "# from the vegan library\ndata(\"mite.env\")\nhead(mite.env)\n\n  SubsDens WatrCont Substrate Shrub    Topo\n1    39.18   350.15   Sphagn1   Few Hummock\n2    54.99   434.81    Litter   Few Hummock\n3    46.07   371.72 Interface   Few Hummock\n4    48.19   360.50   Sphagn1   Few Hummock\n5    23.55   204.13   Sphagn1   Few Hummock\n6    57.32   311.55   Sphagn1   Few Hummock\n\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)"
   },
   {
-    "objectID": "slides-00-welcome.html#necessary-background",
-    "href": "slides-00-welcome.html#necessary-background",
-    "title": "Welcome to statistical learning!",
-    "section": "Necessary background",
-    "text": "Necessary background\n\nI assume you have taken Math 118 prior to this course, and are comfortable with tidyverse and RStudio. There is a large emphasis on computing.\nWe will learn how to code in base R, and by the end of the course you should feel comfortable switching between base R and tidyverse.\nWe will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses."
+    "objectID": "slides-01-what-is.html#eda",
+    "href": "slides-01-what-is.html#eda",
+    "title": "What is statistical learning?",
+    "section": "EDA",
+    "text": "EDA\n(scroll for more content)"
   },
   {
-    "objectID": "slides-00-welcome.html#your-turn",
-    "href": "slides-00-welcome.html#your-turn",
-    "title": "Welcome to statistical learning!",
-    "section": "Your Turn!",
-    "text": "Your Turn!"
+    "objectID": "slides-01-what-is.html#section-2",
+    "href": "slides-01-what-is.html#section-2",
+    "title": "What is statistical learning?",
+    "section": "",
+    "text": "::: important Goal: ::: can we predict SUCT abundance using these variables?"
   },
   {
-    "objectID": "slides-00-welcome.html#create-a-github-account",
-    "href": "slides-00-welcome.html#create-a-github-account",
-    "title": "Welcome to statistical learning!",
-    "section": "Create a GitHub account",
-    "text": "Create a GitHub account\n\nGo to https://github.com/, and create an account (unless you already have one). After you create your account, click here and enter your GitHub username.\n\nTips for creating a username from Happy Git with R.\n\nIncorporate your actual name!\nReuse your username from other contexts if you can.\nShorter is better than longer; be as unique as possible in as few characters as possible.\nAvoid words laden with special meaning in programming, like NA."
+    "objectID": "slides-01-what-is.html#model-building",
+    "href": "slides-01-what-is.html#model-building",
+    "title": "What is statistical learning?",
+    "section": "Model building",
+    "text": "Model building\n\nGoal: predict LRUG abundance using these variables\nMaybe LRUG \\(\\approx f(\\) SubsDens + WatrCont\\()\\)?\nIf so, how would we represent these variables using our notation? i.e., what are \\(y_{i}\\) and \\(x_{i}\\)?\nThen our model can be written as \\(y_{i} = f(x_{i}) + \\epsilon_{i}\\) where \\(\\epsilon_{i}\\) represents random measurement error\n\nWhat does this equation mean?"
   },
   {
-    "objectID": "slides-00-welcome.html#course-policies",
-    "href": "slides-00-welcome.html#course-policies",
-    "title": "Welcome to statistical learning!",
-    "section": "Course Policies",
-    "text": "Course Policies"
+    "objectID": "slides-01-what-is.html#why-care-about-f",
+    "href": "slides-01-what-is.html#why-care-about-f",
+    "title": "What is statistical learning?",
+    "section": "Why care about f?",
+    "text": "Why care about f?\n\nModel (dropping the indices): \\(Y = f(X) + \\epsilon\\)\nThe function \\(f(X)\\) represents the systematic information that \\(X\\) tells us about \\(Y\\).\nIf \\(f\\) is “good”, then we can make reliable predictions of \\(Y\\) at new points \\(X = x\\)\nIf \\(f\\) is “good”, then we can identify which components of \\(X\\) are important to explaining \\(Y\\)\n\nDepending on \\(f\\), we may be able to learn how each component \\(X_{j}\\) of \\(X\\) affects \\(Y\\)"
   },
   {
-    "objectID": "slides-00-welcome.knit.html#necessary-background",
-    "href": "slides-00-welcome.knit.html#necessary-background",
-    "title": "Welcome to statistical learning!",
-    "section": "Necessary background",
-    "text": "Necessary background\n\nI assume you have taken Math 118 prior to this course, and are comfortable with tidyverse and RStudio. There is a large emphasis on computing.\nWe will learn how to code in base R, and by the end of the course you should feel comfortable switching between base R and tidyverse.\nWe will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses."
+    "objectID": "slides-01-what-is.html#why-care-about-f-1",
+    "href": "slides-01-what-is.html#why-care-about-f-1",
+    "title": "What is statistical learning?",
+    "section": "Why care about f?",
+    "text": "Why care about f?\n\nWe assume that \\(f\\) is fixed but unknown\nGoal of statistical learning: how to estimate \\(f\\)?\n\nSub-goals: prediction and inference\n\nThe sub-goal may affect the kind of \\(f\\) we choose"
   },
   {
-    "objectID": "slides-00-welcome.knit.html#your-turn",
-    "href": "slides-00-welcome.knit.html#your-turn",
-    "title": "Welcome to statistical learning!",
-    "section": "Your Turn!",
-    "text": "Your Turn!"
+    "objectID": "slides-01-what-is.html#prediction",
+    "href": "slides-01-what-is.html#prediction",
+    "title": "What is statistical learning?",
+    "section": "Prediction",
+    "text": "Prediction\n\nWe have a set of inputs or predictors \\(X\\), and we want to predict a corresponding \\(Y\\)\nAssuming the error \\(\\epsilon\\) is 0 on average, we can obtain predictions of \\(Y\\) as \\[\\hat{Y} = \\hat{f}(X)\\]\nIf we knew the true \\(Y\\), we could evaluate the accuracy of the prediction \\(\\hat{Y}\\)\nGenerally, \\(Y \\neq \\hat{Y}\\). Why?\n\n\\(\\hat{f}\\) will not be perfect estimate of \\(f\\)\n\\(Y\\) is a function of \\(\\epsilon\\), which cannot be predicted using \\(X\\)"
   },
   {
-    "objectID": "slides-00-welcome.knit.html#create-a-github-account",
-    "href": "slides-00-welcome.knit.html#create-a-github-account",
-    "title": "Welcome to statistical learning!",
-    "section": "Create a GitHub account",
-    "text": "Create a GitHub account\n\nGo to https://github.com/, and create an account (unless you already have one). After you create your account, click here and enter your GitHub username.\n\nTips for creating a username from Happy Git with R.\n\nIncorporate your actual name!\nReuse your username from other contexts if you can.\nPick a username you will be comfortable revealing to your future boss.\nShorter is better than longer.\nBe as unique as possible in as few characters as possible.\nMake it timeless.\nAvoid words laden with special meaning in programming, like NA.\n\n\nRaise your hand if you have any questions."
+    "objectID": "slides-01-what-is.html#types-of-error",
+    "href": "slides-01-what-is.html#types-of-error",
+    "title": "What is statistical learning?",
+    "section": "Types of error",
+    "text": "Types of error\n\nModel: \\(Y = f(X) + \\epsilon\\)\nIrreducible error: \\(\\epsilon\\)\n\nEven if we knew \\(f\\) perfectly, there is still some inherent variability\n\\(\\epsilon\\) may also contained unmeasured variables that are not available to us\n\nReducible error: how far \\(\\hat{f}\\) is from the true \\(f\\)"
   },
   {
-    "objectID": "slides-00-welcome.knit.html#course-policies",
-    "href": "slides-00-welcome.knit.html#course-policies",
-    "title": "Welcome to statistical learning!",
-    "section": "Course Policies",
-    "text": "Course Policies"
+    "objectID": "slides-01-what-is.html#prediction-errors",
+    "href": "slides-01-what-is.html#prediction-errors",
+    "title": "What is statistical learning?",
+    "section": "Prediction errors",
+    "text": "Prediction errors\n\nWays to quantify error\n\nDifference/error = \\(Y - \\hat{Y}\\)\nAbsolute error = \\(|Y - \\hat{Y}|\\)\nSquared error = \\((Y - \\hat{Y})^2\\)\n\nIntuitively, large error indicates worse prediction"
   },
   {
-    "objectID": "slides-00-welcome.html#class-meetings",
-    "href": "slides-00-welcome.html#class-meetings",
-    "title": "Welcome to statistical learning!",
-    "section": "Class Meetings",
-    "text": "Class Meetings\n\n\nLecture\n\nFocus on concepts behind statistical learning techniques\nInteractive lecture that includes examples and hands-on exercises\nBring fully-charged laptop to every lecture\n\nPlease let me know as soon as possible if you do not have access to a laptop\n\n\nLab\n\nTypically occurs on Fridays\nFocus on computing in R\nApply concepts from lecture to case study scenarios\n\nImplementation"
+    "objectID": "slides-01-what-is.html#prediction-errors-1",
+    "href": "slides-01-what-is.html#prediction-errors-1",
+    "title": "What is statistical learning?",
+    "section": "Prediction errors",
+    "text": "Prediction errors\n\nGiven \\(\\hat{f}\\) and \\(X\\), we can obtain a prediction \\(\\hat{Y} = \\hat{f}(X)\\) for \\(Y\\)\nMean-squared prediction error: \\[\\begin{align*}\n\\mathsf{E}[(Y - \\hat{Y})^2] &= \\mathsf{E}[( f(X) + \\epsilon - \\hat{f}(X))^2] \\\\\n&= \\underbrace{[f(X) - \\hat{f}(X)]^2}_\\text{reducible} + \\underbrace{\\text{Var}(\\epsilon)}_\\text{irreducible}\n\\end{align*}\\]\nWe cannot do much to decrease the irreducible error\nBut we can potentially minimize the reducible error by choosing better \\(\\hat{f}\\)!"
   },
   {
-    "objectID": "slides-00-welcome.html#code",
-    "href": "slides-00-welcome.html#code",
-    "title": "Welcome to statistical learning!",
-    "section": "Code",
-    "text": "Code\n\nlibrary(tidyverse)"
+    "objectID": "slides-01-what-is.html#inference",
+    "href": "slides-01-what-is.html#inference",
+    "title": "What is statistical learning?",
+    "section": "Inference",
+    "text": "Inference\n\nWe are often interested in learning how \\(Y\\) and the \\(X_{1}, \\ldots, X_{p}\\) are related or associated\nIn this mindset, we want to estimate \\(f\\) to learn the relationships, rather than obtain a \\(\\hat{Y}\\)"
+  },
+  {
+    "objectID": "slides-01-what-is.html#prediction-vs-inference",
+    "href": "slides-01-what-is.html#prediction-vs-inference",
+    "title": "What is statistical learning?",
+    "section": "Prediction vs Inference",
+    "text": "Prediction vs Inference\n\nIn the prediction setting, estimate \\(\\hat{f}\\) for the purpose of \\(\\hat{Y}\\) and \\(Y\\).\nIn the inference setting, estimate \\(\\hat{f}\\) for the purpose of \\(X\\) and \\(Y\\)\nSome problems will call for prediction, inference, or both\n\nTo what extent is LRUG abundance associated with microtopography?\nGiven a specific land profile, how many LRUG mites would we expect there to be?"
+  },
+  {
+    "objectID": "slides-01-what-is.html#assessing-model-accuracy",
+    "href": "slides-01-what-is.html#assessing-model-accuracy",
+    "title": "What is statistical learning?",
+    "section": "Assessing model accuracy",
+    "text": "Assessing model accuracy\n\nNo single method or choice of \\(f\\) is superior over all possible data sets\nPrediction accuracy vs. interpretability\n\nMore restrictive models may be easier to interpret (better for inference)\nGood fit vs. over- or under-fit\n\nParsimony vs. black box\n\nA simpler model is often preferred over a very complex one"
+  },
+  {
+    "objectID": "slides-01-what-is.html#assessing-model-accuracy-1",
+    "href": "slides-01-what-is.html#assessing-model-accuracy-1",
+    "title": "What is statistical learning?",
+    "section": "Assessing model accuracy",
+    "text": "Assessing model accuracy\n\nHow can we know how well a chosen \\(\\hat{f}\\) is performing?\nIn regression setting, we often use mean squared error (MSE)\n\n\\(\\text{MSE}=\\frac{1}{n}\\sum_{i=1}^{n}(y_{i}-\\hat{f}(x_{i}))^2\\)\n\nMSE will be small if predictions \\(\\hat{y}_{i} = {f}(x_{i})\\) are very close to the true \\(y_{i}\\)"
+  },
+  {
+    "objectID": "slides-01-what-is.html#training-vs.-test-data",
+    "href": "slides-01-what-is.html#training-vs.-test-data",
+    "title": "What is statistical learning?",
+    "section": "Training vs. test data",
+    "text": "Training vs. test data\n\nIn practice, we split our data into training and test sets\n\nTraining set is used to fit the model\nTest set is used to assess model fit\n\nWe are often most interested in accuracy of our predictions when applying the method to previously unseen data. Why?\nWe can compute the MSE for the training and test data respectively"
+  },
+  {
+    "objectID": "slides-01-what-is.html#example-1",
+    "href": "slides-01-what-is.html#example-1",
+    "title": "What is statistical learning?",
+    "section": "Example 1",
+    "text": "Example 1"
+  },
+  {
+    "objectID": "slides-01-what-is.html#example-2",
+    "href": "slides-01-what-is.html#example-2",
+    "title": "What is statistical learning?",
+    "section": "Example 2",
+    "text": "Example 2"
+  },
+  {
+    "objectID": "slides-01-what-is.html#bias-variance-trade-off",
+    "href": "slides-01-what-is.html#bias-variance-trade-off",
+    "title": "What is statistical learning?",
+    "section": "Bias-Variance trade-off",
+    "text": "Bias-Variance trade-off\n\nAs model flexibility increases, the training MSE will decrease but test MSE may not.\nFlexible models may overfit the data, which leads to low train MSE and high test MSE\n\nThe supposed patterns in train data do not exist in test data\n\nLet us consider a test observation \\((x_{0}, y_{0})\\).\nThe expected test MSE for given \\(x_{0}\\) can be decomposed as follows:\n\n\\(\\mathsf{E}[(y_{0} - \\hat{f}(x_{0}))^2] = \\text{Var}(\\hat{f}(x_{0})) + [\\text{Bias}(\\hat{f}(x_{0}))]^2 + \\text{Var}(\\epsilon)\\)\n\\(\\text{Bias}(\\hat{f}(x_{0})) = \\mathsf{E}[\\hat{f}(x_{0})] - \\hat{f}(x_{0})\\)"
+  },
+  {
+    "objectID": "slides-01-what-is.html#bias-variance-trade-off-cont.",
+    "href": "slides-01-what-is.html#bias-variance-trade-off-cont.",
+    "title": "What is statistical learning?",
+    "section": "Bias-Variance trade-off (cont.)",
+    "text": "Bias-Variance trade-off (cont.)"
+  },
+  {
+    "objectID": "slides-01-what-is.html#classification",
+    "href": "slides-01-what-is.html#classification",
+    "title": "What is statistical learning?",
+    "section": "Classification",
+    "text": "Classification\n\nUp until now, we have focused on quantitative responses \\(y_{i}\\)\nWhat happens when \\(y_{i}\\) is qualitative? Examples include:\n\nMedical diagnosis: \\(\\mathcal{C} = \\{\\text{yes}, \\text{no}\\}\\)\nEducation level: \\(\\mathcal{C} = \\{\\text{high school}, \\text{college}, \\text{graduate}\\}\\)\n\nEach category in \\(\\mathcal{C}\\) is also known as a label\nIn this setting, we want our model to be classifier, i.e. given predictors \\(X\\), predict a label from the pool of all possible categories \\(\\mathcal{C}\\)"
+  },
+  {
+    "objectID": "slides-01-what-is.html#classification-1",
+    "href": "slides-01-what-is.html#classification-1",
+    "title": "What is statistical learning?",
+    "section": "Classification",
+    "text": "Classification\n\nWe will still have to estimate \\(f\\)\n\\(\\hat{y}_{i}\\) is the predicted class label for observation \\(i\\) using estimate \\(\\hat{f}\\)\nHow to assess model accuracy? Error is more intuitive: we make an error if we predict the incorrect label, and no error otherwise\nThis can be represented using an indicator variable or function. \\(\\mathbf{I}(y_{i} = \\hat{y}_{i})\\):\n\n\\[\\mathbf{I}(y_{i} = \\hat{y}_{i}) = \\begin{cases} 1 & \\text{ if } y_{i} = \\hat{y}_{i}\\\\ 0 & \\text{ if } y_{i} \\neq \\hat{y}_{i} \\end{cases}\\]"
+  },
+  {
+    "objectID": "slides-01-what-is.html#classification-error-rate",
+    "href": "slides-01-what-is.html#classification-error-rate",
+    "title": "What is statistical learning?",
+    "section": "Classification error rate",
+    "text": "Classification error rate\n\nTo quantify accuracy of estimated classifier \\(\\hat{f}\\), can calculate the error rate, which is the proportion of mistakes we make in labeling:\n\n\\[\\frac{1}{n} \\sum_{i=1}^{n} \\mathbf{I}(y_{i} \\neq \\hat{y}_{i})\\]\n\nSmall error rate is preferred\nAs with MSE, can calculate the error rate for train and test data sets"
+  },
+  {
+    "objectID": "slides-01-what-is.html#classifiers",
+    "href": "slides-01-what-is.html#classifiers",
+    "title": "What is statistical learning?",
+    "section": "Classifiers",
+    "text": "Classifiers\n\nHow do we choose which label to predict for a given observation?\nAssume we have a total of \\(J\\) possible labels in \\(\\mathcal{C}\\)\nFor a given observation \\(i\\), can calculate the following probability for each possible label \\(j\\): \\[p_{ij}(x_{i}) = Pr(y_{i} = j | X = x_{i})\\]\nThese probabilities are called conditional class probabilities at \\(x_{i}\\)"
+  },
+  {
+    "objectID": "slides-01-what-is.html#bayes-optimal-classifier",
+    "href": "slides-01-what-is.html#bayes-optimal-classifier",
+    "title": "What is statistical learning?",
+    "section": "Bayes optimal classifier",
+    "text": "Bayes optimal classifier\n\nThe Bayes optimal classifier will assign/predict the label which has the largest conditional class probability\n\nIt can be shown that the test error rate \\(\\frac{1}{n_{test}} \\sum_{i=1}^{n_{test}} \\mathbf{I}(y_{i} \\neq \\hat{y}_{i})\\) is minimized when using the Bayes optimal classifier\n\nFor example, consider a binary problem with levels “yes” and “no”.\nFor observation \\(i\\), if \\(Pr(y_{i} = \\text{yes} | X = x_{i}) > 0.5\\), then \\(\\hat{y}_{i} =\\) “yes”.\nThe \\(x_{i}\\) where \\(Pr(y_{i} = \\text{yes} | X = x_{i}) = Pr(y_{i} = \\text{no} | X = x_{i})= 0.5\\) is called the Bayes decision boundary"
+  },
+  {
+    "objectID": "slides-01-what-is.html#example",
+    "href": "slides-01-what-is.html#example",
+    "title": "What is statistical learning?",
+    "section": "Example",
+    "text": "Example"
+  },
+  {
+    "objectID": "slides-01-what-is.html#classification-2",
+    "href": "slides-01-what-is.html#classification-2",
+    "title": "What is statistical learning?",
+    "section": "Classification",
+    "text": "Classification\n\nBayes classifier is “gold standard”\nIn practice, we cannot compute \\(p_{ij}(x_{i}) = Pr(y_{i} = j | X = x_{i})\\) because we do know the conditional distribution of \\(y\\) given \\(x\\)\nInstead, we need to estimate these \\(p_{ij}(x_{i})\\)\nAlmost all of our choices of \\(\\hat{f}\\) will output these estimates"
+  },
+  {
+    "objectID": "slides-01-what-is.html#classification-in-practice",
+    "href": "slides-01-what-is.html#classification-in-practice",
+    "title": "What is statistical learning?",
+    "section": "Classification in practice",
+    "text": "Classification in practice\n\nBayes classifier is “gold standard”\nIn practice, we cannot compute the \\(p_{ij}(x_{i})\\) exactly because we do know the conditional distribution of \\(y\\) given \\(x\\)\nInstead, we need to estimate these \\(p_{ij}(x_{i})\\)\nAlmost all of our choices of \\(\\hat{f}\\) will output these estimates"
+  },
+  {
+    "objectID": "slides-01-what-is.html#sampling-map",
+    "href": "slides-01-what-is.html#sampling-map",
+    "title": "What is statistical learning?",
+    "section": "Sampling map",
+    "text": "Sampling map"
   }
 ]

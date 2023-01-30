@@ -1,0 +1,687 @@
+---
+title: "What is statistical learning?"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+# R options
+options(
+  htmltools.dir.version = FALSE, # for blogdown
+  show.signif.stars = FALSE,     # for regression output
+  warm = 1
+  )
+# Set dpi and height for images
+library(knitr)
+opts_chunk$set(fig.height = 2.65, dpi = 300) 
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+	fig.align = "center",
+	fig.height = 3.75,
+	fig.width = 6.25,
+	message = FALSE,
+	warning = FALSE,
+	echo = FALSE
+)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(rvest)
+library(truncnorm)
+library(vegan)
+plot_theme <- theme(text = element_text(size = 14))
+data (mite)
+data (mite.env)
+```
+
+# Git and GitHub
+
+## Version control
+
+-   **Git** is a version control system -- like "Track Changes" features from Microsoft Word.
+
+-   **GitHub** is the home for your Git-based projects on the internet (like DropBox but much better).
+
+-   There are a lot of Git commands and very few people know them all. 99% of the time you will use git to add, commit, push, and pull.
+
+-   We will be using the **GitHub Desktop** application to perform the Git commands in a beginner-friendly way. Our local project in RStudio will be sent to GitHub using the application.
+
+## Installation
+
+1.  Accept the e-mailed GitHub invitation to join our course organization. If you did not receive an invitation, that means I do not have your GitHub username!
+2.  Create a folder on your desktop called "Math218"
+3.  Go to <https://desktop.github.com/> and download the GitHub Desktop application.
+    i.  Continue following the instructions found [here](https://math118-fall2022.github.io/website/appex/01-github-desktop.html)
+
+# Introduction
+
+## What is statistical learning?
+
+-   Set of tools used to understand data
+
+    -   Supervised and unsupervised methods
+
+-   Use data and build appropriate functions (models) to try and perform inference and make predictions
+
+-   ::: important
+    Data-centered approach
+    :::
+
+-   Categories of statistical learning problems
+
+    -   Classification
+    -   Learning relationships
+    -   Prediction
+
+## Supervised Learning
+
+-   Notation: let $i = 1,\ldots, n$ index the observation
+
+-   For each observation $i$, we have:
+
+    -   Outcome/response: $y_{i}$
+    -   Vector of $p$ predictors/covariates: $\mathbf{x}_{i} = (x_{i1}, x_{i2}, \ldots, x_{ip})'$
+
+-   **Regression**: the $y_{i}$ are quantitative (e.g. height, price)
+
+-   **Classification**: the $y_{i}$ are categorical/qualitative (e.g. education level, diagnosis)
+
+-   Goal: relate response $y_{i}$ to the various predictors
+
+## Objectives in Supervised Learning
+
+1.  **Explanatory**: understand which predictors affect the response, and how
+2.  **Prediction**: accurately predict unobserved cases for new measurements of predictors
+3.  **Assessment**: quantify the quality of our predictions and inference
+
+<!-- ## Unsupervised Learning -->
+
+<!-- -   We only observe the $\mathbf{x}_{i}$, but no associated response $y_{i}$ -->
+
+<!-- -   "Unsupervised" because there is no response variable guiding the analysis! -->
+
+<!-- -   Objective may not be as clearly defined -->
+
+<!-- -   Difficult to assess how well your are doing -->
+
+## Let's look at some real data!
+
+-   Oribatid mite data: abundance data of 35 oribatid mite species observed at 70 sampling locations irregularly spaced within a study area of 2.6 × 10 m collected on the territory of the Station de biologie des Laurentides of Université de Montréal, Québec, Canada in June 1989
+-   Variables measured at each location:
+    -   Substrate density (quantitative)
+
+    -   Water content (quantitative)
+
+    -   Microtopography (binary categorical)
+
+    -   Shrub density (ordinal categorical, three levels)
+
+    -   Substrate type (nominal categorical, seven levels)
+
+## Sampling map
+
+![](figs/slides/01-intro/mites_map.jpeg){fig-align="center" width="300"}
+
+## 
+
+```{r}
+#| echo: true
+# from the vegan library
+data("mite")
+mite %>%
+  head()
+```
+
+## 
+
+```{r}
+#| echo: true
+# from the vegan library
+data("mite.env")
+head(mite.env)
+
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+## EDA {.scrollable}
+
+(scroll for more content)
+
+```{r}
+ggplot(mite_dat, aes(x = abundance)) +
+  geom_histogram(bins = 10) +
+  ggtitle("Distribution of LRUG abundance") +
+  plot_theme
+
+mite_dat %>%
+  pivot_longer(cols = 1:2, names_to = "variable", values_to = "value") %>%
+  ggplot(., aes(x = value, y = abundance)) +
+  geom_point() +
+  facet_wrap(~variable, scales = "free") +
+  plot_theme +
+  ylab("LRUG abundance")
+
+mite_dat %>%
+  mutate(Substrate = as.character(Substrate),
+         Shrub = as.character(Shrub)) %>%
+  pivot_longer(cols = 3:5, names_to = "variable", values_to = "value") %>%
+  ggplot(., aes(y = abundance, x = factor(value))) +
+  geom_boxplot() +
+  facet_wrap(~variable, scales = "free_x", nrow = 1, strip.position = "bottom") +
+  theme(panel.spacing = unit(0, "lines"),
+        panel.border = element_rect(fill = NA),
+        strip.background = element_blank(),
+        axis.title.x = element_blank(),
+        legend.position = "none",
+        strip.placement = "outside",
+        axis.text.x = element_text(angle = 90)) +
+  plot_theme
+```
+
+## Model building
+
+-   **Goal:** predict `LRUG` abundance using these variables
+
+-   Maybe `LRUG` $\approx f($ `SubsDens` + `WatrCont`$)$?
+
+-   If so, how would we represent these variables using our notation? i.e., what are $y_{i}$ and $x_{i}$?
+
+-   Then our model can be written as $y_{i} = f(x_{i}) + \epsilon_{i}$ where $\epsilon_{i}$ represents random measurement error
+
+-   ::: important
+    What does this equation mean?
+    :::
+
+## Why care about f?
+
+-   Model (dropping the indices): $Y = f(X) + \epsilon$
+
+-   The function $f(X)$ represents the systematic information that $X$ tells us about $Y$.
+
+-   If $f$ is "good", then we can make reliable predictions of $Y$ at new points $X = x$
+
+-   If $f$ is "good", then we can identify which components of $X$ are important to explaining $Y$
+
+    -   Depending on $f$, we may be able to learn how each component $X_{j}$ of $X$ affects $Y$
+
+## Why care about f?
+
+-   We assume that $f$ is fixed but unknown
+-   Goal of statistical learning: how to estimate $f$?
+    -   Sub-goals: **prediction** and **inference**
+-   The sub-goal may affect the kind of $f$ we choose
+
+## Prediction
+
+-   We have a set of inputs or predictors $X$, and we want to predict a corresponding $Y$
+
+-   Assuming the error $\epsilon$ is 0 on average, we can obtain predictions of $Y$ as $$\hat{Y} = \hat{f}(X)$$
+
+-   If we knew the true $Y$, we could evaluate the accuracy of the prediction $\hat{Y}$
+
+-   Generally, $Y \neq \hat{Y}$. Why?
+
+    1.  $\hat{f}$ will not be perfect estimate of $f$
+    2.  $Y$ is a function of $\epsilon$, which cannot be predicted using $X$
+
+## Types of error
+
+-   Model: $Y = f(X) + \epsilon$
+
+-   Irreducible error: $\epsilon$
+
+    -   Even if we knew $f$ perfectly, there is still some inherent variability
+    -   $\epsilon$ may also contained unmeasured variables that are not available to us
+
+-   Reducible error: how far $\hat{f}$ is from the true $f$
+
+## Prediction errors
+
+-   Ways to quantify error
+    -   Difference/error = $Y - \hat{Y}$
+    -   Absolute error = $|Y - \hat{Y}|$
+    -   Squared error = $(Y - \hat{Y})^2$
+-   Intuitively, large error indicates worse prediction
+
+## Prediction errors
+
+-   Given $\hat{f}$ and $X$, we can obtain a prediction $\hat{Y} = \hat{f}(X)$ for $Y$
+
+-   Mean-squared prediction error: \begin{align*}
+    \mathsf{E}[(Y - \hat{Y})^2] &= \mathsf{E}[( f(X) + \epsilon - \hat{f}(X))^2] \\
+    &= \underbrace{[f(X) - \hat{f}(X)]^2}_\text{reducible} + \underbrace{\text{Var}(\epsilon)}_\text{irreducible}
+    \end{align*}
+
+-   We cannot do much to decrease the irreducible error
+
+-   But we *can* potentially minimize the reducible error by choosing better $\hat{f}$!
+
+## Inference
+
+-   We are often interested in learning how $Y$ and the $X_{1}, \ldots, X_{p}$ are related or associated
+-   In this mindset, we want to estimate $f$ to learn the relationships, rather than obtain a $\hat{Y}$
+
+## Prediction vs Inference
+
+-   In the prediction setting, estimate $\hat{f}$ for the purpose of $\hat{Y}$ and $Y$.
+
+-   In the inference setting, estimate $\hat{f}$ for the purpose of $X$ and $Y$
+
+-   Some problems will call for prediction, inference, or both
+
+    -   To what extent is `LRUG` abundance associated with `microtopography`?
+
+    -   Given a specific land profile, how many `LRUG` mites would we expect there to be?
+
+## Assessing model accuracy
+
+-   No single method or choice of $f$ is superior over all possible data sets
+
+-   Prediction accuracy vs. interpretability
+
+    -   More restrictive models may be easier to interpret (better for inference)
+
+    -   Good fit vs. over- or under-fit
+
+-   Parsimony vs. black box
+
+    -   A simpler model is often preferred over a very complex one
+
+## Assessing model accuracy
+
+-   How can we know how well a chosen $\hat{f}$ is performing?
+
+-   In regression setting, we often use **mean squared error (MSE)**
+
+    -   $\text{MSE}=\frac{1}{n}\sum_{i=1}^{n}(y_{i}-\hat{f}(x_{i}))^2$
+
+-   MSE will be small if predictions $\hat{y}_{i} = {f}(x_{i})$ are very close to the true $y_{i}$
+
+## Training vs. test data
+
+-   In practice, we split our data into **training** and **test** sets
+
+    -   Training set is used to fit the model
+    -   Test set is used to assess model fit
+
+-   We are often most interested in accuracy of our predictions when applying the method to *previously unseen* data. Why?
+
+-   We can compute the MSE for the training and test data respectively
+
+## Example 1
+
+```{r mse_dat1}
+library(splines)
+set.seed(24)
+f_true <- function(x){
+  (100 + 5*x - 0.5*(x-30)^2  )/10
+}
+n <- 50; n_test <- 30
+x <- runif(n, 10, 50)
+sd <- 3
+eps <- rnorm(n, 0,sd)
+y <- f_true(x) + eps
+
+xx <- seq(10, 50, 0.2)
+fit_lm <- lm(y ~ x ) # p+1
+pred_lm <- predict(fit_lm, newdata = list(x=xx))
+fit_bs <- lm(y ~ bs(x, knots = c(20,40))) # defaults to cubic spline with 4 + K df
+pred_bs <- predict(fit_bs, newdata = list(x = xx))
+
+fit_bs2 <- lm(y ~ bs(x, knots = c(15, 20,25,30,35,40,45) )) 
+pred_bs2 <- predict(fit_bs2, newdata = list(x = xx))
+
+point_df <- data.frame(x = x, y = y)
+fit_df <- data.frame(x = xx, lm = pred_lm, bs = pred_bs, bs2 = pred_bs2) %>%
+  pivot_longer(cols = -1, names_to = "mod")
+
+
+
+x_test <- runif(n_test,10,50)
+eps_test <- rnorm(n_test, 0, sd)
+y_test <- f_true(x_test) +  eps_test
+
+mse_train <- c(mean((predict(fit_lm, newdata = list(x = x)) - y)^2),
+               mean((predict(fit_bs, newdata = list(x = x)) - y)^2),
+               mean((predict(fit_bs2, newdata = list(x = x)) - y)^2))
+
+mse_test <- c(mean((predict(fit_lm, newdata = list(x = x_test)) - y_test)^2),
+              mean((predict(fit_bs, newdata = list(x = x_test)) - y_test)^2),
+              mean((predict(fit_bs2, newdata = list(x = x_test)) - y_test)^2))
+
+mse_df <- data.frame(train = mse_train, test = mse_test)%>%
+  mutate( mod = c("lm", "bs", "bs2"), 
+                     flexibility = c(2, 6, 11))
+```
+
+```{r plot_mse1, fig.align="center", fig.width=10, fig.height=5}
+
+p_fit <- ggplot()+
+  geom_point(data = point_df, aes(x = x, y=y))+
+  geom_line(data = fit_df, aes(x = x, y = value, col= mod), lwd = 1) +
+  guides(col = "none") +
+  ggtitle("Various fits to observed data")+
+  theme(text = element_text(size = 16))
+                    
+p_mse <- ggplot(data = mse_df %>%
+         pivot_longer(cols = 1:2, values_to = "MSE", names_to = "set"),
+       aes(x = flexibility, y = MSE, col = mod, group = set))+
+  stat_smooth( aes(linetype = set), col = "gray40") +
+  geom_point(size = 3) +
+  guides(col= "none") +
+  labs(y = "Mean squared error")+
+  geom_hline(yintercept = sd^2) +
+  ggtitle("Mean squared error for test and train data")+
+  theme(text = element_text(size = 16))
+
+
+gridExtra::grid.arrange(p_fit, p_mse, nrow = 1)
+```
+
+------------------------------------------------------------------------
+
+## Example 2
+
+```{r mse_dat2}
+library(splines)
+set.seed(24)
+f_true_lin <- function(x){
+  (100 + 5*x   )/10
+}
+n <- 50; n_test <- 30
+x <- runif(n, 10, 50)
+eps <- rnorm(n, 0,sd)
+y <- f_true_lin(x) + eps
+
+
+
+xx <- seq(10, 50, 0.2)
+fit_lm <- lm(y ~ x ) # p+1
+pred_lm <- predict(fit_lm, newdata = list(x=xx))
+fit_bs <- lm(y ~ bs(x, knots = c(20,40))) # defaults to cubic spline with 4 + K df
+pred_bs <- predict(fit_bs, newdata = list(x = xx))
+
+fit_bs2 <- lm(y ~ bs(x, knots = c(15, 20,25,30,35,40,45) )) 
+pred_bs2 <- predict(fit_bs2, newdata = list(x = xx))
+
+point_df <- data.frame(x = x, y = y)
+fit_df <- data.frame(x = xx, lm = pred_lm, bs = pred_bs, bs2 = pred_bs2) %>%
+  pivot_longer(cols = -1, names_to = "mod")
+
+
+
+x_test <- runif(n_test,10,50)
+eps_test <- rnorm(n_test, 0, sd)
+y_test <- f_true_lin(x_test) +  eps_test
+
+mse_train <- c(mean((predict(fit_lm, newdata = list(x = x)) - y)^2),
+               mean((predict(fit_bs, newdata = list(x = x)) - y)^2),
+               mean((predict(fit_bs2, newdata = list(x = x)) - y)^2))
+
+mse_test <- c(mean((predict(fit_lm, newdata = list(x = x_test)) - y_test)^2),
+              mean((predict(fit_bs, newdata = list(x = x_test)) - y_test)^2),
+              mean((predict(fit_bs2, newdata = list(x = x_test)) - y_test)^2))
+
+mse_df <- data.frame(train = mse_train, test = mse_test)%>%
+  mutate( mod = c("lm", "bs", "bs2"), 
+                     flexibility = c(2, 6, 11))
+```
+
+```{r plot_mse2, fig.align="center", fig.width=10, fig.height=5}
+
+p_fit <- ggplot()+
+  geom_point(data = point_df, aes(x = x, y=y))+
+  geom_line(data = fit_df, aes(x = x, y = value, col= mod), lwd = 1) +
+  guides(col = "none") +
+  ggtitle("Various fits to observed data")+
+  theme(text = element_text(size = 16))
+                    
+p_mse <- ggplot(data = mse_df %>%
+         pivot_longer(cols = 1:2, values_to = "MSE", names_to = "set"),
+       aes(x = flexibility, y = MSE, col = mod, group = set))+
+  stat_smooth(aes(linetype = set), col = "gray40") +
+  geom_point(size = 3) +
+  guides(col= "none") +
+  labs(y = "Mean squared error")+
+  geom_hline(yintercept = sd^2) +
+  ggtitle("Mean squared error for test and train data")+
+  theme(text = element_text(size = 16))
+
+
+gridExtra::grid.arrange(p_fit, p_mse, nrow = 1)
+```
+
+## Bias-Variance trade-off
+
+-   As model flexibility increases, the training MSE will decrease but test MSE may not.
+
+-   Flexible models may **overfit** the data, which leads to low train MSE and high test MSE
+
+    -   The supposed patterns in train data do not exist in test data
+
+-   Let us consider a test observation $(x_{0}, y_{0})$.
+
+-   The expected test MSE for given $x_{0}$ can be decomposed as follows:
+
+    -   $\mathsf{E}[(y_{0} - \hat{f}(x_{0}))^2] = \text{Var}(\hat{f}(x_{0})) + [\text{Bias}(\hat{f}(x_{0}))]^2 + \text{Var}(\epsilon)$
+
+    -   $\text{Bias}(\hat{f}(x_{0})) = \mathsf{E}[\hat{f}(x_{0})] - \hat{f}(x_{0})$
+
+```{r bv1, cache =T}
+get_bias <- function(estimate, truth) {
+  mean(estimate) - truth
+}
+
+get_mse = function(estimate, truth) {
+  mean((estimate - truth) ^ 2)
+}
+
+n_sims <- 1000
+n_models <- 3
+
+set.seed(1)
+# xx <- seq(15, 45, 5)
+bias_mat <- variance_mat<- mse_mat <- matrix(NA, ncol = n_models, nrow = length(x_test))
+for(j in 1:length(x_test)){
+  # x0 <- xx[j]
+  x0 <- x_test[j]
+  predictions = matrix(0, nrow = n_sims, ncol = n_models)
+  for (i in 1:n_sims) {
+    
+    eps <- rnorm(n, 0,sd)
+    y <- f_true(x) + eps
+    
+    fit_lm <- lm(y ~ x ) # p+1
+    fit_bs <- lm(y ~ bs(x, knots = c(20,40))) # defaults to cubic spline with 4 + K df
+    
+    fit_bs2 <- lm(y ~ bs(x, knots = c(15, 20,25,30,35,40,45) )) 
+    
+    
+    predictions[i, ] = c(
+      predict(fit_lm, newdata = data.frame(x = x0)),
+      predict(fit_bs, newdata = data.frame(x = x0)),
+      predict(fit_bs2, newdata = data.frame(x = x0))
+    )
+  }
+  eps <- rnorm(n = n_sims, mean = 0, sd = sd)
+  y0 <- f_true(x0) + eps
+  bias_mat[j,] <- apply(predictions, 2, get_bias, f_true(x0))
+  variance_mat[j,]  <- apply(predictions, 2, var)
+  mse_mat[j,]  <- apply(predictions, 2, get_mse, y0)
+}
+
+bv_df1 <- data.frame(bias = colMeans(bias_mat^2), variance = colMeans(variance_mat), 
+                     mse = colMeans(mse_mat)) %>%
+  mutate(flexibility = c(2,6,11),
+         scenario = "Example 1")
+```
+
+```{r bv2, cache = T}
+bias_mat <- variance_mat<- mse_mat <- matrix(NA, ncol = n_models, nrow = length(x_test))
+for(j in 1:length(x_test)){
+  # x0 <- xx[j]
+  x0 <- x_test[j]
+  predictions = matrix(0, nrow = n_sims, ncol = n_models)
+  for (i in 1:n_sims) {
+    
+    eps <- rnorm(n, 0,sd)
+    y <- f_true_lin(x) + eps
+    
+    fit_lm <- lm(y ~ x ) # p+1
+    fit_bs <- lm(y ~ bs(x, knots = c(20,40))) # defaults to cubic spline with 4 + K df
+    
+    fit_bs2 <- lm(y ~ bs(x, knots = c(15, 20,25,30,35,40,45) )) 
+    
+    
+    predictions[i, ] = c(
+      predict(fit_lm, newdata = data.frame(x = x0)),
+      predict(fit_bs, newdata = data.frame(x = x0)),
+      predict(fit_bs2, newdata = data.frame(x = x0))
+    )
+  }
+  eps <- rnorm(n = n_sims, mean = 0, sd = sd)
+  y0 <- f_true_lin(x0) + eps
+  bias_mat[j,] <- apply(predictions, 2, get_bias, f_true_lin(x0))
+  variance_mat[j,]  <- apply(predictions, 2, var)
+  mse_mat[j,]  <- apply(predictions, 2, get_mse, y0)
+}
+
+
+bv_df2 <- data.frame(bias = colMeans(bias_mat^2), variance = colMeans(variance_mat), 
+                     mse = colMeans(mse_mat)) %>%
+  mutate(flexibility = c(2,6,11),
+         scenario = "Example 2")
+```
+
+## Bias-Variance trade-off (cont.)
+
+```{r fig.align='center', fig.width=8, fig.height=5}
+rbind(bv_df1, bv_df2) %>%
+  # mutate(bias = bias^2) %>%
+  pivot_longer(cols = 1:3, names_to = "quantity") %>%
+  mutate(quantity = factor(quantity, c("mse", "bias", "variance"))) %>%
+  ggplot(., aes(x = flexibility, y = value, col = quantity))+
+  stat_smooth(method = "loess", formula = y ~ x,se = F) +
+  geom_hline(yintercept = sd^2, linetype = "dashed")+
+  facet_wrap(~scenario, scales = "free")+
+  scale_color_manual(labels = c("MSE", "Squared bias", "Variance"), values = c("blue", "red", "orange"))  +
+  ggtitle( bquote( "Test MSE components"))+
+  theme(text = element_text(size = 16))
+```
+
+## Classification
+
+-   Up until now, we have focused on quantitative responses $y_{i}$
+
+-   What happens when $y_{i}$ is qualitative? Examples include:
+
+    -   Medical diagnosis: $\mathcal{C} = \{\text{yes}, \text{no}\}$
+
+    -   Education level: $\mathcal{C} = \{\text{high school}, \text{college}, \text{graduate}\}$
+
+-   Each category in $\mathcal{C}$ is also known as a *label*
+
+-   In this setting, we want our model to be **classifier**, i.e. given predictors $X$, predict a label from the pool of all possible categories $\mathcal{C}$
+
+## Classification
+
+-   We will still have to estimate $f$
+
+-   $\hat{y}_{i}$ is the predicted class label for observation $i$ using estimate $\hat{f}$
+
+-   How to assess model accuracy? Error is more intuitive: we make an error if we predict the incorrect label, and no error otherwise
+
+-   This can be represented using an *indicator* variable or function. $\mathbf{I}(y_{i} = \hat{y}_{i})$:
+
+    -   $$\mathbf{I}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 & \text{ if } y_{i} = \hat{y}_{i}\\ 0 & \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}$$
+
+## Classification error rate
+
+-   To quantify accuracy of estimated classifier $\hat{f}$, can calculate the *error rate*, which is the proportion of mistakes we make in labeling:
+
+    -   $$\frac{1}{n} \sum_{i=1}^{n} \mathbf{I}(y_{i} \neq \hat{y}_{i})$$
+
+-   Small error rate is preferred
+
+-   As with MSE, can calculate the error rate for train and test data sets
+
+## Classifiers
+
+-   How do we choose which label to predict for a given observation?
+
+-   Assume we have a total of $J$ possible labels in $\mathcal{C}$
+
+-   For a given observation $i$, can calculate the following probability for each possible label $j$: $$p_{ij}(x_{i}) = Pr(y_{i} = j | X = x_{i})$$
+
+-   These probabilities are called **conditional class probabilities** at $x_{i}$
+
+## Bayes optimal classifier
+
+-   The **Bayes optimal** classifier will assign/predict the label which has the largest conditional class probability
+
+    -   It can be shown that the *test* error rate $\frac{1}{n_{test}} \sum_{i=1}^{n_{test}} \mathbf{I}(y_{i} \neq \hat{y}_{i})$ is minimized when using the Bayes optimal classifier
+
+-   For example, consider a binary problem with levels "yes" and "no".
+
+-   For observation $i$, if $Pr(y_{i} = \text{yes} | X = x_{i}) > 0.5$, then $\hat{y}_{i} =$ "yes".
+
+-   The $x_{i}$ where $Pr(y_{i} = \text{yes} | X = x_{i}) = Pr(y_{i} = \text{no} | X = x_{i})= 0.5$ is called the *Bayes decision boundary*
+
+## Example
+
+```{r fig.align = "center", fig.height=7.5, fig.width=7.5}
+set.seed(1)
+n <- 100
+lb <- -2; ub = 2
+x <- cbind(rtruncnorm(n, a = lb, b = ub), runif(n, lb, ub))
+beta <- c(1, 0.5)
+
+true_probs <- pnorm(x%*%beta - 0.5*x[,2]^2)
+labels <- purrr::rbernoulli(n, true_probs)*1
+
+
+points_df <- data.frame(x) %>%
+         mutate(class = factor(labels))
+
+
+x_grid <- expand.grid(x = seq(lb,ub,0.1), y = seq(lb, ub, 0.1))
+probs <- pnorm(as.matrix(x_grid)%*% beta - 0.5*x_grid[,2]^2)
+
+plot_df_bayes <- data.frame(probs, X1=x_grid[,1], X2 = x_grid[,2]) %>%
+  mutate(class = case_when(probs <= 0.50 ~ 0,
+                           probs > 0.5 ~ 1)) %>%
+  mutate(class = factor(class))
+
+
+
+ggplot() +
+  geom_point(data = points_df, aes(x = X1, y = X2, col = class), size = 2) +
+  geom_point(data = plot_df_bayes, aes(x = X1, y = X2, col = class), size = 0.05)+
+  geom_contour(data = plot_df_bayes, aes(x = X1, y=X2, z = as.numeric(class == 0)),
+               breaks = 0.1,
+               col = "black")+
+  theme_bw()+
+  guides(col = "none")+
+  theme(text = element_text(size = 16))
+
+
+
+```
+
+## Classification in practice
+
+-   Bayes classifier is "gold standard"
+
+-   In practice, we cannot compute the $p_{ij}(x_{i})$ exactly because we do know the conditional distribution of $y$ given $x$
+
+-   Instead, we need to estimate these $p_{ij}(x_{i})$
+
+-   Almost all of our choices of $\hat{f}$ will output these estimates
