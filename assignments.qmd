@@ -2,13 +2,13 @@
 title: "Assignments"
 listing:
   - id: live-code
-    contents: "live-code-*.qmd"
+    contents: "live-code/live-code-*.qmd"
     type: grid
     date-format: medium
     fields: [title, date, description]
     sort: "date asc"
   - id: labs
-    contents: "lab-*.qmd"
+    contents: "labs/lab-*.qmd"
     type: grid
     date-format: medium
     fields: [title, date, description]
