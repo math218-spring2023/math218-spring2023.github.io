@@ -26,4 +26,4 @@ You should also have R and RStudio installed on your machine. If you do not have
 
 ## Syllabus
 
-*Forthcoming*
+The course syllabus can be found [here](files/syllabus_S23.pdf). Please note that the once the semester begins, the schedule on the syllabus may not be up-to-date. Refer to the [schedule](schedule.qmd) page to see the current course schedule.
