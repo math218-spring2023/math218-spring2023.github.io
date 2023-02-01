@@ -60,7 +60,7 @@
     "href": "index.html#syllabus",
     "title": "Math 218: Spring 2023",
     "section": "Syllabus",
-    "text": "Syllabus\nThe course syllabus can be found here. Please note that the once the semester begins, the schedule on the syllabus may not be up-to-date. Refer to the schedule page to see the current course schedule.\nsyllabus.html"
+    "text": "Syllabus\nThe course syllabus can be found here. Please note that the once the semester begins, the schedule on the syllabus may not be up-to-date. Refer to the schedule page to see the current course schedule."
   },
   {
     "objectID": "slides/slides-01-what-is.html#version-control",
@@ -319,7 +319,7 @@
     "href": "slides/slides-00-welcome.html#class-meetings",
     "title": "Welcome to statistical learning!",
     "section": "Class Meetings",
-    "text": "Class Meetings\n\n\nLecture\n\nFocus on concepts behind statistical learning techniques\nInteractive lecture that includes examples and hands-on exercises\nBring fully-charged laptop to every lecture\n\nPlease let me know as soon as possible if you do not have access to a laptop\n\n\nLab\n\nTypically occurs on Fridays\nFocus on computing in R\nApply concepts from lecture to case study scenarios\n\nImplementation"
+    "text": "Class Meetings\n\n\nLecture\n\nFocus on concepts behind statistical learning techniques\nInteractive lecture that includes examples and hands-on exercises\nBring fully-charged laptop to every lecture\n\nPlease let me know as soon as possible if you do not have access to a laptop\n\n\nLab\n\nTypically occurs on Fridays\nFocus on computing using functions provided in R packages\nApply concepts from lecture to case study scenarios\n\nImplementation\n\nSome days will be focused on implementing (i.e. coding by hand) methods discussed in lecture\nGroup work"
   },
   {
     "objectID": "slides/slides-00-welcome.html#code",
@@ -418,5 +418,26 @@
     "title": "Schedule",
     "section": "",
     "text": "Note: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue dates\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nSlides forthcoming\n\n\n\n\nF 2/17\nLab 01: base R\nMore advanced coding\nRoulette\nTBD\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\n\n\n\n\n\n\nR 2/23"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#assignments",
+    "href": "slides/slides-00-welcome.html#assignments",
+    "title": "Welcome to statistical learning!",
+    "section": "Assignments",
+    "text": "Assignments\n\nLab assignments\nImplementation deliverables\nCelebrations of knowledge (i.e. mini projects or larger coding assignments)"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#major-assessments",
+    "href": "slides/slides-00-welcome.html#major-assessments",
+    "title": "Welcome to statistical learning!",
+    "section": "Major assessments",
+    "text": "Major assessments\n\n\nOne midterm with two components:\n\nComputational component (take-home)\nOral component\n\nFinal project\n\nGroups of 3-4 students (tentatively)\nPresentations during last two days of class\nNO sit-down final"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#important-dates",
+    "href": "slides/slides-00-welcome.html#important-dates",
+    "title": "Welcome to statistical learning!",
+    "section": "Important dates",
+    "text": "Important dates\n\nFriday, 3/31: take-home midterm\nMonday, 4/3: oral midterm\n\nFriday, 4/14: Spring symposium (no class)\n\nMonday, 4/17: final day to drop classes :(\n\nFriday, 5/13 and Monday, 5/15: project presentations"
   }
 ]

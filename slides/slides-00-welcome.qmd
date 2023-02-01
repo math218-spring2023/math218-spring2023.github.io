@@ -39,18 +39,14 @@ library(rvest)
 
 -   We will learn how to code in base `R`, and by the end of the course you should feel comfortable switching between base `R` and `tidyverse`.
 
--   We will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses.
+-   We will focus more on applications and developing intuition. The goal is to beging developing a toolbox of methods that you may use in future analyses.
 
-------------------------------------------------------------------------
-
-## Your Turn!
-
-------------------------------------------------------------------------
+# Your Turn!
 
 ## Create a GitHub account
 
 ::: instructions
-Go to https://github.com/, and create an account (unless you already have one). After you create your account, click [here](https://forms.gle/9McLQvHGTzWoqAeM7) and enter your GitHub username.
+Go to https://github.com/, and create an account (unless you already have one). After you create your account, click [here](https://forms.gle/W8Aw1odtjgL41S2u6) and enter your GitHub username.
 :::
 
 Tips for creating a username from [Happy Git with R](http://happygitwithr.com/github-acct.html#username-advice).
@@ -60,7 +56,7 @@ Tips for creating a username from [Happy Git with R](http://happygitwithr.com/gi
 -   Shorter is better than longer; be as unique as possible in as few characters as possible.
 -   Avoid words laden with special meaning in programming, like `NA`.
 
-# Course Policies
+# Course details
 
 ## Class Meetings
 
@@ -72,10 +68,46 @@ Tips for creating a username from [Happy Git with R](http://happygitwithr.com/gi
         -   Please let me know as soon as possible if you do not have access to a laptop
 -   Lab
     -   Typically occurs on Fridays
-    -   Focus on computing in R
+    -   Focus on computing using functions provided in `R` packages
     -   Apply concepts from lecture to case study scenarios
 -   Implementation
+    -   Some days will be focused on implementing (i.e. coding by hand) methods discussed in lecture
+    -   Group work
 :::
+
+## Assignments
+
+-   Lab assignments
+-   Implementation deliverables
+-   Celebrations of knowledge (i.e. mini projects or larger coding assignments)
+
+## Major assessments
+
+::: incremental
+-   One midterm with two components:
+    -   Computational component (take-home)
+    -   Oral component
+-   Final project
+    -   Groups of 3-4 students (tentatively)
+    -   Presentations during last two days of class
+    -   NO sit-down final
+:::
+
+## Important dates
+
+-   Friday, 3/31: take-home midterm
+
+-   Monday, 4/3: oral midterm
+
+-   ::: important
+    Friday, 4/14: Spring symposium (no class)
+    :::
+
+-   Monday, 4/17: final day to drop classes :(
+
+-   ::: important
+    Friday, 5/13 and Monday, 5/15: project presentations
+    :::
 
 ## Code
 
