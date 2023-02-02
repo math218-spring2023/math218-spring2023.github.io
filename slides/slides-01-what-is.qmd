@@ -56,8 +56,7 @@ data (mite.env)
 ## Installation
 
 1.  Accept the e-mailed GitHub invitation to join our course organization. If you did not receive an invitation, that means I do not have your GitHub username!
-2.  Create a folder on your desktop called "Math218"
-3.  Go to <https://desktop.github.com/> and download the GitHub Desktop application.
+2.  Go to <https://desktop.github.com/> and download the GitHub Desktop application.
     i.  Continue following the instructions found [here](https://math118-fall2022.github.io/website/appex/01-github-desktop.html)
 
 # Introduction

@@ -53,7 +53,7 @@
     "href": "index.html#materials",
     "title": "Math 218: Spring 2023",
     "section": "Materials",
-    "text": "Materials\nThere is no required textbook for this course.\nYou should have a fully-charged laptop, tablet with keyboard, or comparable device to every lecture and lab session.\nYou should also have R and RStudio installed on your machine. If you do not have either, please follow these instructions."
+    "text": "Materials\nThere is no required textbook for this course.\nYou should have a fully-charged laptop, tablet with keyboard, or comparable device to every class.\nYou should also have R and RStudio installed on your machine. If you do not have either, please follow these instructions."
   },
   {
     "objectID": "index.html#syllabus",
@@ -298,7 +298,7 @@
     "href": "slides/slides-00-welcome.html#necessary-background",
     "title": "Welcome to statistical learning!",
     "section": "Necessary background",
-    "text": "Necessary background\n\nI assume you have taken Math 118 prior to this course, and are comfortable with tidyverse and RStudio. There is a large emphasis on computing.\nWe will learn how to code in base R, and by the end of the course you should feel comfortable switching between base R and tidyverse.\nWe will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses."
+    "text": "Necessary background\n\n\n\n\nI assume you have taken Math 118 prior to this course, and are comfortable with tidyverse and RStudio. There is a large emphasis on computing.\n\nI also assume you are comfortable with knitting. In this course, I ask that you knit to PDF.\n\nWe will learn how to code in base R, and by the end of the course you should feel comfortable switching between base R and tidyverse.\nWe will focus more on applications and developing intuition. The goal is to begin developing a toolbox of methods that you may use in future analyses."
   },
   {
     "objectID": "slides/slides-00-welcome.html#your-turn",
@@ -319,7 +319,7 @@
     "href": "slides/slides-00-welcome.html#class-meetings",
     "title": "Welcome to statistical learning!",
     "section": "Class Meetings",
-    "text": "Class Meetings\n\n\nLecture\n\nFocus on concepts behind statistical learning techniques\nInteractive lecture that includes examples and hands-on exercises\nBring fully-charged laptop to every lecture\n\nPlease let me know as soon as possible if you do not have access to a laptop\n\n\nLab\n\nTypically occurs on Fridays\nFocus on computing using functions provided in R packages\nApply concepts from lecture to case study scenarios\n\nImplementation\n\nSome days will be focused on implementing (i.e. coding by hand) methods discussed in lecture\nGroup work"
+    "text": "Class Meetings\n\n\nLecture\n\nFocus on concepts behind statistical learning techniques\nInteractive lecture that includes examples and hands-on exercises\nBring fully-charged laptop to every lecture\n\nPlease let me know if you do not have access to a laptop\n\n\nLab\n\nTypically occurs on Fridays\nFocus on computing using functions provided in R packages\nApply concepts from lecture to case study scenarios\n\nImplementation\n\nSome days will be focused on implementing (i.e. coding by hand) methods discussed in lecture\nGroup work"
   },
   {
     "objectID": "slides/slides-00-welcome.html#code",
@@ -331,84 +331,84 @@
   {
     "objectID": "live-code/live-code-2.html",
     "href": "live-code/live-code-2.html",
-    "title": "Live code 2",
+    "title": "Live code 02",
     "section": "",
     "text": "We will continue working in base R, and begin learning about conditional statements and for loops!"
   },
   {
     "objectID": "live-code/live-code-2.html#new-functions",
     "href": "live-code/live-code-2.html#new-functions",
-    "title": "Live code 2",
+    "title": "Live code 02",
     "section": "New functions:",
-    "text": "New functions:\n\nThe %in% function helps determine if a value is contained in a vector:\n\n5 %in% 1:5\n\n[1] TRUE\n\n0 %in% c(1,3,5)\n\n[1] FALSE\n\n\n\nNote: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?\n\n\nCode\n5 == 1:5\nsum(5 == 1:5)\n\nsum(0 == c(1,3,5))\n\n\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random as follows:\n\nsample(1:5, 1)\n\n[1] 3\n\nsample(1:5, 1)\n\n[1] 3\n\nsample(1:5, 1)\n\n[1] 5\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!"
+    "text": "New functions:\n\nThe %in% function helps determine if a value is contained in a vector:\n\n5 %in% 1:5\n\n[1] TRUE\n\n0 %in% c(1,3,5)\n\n[1] FALSE\n\n\n\nNote: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?\n\n\nCode\n5 == 1:5\nsum(5 == 1:5)\n\nsum(0 == c(1,3,5))\n\n\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random as follows:\n\nsample(1:5, 1)\n\n[1] 2\n\nsample(1:5, 1)\n\n[1] 4\n\nsample(1:5, 1)\n\n[1] 3\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!"
   },
   {
     "objectID": "live-code/live-code-2.html#conditional-statements",
     "href": "live-code/live-code-2.html#conditional-statements",
-    "title": "Live code 2",
+    "title": "Live code 02",
     "section": "Conditional statements",
     "text": "Conditional statements\nThus far, we have learned how to store values and relate different R objects. For example, we can obtain a boolean TRUE or FALSE value when we compare two objects as follows:\n\nx <- 3\nx <= 5\n\n[1] TRUE\n\n\nMost often, we want to use the results from these logical operators to change the behavior of our code. That is, if a certain condition is satisfied, we want our code to do something. Else, our code should do something else.\n\nif statements\nThe if statement takes in a condition. If the condition evaluates to TRUE, then the R code we associate with the if statement is executed. The syntax is as follows:\n\nif (condition){\n  code\n}\n\nNotice that the condition goes in parentheses ( ), and the relevant code goes within curly braces { }.\nFor example:\n\nif (x < 5){\n  print(\"x is less than 5\")\n}\n\nTry this yourself! Set x to be a number, then run this code. If you chose x to be greater than or equal to 5, then the condition evaluates to FALSE and so we do not run the code within the curly braces and nothing is printed.\n\n\nelse statements\nNow, maybe we want to a different block of code to run if the condition evaluates to FALSE. This is where the else statement comes in! Importantly, else statements always follows an if statement so there is no need to supply a conditional statement. The syntax is as follows:\n\nif (condition){\n  code associated with TRUE condition\n} else{\n  code associated with FALSE condition\n}\n\nTry modifying the if statement above to have a corresponding block of code that corrently prints when x is greater than or equal to 5."
   },
   {
     "objectID": "live-code/live-code-2.html#for-loops",
     "href": "live-code/live-code-2.html#for-loops",
-    "title": "Live code 2",
+    "title": "Live code 02",
     "section": "for loops",
     "text": "for loops\nIt is quite simple to perform repetitive tasks in R. If we want to execute the same operations over and over again, we will use a loop. If we want to repeat the operations for a specific number of times, we use a for loop.\nLet’s look at this code:\n\nfor(i in 1:5){\n  print(i)\n}\n\nThe for() code is telling R that we want to run a for loop, which means we want to repeat the code within the curly braces. How many times do we want to repeat? The code says we want to do this for every value in 1:5.\nThe confusing part is the index i, which is essentially a placeholder. Instead of i, we could use any character we’d like! However, people tend to use i for “iteration”. At the beginning, i is set to the first value in the vector 1:5, (i.e. i = 1 to begin with). All the code within the braces are executed with i = 1 being the state of the world. Once we reach the end of the code within the braces, we go back to the top and set i = 2. We continue to do this until the last value in 1:5, which would be 5.\n\nfor(i in 1:5){\n  print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5"
   },
   {
     "objectID": "live-code/live-code-2.html#your-turn",
     "href": "live-code/live-code-2.html#your-turn",
-    "title": "Live code 2",
+    "title": "Live code 02",
     "section": "Your turn!",
     "text": "Your turn!\n\nWrite code that outputs the square root of a number. If the number is negative, then print out an informative statement instead. Note: the square root of a number can be obtained via the sqrt() function.\nWrite a for loop that calculates the factorial of a whole number of your choice. As a quick refresher, 5! (which we read as “5 factorial”) is equal to 5 x 4 x 3 x 2 x 1.\nObtain a vector y of 5 values by using the sample function, where the possible values to sample from are integers ranging between 1 and 5. Here, I want you to sample with replacement. Write a for loop that loops for 5 iterations and print the number of elements in y equal to the current iteration. If the current iteration value is not contained in y, please print out a useful statement for the user instead."
   },
   {
     "objectID": "live-code/live-code-1.html",
     "href": "live-code/live-code-1.html",
-    "title": "Live code 1",
+    "title": "Live code 01:",
     "section": "",
     "text": "This lab is intended to re-familiarize yourself with R and RStudio, as well as begin practicing to code in base R. You will need the tidyverse package."
   },
   {
     "objectID": "live-code/live-code-1.html#vectors",
     "href": "live-code/live-code-1.html#vectors",
-    "title": "Live code 1",
+    "title": "Live code 01:",
     "section": "Vectors",
     "text": "Vectors\nIn R, a vector is a data structure that holds or stores elements of the same type. Type may be numeric, integer, character, boolean, etc.\n\nThe c() function\nGenerally, we create vectors using the c() function and then save the vector into a variable. In the code below, I create a vector of three values (10, 11, and 12), and save the results into v:\n\nv <- c(10, 11, 12)\n\n\n\nThe : operator\nNow, sometimes it’s really useful to create a vector of consecutive numbers, for example, the values 1 through 10. Rather than type out every number explicitly and wrap it in c() , I can use the : operator, which looks like a:b where a and b are integers of your choosing. If a < b, R will then create a vector of numbers a, a+1, a+2,…, b-1, b .\n\nx <- 1:10\nx\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\nWhat do you think happens if a > b? Try the following code for yourself:\n\ny <- -10:-1\n\n\n\nThe rep() function\nOne function that I personally use a lot to create vectors is the rep(a,b) function, which takes in two argument. The first is the value a you wish to repeat, and the second argument is the number of times b you’d like to repeat it. How would we create a vector of 20 0’s? Think about it, and check:\n\n\nCode\nrep(0, 20)"
   },
   {
     "objectID": "live-code/live-code-1.html#matrices",
     "href": "live-code/live-code-1.html#matrices",
-    "title": "Live code 1",
+    "title": "Live code 01:",
     "section": "Matrices",
     "text": "Matrices\nMatrices are the 2D extension of the one-dimensional vectors. When a matrix has n rows and p columns, we denote its dimensions as n x p or “n by p”. We create matrices using the matrix() function. Because of the multiple dimensions, we need to specify the number of rows and the number of columns:\n\nmatrix(NA, nrow = 2, ncol = 3)\n\n     [,1] [,2] [,3]\n[1,]   NA   NA   NA\n[2,]   NA   NA   NA\n\n\nThis code above creates a 2 x 3 matrix of NA values. The first argument takes in the elements you want to fill the matrix with. This can either by a single value, or a single vector of values."
   },
   {
     "objectID": "live-code/live-code-1.html#data-frames",
     "href": "live-code/live-code-1.html#data-frames",
-    "title": "Live code 1",
+    "title": "Live code 01:",
     "section": "Data frames",
     "text": "Data frames\nWe will create a data frame called my_df here, which holds the two vectors we created before.\n\nmy_df <- data.frame(xvar = x, yvar = y)\n\nNow, if I wanted to only take the variable xvar from my_df, how would I do so using dplyr functions? Take a second to think about it, then check:\n\n\nCode\nmy_df %>%\n  select(xvar)\n\n\nWe will now use base R to access that xvar variable by using $ notation: <df>$<var_name> . If you do this yourself, you should notice that immediately after typing the $ , a menu pops up with all the variables contained in the data frame.\n\nmy_df$xvar\n\nNow, do you notice the difference between the two outputs?\n\nmy_df %>%\n  select(xvar)\n\n   xvar\n1     1\n2     2\n3     3\n4     4\n5     5\n6     6\n7     7\n8     8\n9     9\n10   10\n\nmy_df$xvar\n\n [1]  1  2  3  4  5  6  7  8  9 10"
   },
   {
     "objectID": "live-code/live-code-1.html#indexing",
     "href": "live-code/live-code-1.html#indexing",
-    "title": "Live code 1",
+    "title": "Live code 01:",
     "section": "Indexing",
     "text": "Indexing\nOne of the most useful tools we will use is indexing and index notation.\nAn index is essentially a numerical representation of an item’s position in a list or vector. It is typically an integer, starting from either 0 or 1 depending on the programming language. In R, our index positions always start at 1!\nFor example, in the word “learning”, the l is at index 1. Similarly, in our vector v of the numbers \\((10, 11, 12)\\), the value at index 1 is 10. We can confirm this with code:\n\nv[1]\n\n[1] 10\n\n\nNotice that we access the item held in index 1 using the square bracket notation [ ]\nNow, I can also replace or modify an element at a given index. I will still access the location using [ ], but now I will store/save the new value:\n\nv[1] <- 13\nv\n\n[1] 13 11 12\n\n\nWe can also modify multiple elements at once by passing in a vector of indices to modify, as well as a vector of new values:\n\nv[2:3] <- c(14, 15)\n\nWhat does v look like now?\nWe can also use indices to refer to elements or entire rows and columns of data frames! Unlike vectors, data frame are two-dimensional, i.e. there are both rows and columns. Thus, our index notation will need to adapt to accommodate this feature. We will still use [ ] notation, but now commas will be introduced:\n\nmy_df[1,2]\n\n[1] -10\n\n\nBased on my_df, what do you think the [1,2] means?\nNow, we already saw how to access a column of a data frame using the $ notation, but we can also use index notation. To access the first column, we would type:\n\nmy_df[,1]\n\nThe 1 after the comma tells R that we want to focus on column 1.\nAs do not type anything before the comma, R reads this as: “since you did not want a specific row, so you must want all the rows”.\nHow do you think we would access the third row? How about both the first and second row?"
   },
   {
     "objectID": "live-code/live-code-1.html#functions",
     "href": "live-code/live-code-1.html#functions",
-    "title": "Live code 1",
+    "title": "Live code 01:",
     "section": "Functions",
     "text": "Functions\nThere are a lot of simple functions in R that we will rely on. We already saw c() and rep(). Most of the functions we will use take in a vector or matrix of numeric values, and return either a single number or vector in return.\nThe function mean() takes in a vector, and returns the mean of the vector.\n\nmean(x)\n\n[1] 5.5\n\n\nThe function length() takes in a vector, and returns the number of element of the vector:\n\nlength(x)\n\n[1] 10\n\n\nThe functions max() and min() return what you would expect them to!\nAn extremely useful function we will use is the which() function. Unlike the previous functions, which() does not take in a numeric vector. Rather, it takes a vector of boolean values (i.e. TRUE/FALSE values). Then, it returns the indices of the TRUE values in the vector. For example, an input might be:\n\ny == -5\n\n [1] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n\n\nThis is comparing each value in y to see if it equals -5. Notice that only one value evaluates to TRUE, specifically the element in index 6. Therefore, if we wrap the which() function around that argument, we should get 6 in return:\n\nwhich(y == -5)\n\n[1] 6\n\n\nPersonally, I tend to read this line of code as a question: Which element(s) of y are exactly equal to -5?\nWe know that y only holds negative values. What do you think happens if we try to evaluate the following. Try it yourself!\n\nwhich(y == 0)\n\nIt’s also entirely possible that many values in the boolean vector are true, in which case the function would return multiple indices. For example, if I want to know which values in y are negative, I could code:\n\nwhich(y < 0)\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\n\nIndexing with boolean vectors\nAbove, we saw how to access elements held at specific indices of interest. We can also use boolean vectors to return values. Recall our vector v:\n\nv\n\n[1] 13 14 15\n\n\nI can index v by indexing using TRUE’s for each value that I want, and FALSE’s otherwise.\n\nv[c(F, T, F)]\n\n[1] 14"
   },
   {
     "objectID": "live-code/live-code-1.html#your-turn",
     "href": "live-code/live-code-1.html#your-turn",
-    "title": "Live code 1",
+    "title": "Live code 01:",
     "section": "Your turn!",
     "text": "Your turn!\nPlease complete the following exercises in order:\n\nCreate a vector called my_vec that holds the values 50 through 100.\nCreate a new vector called less60 where an element is TRUE if the corresponding element in my_vec is less than 60, and FALSE otherwise.\nConfirm that the length of your two vectors are the same.\nPass less60 into the function sum() function. Relate the value obtained to the elements of less60.\nModify my_vec such that the value at index 10 is 100.\nObtain the index of the maximum values of my_vec using functions described above.\nNow, pass my_vec into the which.max() function. Even though we haven’t seen it before, based on the function name, the name of the function is intuitive. Does the result from which.max() differ from what you obtained in Ex. 6? How so?\nCreate a 2 x 5 matrix of the values 1 through 10, where the first row holds the values 1-5, and the second row holds the values 6-10. Hint: look at the help file for matrix."
   },
@@ -417,7 +417,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Note: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue dates\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nSlides forthcoming\n\n\n\n\nF 2/17\nLab 01: base R\nMore advanced coding\nRoulette\nTBD\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\n\n\n\n\n\n\nR 2/23"
+    "text": "Note: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nSlides forthcoming\n\n\n\n\nF 2/17\nLab day\nMore R coding\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\n\n\n\n\n\n\nR 2/23"
   },
   {
     "objectID": "slides/slides-00-welcome.html#assignments",
@@ -439,5 +439,96 @@
     "title": "Welcome to statistical learning!",
     "section": "Important dates",
     "text": "Important dates\n\nFriday, 3/31: take-home midterm\nMonday, 4/3: oral midterm\n\nFriday, 4/14: Spring symposium (no class)\n\nMonday, 4/17: final day to drop classes :(\n\nFriday, 5/13 and Monday, 5/15: project presentations"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#playing-with-base-r",
+    "href": "slides/slides-00-welcome.html#playing-with-base-r",
+    "title": "Welcome to statistical learning!",
+    "section": "Playing with base R",
+    "text": "Playing with base R\n\nCreate a folder on your desktop called Math218\nOpen RStudio and create a new Rmarkdown document.\n\nWe will work through some coding exercises. The associated code can be found in “Live Code 01”"
+  },
+  {
+    "objectID": "live-code/live-code-01.html",
+    "href": "live-code/live-code-01.html",
+    "title": "Live code 01:",
+    "section": "",
+    "text": "This lab is intended to re-familiarize yourself with R and RStudio, as well as begin practicing to code in base R. You will need the tidyverse package."
+  },
+  {
+    "objectID": "live-code/live-code-01.html#vectors",
+    "href": "live-code/live-code-01.html#vectors",
+    "title": "Live code 01:",
+    "section": "Vectors",
+    "text": "Vectors\nIn R, a vector is a data structure that holds or stores elements of the same type. Type may be numeric, integer, character, boolean, etc.\n\nThe c() function\nGenerally, we create vectors using the c() function and then save the vector into a variable. In the code below, I create a vector of three values (10, 11, and 12), and save the results into v:\n\nv <- c(10, 11, 12)\n\n\n\nThe : operator\nNow, sometimes it’s really useful to create a vector of consecutive numbers, for example, the values 1 through 10. Rather than type out every number explicitly and wrap it in c() , I can use the : operator, which looks like a:b where a and b are integers of your choosing. If a < b, R will then create a vector of numbers a, a+1, a+2,…, b-1, b .\n\nx <- 1:10\nx\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\nWhat do you think happens if a > b? Try the following code for yourself:\n\ny <- -10:-1\n\n\n\nThe rep() function\nOne function that I personally use a lot to create vectors is the rep(a,b) function, which takes in two argument. The first is the value a you wish to repeat, and the second argument is the number of times b you’d like to repeat it. How would we create a vector of 20 0’s? Think about it, and check:\n\n\nCode\nrep(0, 20)"
+  },
+  {
+    "objectID": "live-code/live-code-01.html#matrices",
+    "href": "live-code/live-code-01.html#matrices",
+    "title": "Live code 01:",
+    "section": "Matrices",
+    "text": "Matrices\nMatrices are the 2D extension of the one-dimensional vectors. When a matrix has n rows and p columns, we denote its dimensions as n x p or “n by p”. We create matrices using the matrix() function. Because of the multiple dimensions, we need to specify the number of rows and the number of columns:\n\nmatrix(NA, nrow = 2, ncol = 3)\n\n     [,1] [,2] [,3]\n[1,]   NA   NA   NA\n[2,]   NA   NA   NA\n\n\nThis code above creates a 2 x 3 matrix of NA values. The first argument takes in the elements you want to fill the matrix with. This can either by a single value, or a single vector of values."
+  },
+  {
+    "objectID": "live-code/live-code-01.html#data-frames",
+    "href": "live-code/live-code-01.html#data-frames",
+    "title": "Live code 01:",
+    "section": "Data frames",
+    "text": "Data frames\nWe will create a data frame called my_df here, which holds the two vectors we created before.\n\nmy_df <- data.frame(xvar = x, yvar = y)\n\nNow, if I wanted to only take the variable xvar from my_df, how would I do so using dplyr functions? Take a second to think about it, then check:\n\n\nCode\nmy_df %>%\n  select(xvar)\n\n\nWe will now use base R to access that xvar variable by using $ notation: <df>$<var_name> . If you do this yourself, you should notice that immediately after typing the $ , a menu pops up with all the variables contained in the data frame.\n\nmy_df$xvar\n\nNow, do you notice the difference between the two outputs?\n\nmy_df %>%\n  select(xvar)\n\n   xvar\n1     1\n2     2\n3     3\n4     4\n5     5\n6     6\n7     7\n8     8\n9     9\n10   10\n\nmy_df$xvar\n\n [1]  1  2  3  4  5  6  7  8  9 10"
+  },
+  {
+    "objectID": "live-code/live-code-01.html#indexing",
+    "href": "live-code/live-code-01.html#indexing",
+    "title": "Live code 01:",
+    "section": "Indexing",
+    "text": "Indexing\nOne of the most useful tools we will use is indexing and index notation.\nAn index is essentially a numerical representation of an item’s position in a list or vector. It is typically an integer, starting from either 0 or 1 depending on the programming language. In R, our index positions always start at 1!\nFor example, in the word “learning”, the l is at index 1. Similarly, in our vector v of the numbers \\((10, 11, 12)\\), the value at index 1 is 10. We can confirm this with code:\n\nv[1]\n\n[1] 10\n\n\nNotice that we access the item held in index 1 using the square bracket notation [ ]\nNow, I can also replace or modify an element at a given index. I will still access the location using [ ], but now I will store/save the new value:\n\nv[1] <- 13\nv\n\n[1] 13 11 12\n\n\nWe can also modify multiple elements at once by passing in a vector of indices to modify, as well as a vector of new values:\n\nv[2:3] <- c(14, 15)\n\nWhat does v look like now?\nWe can also use indices to refer to elements or entire rows and columns of data frames! Unlike vectors, data frame are two-dimensional, i.e. there are both rows and columns. Thus, our index notation will need to adapt to accommodate this feature. We will still use [ ] notation, but now commas will be introduced:\n\nmy_df[1,2]\n\n[1] -10\n\n\nBased on my_df, what do you think the [1,2] means?\nNow, we already saw how to access a column of a data frame using the $ notation, but we can also use index notation. To access the first column, we would type:\n\nmy_df[,1]\n\nThe 1 after the comma tells R that we want to focus on column 1.\nAs do not type anything before the comma, R reads this as: “since you did not want a specific row, so you must want all the rows”.\nHow do you think we would access the third row? How about both the first and second row?"
+  },
+  {
+    "objectID": "live-code/live-code-01.html#functions",
+    "href": "live-code/live-code-01.html#functions",
+    "title": "Live code 01:",
+    "section": "Functions",
+    "text": "Functions\nThere are a lot of simple functions in R that we will rely on. We already saw c() and rep(). Most of the functions we will use take in a vector or matrix of numeric values, and return either a single number or vector in return.\nThe function mean() takes in a vector, and returns the mean of the vector.\n\nmean(x)\n\n[1] 5.5\n\n\nThe function length() takes in a vector, and returns the number of element of the vector:\n\nlength(x)\n\n[1] 10\n\n\nThe functions max() and min() return what you would expect them to!\nAn extremely useful function we will use is the which() function. Unlike the previous functions, which() does not take in a numeric vector. Rather, it takes a vector of boolean values (i.e. TRUE/FALSE values). Then, it returns the indices of the TRUE values in the vector. For example, an input might be:\n\ny == -5\n\n [1] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE\n\n\nThis is comparing each value in y to see if it equals -5. Notice that only one value evaluates to TRUE, specifically the element in index 6. Therefore, if we wrap the which() function around that argument, we should get 6 in return:\n\nwhich(y == -5)\n\n[1] 6\n\n\nPersonally, I tend to read this line of code as a question: Which element(s) of y are exactly equal to -5?\nWe know that y only holds negative values. What do you think happens if we try to evaluate the following. Try it yourself!\n\nwhich(y == 0)\n\nIt’s also entirely possible that many values in the boolean vector are true, in which case the function would return multiple indices. For example, if I want to know which values in y are negative, I could code:\n\nwhich(y < 0)\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\n\nIndexing with boolean vectors\nAbove, we saw how to access elements held at specific indices of interest. We can also use boolean vectors to return values. Recall our vector v:\n\nv\n\n[1] 13 14 15\n\n\nI can index v by indexing using TRUE’s for each value that I want, and FALSE’s otherwise.\n\nv[c(F, T, F)]\n\n[1] 14"
+  },
+  {
+    "objectID": "live-code/live-code-01.html#your-turn",
+    "href": "live-code/live-code-01.html#your-turn",
+    "title": "Live code 01:",
+    "section": "Your turn!",
+    "text": "Your turn!\nPlease complete the following exercises in order:\n\nCreate a vector called my_vec that holds the values 50 through 100.\nCreate a new vector called less60 where an element is TRUE if the corresponding element in my_vec is less than 60, and FALSE otherwise.\nConfirm that the length of your two vectors are the same.\nPass less60 into the function sum() function. Relate the value obtained to the elements of less60.\nModify my_vec such that the value at index 10 is 100.\nObtain the index of the maximum values of my_vec using functions described above.\nNow, pass my_vec into the which.max() function. Even though we haven’t seen it before, based on the function name, the name of the function is intuitive. Does the result from which.max() differ from what you obtained in Ex. 6? How so?\nCreate a 2 x 5 matrix of the values 1 through 10, where the first row holds the values 1-5, and the second row holds the values 6-10. Hint: look at the help file for matrix."
+  },
+  {
+    "objectID": "live-code/live-code-02.html",
+    "href": "live-code/live-code-02.html",
+    "title": "Live code 02",
+    "section": "",
+    "text": "We will continue working in base R, and begin learning about conditional statements and for loops!"
+  },
+  {
+    "objectID": "live-code/live-code-02.html#new-functions",
+    "href": "live-code/live-code-02.html#new-functions",
+    "title": "Live code 02",
+    "section": "New functions:",
+    "text": "New functions:\n\nThe %in% function helps determine if a value is contained in a vector:\n\n5 %in% 1:5\n\n[1] TRUE\n\n0 %in% c(1,3,5)\n\n[1] FALSE\n\n\n\nNote: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?\n\n\nCode\n5 == 1:5\nsum(5 == 1:5)\n\nsum(0 == c(1,3,5))\n\n\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random as follows:\n\nsample(1:5, 1)\n\n[1] 3\n\nsample(1:5, 1)\n\n[1] 3\n\nsample(1:5, 1)\n\n[1] 4\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!"
+  },
+  {
+    "objectID": "live-code/live-code-02.html#conditional-statements",
+    "href": "live-code/live-code-02.html#conditional-statements",
+    "title": "Live code 02",
+    "section": "Conditional statements",
+    "text": "Conditional statements\nThus far, we have learned how to store values and relate different R objects. For example, we can obtain a boolean TRUE or FALSE value when we compare two objects as follows:\n\nx <- 3\nx <= 5\n\n[1] TRUE\n\n\nMost often, we want to use the results from these logical operators to change the behavior of our code. That is, if a certain condition is satisfied, we want our code to do something. Else, our code should do something else.\n\nif statements\nThe if statement takes in a condition. If the condition evaluates to TRUE, then the R code we associate with the if statement is executed. The syntax is as follows:\n\nif (condition){\n  code\n}\n\nNotice that the condition goes in parentheses ( ), and the relevant code goes within curly braces { }.\nFor example:\n\nif (x < 5){\n  print(\"x is less than 5\")\n}\n\nTry this yourself! Set x to be a number, then run this code. If you chose x to be greater than or equal to 5, then the condition evaluates to FALSE and so we do not run the code within the curly braces and nothing is printed.\n\n\nelse statements\nNow, maybe we want to a different block of code to run if the condition evaluates to FALSE. This is where the else statement comes in! Importantly, else statements always follows an if statement so there is no need to supply a conditional statement. The syntax is as follows:\n\nif (condition){\n  code associated with TRUE condition\n} else{\n  code associated with FALSE condition\n}\n\nTry modifying the if statement above to have a corresponding block of code that corrently prints when x is greater than or equal to 5."
+  },
+  {
+    "objectID": "live-code/live-code-02.html#for-loops",
+    "href": "live-code/live-code-02.html#for-loops",
+    "title": "Live code 02",
+    "section": "for loops",
+    "text": "for loops\nIt is quite simple to perform repetitive tasks in R. If we want to execute the same operations over and over again, we will use a loop. If we want to repeat the operations for a specific number of times, we use a for loop.\nLet’s look at this code:\n\nfor(i in 1:5){\n  print(i)\n}\n\nThe for() code is telling R that we want to run a for loop, which means we want to repeat the code within the curly braces. How many times do we want to repeat? The code says we want to do this for every value in 1:5.\nThe confusing part is the index i, which is essentially a placeholder. Instead of i, we could use any character we’d like! However, people tend to use i for “iteration”. At the beginning, i is set to the first value in the vector 1:5, (i.e. i = 1 to begin with). All the code within the braces are executed with i = 1 being the state of the world. Once we reach the end of the code within the braces, we go back to the top and set i = 2. We continue to do this until the last value in 1:5, which would be 5.\n\nfor(i in 1:5){\n  print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5"
+  },
+  {
+    "objectID": "live-code/live-code-02.html#your-turn",
+    "href": "live-code/live-code-02.html#your-turn",
+    "title": "Live code 02",
+    "section": "Your turn!",
+    "text": "Your turn!\n\nWrite code that outputs the square root of a number. If the number is negative, then print out an informative statement instead. Note: the square root of a number can be obtained via the sqrt() function.\nWrite a for loop that calculates the factorial of a whole number of your choice. As a quick refresher, 5! (which we read as “5 factorial”) is equal to 5 x 4 x 3 x 2 x 1.\nObtain a vector y of 5 values by using the sample function, where the possible values to sample from are integers ranging between 1 and 5. Here, I want you to sample with replacement. Write a for loop that loops for 5 iterations and print the number of elements in y equal to the current iteration. If the current iteration value is not contained in y, please print out a useful statement for the user instead."
   }
 ]

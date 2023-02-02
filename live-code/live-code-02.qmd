@@ -1,5 +1,6 @@
 ---
-title: "Live code 2"
+title: "Live code 02"
+date: "February 17, 2023"
 editor: visual
 description: "Important coding skills"
 categories: "Live code"

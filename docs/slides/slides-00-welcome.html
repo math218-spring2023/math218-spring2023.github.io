@@ -27,70 +27,6 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -393,42 +329,24 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<div class="cell" data-layout-align="center">
-
-</div>
-</section>
-<section id="necessary-background" class="slide level2">
-<h2>Necessary background</h2>
-<ul>
-<li><p>I assume you have taken Math 118 prior to this course, and are comfortable with <code>tidyverse</code> and RStudio. There is a large emphasis on computing.</p></li>
-<li><p>We will learn how to code in base <code>R</code>, and by the end of the course you should feel comfortable switching between base <code>R</code> and <code>tidyverse</code>.</p></li>
-<li><p>We will focus more on applications and developing intuition. The goal is to develop a toolbox of methods that you may use in future analyses.</p></li>
-</ul>
-</section>
-<section>
-<section id="your-turn" class="title-slide slide level1 center">
-<h1>Your Turn!</h1>
-
-</section>
-<section id="create-a-github-account" class="slide level2">
-<h2>Create a GitHub account</h2>
-<div class="instructions">
-<p>Go to https://github.com/, and create an account (unless you already have one). After you create your account, click <a href="https://forms.gle/W8Aw1odtjgL41S2u6">here</a> and enter your GitHub username.</p>
-</div>
-<p>Tips for creating a username from <a href="http://happygitwithr.com/github-acct.html#username-advice">Happy Git with R</a>.</p>
-<ul>
-<li>Incorporate your actual name!</li>
-<li>Reuse your username from other contexts if you can.</li>
-<li>Shorter is better than longer; be as unique as possible in as few characters as possible.</li>
-<li>Avoid words laden with special meaning in programming, like <code>NA</code>.</li>
-</ul>
-</section></section>
 <section>
 <section id="course-details" class="title-slide slide level1 center">
 <h1>Course details</h1>
 
+</section>
+<section id="necessary-background" class="slide level2">
+<h2>Necessary background</h2>
+<div class="cell" data-layout-align="center">
+
+</div>
+<ul>
+<li><p>I assume you have taken Math 118 prior to this course, and are comfortable with <code>tidyverse</code> and RStudio. There is a large emphasis on computing.</p>
+<ul>
+<li>I also assume you are comfortable with knitting. In this course, I ask that you knit to PDF.</li>
+</ul></li>
+<li><p>We will learn how to code in base <code>R</code>, and by the end of the course you should feel comfortable switching between base <code>R</code> and <code>tidyverse</code>.</p></li>
+<li><p>We will focus more on applications and developing intuition. The goal is to begin developing a toolbox of methods that you may use in future analyses.</p></li>
+</ul>
 </section>
 <section id="class-meetings" class="slide level2">
 <h2>Class Meetings</h2>
@@ -440,7 +358,7 @@
 <li class="fragment">Interactive lecture that includes examples and hands-on exercises</li>
 <li class="fragment">Bring fully-charged laptop to every lecture
 <ul>
-<li class="fragment">Please let me know as soon as possible if you do not have access to a laptop</li>
+<li class="fragment">Please let me know if you do not have access to a laptop</li>
 </ul></li>
 </ul></li>
 <li class="fragment">Lab
@@ -459,11 +377,11 @@
 </section>
 <section id="assignments" class="slide level2">
 <h2>Assignments</h2>
-<ul>
+<ol type="1">
 <li>Lab assignments</li>
 <li>Implementation deliverables</li>
 <li>Celebrations of knowledge (i.e.&nbsp;mini projects or larger coding assignments)</li>
-</ul>
+</ol>
 </section>
 <section id="major-assessments" class="slide level2">
 <h2>Major assessments</h2>
@@ -496,12 +414,34 @@
 <p>Friday, 5/13 and Monday, 5/15: project presentations</p>
 </div></li>
 </ul>
+</section></section>
+<section>
+<section id="your-turn" class="title-slide slide level1 center">
+<h1>Your Turn!</h1>
+
 </section>
-<section id="code" class="slide level2">
-<h2>Code</h2>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="create-a-github-account" class="slide level2">
+<h2>Create a GitHub account</h2>
+<div class="instructions">
+<p>Go to https://github.com/, and create an account (unless you already have one). After you create your account, click <a href="https://forms.gle/W8Aw1odtjgL41S2u6">here</a> and enter your GitHub username.</p>
 </div>
+<p>Tips for creating a username from <a href="http://happygitwithr.com/github-acct.html#username-advice">Happy Git with R</a>.</p>
+<ul>
+<li>Incorporate your actual name!</li>
+<li>Reuse your username from other contexts if you can.</li>
+<li>Shorter is better than longer; be as unique as possible in as few characters as possible.</li>
+<li>Avoid words laden with special meaning in programming, like <code>NA</code>.</li>
+</ul>
+</section>
+<section id="playing-with-base-r" class="slide level2">
+<h2>Playing with base R</h2>
+<ul>
+<li>Create a folder on your desktop called Math218</li>
+<li>Open RStudio and create a new Rmarkdown document.
+<ul>
+<li>We will work through some coding exercises. The associated code can be found in “Live Code 01”</li>
+</ul></li>
+</ul>
 
 <div class="footer footer-default">
 

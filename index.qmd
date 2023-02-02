@@ -20,7 +20,7 @@ Visit the [assignments](assignments.qmd) page to see the current list of assignm
 
 *There is no required textbook for this course.*
 
-You should have a fully-charged laptop, tablet with keyboard, or comparable device to every lecture and lab session.
+You should have a fully-charged laptop, tablet with keyboard, or comparable device to every class.
 
 You should also have R and RStudio installed on your machine. If you do not have either, please follow these [instructions](files/R-installation.pdf).
 

@@ -7,6 +7,49 @@ format:
 editor: visual
 ---
 
+# Introductions
+
+## About me
+
+-   PhD in Statistical Science from Duke University, BA in Mathematics and Computer Science from Swarthmore College
+
+-   Research interests: Bayesian hierarchical models for ecological applications
+
+    -   Developing models for single species or community abundances
+
+-   Office: Warner 214
+
+    -   If my door is open, come on in! Also feel free to e-mail me.
+
+    -   Office hours: TBD
+
+-   Current hobbies: running, mushroom foraging
+
+-   Aspirational hobbies/skills: fly fishing, driving stick shift
+
+## About you
+
+-   Introduce yourself using any or all of the following (the first is mandatory):
+
+    -   Name
+    -   Year
+    -   Major/minor
+    -   Hobbies
+    -   How do you take your coffee?
+
+# Course details
+
+## About the course
+
+- Course website: https://math218-spring2023.github.io/ (please bookmark!)
+
+- Learn various models for regression and classification tasks (more on this next lecture)
+
+  - Linear and logistic regression, KNN, decision trees + variants, K-means and hierarchical clustering
+  
+
+## Necessary background
+
 ```{r setup, include=FALSE}
 # R options
 options(
@@ -33,30 +76,13 @@ library(tidyverse)
 library(rvest)
 ```
 
-## Necessary background
-
 -   I assume you have taken Math 118 prior to this course, and are comfortable with `tidyverse` and RStudio. There is a large emphasis on computing.
+
+    -   I also assume you are comfortable with knitting. In this course, I ask that you knit to PDF.
 
 -   We will learn how to code in base `R`, and by the end of the course you should feel comfortable switching between base `R` and `tidyverse`.
 
--   We will focus more on applications and developing intuition. The goal is to beging developing a toolbox of methods that you may use in future analyses.
-
-# Your Turn!
-
-## Create a GitHub account
-
-::: instructions
-Go to https://github.com/, and create an account (unless you already have one). After you create your account, click [here](https://forms.gle/W8Aw1odtjgL41S2u6) and enter your GitHub username.
-:::
-
-Tips for creating a username from [Happy Git with R](http://happygitwithr.com/github-acct.html#username-advice).
-
--   Incorporate your actual name!
--   Reuse your username from other contexts if you can.
--   Shorter is better than longer; be as unique as possible in as few characters as possible.
--   Avoid words laden with special meaning in programming, like `NA`.
-
-# Course details
+-   We will focus more on applications and developing intuition. The goal is to begin developing a toolbox of methods that you may use in future analyses.
 
 ## Class Meetings
 
@@ -65,21 +91,21 @@ Tips for creating a username from [Happy Git with R](http://happygitwithr.com/gi
     -   Focus on concepts behind statistical learning techniques
     -   Interactive lecture that includes examples and hands-on exercises
     -   Bring fully-charged laptop to every lecture
-        -   Please let me know as soon as possible if you do not have access to a laptop
+        -   Please let me know if you do not have access to a laptop
 -   Lab
     -   Typically occurs on Fridays
     -   Focus on computing using functions provided in `R` packages
     -   Apply concepts from lecture to case study scenarios
 -   Implementation
     -   Some days will be focused on implementing (i.e. coding by hand) methods discussed in lecture
-    -   Group work
+    -   Complete in small groups
 :::
 
 ## Assignments
 
--   Lab assignments
--   Implementation deliverables
--   Celebrations of knowledge (i.e. mini projects or larger coding assignments)
+1.  Lab assignments
+2.  Implementation deliverables
+3.  Celebrations of knowledge (i.e. mini projects or larger coding assignments)
 
 ## Major assessments
 
@@ -109,9 +135,32 @@ Tips for creating a username from [Happy Git with R](http://happygitwithr.com/gi
     Friday, 5/13 and Monday, 5/15: project presentations
     :::
 
-## Code
+# Your Turn!
 
-```{r}
-#| eval: false
-library(tidyverse)
-```
+## Create a GitHub account
+
+::: instructions
+Go to https://github.com/, and create an account (unless you already have one). After you create your account, click [here](https://forms.gle/W8Aw1odtjgL41S2u6) and enter your GitHub username.
+:::
+
+Tips for creating a username from [Happy Git with R](http://happygitwithr.com/github-acct.html#username-advice).
+
+-   Incorporate your actual name!
+-   Reuse your username from other contexts if you can.
+-   Shorter is better than longer; be as unique as possible in as few characters as possible.
+-   Avoid words laden with special meaning in programming, like `NA`.
+
+## Playing with base R
+
+-   Create a folder on your desktop called Math218
+-   Open RStudio and create a new Rmarkdown document.
+    -   We will work through some coding exercises. The associated code can be found in "Live Code 01"
+
+# TO DO
+
+- Sign up for brief one-on-one meeting with me so I can get to know you
+
+- Enter your GitHub username into the Google form
+
+- Try the practice exercises involved with "Live code 01"
+
