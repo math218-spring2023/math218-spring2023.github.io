@@ -158,7 +158,7 @@ Tips for creating a username from [Happy Git with R](http://happygitwithr.com/gi
 
 # TO DO
 
-- Sign up for brief one-on-one meeting with me so I can get to know you
+<!-- - Sign up for brief one-on-one meeting with me so I can get to know you -->
 
 - Enter your GitHub username into the Google form
 

@@ -11,21 +11,21 @@
     "href": "labs/lab-01-roulette.html#assignment",
     "title": "Lab 01: Roulette",
     "section": "Assignment",
-    "text": "Assignment\nImagine that you have unlimited funds and will play roulette n number of times. You will always bet on red and wager the same amount of money. For each one of the n rounds, keep track of the net gain. At the end of your gambling, make a plot showing the cumulative gains over the n iterations. That is, make a plot with 1, 2, …, n on the x-axis. The y-coordinate associated with each x-coordinate is the total/net gains up to that point.\n\nDetails\nAssume that the red spaces take on the values (2, 4, 6, …, 34, 36) and the black spaces take on the values (1, 3, 4, …, 35). You can decide how you would like to represent the two green spaces.\nHere is some structure that might help you design your code: you will need to create a for loop where on every iteration you should:\n\n“Spin” the roulette\nEvaluate how the outcome of your spin compares to your bet\nMake note of the net gain\n\nTo create the final plot, consider making a data frame that has two columns: one for the iterations, and another for the cumulative net gains.\n\n\nConcepts used\n\nfor loops\nConditional statements\nComparing R objects\nCreating and modifying vectors"
+    "text": "Assignment\nImagine that you have unlimited funds and will play roulette n number of times. You can choose the value of n, but be sure to store it as a variable for reproducibility. You will always bet on red and wager the same amount of money. For each one of the n rounds, keep track of the net gain. At the end of your gambling, make a plot showing the cumulative gains over the n iterations. That is, make a plot with 1, 2, …, n on the x-axis. The y-coordinate associated with each x-coordinate is the total/net gains up to that point. Comment on your plot: how are your net earnings in the short and long run?\n\nDetails\nAssume that the red spaces take on the values (2, 4, 6, …, 34, 36) and the black spaces take on the values (1, 3, 4, …, 35). You can decide how you would like to represent the two green spaces.\nHere is some structure that might help you design your code: you will need to create a for loop where on every iteration you should:\n\n“Spin” the roulette\nEvaluate how the outcome of your spin compares to your bet\nMake note of the net gain\n\nTo create the final plot, consider making a data frame that has two columns: one for the iterations, and another for the cumulative net gains.\n\n\nConcepts used\n\nfor loops\nConditional statements\nComparing R objects\nCreating and modifying vectors\nWorking with GitHub: try to regularly commit your changes and push them back to GitHub!"
   },
   {
     "objectID": "labs/lab-01-roulette.html#submission-details",
     "href": "labs/lab-01-roulette.html#submission-details",
     "title": "Lab 01: Roulette",
     "section": "Submission details",
-    "text": "Submission details\nTBD"
+    "text": "Submission details\nKnit, commit, and push your project back to github.com using the GitHub Desktop client.\nSubmit your knitted PDF onto Canvas."
   },
   {
     "objectID": "assignments.html",
     "href": "assignments.html",
     "title": "Assignments",
     "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nImportant coding skills\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nImportant coding skills\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments.html#labs",
@@ -74,7 +74,7 @@
     "href": "slides/slides-01-what-is.html#installation",
     "title": "What is statistical learning?",
     "section": "Installation",
-    "text": "Installation\n\nAccept the e-mailed GitHub invitation to join our course organization. If you did not receive an invitation, that means I do not have your GitHub username!\nCreate a folder on your desktop called “Math218”\nGo to https://desktop.github.com/ and download the GitHub Desktop application.\n\nContinue following the instructions found here"
+    "text": "Installation\n\nAccept the e-mailed GitHub invitation to join our course organization. If you did not receive an invitation, that means I do not have your GitHub username!\nGo to https://desktop.github.com/ and download the GitHub Desktop application.\n\nContinue following the instructions found here"
   },
   {
     "objectID": "slides/slides-01-what-is.html#what-is-statistical-learning",
@@ -319,7 +319,7 @@
     "href": "slides/slides-00-welcome.html#class-meetings",
     "title": "Welcome to statistical learning!",
     "section": "Class Meetings",
-    "text": "Class Meetings\n\n\nLecture\n\nFocus on concepts behind statistical learning techniques\nInteractive lecture that includes examples and hands-on exercises\nBring fully-charged laptop to every lecture\n\nPlease let me know if you do not have access to a laptop\n\n\nLab\n\nTypically occurs on Fridays\nFocus on computing using functions provided in R packages\nApply concepts from lecture to case study scenarios\n\nImplementation\n\nSome days will be focused on implementing (i.e. coding by hand) methods discussed in lecture\nGroup work"
+    "text": "Class Meetings\n\n\nLecture\n\nFocus on concepts behind statistical learning techniques\nInteractive lecture that includes examples and hands-on exercises\nBring fully-charged laptop to every lecture\n\nPlease let me know if you do not have access to a laptop\n\n\nLab\n\nTypically occurs on Fridays\nFocus on computing using functions provided in R packages\nApply concepts from lecture to case study scenarios\n\nImplementation\n\nSome days will be focused on implementing (i.e. coding by hand) methods discussed in lecture\nComplete in small groups"
   },
   {
     "objectID": "slides/slides-00-welcome.html#code",
@@ -508,7 +508,7 @@
     "href": "live-code/live-code-02.html#new-functions",
     "title": "Live code 02",
     "section": "New functions:",
-    "text": "New functions:\n\nThe %in% function helps determine if a value is contained in a vector:\n\n5 %in% 1:5\n\n[1] TRUE\n\n0 %in% c(1,3,5)\n\n[1] FALSE\n\n\n\nNote: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?\n\n\nCode\n5 == 1:5\nsum(5 == 1:5)\n\nsum(0 == c(1,3,5))\n\n\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random as follows:\n\nsample(1:5, 1)\n\n[1] 3\n\nsample(1:5, 1)\n\n[1] 3\n\nsample(1:5, 1)\n\n[1] 4\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!"
+    "text": "New functions:\n\nThe %in% function helps determine if a value is contained in a vector:\n\n5 %in% 1:5\n\n[1] TRUE\n\n0 %in% c(1,3,5)\n\n[1] FALSE\n\n\n\nNote: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?\n\n\nCode\n5 == 1:5\nsum(5 == 1:5)\n\nsum(0 == c(1,3,5))\n\n\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random as follows:\n\nsample(1:5, 1)\n\n[1] 4\n\nsample(1:5, 1)\n\n[1] 3\n\nsample(1:5, 1)\n\n[1] 1\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!"
   },
   {
     "objectID": "live-code/live-code-02.html#conditional-statements",
@@ -530,5 +530,26 @@
     "title": "Live code 02",
     "section": "Your turn!",
     "text": "Your turn!\n\nWrite code that outputs the square root of a number. If the number is negative, then print out an informative statement instead. Note: the square root of a number can be obtained via the sqrt() function.\nWrite a for loop that calculates the factorial of a whole number of your choice. As a quick refresher, 5! (which we read as “5 factorial”) is equal to 5 x 4 x 3 x 2 x 1.\nObtain a vector y of 5 values by using the sample function, where the possible values to sample from are integers ranging between 1 and 5. Here, I want you to sample with replacement. Write a for loop that loops for 5 iterations and print the number of elements in y equal to the current iteration. If the current iteration value is not contained in y, please print out a useful statement for the user instead."
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#about-me",
+    "href": "slides/slides-00-welcome.html#about-me",
+    "title": "Welcome to statistical learning!",
+    "section": "About me",
+    "text": "About me\n\nPhD in Statistical Science from Duke University, BA in Mathematics and Computer Science from Swarthmore College\nResearch interests: Bayesian hierarchical models for ecological applications\n\nDeveloping models for single species or community abundances\n\nOffice: Warner 214\n\nIf my door is open, come on in! Also feel free to e-mail me.\nOffice hours: TBD\n\nCurrent hobbies: running, mushroom foraging\nAspirational hobbies/skills: fly fishing, driving stick shift"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#about-you",
+    "href": "slides/slides-00-welcome.html#about-you",
+    "title": "Welcome to statistical learning!",
+    "section": "About you",
+    "text": "About you\n\nIntroduce yourself using any or all of the following (the first is mandatory):\n\nName\nYear\nMajor/minor\nHobbies\nHow do you take your coffee?"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#about-the-course",
+    "href": "slides/slides-00-welcome.html#about-the-course",
+    "title": "Welcome to statistical learning!",
+    "section": "About the course",
+    "text": "About the course\n\nCourse website: https://math218-spring2023.github.io/ (please bookmark!)\nLearn various models for regression and classification tasks (more on this next lecture)\n\nLinear and logistic regression, KNN, decision trees + variants, K-means and hierarchical clustering"
   }
 ]

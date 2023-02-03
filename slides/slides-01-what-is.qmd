@@ -126,7 +126,7 @@ data (mite.env)
 
 ## Sampling map
 
-![](figs/slides/01-intro/mites_map.jpeg){fig-align="center" width="300"}
+![](figs/01-intro/mites_map.jpeg){fig-align="center"}
 
 ## 
 

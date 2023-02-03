@@ -33,7 +33,7 @@ Because this is a casino game, we *know* that the house always wins. So, the pur
 
 ## Assignment
 
-Imagine that you have unlimited funds and will play roulette `n` number of times. [You will always bet on red and wager the same amount of money]{.underline}. For each one of the `n` rounds, keep track of the net gain. At the end of your gambling, make a plot showing the cumulative gains over the `n` iterations. That is, make a plot with 1, 2, ..., `n` on the x-axis. The y-coordinate associated with each x-coordinate is the total/net gains up to that point.
+Imagine that you have unlimited funds and will play roulette `n` number of times. You can choose the value of `n`, but be sure to store it as a variable for reproducibility. [You will always bet on red and wager the same amount of money]{.underline}. For each one of the `n` rounds, keep track of the net gain. At the end of your gambling, make a plot showing the cumulative gains over the `n` iterations. That is, make a plot with 1, 2, ..., `n` on the x-axis. The y-coordinate associated with each x-coordinate is the total/net gains up to that point. **Comment on your plot**: how are your net earnings in the short and long run?
 
 ### Details
 
@@ -59,6 +59,10 @@ To create the final plot, consider making a data frame that has two columns: one
 
 -   Creating and modifying vectors
 
+-   Working with GitHub: try to regularly commit your changes and push them back to GitHub!
+
 ## Submission details
 
-TBD
+Knit, commit, and push your project back to github.com using the GitHub Desktop client.
+
+Submit your knitted PDF onto Canvas.
