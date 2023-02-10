@@ -41,8 +41,6 @@ data (mite)
 data (mite.env)
 ```
 
-# 
-
 # Introduction
 
 ## What is statistical learning?

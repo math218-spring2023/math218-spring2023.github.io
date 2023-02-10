@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.313">
 
-  <title>Math 218 - Spring 2023 - What is statistical learning?</title>
+  <title>Math 218 - Spring 2023 - Linear Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -27,70 +27,6 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -387,414 +323,69 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">What is statistical learning?</h1>
+  <h1 class="title">Linear Regression</h1>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section class="slide level2">
-
-<div class="cell" data-layout-align="center">
+<section id="housekeeping" class="title-slide slide level1 center">
+<h1>Housekeeping</h1>
+<div class="cell">
 
 </div>
 </section>
+
 <section>
-<section id="introduction" class="title-slide slide level1 center">
-<h1>Introduction</h1>
+<section id="linear-regression" class="title-slide slide level1 center">
+<h1>Linear regression</h1>
 
 </section>
-<section id="what-is-statistical-learning" class="slide level2">
-<h2>What is statistical learning?</h2>
+<section id="linear-regression-1" class="slide level2">
+<h2>Linear regression</h2>
 <ul>
-<li class="fragment"><p>Set of tools used to understand data</p>
+<li class="fragment"><p>A simple, widely used approach in supervised learning</p></li>
+<li class="fragment"><p>Assumes that the dependence of <span class="math inline">\(Y\)</span> on the predictors <span class="math inline">\(X_{1}, \ldots, X_{p}\)</span> is linear</p></li>
+</ul>
+
+<img data-src="slides-02-linear-regression_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="possible-questions-of-interest" class="slide level2">
+<h2>Possible questions of interest</h2>
 <ul>
-<li class="fragment">Supervised and unsupervised methods</li>
+<li class="fragment"><p>Is there a relationship between the abundance of LRUG mites and substrate density or water content in the soil where they are found?</p>
+<ul>
+<li class="fragment">If so, how are strong are these relationships?</li>
 </ul></li>
-<li class="fragment"><p>Use data and build appropriate functions (models) to try and perform inference and make predictions</p></li>
+<li class="fragment"><p>Is the relationship linear?</p></li>
+<li class="fragment"><p>How accurately can we predict the abundance of these mites?</p></li>
+</ul>
+</section>
+<section id="simple-linear-regression" class="slide level2">
+<h2>Simple linear regression</h2>
+<ul>
 <li class="fragment"><div class="important">
-<p>Data-centered approach</p>
-</div></li>
-<li class="fragment"><p>Categories of statistical learning problems</p>
-<ul>
-<li class="fragment">Classification</li>
-<li class="fragment">Learning relationships</li>
-<li class="fragment">Prediction</li>
-</ul></li>
-</ul>
-</section>
-<section id="supervised-learning" class="slide level2">
-<h2>Supervised Learning</h2>
-<ul>
-<li class="fragment"><p>Notation: let <span class="math inline">\(i = 1,\ldots, n\)</span> index the observation</p></li>
-<li class="fragment"><p>For each observation <span class="math inline">\(i\)</span>, we have:</p>
-<ul>
-<li class="fragment">Outcome/response: <span class="math inline">\(y_{i}\)</span></li>
-<li class="fragment">Vector of <span class="math inline">\(p\)</span> predictors/covariates: <span class="math inline">\(\mathbf{x}_{i} = (x_{i1}, x_{i2}, \ldots, x_{ip})'\)</span></li>
-</ul></li>
-<li class="fragment"><p><strong>Regression</strong>: the <span class="math inline">\(y_{i}\)</span> are quantitative (e.g.&nbsp;height, price)</p></li>
-<li class="fragment"><p><strong>Classification</strong>: the <span class="math inline">\(y_{i}\)</span> are categorical/qualitative (e.g.&nbsp;education level, diagnosis)</p></li>
-<li class="fragment"><p>Goal: relate response <span class="math inline">\(y_{i}\)</span> to the various predictors</p></li>
-</ul>
-</section>
-<section id="objectives-in-supervised-learning" class="slide level2">
-<h2>Objectives in Supervised Learning</h2>
-<ol type="1">
-<li class="fragment"><strong>Explanatory</strong>: understand which predictors affect the response, and how</li>
-<li class="fragment"><strong>Prediction</strong>: accurately predict unobserved cases for new measurements of predictors</li>
-<li class="fragment"><strong>Assessment</strong>: quantify the quality of our predictions and inference</li>
-</ol>
-<!-- ## Unsupervised Learning -->
-<!-- -   We only observe the $\mathbf{x}_{i}$, but no associated response $y_{i}$ -->
-<!-- -   "Unsupervised" because there is no response variable guiding the analysis! -->
-<!-- -   Objective may not be as clearly defined -->
-<!-- -   Difficult to assess how well your are doing -->
-</section>
-<section id="lets-look-at-some-real-data" class="slide level2">
-<h2>Let’s look at some real data!</h2>
-<ul>
-<li class="fragment">Oribatid mite data: abundance data of 35 oribatid mite species observed at 70 sampling locations irregularly spaced within a study area of 2.6 × 10 m collected on the territory of the Station de biologie des Laurentides of Université de Montréal, Québec, Canada in June 1989</li>
-<li class="fragment">Variables measured at each location:
-<ul>
-<li class="fragment"><p>Substrate density (quantitative)</p></li>
-<li class="fragment"><p>Water content (quantitative)</p></li>
-<li class="fragment"><p>Microtopography (binary categorical)</p></li>
-<li class="fragment"><p>Shrub density (ordinal categorical, three levels)</p></li>
-<li class="fragment"><p>Substrate type (nominal categorical, seven levels)</p></li>
-</ul></li>
-</ul>
-</section>
-<section id="sampling-map" class="slide level2">
-<h2>Sampling map</h2>
-
-<img data-src="figs/01-intro/mites_map.jpeg" class="r-stretch quarto-figure-center"></section>
-<section id="section" class="slide level2">
-<h2></h2>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># from the vegan library</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">data</span>(<span class="st">"mite"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>mite <span class="sc">%&gt;%</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  Brachy PHTH HPAV RARD SSTR Protopl MEGR MPRO TVIE HMIN HMIN2 NPRA TVEL ONOV
-1     17    5    5    3    2       1    4    2    2    1     4    1   17    4
-2      2    7   16    0    6       0    4    2    0    0     1    3   21   27
-3      4    3    1    1    2       0    3    0    0    0     6    3   20   17
-4     23    7   10    2    2       0    4    0    1    2    10    0   18   47
-5      5    8   13    9    0      13    0    0    0    3    14    3   32   43
-6     19    7    5    9    3       2    3    0    0   20    16    2   13   38
-  SUCT LCIL Oribatl1 Ceratoz1 PWIL Galumna1 Stgncrs2 HRUF Trhypch1 PPEL NCOR
-1    9   50        3        1    1        8        0    0        0    0    0
-2   12  138        6        0    1        3        9    1        1    1    2
-3   10   89        3        0    2        1        8    0        3    0    2
-4   17  108       10        1    0        1        2    1        2    1    3
-5   27    5        1        0    5        2        1    0        1    0    0
-6   39    3        5        0    1        1        8    0        4    0    1
-  SLAT FSET Lepidzts Eupelops Miniglmn LRUG PLAG2 Ceratoz3 Oppiminu Trimalc2
-1    0    0        0        0        0    0     0        0        0        0
-2    2    2        1        0        0    0     0        0        0        0
-3    0    8        0        0        0    0     0        0        0        0
-4    2   12        0        0        0    0     0        0        0        0
-5    0   12        2        0        0    0     0        0        0        0
-6    0   10        0        0        0    0     0        0        0        0</code></pre>
+<p>Simple linear regression (SLR)</p>
 </div>
-</div>
-</section>
-<section id="section-1" class="slide level2">
-<h2></h2>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># from the vegan library</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">data</span>(<span class="st">"mite.env"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">head</span>(mite.env)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  SubsDens WatrCont Substrate Shrub    Topo
-1    39.18   350.15   Sphagn1   Few Hummock
-2    54.99   434.81    Litter   Few Hummock
-3    46.07   371.72 Interface   Few Hummock
-4    48.19   360.50   Sphagn1   Few Hummock
-5    23.55   204.13   Sphagn1   Few Hummock
-6    57.32   311.55   Sphagn1   Few Hummock</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>mite_dat <span class="ot">&lt;-</span> mite.env <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">add_column</span>(<span class="at">abundance =</span> mite<span class="sc">$</span>LRUG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="eda" class="slide level2 scrollable">
-<h2>EDA</h2>
-<p>(scroll for more content)</p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="slides-01-what-is_files/figure-revealjs/unnamed-chunk-4-1.png" width="1875"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="slides-01-what-is_files/figure-revealjs/unnamed-chunk-4-2.png" width="1875"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="slides-01-what-is_files/figure-revealjs/unnamed-chunk-4-3.png" width="1875"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="model-building" class="slide level2">
-<h2>Model building</h2>
 <ul>
-<li class="fragment"><p><strong>Goal:</strong> predict <code>LRUG</code> abundance using these variables</p></li>
-<li class="fragment"><p>Maybe <code>LRUG</code> <span class="math inline">\(\approx f(\)</span> <code>SubsDens</code> + <code>WatrCont</code><span class="math inline">\()\)</span>?</p></li>
-<li class="fragment"><p>If so, how would we represent these variables using our notation? i.e., what are <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(x_{i}\)</span>?</p></li>
-<li class="fragment"><p>Then our model can be written as <span class="math inline">\(y_{i} = f(x_{i}) + \epsilon_{i}\)</span> where <span class="math inline">\(\epsilon_{i}\)</span> represents random measurement error</p></li>
-<li class="fragment"><div class="important">
-<p>What does this equation mean?</p>
-</div></li>
-</ul>
-</section>
-<section id="why-care-about-f" class="slide level2">
-<h2>Why care about f?</h2>
-<ul>
-<li class="fragment"><p>Model (dropping the indices): <span class="math inline">\(Y = f(X) + \epsilon\)</span></p></li>
-<li class="fragment"><p>The function <span class="math inline">\(f(X)\)</span> represents the systematic information that <span class="math inline">\(X\)</span> tells us about <span class="math inline">\(Y\)</span>.</p></li>
-<li class="fragment"><p>If <span class="math inline">\(f\)</span> is “good”, then we can make reliable predictions of <span class="math inline">\(Y\)</span> at new points <span class="math inline">\(X = x\)</span></p></li>
-<li class="fragment"><p>If <span class="math inline">\(f\)</span> is “good”, then we can identify which components of <span class="math inline">\(X\)</span> are important to explaining <span class="math inline">\(Y\)</span></p>
-<ul>
-<li class="fragment">Depending on <span class="math inline">\(f\)</span>, we may be able to learn how each component <span class="math inline">\(X_{j}\)</span> of <span class="math inline">\(X\)</span> affects <span class="math inline">\(Y\)</span></li>
+<li class="fragment"><p>Assumes a linear model for a quantitative response <span class="math inline">\(Y\)</span> using a <em>single</em> predictor <span class="math inline">\(X\)</span></p>
+<p><span class="math display">\[Y = \beta_{0} + \beta_{1} X + \epsilon,\]</span></p>
+<p>where <span class="math inline">\(\beta_{0}, \beta_{1}\)</span> are unknown <strong>coefficients</strong> (<strong>parameters</strong>) and <span class="math inline">\(\epsilon\)</span> is the error</p></li>
 </ul></li>
+<li class="fragment"><p><span class="math inline">\(\beta_{0}\)</span> is commonly referred to as the <strong>intercept</strong>, and <span class="math inline">\(\beta_{1}\)</span> is the <strong>slope</strong></p></li>
+<li class="fragment"><p>For example: <code>abundance</code> = <span class="math inline">\(\beta_{0}\)</span> + <span class="math inline">\(\beta_{1}\)</span> <code>watercont</code> + <span class="math inline">\(\epsilon\)</span></p></li>
 </ul>
 </section>
-<section id="why-care-about-f-1" class="slide level2">
-<h2>Why care about f?</h2>
+<section id="parameter-estimation" class="slide level2">
+<h2>Parameter estimation</h2>
 <ul>
-<li class="fragment">We assume that <span class="math inline">\(f\)</span> is fixed but unknown</li>
-<li class="fragment">Goal of statistical learning: how to estimate <span class="math inline">\(f\)</span>?
+<li class="fragment"><p>Assuming <span class="math inline">\(n\)</span> observations, we have data of the form <span class="math inline">\((x_{1}, y_{1}), (x_{2}, y_{2}), \ldots, (x_{n}, y_{n})\)</span></p></li>
+<li class="fragment"><p>An SLR model says <span class="math display">\[y_{i} = \beta_{0} + \beta_{1}x_{i}+ \epsilon \approx \beta_{0} + \beta_{1}x_{i}, \quad \text{ for all } i = 1,\ldots, n\]</span></p>
 <ul>
-<li class="fragment">Sub-goals: <strong>prediction</strong> and <strong>inference</strong></li>
+<li class="fragment"><p>In this model, <span class="math inline">\(f(x_{i}) = \beta_{0} + \beta_{1} x_{i}\)</span></p></li>
+<li class="fragment"><p>Notice that the relationship between <span class="math inline">\(x_{i}\)</span> and <span class="math inline">\(y_{i}\)</span> is the same for all observations <span class="math inline">\(i\)</span></p></li>
 </ul></li>
-<li class="fragment">The sub-goal may affect the kind of <span class="math inline">\(f\)</span> we choose</li>
-</ul>
-</section>
-<section id="prediction" class="slide level2">
-<h2>Prediction</h2>
-<ul>
-<li class="fragment"><p>We have a set of inputs or predictors <span class="math inline">\(X\)</span>, and we want to predict a corresponding <span class="math inline">\(Y\)</span></p></li>
-<li class="fragment"><p>Assuming the error <span class="math inline">\(\epsilon\)</span> is 0 on average, we can obtain predictions of <span class="math inline">\(Y\)</span> as <span class="math display">\[\hat{Y} = \hat{f}(X)\]</span></p></li>
-<li class="fragment"><p>If we knew the true <span class="math inline">\(Y\)</span>, we could evaluate the accuracy of the prediction <span class="math inline">\(\hat{Y}\)</span></p></li>
-<li class="fragment"><p>Generally, <span class="math inline">\(Y \neq \hat{Y}\)</span>. Why?</p>
-<ol type="1">
-<li class="fragment"><span class="math inline">\(\hat{f}\)</span> will not be perfect estimate of <span class="math inline">\(f\)</span></li>
-<li class="fragment"><span class="math inline">\(Y\)</span> is a function of <span class="math inline">\(\epsilon\)</span>, which cannot be predicted using <span class="math inline">\(X\)</span></li>
-</ol></li>
-</ul>
-</section>
-<section id="types-of-error" class="slide level2">
-<h2>Types of error</h2>
-<ul>
-<li class="fragment"><p>Model: <span class="math inline">\(Y = f(X) + \epsilon\)</span></p></li>
-<li class="fragment"><p>Irreducible error: <span class="math inline">\(\epsilon\)</span></p>
-<ul>
-<li class="fragment">Even if we knew <span class="math inline">\(f\)</span> perfectly, there is still some inherent variability</li>
-<li class="fragment"><span class="math inline">\(\epsilon\)</span> may also contained unmeasured variables that are not available to us</li>
-</ul></li>
-<li class="fragment"><p>Reducible error: how far <span class="math inline">\(\hat{f}\)</span> is from the true <span class="math inline">\(f\)</span></p></li>
-</ul>
-</section>
-<section id="prediction-errors" class="slide level2">
-<h2>Prediction errors</h2>
-<ul>
-<li class="fragment">Ways to quantify error
-<ul>
-<li class="fragment">Difference/error = <span class="math inline">\(Y - \hat{Y}\)</span></li>
-<li class="fragment">Absolute error = <span class="math inline">\(|Y - \hat{Y}|\)</span></li>
-<li class="fragment">Squared error = <span class="math inline">\((Y - \hat{Y})^2\)</span></li>
-</ul></li>
-<li class="fragment">Intuitively, large error indicates worse prediction</li>
-</ul>
-</section>
-<section id="prediction-errors-1" class="slide level2">
-<h2>Prediction errors</h2>
-<ul>
-<li class="fragment"><p>Given <span class="math inline">\(\hat{f}\)</span> and <span class="math inline">\(X\)</span>, we can obtain a prediction <span class="math inline">\(\hat{Y} = \hat{f}(X)\)</span> for <span class="math inline">\(Y\)</span></p></li>
-<li class="fragment"><p>Mean-squared prediction error: <span class="math display">\[\begin{align*}
-\mathsf{E}[(Y - \hat{Y})^2] &amp;= \mathsf{E}[( f(X) + \epsilon - \hat{f}(X))^2] \\
-&amp;= \underbrace{[f(X) - \hat{f}(X)]^2}_\text{reducible} + \underbrace{\text{Var}(\epsilon)}_\text{irreducible}
-\end{align*}\]</span></p></li>
-<li class="fragment"><p>We cannot do much to decrease the irreducible error</p></li>
-<li class="fragment"><p>But we <em>can</em> potentially minimize the reducible error by choosing better <span class="math inline">\(\hat{f}\)</span>!</p></li>
-</ul>
-</section>
-<section id="inference" class="slide level2">
-<h2>Inference</h2>
-<ul>
-<li class="fragment">We are often interested in learning how <span class="math inline">\(Y\)</span> and the <span class="math inline">\(X_{1}, \ldots, X_{p}\)</span> are related or associated</li>
-<li class="fragment">In this mindset, we want to estimate <span class="math inline">\(f\)</span> to learn the relationships, rather than obtain a <span class="math inline">\(\hat{Y}\)</span></li>
-</ul>
-</section>
-<section id="prediction-vs-inference" class="slide level2">
-<h2>Prediction vs Inference</h2>
-<ul>
-<li class="fragment"><p>In the prediction setting, estimate <span class="math inline">\(\hat{f}\)</span> for the purpose of <span class="math inline">\(\hat{Y}\)</span> and <span class="math inline">\(Y\)</span>.</p></li>
-<li class="fragment"><p>In the inference setting, estimate <span class="math inline">\(\hat{f}\)</span> for the purpose of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span></p></li>
-<li class="fragment"><p>Some problems will call for prediction, inference, or both</p>
-<ul>
-<li class="fragment"><p>To what extent is <code>LRUG</code> abundance associated with <code>microtopography</code>?</p></li>
-<li class="fragment"><p>Given a specific land profile, how many <code>LRUG</code> mites would we expect there to be?</p></li>
-</ul></li>
-</ul>
-</section>
-<section id="assessing-model-accuracy" class="slide level2">
-<h2>Assessing model accuracy</h2>
-<ul>
-<li class="fragment"><p>No single method or choice of <span class="math inline">\(f\)</span> is superior over all possible data sets</p></li>
-<li class="fragment"><p>Prediction accuracy vs.&nbsp;interpretability</p>
-<ul>
-<li class="fragment"><p>More restrictive models may be easier to interpret (better for inference)</p></li>
-<li class="fragment"><p>Good fit vs.&nbsp;over- or under-fit</p></li>
-</ul></li>
-<li class="fragment"><p>Parsimony vs.&nbsp;black box</p>
-<ul>
-<li class="fragment">A simpler model is often preferred over a very complex one</li>
-</ul></li>
-</ul>
-</section>
-<section id="assessing-model-accuracy-1" class="slide level2">
-<h2>Assessing model accuracy</h2>
-<ul>
-<li class="fragment"><p>How can we know how well a chosen <span class="math inline">\(\hat{f}\)</span> is performing?</p></li>
-<li class="fragment"><p>In regression setting, we often use <strong>mean squared error (MSE)</strong></p>
-<ul>
-<li class="fragment"><span class="math inline">\(\text{MSE}=\frac{1}{n}\sum_{i=1}^{n}(y_{i}-\hat{f}(x_{i}))^2\)</span></li>
-</ul></li>
-<li class="fragment"><p>MSE will be small if predictions <span class="math inline">\(\hat{y}_{i} = {f}(x_{i})\)</span> are very close to the true <span class="math inline">\(y_{i}\)</span></p></li>
-</ul>
-</section>
-<section id="training-vs.-test-data" class="slide level2">
-<h2>Training vs.&nbsp;test data</h2>
-<ul>
-<li class="fragment"><p>In practice, we split our data into <strong>training</strong> and <strong>test</strong> sets</p>
-<ul>
-<li class="fragment">Training set is used to fit the model</li>
-<li class="fragment">Test set is used to assess model fit</li>
-</ul></li>
-<li class="fragment"><p>We are often most interested in accuracy of our predictions when applying the method to <em>previously unseen</em> data. Why?</p></li>
-<li class="fragment"><p>We can compute the MSE for the training and test data respectively</p></li>
-</ul>
-</section>
-<section id="example-1" class="slide level2">
-<h2>Example 1</h2>
-<div class="cell" data-layout-align="center">
-
-</div>
-
-<img data-src="slides-01-what-is_files/figure-revealjs/plot_mse1-1.png" width="3000" class="r-stretch quarto-figure-center"></section>
-<section id="example-2" class="slide level2">
-<h2>Example 2</h2>
-<div class="cell" data-layout-align="center">
-
-</div>
-
-<img data-src="slides-01-what-is_files/figure-revealjs/plot_mse2-1.png" width="3000" class="r-stretch quarto-figure-center"></section>
-<section id="bias-variance-trade-off" class="slide level2">
-<h2>Bias-Variance trade-off</h2>
-<ul>
-<li class="fragment"><p>As model flexibility increases, the training MSE will decrease but test MSE may not.</p></li>
-<li class="fragment"><p>Flexible models may <strong>overfit</strong> the data, which leads to low train MSE and high test MSE</p>
-<ul>
-<li class="fragment">The supposed patterns in train data do not exist in test data</li>
-</ul></li>
-<li class="fragment"><p>Let us consider a test observation <span class="math inline">\((x_{0}, y_{0})\)</span>.</p></li>
-<li class="fragment"><p>The expected test MSE for given <span class="math inline">\(x_{0}\)</span> can be decomposed as follows:</p>
-<ul>
-<li class="fragment"><p><span class="math inline">\(\mathsf{E}[(y_{0} - \hat{f}(x_{0}))^2] = \text{Var}(\hat{f}(x_{0})) + [\text{Bias}(\hat{f}(x_{0}))]^2 + \text{Var}(\epsilon)\)</span></p></li>
-<li class="fragment"><p><span class="math inline">\(\text{Bias}(\hat{f}(x_{0})) = \mathsf{E}[\hat{f}(x_{0})] - \hat{f}(x_{0})\)</span></p></li>
-</ul></li>
-</ul>
-<div class="cell" data-layout-align="center" data-hash="slides-01-what-is_cache/revealjs/bv1_58d0d8febd7604224ec83e50fca75411">
-
-</div>
-<div class="cell" data-layout-align="center" data-hash="slides-01-what-is_cache/revealjs/bv2_69977d9da7c2de3c9cb53fd9755243de">
-
-</div>
-</section>
-<section id="bias-variance-trade-off-cont." class="slide level2">
-<h2>Bias-Variance trade-off (cont.)</h2>
-
-<img data-src="slides-01-what-is_files/figure-revealjs/unnamed-chunk-5-1.png" width="2400" class="r-stretch quarto-figure-center"></section>
-<section id="classification" class="slide level2">
-<h2>Classification</h2>
-<ul>
-<li class="fragment"><p>Up until now, we have focused on quantitative responses <span class="math inline">\(y_{i}\)</span></p></li>
-<li class="fragment"><p>What happens when <span class="math inline">\(y_{i}\)</span> is qualitative? Examples include:</p>
-<ul>
-<li class="fragment"><p>Medical diagnosis: <span class="math inline">\(\mathcal{C} = \{\text{yes}, \text{no}\}\)</span></p></li>
-<li class="fragment"><p>Education level: <span class="math inline">\(\mathcal{C} = \{\text{high school}, \text{college}, \text{graduate}\}\)</span></p></li>
-</ul></li>
-<li class="fragment"><p>Each category in <span class="math inline">\(\mathcal{C}\)</span> is also known as a <em>label</em></p></li>
-<li class="fragment"><p>In this setting, we want our model to be <strong>classifier</strong>, i.e.&nbsp;given predictors <span class="math inline">\(X\)</span>, predict a label from the pool of all possible categories <span class="math inline">\(\mathcal{C}\)</span></p></li>
-</ul>
-</section>
-<section id="classification-1" class="slide level2">
-<h2>Classification</h2>
-<ul>
-<li class="fragment"><p>We will still have to estimate <span class="math inline">\(f\)</span></p></li>
-<li class="fragment"><p><span class="math inline">\(\hat{y}_{i}\)</span> is the predicted class label for observation <span class="math inline">\(i\)</span> using estimate <span class="math inline">\(\hat{f}\)</span></p></li>
-<li class="fragment"><p>How to assess model accuracy? Error is more intuitive: we make an error if we predict the incorrect label, and no error otherwise</p></li>
-<li class="fragment"><p>This can be represented using an <em>indicator</em> variable or function. <span class="math inline">\(\mathbf{I}(y_{i} = \hat{y}_{i})\)</span>:</p>
-<ul>
-<li class="fragment"><span class="math display">\[\mathbf{I}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 &amp; \text{ if } y_{i} = \hat{y}_{i}\\ 0 &amp; \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}\]</span></li>
-</ul></li>
-</ul>
-</section>
-<section id="classification-error-rate" class="slide level2">
-<h2>Classification error rate</h2>
-<ul>
-<li class="fragment"><p>To quantify accuracy of estimated classifier <span class="math inline">\(\hat{f}\)</span>, can calculate the <em>error rate</em>, which is the proportion of mistakes we make in labeling:</p>
-<ul>
-<li class="fragment"><span class="math display">\[\frac{1}{n} \sum_{i=1}^{n} \mathbf{I}(y_{i} \neq \hat{y}_{i})\]</span></li>
-</ul></li>
-<li class="fragment"><p>Small error rate is preferred</p></li>
-<li class="fragment"><p>As with MSE, can calculate the error rate for train and test data sets</p></li>
-</ul>
-</section>
-<section id="classifiers" class="slide level2">
-<h2>Classifiers</h2>
-<ul>
-<li class="fragment"><p>How do we choose which label to predict for a given observation?</p></li>
-<li class="fragment"><p>Assume we have a total of <span class="math inline">\(J\)</span> possible labels in <span class="math inline">\(\mathcal{C}\)</span></p></li>
-<li class="fragment"><p>For a given observation <span class="math inline">\(i\)</span>, can calculate the following probability for each possible label <span class="math inline">\(j\)</span>: <span class="math display">\[p_{ij}(x_{i}) = Pr(y_{i} = j | X = x_{i})\]</span></p></li>
-<li class="fragment"><p>These probabilities are called <strong>conditional class probabilities</strong> at <span class="math inline">\(x_{i}\)</span></p></li>
-</ul>
-</section>
-<section id="bayes-optimal-classifier" class="slide level2">
-<h2>Bayes optimal classifier</h2>
-<ul>
-<li class="fragment"><p>The <strong>Bayes optimal</strong> classifier will assign/predict the label which has the largest conditional class probability</p>
-<ul>
-<li class="fragment">It can be shown that the <em>test</em> error rate <span class="math inline">\(\frac{1}{n_{test}} \sum_{i=1}^{n_{test}} \mathbf{I}(y_{i} \neq \hat{y}_{i})\)</span> is minimized when using the Bayes optimal classifier</li>
-</ul></li>
-<li class="fragment"><p>For example, consider a binary problem with levels “yes” and “no”.</p></li>
-<li class="fragment"><p>For observation <span class="math inline">\(i\)</span>, if <span class="math inline">\(Pr(y_{i} = \text{yes} | X = x_{i}) &gt; 0.5\)</span>, then <span class="math inline">\(\hat{y}_{i} =\)</span> “yes”.</p></li>
-<li class="fragment"><p>The <span class="math inline">\(x_{i}\)</span> where <span class="math inline">\(Pr(y_{i} = \text{yes} | X = x_{i}) = Pr(y_{i} = \text{no} | X = x_{i})= 0.5\)</span> is called the <em>Bayes decision boundary</em></p></li>
-</ul>
-</section>
-<section id="example" class="slide level2">
-<h2>Example</h2>
-
-<img data-src="slides-01-what-is_files/figure-revealjs/unnamed-chunk-6-1.png" width="2250" class="r-stretch quarto-figure-center"></section>
-<section id="classification-in-practice" class="slide level2">
-<h2>Classification in practice</h2>
-<ul>
-<li class="fragment"><p>Bayes classifier is “gold standard”</p></li>
-<li class="fragment"><p>In practice, we cannot compute the <span class="math inline">\(p_{ij}(x_{i})\)</span> exactly because we do know the conditional distribution of <span class="math inline">\(y\)</span> given <span class="math inline">\(x\)</span></p></li>
-<li class="fragment"><p>Instead, we need to estimate these <span class="math inline">\(p_{ij}(x_{i})\)</span></p></li>
-<li class="fragment"><p>Almost all of our choices of <span class="math inline">\(\hat{f}\)</span> will output these estimates</p></li>
+<li class="fragment"><p>In practice, <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span> are unknown, so we must estimate them</p></li>
+<li class="fragment"><p><strong>Goal</strong>: obtain (good) estimates <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> such that they are so close to the true parameters as possible, such that <span class="math inline">\(y_{i} \approx \hat{\beta}_{0} + \hat{\beta}_{1} x_{i}\)</span></p></li>
 </ul>
 
 <div class="footer footer-default">

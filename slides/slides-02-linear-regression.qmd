@@ -1,0 +1,89 @@
+---
+title: "Linear Regression"
+date: ""
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: true
+---
+
+# Housekeeping
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, message = F)
+
+library(tidyverse)
+library(broom)
+library(ggfortify)
+library(ISLR)
+library(vegan)
+plot_theme <- theme(text = element_text(size = 14))
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+# Linear regression
+
+## Linear regression
+
+-   A simple, widely used approach in supervised learning
+
+-   Assumes that the dependence of $Y$ on the predictors $X_{1}, \ldots, X_{p}$ is linear
+
+```{r fig.align="center",fig.width=8, fig.height=5}
+mite_dat %>%
+  pivot_longer(cols = 1:2, names_to = "variable", values_to = "value") %>%
+  ggplot(., aes(x = value, y = abundance)) +
+  geom_point() +
+  facet_wrap(~variable, scales = "free") +
+  geom_smooth(method = "lm", se = F) +
+  plot_theme +
+  ylab("LRUG abundance")
+```
+
+## Possible questions of interest
+
+-   Is there a relationship between the abundance of LRUG mites and substrate density or water content in the soil where they are found?
+
+    -   If so, how are strong are these relationships?
+
+-   Is the relationship linear?
+
+-   How accurately can we predict the abundance of these mites?
+
+## Simple linear regression
+
+-   ::: important
+    Simple linear regression (SLR)
+    :::
+
+    -   Assumes a linear model for a quantitative response $Y$ using a *single* predictor $X$
+
+        $$Y = \beta_{0} + \beta_{1} X + \epsilon,$$
+
+        where $\beta_{0}, \beta_{1}$ are unknown **coefficients** (**parameters**) and $\epsilon$ is the error
+
+-   $\beta_{0}$ is commonly referred to as the **intercept**, and $\beta_{1}$ is the **slope**
+
+-   For example: `abundance` = $\beta_{0}$ + $\beta_{1}$ `watercont` + $\epsilon$
+
+## Parameter estimation
+
+-   Assuming $n$ observations, we have data of the form $(x_{1}, y_{1}), (x_{2}, y_{2}), \ldots, (x_{n}, y_{n})$
+
+-   An SLR model says $$y_{i} = \beta_{0} + \beta_{1}x_{i}+ \epsilon \approx \beta_{0} + \beta_{1}x_{i}, \quad \text{ for all } i = 1,\ldots, n$$
+
+    -   In this model, $f(x_{i}) = \beta_{0} + \beta_{1} x_{i}$
+
+    -   Notice that the relationship between $x_{i}$ and $y_{i}$ is the same for all $i$
+
+-   In practice, $\beta_{0}$ and $\beta_{1}$ are unknown, so we must estimate them
+
+-   **Goal**: obtain (good) estimates $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ that are as close to the true values as possible, such that $y_{i} \approx \hat{\beta}_{0} + \hat{\beta}_{1} x_{i}$
