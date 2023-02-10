@@ -3,6 +3,7 @@ title: "Schedule"
 format:
   html:
     css: styles.css
+    page-layout: full
 ---
 
 Note: course schedule is subject to change.
