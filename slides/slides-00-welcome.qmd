@@ -21,7 +21,7 @@ editor: visual
 
     -   If my door is open, come on in! Also feel free to e-mail me.
 
-    -   Office hours: TBD
+    -   Office hours: Tuesdays 3-4pm and by appointment via Calendly
 
 -   Current hobbies: running, mushroom foraging
 
@@ -41,12 +41,11 @@ editor: visual
 
 ## About the course
 
-- Course website: https://math218-spring2023.github.io/ (please bookmark!)
+-   Course website: https://math218-spring2023.github.io/ (please bookmark!)
 
-- Learn various models for regression and classification tasks (more on this next lecture)
+-   Learn various models for regression and classification tasks (more on this next lecture)
 
-  - Linear and logistic regression, KNN, decision trees + variants, K-means and hierarchical clustering
-  
+    -   Linear and logistic regression, KNN, decision trees + variants, K-means and hierarchical clustering
 
 ## Necessary background
 
@@ -101,12 +100,6 @@ library(rvest)
     -   Complete in small groups
 :::
 
-## Assignments
-
-1.  Lab assignments
-2.  Implementation deliverables
-3.  Celebrations of knowledge (i.e. mini projects or larger coding assignments)
-
 ## Major assessments
 
 ::: incremental
@@ -115,9 +108,19 @@ library(rvest)
     -   Oral component
 -   Final project
     -   Groups of 3-4 students (tentatively)
-    -   Presentations during last two days of class
+    -   Presentations during last two days of class\*
     -   NO sit-down final
 :::
+
+## Grading
+
+Assignments
+
+1.  Labs (30%)
+2.  Implementation deliverables (20%)
+3.  Midterm (20%)
+4.  Final project (25%)
+5.  Participation (5%)
 
 ## Important dates
 
@@ -132,7 +135,7 @@ library(rvest)
 -   Monday, 4/17: final day to drop classes :(
 
 -   ::: important
-    Friday, 5/13 and Monday, 5/15: project presentations
+    Friday, 5/13 and Monday, 5/15\*: project presentations
     :::
 
 # Your Turn!
@@ -160,7 +163,8 @@ Tips for creating a username from [Happy Git with R](http://happygitwithr.com/gi
 
 <!-- - Sign up for brief one-on-one meeting with me so I can get to know you -->
 
-- Enter your GitHub username into the Google form
+-   Enter your GitHub username into the Google form
 
-- Try the practice exercises involved with "Live code 01"
+    -   You will soon receive and e-mail asking you to join our Math 218 GitHub organization. Please accept it!
 
+-   Try the practice exercises involved with "Live code 01"

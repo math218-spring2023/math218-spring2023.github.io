@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.313">
 
-  <title>Math 218 - Spring 2023 - Welcome to statistical learning!</title>
+  <title>Math 218 - Spring 2023 - Installation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -323,183 +323,127 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Welcome to statistical learning!</h1>
+  <h1 class="title">Installation</h1>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
 <section>
-<section id="introductions" class="title-slide slide level1 center">
-<h1>Introductions</h1>
+<section id="git-and-github" class="title-slide slide level1 center">
+<h1>Git and GitHub</h1>
 
 </section>
-<section id="about-me" class="slide level2">
-<h2>About me</h2>
+<section id="version-control" class="slide level2">
+<h2>Version control</h2>
 <ul>
-<li><p>PhD in Statistical Science from Duke University, BA in Mathematics and Computer Science from Swarthmore College</p></li>
-<li><p>Research interests: Bayesian hierarchical models for ecological applications</p>
-<ul>
-<li>Developing models for single species or community abundances</li>
-</ul></li>
-<li><p>Office: Warner 214</p>
-<ul>
-<li><p>If my door is open, come on in! Also feel free to e-mail me.</p></li>
-<li><p>Office hours: Tuesdays 3-4pm and by appointment via Calendly</p></li>
-</ul></li>
-<li><p>Current hobbies: running, mushroom foraging</p></li>
-<li><p>Aspirational hobbies/skills: fly fishing, driving stick shift</p></li>
-</ul>
-</section>
-<section id="about-you" class="slide level2">
-<h2>About you</h2>
-<ul>
-<li><p>Introduce yourself using any or all of the following (the first is mandatory):</p>
-<ul>
-<li>Name</li>
-<li>Year</li>
-<li>Major/minor</li>
-<li>Hobbies</li>
-<li>How do you take your coffee?</li>
-</ul></li>
+<li class="fragment"><p><strong>Git</strong> is a version control system – like “Track Changes” features from Microsoft Word.</p></li>
+<li class="fragment"><p><strong>GitHub</strong> is the home for your Git-based projects on the internet (like DropBox but much better).</p></li>
+<li class="fragment"><p>There are a lot of Git commands and very few people know them all. 99% of the time you will use git to add, commit, push, and pull.</p></li>
+<li class="fragment"><p>We will be using the <strong>GitHub Desktop</strong> application to perform the Git commands in a beginner-friendly way. Our local project in RStudio will be sent to GitHub using the application.</p></li>
 </ul>
 </section></section>
 <section>
-<section id="course-details" class="title-slide slide level1 center">
-<h1>Course details</h1>
+<section id="installation" class="title-slide slide level1 center">
+<h1>Installation</h1>
 
 </section>
-<section id="about-the-course" class="slide level2">
-<h2>About the course</h2>
-<ul>
-<li><p>Course website: https://math218-spring2023.github.io/ (please bookmark!)</p></li>
-<li><p>Learn various models for regression and classification tasks (more on this next lecture)</p>
-<ul>
-<li>Linear and logistic regression, KNN, decision trees + variants, K-means and hierarchical clustering</li>
-</ul></li>
-</ul>
-</section>
-<section id="necessary-background" class="slide level2">
-<h2>Necessary background</h2>
-<div class="cell" data-layout-align="center">
-
-</div>
-<ul>
-<li><p>I assume you have taken Math 118 prior to this course, and are comfortable with <code>tidyverse</code> and RStudio. There is a large emphasis on computing.</p>
-<ul>
-<li>I also assume you are comfortable with knitting. In this course, I ask that you knit to PDF.</li>
-</ul></li>
-<li><p>We will learn how to code in base <code>R</code>, and by the end of the course you should feel comfortable switching between base <code>R</code> and <code>tidyverse</code>.</p></li>
-<li><p>We will focus more on applications and developing intuition. The goal is to begin developing a toolbox of methods that you may use in future analyses.</p></li>
-</ul>
-</section>
-<section id="class-meetings" class="slide level2">
-<h2>Class Meetings</h2>
-<div>
-<ul>
-<li class="fragment">Lecture
-<ul>
-<li class="fragment">Focus on concepts behind statistical learning techniques</li>
-<li class="fragment">Interactive lecture that includes examples and hands-on exercises</li>
-<li class="fragment">Bring fully-charged laptop to every lecture
-<ul>
-<li class="fragment">Please let me know if you do not have access to a laptop</li>
-</ul></li>
-</ul></li>
-<li class="fragment">Lab
-<ul>
-<li class="fragment">Typically occurs on Fridays</li>
-<li class="fragment">Focus on computing using functions provided in <code>R</code> packages</li>
-<li class="fragment">Apply concepts from lecture to case study scenarios</li>
-</ul></li>
-<li class="fragment">Implementation
-<ul>
-<li class="fragment">Some days will be focused on implementing (i.e.&nbsp;coding by hand) methods discussed in lecture</li>
-<li class="fragment">Complete in small groups</li>
-</ul></li>
-</ul>
-</div>
-</section>
-<section id="major-assessments" class="slide level2">
-<h2>Major assessments</h2>
-<div>
-<ul>
-<li class="fragment">One midterm with two components:
-<ul>
-<li class="fragment">Computational component (take-home)</li>
-<li class="fragment">Oral component</li>
-</ul></li>
-<li class="fragment">Final project
-<ul>
-<li class="fragment">Groups of 3-4 students (tentatively)</li>
-<li class="fragment">Presentations during last two days of class*</li>
-<li class="fragment">NO sit-down final</li>
-</ul></li>
-</ul>
-</div>
-</section>
-<section id="grading" class="slide level2">
-<h2>Grading</h2>
-<p>Assignments</p>
+<section id="download-instructions" class="slide level2 scrollable">
+<h2>Download Instructions</h2>
 <ol type="1">
-<li>Labs (30%)</li>
-<li>Implementation deliverables (20%)</li>
-<li>Midterm (20%)</li>
-<li>Final project (25%)</li>
-<li>Participation (5%)</li>
+<li class="fragment"><p>Accept the e-mailed GitHub invitation to join our course organization. If you did not receive an invitation, that means I do not have your GitHub username!</p></li>
+<li class="fragment"><p>Go to <a href="https://desktop.github.com/" class="uri">https://desktop.github.com/</a> and download the GitHub Desktop application. Mac users: check if you need to download for <strong>Apple silicon Mac</strong>.</p></li>
+<li class="fragment"><p>A zipped file will appear in your Downloads folder. Please unzip the file.</p></li>
+<li class="fragment"><p>A purple GitHub Desktop icon with the <a href="https://en.wikipedia.org/wiki/GitHub#Mascot">octocat</a> icon will appear. I suggest dragging this to your dock.</p></li>
+</ol>
+<p><img data-src="figs/git/github_zip.png" class="fragment" width="507"></p>
+<ol start="5" type="1">
+<li class="fragment">Open GitHub Desktop. At some point, you might get the following pop-up:</li>
+</ol>
+<p><img data-src="figs/git/github_applications.png" class="fragment" width="421"></p>
+<p>If so, check the box and choose the white “Not Now” button</p>
+</section>
+<section id="syncing-your-github-account" class="slide level2 scrollable">
+<h2>Syncing your GitHub Account</h2>
+<ul>
+<li class="fragment"><p>Now we need to sync your GitHub Desktop application with your GitHub account</p>
+<ul>
+<li class="fragment">Mac users: GitHub Desktop -&gt; Preference -&gt; Accounts -&gt; Sign-in</li>
+<li class="fragment">Windows users: File -&gt; Options -&gt; Accounts -&gt; Sign-in</li>
+</ul></li>
+<li class="fragment"><p>You will be directed to github.com to sign-in. Enter your account information. Once authenticated, your GitHub Desktop client should be set up!</p></li>
+</ul>
+<p><img data-src="figs/git/mac-choose-preferences.png" class="fragment" width="358"></p>
+<p><img data-src="figs/git/windows-choose-options.png" class="fragment" width="359"></p>
+</section></section>
+<section>
+<section id="using-github-desktop" class="title-slide slide level1 center">
+<h1>Using GitHub Desktop</h1>
+
+</section>
+<section id="cloning-a-github-repo" class="slide level2">
+<h2>Cloning a GitHub repo</h2>
+<ul>
+<li class="fragment"><p>In this course, I will create your GitHub repositories (i.e.&nbsp;projects) for you. I have a master repo, and I distribute copies to each one of you that only you (and in the future, your group members) can access</p></li>
+<li class="fragment"><p>Go to the course organization on GitHub (either via github.com or by clicking on the octocat on the course website)</p></li>
+<li class="fragment"><p>Find the repo with the prefix <code>lab-01-roulette-</code></p></li>
+</ul>
+</section>
+<section id="cloning-a-github-repo-cont." class="slide level2 scrollable">
+<h2>Cloning a GitHub repo (cont.)</h2>
+<ul>
+<li class="fragment"><p>Click on the green <strong>Code</strong> button, and select the option <strong>Open with GitHub Desktop</strong></p>
+<p><img data-src="figs/git/clone.png" width="541"></p></li>
+<li class="fragment"><p>The GitHub Desktop application will open up, with a white window that says “Clone a Repository”. <strong>Important:</strong> in the second line that says “Local Path”, there is a button that says <code>Choose…</code> Click on it, and select the Math 218 folder you created from this course. Then hit the blue <code>Clone</code> button.</p>
+<p><img data-src="figs/git/find_folder.png" width="563"></p></li>
+</ul>
+</section>
+<section id="committing-and-pushing-changes" class="slide level2">
+<h2>Committing and pushing changes</h2>
+<ul>
+<li class="fragment"><p>When you work on a project <em>locally</em> (i.e.&nbsp;on your own machine), you will want to periodically “back-up” your changes in case something terrible happens to your laptop, or you need to share your progress with a team member</p></li>
+<li class="fragment"><p>The process is done in stages:</p>
+<ul>
+<li class="fragment"><p><code>Add</code>ing your changes,</p></li>
+<li class="fragment"><p><code>Commit</code>ing your changes, and</p></li>
+<li class="fragment"><p><code>Push</code>ing your changes</p></li>
+</ul></li>
+<li class="fragment"><p>GitHub Desktop automatically does the <code>add</code> step for you, but <u>you</u> need to explicitly <code>commit</code> and <code>push</code>!</p></li>
+</ul>
+</section>
+<section id="practice" class="slide level2 scrollable">
+<h2>Practice</h2>
+<ol type="1">
+<li class="fragment"><p>Open up the <code>lab-01-roulette.Rmd</code> file, and edit your name in the <code>author</code> section of the YAML, then knit the document.</p></li>
+<li class="fragment"><p>Open GitHub Desktop and make sure the Current Repository is the project of interest.</p>
+<ul>
+<li class="fragment">On the left-hand side, you should see files you either <em>edited</em> or <em>created,</em> with a checked blue box. This is correct – GitHub Desktop has automatically done the <code>add</code> step for you.</li>
+</ul></li>
+<li class="fragment"><p><strong>Commit</strong>: on the bottom left:</p>
+<ol type="i">
+<li class="fragment"><p>Type a <em>brief</em> comment in the small text-box next to your GitHub profile photo/graphic.</p></li>
+<li class="fragment"><p>Push the blue <code>Commit to main</code> button.</p></li>
+</ol></li>
+<li class="fragment"><p><strong>Push</strong>: on the top right:</p>
+<ol type="i">
+<li class="fragment"><p>There should be a tab that says <code>Push origin</code> with an upward arrow with a number next to it. That means you are ready! Click the button to <code>push</code> your changes to origin.</p></li>
+<li class="fragment"><p>You will know the push was successful if this tab returns to say <code>Fetch origin</code></p></li>
+</ol></li>
 </ol>
 </section>
-<section id="important-dates" class="slide level2">
-<h2>Important dates</h2>
+<section id="checking-your-changes" class="slide level2">
+<h2>Checking your changes</h2>
 <ul>
-<li><p>Friday, 3/31: take-home midterm</p></li>
-<li><p>Monday, 4/3: oral midterm</p></li>
-<li><div class="important">
-<p>Friday, 4/14: Spring symposium (no class)</p>
-</div></li>
-<li><p>Monday, 4/17: final day to drop classes :(</p></li>
-<li><div class="important">
-<p>Friday, 5/13 and Monday, 5/15*: project presentations</p>
-</div></li>
+<li class="fragment"><p>Go to the corresponding repository on github.com</p></li>
+<li class="fragment"><p>Check to see if the current version of <code>lab-01-roulette.Rmd</code> file has your updated author name. If it doesn’t, that means the push was not successful.</p></li>
 </ul>
 </section></section>
-<section>
-<section id="your-turn" class="title-slide slide level1 center">
-<h1>Your Turn!</h1>
-
-</section>
-<section id="create-a-github-account" class="slide level2">
-<h2>Create a GitHub account</h2>
-<div class="instructions">
-<p>Go to https://github.com/, and create an account (unless you already have one). After you create your account, click <a href="https://forms.gle/W8Aw1odtjgL41S2u6">here</a> and enter your GitHub username.</p>
-</div>
-<p>Tips for creating a username from <a href="http://happygitwithr.com/github-acct.html#username-advice">Happy Git with R</a>.</p>
+<section id="common-issues" class="title-slide slide level1 center">
+<h1>Common issues</h1>
 <ul>
-<li>Incorporate your actual name!</li>
-<li>Reuse your username from other contexts if you can.</li>
-<li>Shorter is better than longer; be as unique as possible in as few characters as possible.</li>
-<li>Avoid words laden with special meaning in programming, like <code>NA</code>.</li>
-</ul>
-</section>
-<section id="playing-with-base-r" class="slide level2">
-<h2>Playing with base R</h2>
-<ul>
-<li>Create a folder on your desktop called Math218</li>
-<li>Open RStudio and create a new Rmarkdown document.
-<ul>
-<li>We will work through some coding exercises. The associated code can be found in “Live Code 01”</li>
-</ul></li>
-</ul>
-</section></section>
-<section id="to-do" class="title-slide slide level1 center">
-<h1>TO DO</h1>
-<!-- - Sign up for brief one-on-one meeting with me so I can get to know you -->
-<ul>
-<li><p>Enter your GitHub username into the Google form</p>
-<ul>
-<li>You will soon receive and e-mail asking you to join our Math 218 GitHub organization. Please accept it!</li>
-</ul></li>
-<li><p>Try the practice exercises involved with “Live code 01”</p></li>
+<li class="fragment"><p>Not setting the “Current Repository” to the repository of interest</p></li>
+<li class="fragment"><p>Forgetting to push after committing</p></li>
+<li class="fragment"><p>Not pushing often enough (I suggest pushing every hour, or after you’re done working for the day)</p></li>
 </ul>
 
 <div class="footer footer-default">
@@ -717,44 +661,6 @@
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

@@ -1,0 +1,124 @@
+---
+title: "Installation"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+# Git and GitHub
+
+## Version control
+
+-   **Git** is a version control system -- like "Track Changes" features from Microsoft Word.
+
+-   **GitHub** is the home for your Git-based projects on the internet (like DropBox but much better).
+
+-   There are a lot of Git commands and very few people know them all. 99% of the time you will use git to add, commit, push, and pull.
+
+-   We will be using the **GitHub Desktop** application to perform the Git commands in a beginner-friendly way. Our local project in RStudio will be sent to GitHub using the application.
+
+# Installation
+
+## Download Instructions {.scrollable}
+
+1.  Accept the e-mailed GitHub invitation to join our course organization. If you did not receive an invitation, that means I do not have your GitHub username!
+
+2.  Go to <https://desktop.github.com/> and download the GitHub Desktop application. Mac users: check if you need to download for **Apple silicon Mac**.
+
+3.  A zipped file will appear in your Downloads folder. Please unzip the file.
+
+4.  A purple GitHub Desktop icon with the [octocat](https://en.wikipedia.org/wiki/GitHub#Mascot) icon will appear. I suggest dragging this to your dock.
+
+![](figs/git/github_zip.png){.fragment width="507"}
+
+5.  Open GitHub Desktop. At some point, you might get the following pop-up:
+
+![](figs/git/github_applications.png){.fragment width="421"}
+
+If so, check the box and choose the white "Not Now" button
+
+## Syncing your GitHub Account {.scrollable}
+
+-   Now we need to sync your GitHub Desktop application with your GitHub account
+
+    -   Mac users: GitHub Desktop -\> Preference -\> Accounts -\> Sign-in
+    -   Windows users: File -\> Options -\> Accounts -\> Sign-in
+
+-   You will be directed to github.com to sign-in. Enter your account information. Once authenticated, your GitHub Desktop client should be set up!
+
+![](figs/git/mac-choose-preferences.png){.fragment width="358"}
+
+![](figs/git/windows-choose-options.png){.fragment width="359"}
+
+# Using GitHub Desktop
+
+## Cloning a GitHub repo
+
+-   In this course, I will create your GitHub repositories (i.e. projects) for you. I have a master repo, and I distribute copies to each one of you that only you (and in the future, your group members) can access
+
+-   Go to the course organization on GitHub (either via github.com or by clicking on the octocat on the course website)
+
+-   Find the repo with the prefix `lab-01-roulette-`
+
+## Cloning a GitHub repo (cont.) {.scrollable}
+
+-   Click on the green **Code** button, and select the option **Open with GitHub Desktop**
+
+    ![](figs/git/clone.png){width="541"}
+
+-   The GitHub Desktop application will open up, with a white window that says "Clone a Repository". **Important:** in the second line that says "Local Path", there is a button that says `Choose…` Click on it, and select the Math 218 folder you created from this course. Then hit the blue `Clone` button.
+
+    ![](figs/git/find_folder.png){width="563"}
+
+## Committing and pushing changes
+
+-   When you work on a project *locally* (i.e. on your own machine), you will want to periodically "back-up" your changes in case something terrible happens to your laptop, or you need to share your progress with a team member
+
+-   The process is done in stages:
+
+    -   `Add`ing your changes,
+
+    -   `Commit`ing your changes, and
+
+    -   `Push`ing your changes
+
+-   GitHub Desktop automatically does the `add` step for you, but [you]{.underline} need to explicitly `commit` and `push`!
+
+## Practice {.scrollable}
+
+1.  Open up the `lab-01-roulette.Rmd` file, and edit your name in the `author` section of the YAML, then knit the document.
+
+2.  Open GitHub Desktop and make sure the Current Repository is the project of interest.
+
+    -   On the left-hand side, you should see files you either *edited* or *created,* with a checked blue box. This is correct -- GitHub Desktop has automatically done the `add` step for you.
+
+3.  **Commit**: on the bottom left:
+
+    i.  Type a *brief* comment in the small text-box next to your GitHub profile photo/graphic.
+
+    ii. Push the blue `Commit to main` button.
+
+4.  **Push**: on the top right:
+
+    i.  There should be a tab that says `Push origin` with an upward arrow with a number next to it. That means you are ready! Click the button to `push` your changes to origin.
+
+    ii. You will know the push was successful if this tab returns to say `Fetch origin`
+
+## Checking your changes
+
+-   Go to the corresponding repository on github.com
+
+-   Check to see if the current version of `lab-01-roulette.Rmd` file has your updated author name. If it doesn't, that means the push was not successful.
+
+# Common issues
+
+-   Not setting the "Current Repository" to the repository of interest
+
+-   Forgetting to push after committing
+
+-   Not pushing often enough (I suggest pushing every hour, or after you're done working for the day)

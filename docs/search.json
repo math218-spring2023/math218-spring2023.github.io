@@ -123,7 +123,7 @@
     "href": "slides/slides-01-what-is.html#section-1",
     "title": "What is statistical learning?",
     "section": "",
-    "text": "# from the vegan library\ndata(\"mite.env\")\nhead(mite.env)\n\n  SubsDens WatrCont Substrate Shrub    Topo\n1    39.18   350.15   Sphagn1   Few Hummock\n2    54.99   434.81    Litter   Few Hummock\n3    46.07   371.72 Interface   Few Hummock\n4    48.19   360.50   Sphagn1   Few Hummock\n5    23.55   204.13   Sphagn1   Few Hummock\n6    57.32   311.55   Sphagn1   Few Hummock\n\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)"
+    "text": "# from the vegan library\ndata(\"mite\")\nmite %>%\n  head()\n\n  Brachy PHTH HPAV RARD SSTR Protopl MEGR MPRO TVIE HMIN HMIN2 NPRA TVEL ONOV\n1     17    5    5    3    2       1    4    2    2    1     4    1   17    4\n2      2    7   16    0    6       0    4    2    0    0     1    3   21   27\n3      4    3    1    1    2       0    3    0    0    0     6    3   20   17\n4     23    7   10    2    2       0    4    0    1    2    10    0   18   47\n5      5    8   13    9    0      13    0    0    0    3    14    3   32   43\n6     19    7    5    9    3       2    3    0    0   20    16    2   13   38\n  SUCT LCIL Oribatl1 Ceratoz1 PWIL Galumna1 Stgncrs2 HRUF Trhypch1 PPEL NCOR\n1    9   50        3        1    1        8        0    0        0    0    0\n2   12  138        6        0    1        3        9    1        1    1    2\n3   10   89        3        0    2        1        8    0        3    0    2\n4   17  108       10        1    0        1        2    1        2    1    3\n5   27    5        1        0    5        2        1    0        1    0    0\n6   39    3        5        0    1        1        8    0        4    0    1\n  SLAT FSET Lepidzts Eupelops Miniglmn LRUG PLAG2 Ceratoz3 Oppiminu Trimalc2\n1    0    0        0        0        0    0     0        0        0        0\n2    2    2        1        0        0    0     0        0        0        0\n3    0    8        0        0        0    0     0        0        0        0\n4    2   12        0        0        0    0     0        0        0        0\n5    0   12        2        0        0    0     0        0        0        0\n6    0   10        0        0        0    0     0        0        0        0"
   },
   {
     "objectID": "slides/slides-01-what-is.html#eda",
@@ -417,7 +417,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Note: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nSlides forthcoming\n\n\n\n\nF 2/17\nLab day\nMore R coding\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nLinear regression\n\n\n\n\n\nR 2/23\nLinear regression (cont.)\n\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nLogistic regression\n\n\n\n\n\nR 3/2\nLogistic regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
+    "text": "Note: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nSlides forthcoming\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nLinear regression\n\n\n\n\n\nR 2/23\nLinear regression (cont.)\n\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nLogistic regression\n\n\n\n\n\nR 3/2\nLogistic regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
   },
   {
     "objectID": "slides/slides-00-welcome.html#assignments",
@@ -431,14 +431,14 @@
     "href": "slides/slides-00-welcome.html#major-assessments",
     "title": "Welcome to statistical learning!",
     "section": "Major assessments",
-    "text": "Major assessments\n\n\nOne midterm with two components:\n\nComputational component (take-home)\nOral component\n\nFinal project\n\nGroups of 3-4 students (tentatively)\nPresentations during last two days of class\nNO sit-down final"
+    "text": "Major assessments\n\n\nOne midterm with two components:\n\nComputational component (take-home)\nOral component\n\nFinal project\n\nGroups of 3-4 students (tentatively)\nPresentations during last two days of class*\nNO sit-down final"
   },
   {
     "objectID": "slides/slides-00-welcome.html#important-dates",
     "href": "slides/slides-00-welcome.html#important-dates",
     "title": "Welcome to statistical learning!",
     "section": "Important dates",
-    "text": "Important dates\n\nFriday, 3/31: take-home midterm\nMonday, 4/3: oral midterm\n\nFriday, 4/14: Spring symposium (no class)\n\nMonday, 4/17: final day to drop classes :(\n\nFriday, 5/13 and Monday, 5/15: project presentations"
+    "text": "Important dates\n\nFriday, 3/31: take-home midterm\nMonday, 4/3: oral midterm\n\nFriday, 4/14: Spring symposium (no class)\n\nMonday, 4/17: final day to drop classes :(\n\nFriday, 5/13 and Monday, 5/15*: project presentations"
   },
   {
     "objectID": "slides/slides-00-welcome.html#playing-with-base-r",
@@ -536,7 +536,7 @@
     "href": "slides/slides-00-welcome.html#about-me",
     "title": "Welcome to statistical learning!",
     "section": "About me",
-    "text": "About me\n\nPhD in Statistical Science from Duke University, BA in Mathematics and Computer Science from Swarthmore College\nResearch interests: Bayesian hierarchical models for ecological applications\n\nDeveloping models for single species or community abundances\n\nOffice: Warner 214\n\nIf my door is open, come on in! Also feel free to e-mail me.\nOffice hours: TBD\n\nCurrent hobbies: running, mushroom foraging\nAspirational hobbies/skills: fly fishing, driving stick shift"
+    "text": "About me\n\nPhD in Statistical Science from Duke University, BA in Mathematics and Computer Science from Swarthmore College\nResearch interests: Bayesian hierarchical models for ecological applications\n\nDeveloping models for single species or community abundances\n\nOffice: Warner 214\n\nIf my door is open, come on in! Also feel free to e-mail me.\nOffice hours: Tuesdays 3-4pm and by appointment via Calendly\n\nCurrent hobbies: running, mushroom foraging\nAspirational hobbies/skills: fly fishing, driving stick shift"
   },
   {
     "objectID": "slides/slides-00-welcome.html#about-you",
@@ -551,5 +551,75 @@
     "title": "Welcome to statistical learning!",
     "section": "About the course",
     "text": "About the course\n\nCourse website: https://math218-spring2023.github.io/ (please bookmark!)\nLearn various models for regression and classification tasks (more on this next lecture)\n\nLinear and logistic regression, KNN, decision trees + variants, K-means and hierarchical clustering"
+  },
+  {
+    "objectID": "slides/slides-00-installation.html#version-control",
+    "href": "slides/slides-00-installation.html#version-control",
+    "title": "Installation",
+    "section": "Version control",
+    "text": "Version control\n\nGit is a version control system – like “Track Changes” features from Microsoft Word.\nGitHub is the home for your Git-based projects on the internet (like DropBox but much better).\nThere are a lot of Git commands and very few people know them all. 99% of the time you will use git to add, commit, push, and pull.\nWe will be using the GitHub Desktop application to perform the Git commands in a beginner-friendly way. Our local project in RStudio will be sent to GitHub using the application."
+  },
+  {
+    "objectID": "slides/slides-00-installation.html#download-instructions",
+    "href": "slides/slides-00-installation.html#download-instructions",
+    "title": "Installation",
+    "section": "Download Instructions",
+    "text": "Download Instructions\n\nAccept the e-mailed GitHub invitation to join our course organization. If you did not receive an invitation, that means I do not have your GitHub username!\nGo to https://desktop.github.com/ and download the GitHub Desktop application. Mac users: check if you need to download for Apple silicon Mac.\nA zipped file will appear in your Downloads folder. Please unzip the file.\nA purple GitHub Desktop icon with the octocat icon will appear. I suggest dragging this to your dock.\n\n\n\nOpen GitHub Desktop. At some point, you might get the following pop-up:\n\n\nIf so, check the box and choose the white “Not Now” button"
+  },
+  {
+    "objectID": "slides/slides-00-installation.html#syncing-your-github-account",
+    "href": "slides/slides-00-installation.html#syncing-your-github-account",
+    "title": "Installation",
+    "section": "Syncing your GitHub Account",
+    "text": "Syncing your GitHub Account\n\nNow we need to sync your GitHub Desktop application with your GitHub account\n\nMac users: GitHub Desktop -> Preference -> Accounts -> Sign-in\nWindows users: File -> Options -> Accounts -> Sign-in\n\nYou will be directed to github.com to sign-in. Enter your account information. Once authenticated, your GitHub Desktop client should be set up!"
+  },
+  {
+    "objectID": "slides/slides-00-installation.html#cloning-a-github-repo",
+    "href": "slides/slides-00-installation.html#cloning-a-github-repo",
+    "title": "Installation",
+    "section": "Cloning a GitHub repo",
+    "text": "Cloning a GitHub repo\n\nIn this course, I will create your GitHub repositories (i.e. projects) for you. I have a master repo, and I distribute copies to each one of you that only you (and in the future, your group members) can access\nGo to the course organization on GitHub (either via github.com or by clicking on the octocat on the course website)\nFind the repo with the prefix lab-01-roulette-"
+  },
+  {
+    "objectID": "slides/slides-00-installation.html#cloning-a-github-repo-cont.",
+    "href": "slides/slides-00-installation.html#cloning-a-github-repo-cont.",
+    "title": "Installation",
+    "section": "Cloning a GitHub repo (cont.)",
+    "text": "Cloning a GitHub repo (cont.)\n\nClick on the green Code button, and select the option Open with GitHub Desktop\n\nThe GitHub Desktop application will open up, with a white window that says “Clone a Repository”. Important: in the second line that says “Local Path”, there is a button that says Choose… Click on it, and select the Math 218 folder you created from this course. Then hit the blue Clone button."
+  },
+  {
+    "objectID": "slides/slides-00-installation.html#committing-and-pushing-changes",
+    "href": "slides/slides-00-installation.html#committing-and-pushing-changes",
+    "title": "Installation",
+    "section": "Committing and pushing changes",
+    "text": "Committing and pushing changes\n\nWhen you work on a project locally (i.e. on your own machine), you will want to periodically “back-up” your changes in case something terrible happens to your laptop, or you need to share your progress with a team member\nThe process is done in stages:\n\nAdding your changes,\nCommiting your changes, and\nPushing your changes\n\nGitHub Desktop automatically does the add step for you, but you need to explicitly commit and push!"
+  },
+  {
+    "objectID": "slides/slides-00-installation.html#practice",
+    "href": "slides/slides-00-installation.html#practice",
+    "title": "Installation",
+    "section": "Practice",
+    "text": "Practice\n\nOpen up the lab-01-roulette.Rmd file, and edit your name in the author section of the YAML, then knit the document.\nOpen GitHub Desktop and make sure the Current Repository is the project of interest.\n\nOn the left-hand side, you should see files you either edited or created, with a checked blue box. This is correct – GitHub Desktop has automatically done the add step for you.\n\nCommit: on the bottom left:\n\nType a brief comment in the small text-box next to your GitHub profile photo/graphic.\nPush the blue Commit to main button.\n\nPush: on the top right:\n\nThere should be a tab that says Push origin with an upward arrow with a number next to it. That means you are ready! Click the button to push your changes to origin.\nYou will know the push was successful if this tab returns to say Fetch origin"
+  },
+  {
+    "objectID": "slides/slides-00-installation.html#checking-your-changes",
+    "href": "slides/slides-00-installation.html#checking-your-changes",
+    "title": "Installation",
+    "section": "Checking your changes",
+    "text": "Checking your changes\n\nGo to the corresponding repository on github.com\nCheck to see if the current version of lab-01-roulette.Rmd file has your updated author name. If it doesn’t, that means the push was not successful."
+  },
+  {
+    "objectID": "slides/slides-01-what-is.html#section-2",
+    "href": "slides/slides-01-what-is.html#section-2",
+    "title": "What is statistical learning?",
+    "section": "",
+    "text": "# from the vegan library\ndata(\"mite.env\")\nhead(mite.env)\n\n  SubsDens WatrCont Substrate Shrub    Topo\n1    39.18   350.15   Sphagn1   Few Hummock\n2    54.99   434.81    Litter   Few Hummock\n3    46.07   371.72 Interface   Few Hummock\n4    48.19   360.50   Sphagn1   Few Hummock\n5    23.55   204.13   Sphagn1   Few Hummock\n6    57.32   311.55   Sphagn1   Few Hummock\n\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#grading",
+    "href": "slides/slides-00-welcome.html#grading",
+    "title": "Welcome to statistical learning!",
+    "section": "Grading",
+    "text": "Grading\nAssignments\n\nLabs (30%)\nImplementation deliverables (20%)\nMidterm (20%)\nFinal project (25%)\nParticipation (5%)"
   }
 ]
