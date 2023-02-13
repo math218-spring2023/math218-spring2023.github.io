@@ -1,26 +1,5 @@
 [
   {
-    "objectID": "labs/lab-01-roulette.html",
-    "href": "labs/lab-01-roulette.html",
-    "title": "Lab 01: Roulette",
-    "section": "",
-    "text": "We will simulate the casino game of American roulette! On an American roulette wheel, there are 38 equally-sized spaces that differ in color and number value:\n\nTwo spaces are green, and are labelled 0 and 00\nThe remaining spaces alternate red and black and take on the values 1-36\n\nThere is no particular order to the numbers\n\n\nThe game is simple: a ball is dropped and spins along the roulette until it settles in one of the 38 spaces. Each space has an equal chance of being landed on.\n\n\n\n\n\nDiffering wagers or bets can be made on where the ball will end up landing. For example, it is common to bet on a color. If you “bet on black”, you think the ball will land in a black-colored space. Or you might “bet on 1-18”, which means you think the ball will land in a space with a number between 1 and 18, inclusive.\nYou wager some money when you make a bet. For example, if I bet $5 and I win, I will get my original $5 back and also gain $5 from the house. So I net $5. If I lose, then the house takes my $5 and I net -$5. In summary:\n\nIf I win, I net the amount that I bet\nIf I lose, I net the negative amount that I bet\n\nIn either case, your net gain will be either positive or negative.\nBecause this is a casino game, we know that the house always wins. So, the purpose of this assignment is to simulate/demonstrate that the player will always lose money in the long run."
-  },
-  {
-    "objectID": "labs/lab-01-roulette.html#assignment",
-    "href": "labs/lab-01-roulette.html#assignment",
-    "title": "Lab 01: Roulette",
-    "section": "Assignment",
-    "text": "Assignment\nImagine that you have unlimited funds and will play roulette n number of times. You can choose the value of n, but be sure to store it as a variable for reproducibility. You will always bet on red and wager the same amount of money. For each one of the n rounds, keep track of the net gain. At the end of your gambling, make a plot showing the cumulative gains over the n iterations. That is, make a plot with 1, 2, …, n on the x-axis. The y-coordinate associated with each x-coordinate is the total/net gains up to that point. Comment on your plot: how are your net earnings in the short and long run?\n\nDetails\nAssume that the red spaces take on the values (2, 4, 6, …, 34, 36) and the black spaces take on the values (1, 3, 4, …, 35). You can decide how you would like to represent the two green spaces.\nHere is some structure that might help you design your code: you will need to create a for loop where on every iteration you should:\n\n“Spin” the roulette\nEvaluate how the outcome of your spin compares to your bet\nMake note of the net gain\n\nTo create the final plot, consider making a data frame that has two columns: one for the iterations, and another for the cumulative net gains.\n\n\nConcepts used\n\nfor loops\nConditional statements\nComparing R objects\nCreating and modifying vectors\nWorking with GitHub: try to regularly commit your changes and push them back to GitHub!"
-  },
-  {
-    "objectID": "labs/lab-01-roulette.html#submission-details",
-    "href": "labs/lab-01-roulette.html#submission-details",
-    "title": "Lab 01: Roulette",
-    "section": "Submission details",
-    "text": "Submission details\nKnit, commit, and push your project back to github.com using the GitHub Desktop client.\nSubmit your knitted PDF onto Canvas."
-  },
-  {
     "objectID": "assignments.html",
     "href": "assignments.html",
     "title": "Assignments",
@@ -32,7 +11,7 @@
     "href": "assignments.html#labs",
     "title": "Assignments",
     "section": "Labs",
-    "text": "Labs\n\n\n\n\n\n\n\nLab 01: Roulette\n\n\nCoding roulette\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Labs\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments.html#implementations",
@@ -417,7 +396,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Note: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nSlides forthcoming\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nLinear regression\n\n\n\n\n\nR 2/23\nLinear regression (cont.)\n\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nLogistic regression\n\n\n\n\n\nR 3/2\nLogistic regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
+    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nSlides forthcoming\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nLinear regression\n\n\n\n\n\nR 2/23\nLinear regression (cont.)\n\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nLogistic regression\n\n\n\n\n\nR 3/2\nLogistic regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
   },
   {
     "objectID": "slides/slides-00-welcome.html#assignments",
@@ -621,5 +600,47 @@
     "title": "Welcome to statistical learning!",
     "section": "Grading",
     "text": "Grading\nAssignments\n\nLabs (30%)\nImplementation deliverables (20%)\nMidterm (20%)\nFinal project (25%)\nParticipation (5%)"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#excused-absences",
+    "href": "slides/slides-00-welcome.html#excused-absences",
+    "title": "Welcome to statistical learning!",
+    "section": "Excused Absences",
+    "text": "Excused Absences\n\nStudents who miss a class due to a scheduled varsity trip, religious holiday, or short-term illness should fill out the respective form.\n\nThese excused absences do not excuse you from assigned work.\n\nIf you have a personal or family emergency or chronic health condition that affects your ability to participate in class, please contact your academic dean’s office.\nExam dates cannot be changed and no make-up exams will be given."
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#late-work-and-regrade-requests",
+    "href": "slides/slides-00-welcome.html#late-work-and-regrade-requests",
+    "title": "Welcome to statistical learning!",
+    "section": "Late Work and Regrade Requests",
+    "text": "Late Work and Regrade Requests\n\nHomework assignments:\n\nAfter the assigned deadline, there is a 10% penalty for each day the assignment is late\nPlease communicate with me early if you will need a homework extension!\n\nLate work will not be accepted for the midterm or final project.\nRegrade requests must be submitted within one week of when the assignment is returned"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#academic-honesty-and-reusing-code",
+    "href": "slides/slides-00-welcome.html#academic-honesty-and-reusing-code",
+    "title": "Welcome to statistical learning!",
+    "section": "Academic Honesty and Reusing Code",
+    "text": "Academic Honesty and Reusing Code\n\nAll work for this class should be done in accordance with the Middlebury Honor code. Any violations will automatically result in a grade of 0 on the assignment and will be reported.\nUnless explicitly stated otherwise, you may make use of online resources (e.g. StackOverflow) for coding examples on assignments. If you directly use code from an outside source (or use it as inspiration), you must or explicitly cite where you obtained the code. Any recycled code that is discovered and is not explicitly cited will be treated as plagiarism.\nOn individual assignments, you may discuss the assignment with one another; however, you may not directly share code or write up with other students. This includes copy-and-paste sharing, as well as showing your screen with the code displayed to another student.\nOn team assignments, you may not directly share code or write up with another team. Unauthorized sharing of the code or write up will be considered a violation for all students involved.\nChatGPT most likely will not be useful in this class. However, if you use it on an assignment, please let me know in what capacity you used it by including a comment in your assignment."
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#inclusion",
+    "href": "slides/slides-00-welcome.html#inclusion",
+    "title": "Welcome to statistical learning!",
+    "section": "Inclusion",
+    "text": "Inclusion\n\nIn this course, we will strive to create a learning environment that is welcoming to all students. If there is any aspect of the class that is not welcoming or accessible to you, please let me know immediately.\nAdditionally, if you are experiencing something outside of class that is affecting your performance in the course, please feel free to talk with me and/or your academic dean."
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#coding-exercise",
+    "href": "slides/slides-00-welcome.html#coding-exercise",
+    "title": "Welcome to statistical learning!",
+    "section": "“Coding” exercise",
+    "text": "“Coding” exercise\nLet’s create the following plot together:"
+  },
+  {
+    "objectID": "slides/slides-00-welcome.html#data",
+    "href": "slides/slides-00-welcome.html#data",
+    "title": "Welcome to statistical learning!",
+    "section": "Data",
+    "text": "Data\n\ncat_lovers %>%\n  datatable(options = list(pageLength = 5))"
   }
 ]

@@ -27,6 +27,8 @@ editor: visual
 
 -   Aspirational hobbies/skills: fly fishing, driving stick shift
 
+
+
 ## About you
 
 -   Introduce yourself using any or all of the following (the first is mandatory):
@@ -137,6 +139,46 @@ Assignments
 -   ::: important
     Friday, 5/13 and Monday, 5/15\*: project presentations
     :::
+    
+## Excused Absences
+
+- Students who miss a class due to a scheduled varsity trip, religious holiday, or short-term illness should fill out the respective form.
+     - These excused absences do not excuse you from assigned work. 
+     
+- If you have a personal or family emergency or chronic health condition that affects your ability to participate in class, please contact your academic dean’s office.
+
+- Exam dates cannot be changed and no make-up exams will be given. 
+
+## Late Work and Regrade Requests
+
+- Homework assignments: 
+    - After the assigned deadline, there is a 10% penalty for each day the assignment is late
+    - Please communicate with me early if you will need a homework extension!
+    
+- Late work will not be accepted for the midterm or final project. 
+
+- Regrade requests must be submitted within one week of when the assignment is returned 
+
+## Academic Honesty and Reusing Code {.scrollable}
+
+- All work for this class should be done in accordance with the Middlebury Honor code. Any violations will automatically result in a grade of 0 on the assignment and will be reported.
+
+- Unless explicitly stated otherwise, you may make use of online resources (e.g. StackOverflow) for coding examples on assignments. If you directly use code from an outside source (or use it as inspiration), you must or explicitly cite where you obtained the code. Any recycled code that is discovered and is not explicitly cited will be treated as plagiarism.
+
+- On individual assignments, you may discuss the assignment with one another; however, you may not directly share code or write up with other students. This includes copy-and-paste sharing, as well as showing your screen with the code displayed to another student.
+
+- On team assignments, you may not directly share code or write up with another team. Unauthorized sharing of the code or write up will be considered a violation for all students involved. 
+
+- ChatGPT most likely will not be useful in this class. However, if you use it on an assignment, please let me know in what capacity you used it by including a comment in your assignment.
+
+## Inclusion 
+
+- In this course, we will strive to create a learning environment that is welcoming to all students. If there is any aspect of the class that is not welcoming or accessible to you, please let me know immediately. 
+
+
+- Additionally, if you are experiencing something outside of class that is affecting your performance in the course, please feel free to talk with me and/or your academic dean. 
+
+
 
 # Your Turn!
 
@@ -152,6 +194,38 @@ Tips for creating a username from [Happy Git with R](http://happygitwithr.com/gi
 -   Reuse your username from other contexts if you can.
 -   Shorter is better than longer; be as unique as possible in as few characters as possible.
 -   Avoid words laden with special meaning in programming, like `NA`.
+
+
+## "Coding" exercise
+
+Let's create the following plot together:
+
+```{r echo = F, fig.align="center", fig.width=8, fig.height=5}
+library(DT)
+cat_lovers <- read.csv("data/cat-lovers.csv")
+cat_df <- cat_lovers %>%
+  mutate(number_of_cats = case_when(
+    name == "Ginger Clark" ~ "2",
+    name == "Doug Bass"    ~ "3",
+    TRUE                   ~ number_of_cats
+    ),
+    number_of_cats = as.numeric(number_of_cats))
+cat_df %>%
+  ggplot(., aes(x = number_of_cats))+
+  geom_bar()+
+  ggtitle(paste0("Average number of cats: ", round(mean(cat_df$number_of_cats), 2))) +
+  xlab("Number of cats")+
+  theme(text = element_text(size = 16))
+```
+
+
+## Data
+
+```{r}
+cat_lovers %>%
+  datatable(options = list(pageLength = 5))
+```
+
 
 ## Playing with base R
 
