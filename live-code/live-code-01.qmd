@@ -41,7 +41,7 @@ x
 What do you think happens if `a > b`? Try the following code for yourself:
 
 ```{r}
-y <- -10:-1
+y <- 10:1
 ```
 
 ### The `rep()` function
@@ -62,7 +62,7 @@ Matrices are the 2D extension of the one-dimensional vectors. When a matrix has 
 matrix(NA, nrow = 2, ncol = 3)
 ```
 
-This code above creates a `2 x 3` matrix of `NA` values. The first argument takes in the elements you want to fill the matrix with. This can either by a single value, or a single vector of values.
+This code above creates a `2 x 3` matrix of `NA` values. The first argument takes in the elements you want to fill the matrix with. This can either be a single value, or a single vector of values.
 
 ## Data frames
 
@@ -145,9 +145,9 @@ my_df[,1]
 
 The `1` after the comma tells `R` that we want to focus on column `1`.
 
-As do not type anything before the comma, `R` reads this as: "since you did not want a specific row, so you must want all the rows".
+As I do not type anything before the comma, `R` reads this as: "since you did not want a specific row, you must want all the rows".
 
-How do you think we would access the third row? How about both the first and second row?
+How do you think we would access the third column? How about both the first and second row?
 
 ## Functions
 
@@ -159,7 +159,7 @@ The function `mean()` takes in a vector, and returns the mean of the vector.
 mean(x)
 ```
 
-The function `length()` takes in a vector, and returns the number of element of the vector:
+The function `length()` takes in a vector, and returns the number of elements in the vector:
 
 ```{r}
 length(x)
@@ -173,7 +173,7 @@ An extremely useful function we will use is the `which()` function. Unlike the p
 y == -5
 ```
 
-This is comparing each value in `y` to see if it equals `-5`. Notice that only one value evaluates to TRUE, specifically the element in index 6. Therefore, if we *wrap* the `which()` function around that argument, we should get `6` in return:
+This is comparing each value in `y` to see if it equals `-5` (recall the double equals sign check for equality). Notice that only one value evaluates to TRUE, specifically the element in index 6. Therefore, if we *wrap* the `which()` function around that argument, we should get `6` in return:
 
 ```{r}
 which(y == -5)
