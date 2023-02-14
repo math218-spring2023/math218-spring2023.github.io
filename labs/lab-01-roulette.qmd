@@ -20,7 +20,7 @@ The game is simple: a ball is dropped and spins along the roulette until it sett
 
 ![](figs/roulette.jpg){fig-align="center" width="250"}
 
-Differing wagers or bets can be made on where the ball will end up landing. For example, it is common to bet on a color. If you "bet on black", you think the ball will land in a black-colored space. Or you might "bet on 1-18", which means you think the ball will land in a space with a number between 1 and 18, inclusive.
+Differing wagers or bets can be made on where the ball will end up landing. For example, it is common to bet on a color. If you "bet on black", you think the ball will land in a black-colored space. Or you might "bet on events", which means you think the ball will land in a space with an even number greater than 0.
 
 You wager some money when you make a bet. For example, if I bet \$5 and I win, I will get my original \$5 back and also gain \$5 from the house. So I *net* \$5. If I lose, then the house takes my \$5 and I net -\$5. In summary:
 
@@ -34,11 +34,11 @@ Because this is a casino game, we *know* that the house always wins. So, the pur
 
 ## Assignment
 
-Imagine that you have unlimited funds and will play roulette `n` number of times. You can choose the value of `n`, but be sure to store it as a variable for reproducibility. [You will always bet on red and wager the same amount of money]{.underline}. For each one of the `n` rounds, keep track of the net gain. At the end of your gambling, make a plot showing the cumulative gains over the `n` iterations. That is, make a plot with 1, 2, ..., `n` on the x-axis. The y-coordinate associated with each x-coordinate is the total/net gains up to that point. **Comment on your plot**: how are your net earnings in the short and long run?
+Imagine that you have unlimited funds and will play roulette `n` number of times. You can choose the value of `n`, but be sure to store it as a variable for reproducibility. [You will always bet on red and wager the same amount of money]{.underline}. For each one of the `n` rounds, keep track of the net gain. At the end of your gambling, obtain and report the average of your net earnings.
 
 ### Details
 
-Assume that the red spaces take on the values (2, 4, 6, ..., 34, 36) and the black spaces take on the values (1, 3, 4, ..., 35). You can decide how you would like to represent the two green spaces.
+For simplicity, you can assume that the red spaces take on the values (1, 2, ..., 18) and the black spaces take on the values (19, 20, ..., 36). You can decide how you would like to represent the two green spaces.
 
 Here is some structure that might help you design your code: you will need to create a `for` loop where on every iteration you should:
 
@@ -46,9 +46,8 @@ Here is some structure that might help you design your code: you will need to cr
 
 -   Evaluate how the outcome of your spin compares to your bet
 
--   Make note of the net gain
+-   Make note of the net gain on that iteration
 
-To create the final plot, consider making a data frame that has two columns: one for the iterations, and another for the cumulative net gains.
 
 ### Concepts used
 

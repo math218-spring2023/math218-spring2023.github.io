@@ -8,27 +8,9 @@ categories: "Live code"
 
 We will continue working in base R, and begin learning about conditional statements and for loops!
 
-## New functions:
+## New function:
 
--   The `%in%` function helps determine if a value is contained in a vector:
-
-    ```{r}
-    5 %in% 1:5
-    0 %in% c(1,3,5)
-    ```
-
-    -   Note: we could obtain the same sort of information using a few lines of code from functions learned previously! How do you think we could do that?
-
-        ```{r}
-        #| code-fold: true
-        #| eval: false
-        5 == 1:5
-        sum(5 == 1:5)
-
-        sum(0 == c(1,3,5))
-        ```
-
--   The `sample(vec, m)` function takes a random sample of size `m` from the vector `vec` . By default, we sample without replacement and each value in `vec` is equally likely. For example, I can draw one value between 1-5 at random as follows:
+-   The `sample(vec, m)` function takes a random sample of size `m` from the vector `vec` . By default, we sample without replacement and each value in `vec` is equally likely. For example, I can draw one value between 1-5 at random (where each value as 1/5 chance of being sampled) as follows:
 
     ```{r}
     sample(1:5, 1)
@@ -37,6 +19,8 @@ We will continue working in base R, and begin learning about conditional stateme
     ```
 
 As you see, running this code multiple times will lead to different values being `sample`-d!
+
+You can sample with replacement or sample each value in `vec` with different probability by changing the arguments in the function call.
 
 ## Conditional statements
 
