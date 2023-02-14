@@ -291,7 +291,7 @@
     "href": "slides/slides-00-welcome.html#create-a-github-account",
     "title": "Welcome to statistical learning!",
     "section": "Create a GitHub account",
-    "text": "Create a GitHub account\n\nGo to https://github.com/, and create an account (unless you already have one). After you create your account, click here and enter your GitHub username.\n\nTips for creating a username from Happy Git with R.\n\nIncorporate your actual name!\nReuse your username from other contexts if you can.\nShorter is better than longer; be as unique as possible in as few characters as possible.\nAvoid words laden with special meaning in programming, like NA."
+    "text": "Create a GitHub account\n\nGo to https://github.com, and create an account (unless you already have one). After you create your account, click here and enter your GitHub username.\n\nTips for creating a username from Happy Git with R.\n\nIncorporate your actual name!\nReuse your username from other contexts if you can.\nShorter is better than longer; be as unique as possible in as few characters as possible.\nAvoid words laden with special meaning in programming, like NA."
   },
   {
     "objectID": "slides/slides-00-welcome.html#class-meetings",
