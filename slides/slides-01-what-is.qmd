@@ -1,5 +1,10 @@
 ---
 title: "What is statistical learning?"
+date: "February 16, 2023"
+title-slide-attributes:
+    data-background-image: "figs/01-intro/mite.png"
+    data-background-size: contain
+    data-background-opacity: "0.3"
 format: 
   revealjs:
     theme: custom.scss
@@ -31,6 +36,18 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Housekeeping
+
+Please accept the invitation to join our GitHub organization! Let me know if you did not receive an e-mail.
+
+
+::: footer
+Image on title slide: https://www.chaosofdelight.org/all-about-mites-oribatida
+::: 
+
+
+# Introduction
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(rvest)
@@ -40,8 +57,6 @@ plot_theme <- theme(text = element_text(size = 14))
 data (mite)
 data (mite.env)
 ```
-
-# Introduction
 
 ## What is statistical learning?
 
@@ -67,12 +82,12 @@ data (mite.env)
 
 -   For each observation $i$, we have:
 
-    -   Outcome/response: $y_{i}$
-    -   Vector of $p$ predictors/covariates: $\mathbf{x}_{i} = (x_{i1}, x_{i2}, \ldots, x_{ip})'$
+    -   Response (outcome): $y_{i}$
+    -   Vector of $p$ predictors (covariates): $\mathbf{x}_{i} = (x_{i1}, x_{i2}, \ldots, x_{ip})'$
 
 -   **Regression**: the $y_{i}$ are quantitative (e.g. height, price)
 
--   **Classification**: the $y_{i}$ are categorical/qualitative (e.g. education level, diagnosis)
+-   **Classification**: the $y_{i}$ are categorical (e.g. education level, diagnosis)
 
 -   Goal: relate response $y_{i}$ to the various predictors
 
@@ -110,27 +125,23 @@ data (mite.env)
 
 ![](figs/01-intro/mites_map.jpeg){fig-align="center"}
 
-## 
+## Data {.scrollable}
 
 ```{r}
 #| echo: true
 # from the vegan library
 data("mite")
-mite %>%
-  head()
-```
-
-## 
-
-```{r}
-#| echo: true
-# from the vegan library
 data("mite.env")
-head(mite.env)
+names(mite)
 
+# Focus on just the LRUG mite abundances
 mite_dat <- mite.env %>%
   add_column(abundance = mite$LRUG)
+head(mite_dat)
 ```
+
+
+
 
 ## EDA {.scrollable}
 
@@ -167,6 +178,8 @@ mite_dat %>%
   plot_theme
 ```
 
+# Statistical learning tasks 
+
 ## Model building
 
 -   **Goal:** predict `LRUG` abundance using these variables
@@ -189,24 +202,24 @@ mite_dat %>%
 
 -   If $f$ is "good", then we can make reliable predictions of $Y$ at new points $X = x$
 
--   If $f$ is "good", then we can identify which components of $X$ are important to explaining $Y$
+-   If $f$ is "good", then we can identify which components of $X$ are important for explaining $Y$
 
-    -   Depending on $f$, we may be able to learn how each component $X_{j}$ of $X$ affects $Y$
+    -   Depending on $f$, we may be able to learn how each component of $X$ affects $Y$
 
 ## Why care about f?
 
 -   We assume that $f$ is fixed but unknown
--   Goal of statistical learning: how to estimate $f$?
+-   Goal of statistical learning: how to obtain an estimate $\hat{f}$ of the true $f$?
     -   Sub-goals: **prediction** and **inference**
--   The sub-goal may affect the kind of $f$ we choose
+-   The sub-goal may affect our choice of $\hat{f}$
 
 ## Prediction
 
--   We have a set of inputs or predictors $X$, and we want to predict a corresponding $Y$
+-   We have a set of inputs or predictors $X$, and we want to predict a corresponding $Y$. Assume the true model is $Y = f(X) + \epsilon$, but don't know $f$
 
 -   Assuming the error $\epsilon$ is 0 on average, we can obtain predictions of $Y$ as $$\hat{Y} = \hat{f}(X)$$
 
--   If we knew the true $Y$, we could evaluate the accuracy of the prediction $\hat{Y}$
+    -   Then, if we know the true $Y$, we can evaluate the accuracy of the prediction $\hat{Y}$
 
 -   Generally, $Y \neq \hat{Y}$. Why?
 
@@ -217,12 +230,16 @@ mite_dat %>%
 
 -   Model: $Y = f(X) + \epsilon$
 
--   Irreducible error: $\epsilon$
+-   ::: important
+    Irreducible error: $\epsilon$
+    :::
 
     -   Even if we knew $f$ perfectly, there is still some inherent variability
-    -   $\epsilon$ may also contained unmeasured variables that are not available to us
+    -   $\epsilon$ may also contain unmeasured variables that are not available to us
 
--   Reducible error: how far $\hat{f}$ is from the true $f$
+-   ::: important
+    Reducible error: how far $\hat{f}$ is from the true $f$
+    :::
 
 ## Prediction errors
 
@@ -252,29 +269,31 @@ mite_dat %>%
 
 ## Prediction vs Inference
 
--   In the prediction setting, estimate $\hat{f}$ for the purpose of $\hat{Y}$ and $Y$.
+-   Prediction: estimate $\hat{f}$ for the purpose of $\hat{Y}$ and $Y$.
 
--   In the inference setting, estimate $\hat{f}$ for the purpose of $X$ and $Y$
+-   Inference: estimate $\hat{f}$ for the purpose of $X$ and $Y$
 
 -   Some problems will call for prediction, inference, or both
 
     -   To what extent is `LRUG` abundance associated with `microtopography`?
 
     -   Given a specific land profile, how many `LRUG` mites would we expect there to be?
+  
+# Assessment
+
 
 ## Assessing model accuracy
 
--   No single method or choice of $f$ is superior over all possible data sets
+-   No single method or choice of $\hat{f}$ is superior over all possible data sets
 
 -   Prediction accuracy vs. interpretability
 
     -   More restrictive models may be easier to interpret (better for inference)
 
-    -   Good fit vs. over- or under-fit
+    -   Good fit vs. over-fit (or under-fit)
 
--   Parsimony vs. black box
+-   A simpler model is often preferred over a very complex one
 
-    -   A simpler model is often preferred over a very complex one
 
 ## Assessing model accuracy
 
@@ -298,6 +317,8 @@ mite_dat %>%
 -   We can compute the MSE for the training and test data respectively
 
 ## Example 1
+
+I generated some fake data and fit three models that differ in flexibility,
 
 ```{r mse_dat1}
 library(splines)
@@ -349,8 +370,9 @@ p_fit <- ggplot()+
   geom_point(data = point_df, aes(x = x, y=y))+
   geom_line(data = fit_df, aes(x = x, y = value, col= mod), lwd = 1) +
   guides(col = "none") +
-  ggtitle("Various fits to observed data")+
-  theme(text = element_text(size = 16))
+  ggtitle("Various fits to train data")+
+  theme(text = element_text(size = 16))+
+  scale_color_manual(values = c("#F9C51F", "#FC766AFF", "#9B4A97FF"))
                     
 p_mse <- ggplot(data = mse_df %>%
          pivot_longer(cols = 1:2, values_to = "MSE", names_to = "set"),
@@ -361,7 +383,8 @@ p_mse <- ggplot(data = mse_df %>%
   labs(y = "Mean squared error")+
   geom_hline(yintercept = sd^2) +
   ggtitle("Mean squared error for test and train data")+
-  theme(text = element_text(size = 16))
+  theme(text = element_text(size = 16)) +
+  scale_color_manual(values = c("#F9C51F", "#FC766AFF", "#9B4A97FF"))
 
 
 gridExtra::grid.arrange(p_fit, p_mse, nrow = 1)
@@ -423,7 +446,8 @@ p_fit <- ggplot()+
   geom_line(data = fit_df, aes(x = x, y = value, col= mod), lwd = 1) +
   guides(col = "none") +
   ggtitle("Various fits to observed data")+
-  theme(text = element_text(size = 16))
+  theme(text = element_text(size = 16))+
+  scale_color_manual(values = c("#F9C51F", "#FC766AFF", "#9B4A97FF"))
                     
 p_mse <- ggplot(data = mse_df %>%
          pivot_longer(cols = 1:2, values_to = "MSE", names_to = "set"),
@@ -434,7 +458,8 @@ p_mse <- ggplot(data = mse_df %>%
   labs(y = "Mean squared error")+
   geom_hline(yintercept = sd^2) +
   ggtitle("Mean squared error for test and train data")+
-  theme(text = element_text(size = 16))
+  theme(text = element_text(size = 16))+
+  scale_color_manual(values = c("#F9C51F", "#FC766AFF", "#9B4A97FF"))
 
 
 gridExtra::grid.arrange(p_fit, p_mse, nrow = 1)
@@ -544,6 +569,40 @@ bv_df2 <- data.frame(bias = colMeans(bias_mat^2), variance = colMeans(variance_m
 
 ## Bias-Variance trade-off (cont.)
 
+::: {.r-stack}
+
+```{r fig.align='center', fig.width=8, fig.height=5}
+rbind(bv_df1, bv_df2) %>%
+  mutate(quantity = "Squared bias") %>%
+  # mutate(bias = bias^2) %>%
+  # pivot_longer(cols = 1:2, names_to = "quantity") %>%
+  # mutate(quantity = factor(quantity, c("bias", "variance"))) %>%
+  ggplot(., aes(x = flexibility, y = bias, col = quantity))+
+  stat_smooth(method = "loess", formula = y ~ x,se = F) +
+  geom_hline(yintercept = sd^2, linetype = "dashed")+
+  facet_wrap(~scenario, scales = "free")+
+  scale_color_manual(labels = c("Squared bias"), values = c("red"))  +
+  ggtitle( bquote( "Test MSE components"))+
+  theme(text = element_text(size = 16))
+```
+
+::: {.fragment}
+```{r fig.align='center', fig.width=8, fig.height=5}
+rbind(bv_df1, bv_df2) %>%
+  # mutate(bias = bias^2) %>%
+  pivot_longer(cols = 1:2, names_to = "quantity") %>%
+  mutate(quantity = factor(quantity, c("bias", "variance"))) %>%
+  ggplot(., aes(x = flexibility, y = value, col = quantity))+
+  stat_smooth(method = "loess", formula = y ~ x,se = F) +
+  geom_hline(yintercept = sd^2, linetype = "dashed")+
+  facet_wrap(~scenario, scales = "free")+
+  scale_color_manual(labels = c("Squared bias", "Variance"), values = c("red", "orange"))  +
+  ggtitle( bquote( "Test MSE components"))+
+  theme(text = element_text(size = 16))
+```
+:::
+
+::: {.fragment}
 ```{r fig.align='center', fig.width=8, fig.height=5}
 rbind(bv_df1, bv_df2) %>%
   # mutate(bias = bias^2) %>%
@@ -557,112 +616,130 @@ rbind(bv_df1, bv_df2) %>%
   ggtitle( bquote( "Test MSE components"))+
   theme(text = element_text(size = 16))
 ```
+:::
 
-## Classification
-
--   Up until now, we have focused on quantitative responses $y_{i}$
-
--   What happens when $y_{i}$ is qualitative? Examples include:
-
-    -   Medical diagnosis: $\mathcal{C} = \{\text{yes}, \text{no}\}$
-
-    -   Education level: $\mathcal{C} = \{\text{high school}, \text{college}, \text{graduate}\}$
-
--   Each category in $\mathcal{C}$ is also known as a *label*
-
--   In this setting, we want our model to be **classifier**, i.e. given predictors $X$, predict a label from the pool of all possible categories $\mathcal{C}$
-
-## Classification
-
--   We will still have to estimate $f$
-
--   $\hat{y}_{i}$ is the predicted class label for observation $i$ using estimate $\hat{f}$
-
--   How to assess model accuracy? Error is more intuitive: we make an error if we predict the incorrect label, and no error otherwise
-
--   This can be represented using an *indicator* variable or function. $\mathbf{I}(y_{i} = \hat{y}_{i})$:
-
-    -   $$\mathbf{I}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 & \text{ if } y_{i} = \hat{y}_{i}\\ 0 & \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}$$
-
-## Classification error rate
-
--   To quantify accuracy of estimated classifier $\hat{f}$, can calculate the *error rate*, which is the proportion of mistakes we make in labeling:
-
-    -   $$\frac{1}{n} \sum_{i=1}^{n} \mathbf{I}(y_{i} \neq \hat{y}_{i})$$
-
--   Small error rate is preferred
-
--   As with MSE, can calculate the error rate for train and test data sets
-
-## Classifiers
-
--   How do we choose which label to predict for a given observation?
-
--   Assume we have a total of $J$ possible labels in $\mathcal{C}$
-
--   For a given observation $i$, can calculate the following probability for each possible label $j$: $$p_{ij}(x_{i}) = Pr(y_{i} = j | X = x_{i})$$
-
--   These probabilities are called **conditional class probabilities** at $x_{i}$
-
-## Bayes optimal classifier
-
--   The **Bayes optimal** classifier will assign/predict the label which has the largest conditional class probability
-
-    -   It can be shown that the *test* error rate $\frac{1}{n_{test}} \sum_{i=1}^{n_{test}} \mathbf{I}(y_{i} \neq \hat{y}_{i})$ is minimized when using the Bayes optimal classifier
-
--   For example, consider a binary problem with levels "yes" and "no".
-
--   For observation $i$, if $Pr(y_{i} = \text{yes} | X = x_{i}) > 0.5$, then $\hat{y}_{i} =$ "yes".
-
--   The $x_{i}$ where $Pr(y_{i} = \text{yes} | X = x_{i}) = Pr(y_{i} = \text{no} | X = x_{i})= 0.5$ is called the *Bayes decision boundary*
-
-## Example
-
-```{r fig.align = "center", fig.height=7.5, fig.width=7.5}
-set.seed(1)
-n <- 100
-lb <- -2; ub = 2
-x <- cbind(rtruncnorm(n, a = lb, b = ub), runif(n, lb, ub))
-beta <- c(1, 0.5)
-
-true_probs <- pnorm(x%*%beta - 0.5*x[,2]^2)
-labels <- purrr::rbernoulli(n, true_probs)*1
-
-
-points_df <- data.frame(x) %>%
-         mutate(class = factor(labels))
-
-
-x_grid <- expand.grid(x = seq(lb,ub,0.1), y = seq(lb, ub, 0.1))
-probs <- pnorm(as.matrix(x_grid)%*% beta - 0.5*x_grid[,2]^2)
-
-plot_df_bayes <- data.frame(probs, X1=x_grid[,1], X2 = x_grid[,2]) %>%
-  mutate(class = case_when(probs <= 0.50 ~ 0,
-                           probs > 0.5 ~ 1)) %>%
-  mutate(class = factor(class))
+:::
 
 
 
-ggplot() +
-  geom_point(data = points_df, aes(x = X1, y = X2, col = class), size = 2) +
-  geom_point(data = plot_df_bayes, aes(x = X1, y = X2, col = class), size = 0.05)+
-  geom_contour(data = plot_df_bayes, aes(x = X1, y=X2, z = as.numeric(class == 0)),
-               breaks = 0.1,
-               col = "black")+
-  theme_bw()+
-  guides(col = "none")+
-  theme(text = element_text(size = 16))
+<!-- ## Classification -->
 
+<!-- -   Up until now, we have focused on quantitative responses $y_{i}$ -->
 
+<!-- -   What happens when $y_{i}$ is qualitative? Examples include: -->
 
-```
+<!--     -   Medical diagnosis: $\mathcal{C} = \{\text{yes}, \text{no}\}$ -->
 
-## Classification in practice
+<!--     -   Education level: $\mathcal{C} = \{\text{high school}, \text{college}, \text{graduate}\}$ -->
 
--   Bayes classifier is "gold standard"
+<!-- -   Each category in $\mathcal{C}$ is also known as a *label* -->
 
--   In practice, we cannot compute the $p_{ij}(x_{i})$ exactly because we do know the conditional distribution of $y$ given $x$
+<!-- -   In this setting, we want our model to be **classifier**, i.e. given predictors $X$, predict a label from the pool of all possible categories $\mathcal{C}$ -->
 
--   Instead, we need to estimate these $p_{ij}(x_{i})$
+<!-- ## Classification -->
 
--   Almost all of our choices of $\hat{f}$ will output these estimates
+<!-- -   We will still have to estimate $f$ -->
+
+<!-- -   $\hat{y}_{i}$ is the predicted class label for observation $i$ using estimate $\hat{f}$ -->
+
+<!-- -   How to assess model accuracy? Error is more intuitive: we make an error if we predict the incorrect label, and no error otherwise -->
+
+<!-- -   This can be represented using an *indicator* variable or function. $\mathbf{I}(y_{i} = \hat{y}_{i})$: -->
+
+<!--     -   $$\mathbf{I}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 & \text{ if } y_{i} = \hat{y}_{i}\\ 0 & \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}$$ -->
+
+<!-- ## Classification error rate -->
+
+<!-- -   To quantify accuracy of estimated classifier $\hat{f}$, can calculate the *error rate*, which is the proportion of mistakes we make in labeling: -->
+
+<!--     -   $$\frac{1}{n} \sum_{i=1}^{n} \mathbf{I}(y_{i} \neq \hat{y}_{i})$$ -->
+
+<!-- -   Small error rate is preferred -->
+
+<!-- -   As with MSE, can calculate the error rate for train and test data sets -->
+
+<!-- ## Classifiers -->
+
+<!-- -   How do we choose which label to predict for a given observation? -->
+
+<!-- -   Assume we have a total of $J$ possible labels in $\mathcal{C}$ -->
+
+<!-- -   For a given observation $i$, can calculate the following probability for each possible label $j$: $$p_{ij}(x_{i}) = Pr(y_{i} = j | X = x_{i})$$ -->
+
+<!-- -   These probabilities are called **conditional class probabilities** at $x_{i}$ -->
+
+<!-- ## Bayes optimal classifier -->
+
+<!-- -   The **Bayes optimal** classifier will assign/predict the label which has the largest conditional class probability -->
+
+<!--     -   It can be shown that the *test* error rate $\frac{1}{n_{test}} \sum_{i=1}^{n_{test}} \mathbf{I}(y_{i} \neq \hat{y}_{i})$ is minimized when using the Bayes optimal classifier -->
+
+<!-- -   For example, consider a binary problem with levels "yes" and "no". -->
+
+<!-- -   For observation $i$, if $Pr(y_{i} = \text{yes} | X = x_{i}) > 0.5$, then $\hat{y}_{i} =$ "yes". -->
+
+<!-- -   The $x_{i}$ where $Pr(y_{i} = \text{yes} | X = x_{i}) = Pr(y_{i} = \text{no} | X = x_{i})= 0.5$ is called the *Bayes decision boundary* -->
+
+<!-- ## Example -->
+
+<!-- ```{r fig.align = "center", fig.height=7.5, fig.width=7.5} -->
+
+<!-- set.seed(1) -->
+
+<!-- n <- 100 -->
+
+<!-- lb <- -2; ub = 2 -->
+
+<!-- x <- cbind(rtruncnorm(n, a = lb, b = ub), runif(n, lb, ub)) -->
+
+<!-- beta <- c(1, 0.5) -->
+
+<!-- true_probs <- pnorm(x%*%beta - 0.5*x[,2]^2) -->
+
+<!-- labels <- purrr::rbernoulli(n, true_probs)*1 -->
+
+<!-- points_df <- data.frame(x) %>% -->
+
+<!--          mutate(class = factor(labels)) -->
+
+<!-- x_grid <- expand.grid(x = seq(lb,ub,0.1), y = seq(lb, ub, 0.1)) -->
+
+<!-- probs <- pnorm(as.matrix(x_grid)%*% beta - 0.5*x_grid[,2]^2) -->
+
+<!-- plot_df_bayes <- data.frame(probs, X1=x_grid[,1], X2 = x_grid[,2]) %>% -->
+
+<!--   mutate(class = case_when(probs <= 0.50 ~ 0, -->
+
+<!--                            probs > 0.5 ~ 1)) %>% -->
+
+<!--   mutate(class = factor(class)) -->
+
+<!-- ggplot() + -->
+
+<!--   geom_point(data = points_df, aes(x = X1, y = X2, col = class), size = 2) + -->
+
+<!--   geom_point(data = plot_df_bayes, aes(x = X1, y = X2, col = class), size = 0.05)+ -->
+
+<!--   geom_contour(data = plot_df_bayes, aes(x = X1, y=X2, z = as.numeric(class == 0)), -->
+
+<!--                breaks = 0.1, -->
+
+<!--                col = "black")+ -->
+
+<!--   theme_bw()+ -->
+
+<!--   guides(col = "none")+ -->
+
+<!--   theme(text = element_text(size = 16)) -->
+
+<!-- ``` -->
+
+<!-- ## Classification in practice -->
+
+<!-- -   Bayes classifier is "gold standard" -->
+
+<!-- -   In practice, we cannot compute the $p_{ij}(x_{i})$ exactly because we do know the conditional distribution of $y$ given $x$ -->
+
+<!-- -   Instead, we need to estimate these $p_{ij}(x_{i})$ -->
+
+<!-- -   Almost all of our choices of $\hat{f}$ will output these estimates -->
