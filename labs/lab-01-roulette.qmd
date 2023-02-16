@@ -34,7 +34,13 @@ Because this is a casino game, we *know* that the house always wins. So, the pur
 
 ## Assignment
 
-Imagine that you have unlimited funds and will play roulette `n` number of times. You can choose the value of `n`, but be sure to store it as a variable for reproducibility. [You will always bet on red and wager the same amount of money]{.underline}. For each one of the `n` rounds, keep track of the net gain. At the end of your gambling, obtain and report the average of your net earnings.
+Imagine that you have unlimited funds and will play roulette `n` number of times. You can choose any integer value of `n` greater than 200, but be sure to store it as a variable for reproducibility. [You will always bet on red and wager \$5]{.underline}. For each one of the `n` rounds, keep track of the net gain.
+
+At the end of your gambling, obtain and report the average of your net earnings.
+
+*Optional*: make a plot of a running total of your net gains (i.e. the x-axis represents the iteration/round of betting, and the y-axis represents the total gains up to and including that round).
+
+Please clone the Lab 01 GitHub repository and work in the `lab-01-roulette.Rmd` file provided for you.
 
 ### Details
 
@@ -47,7 +53,6 @@ Here is some structure that might help you design your code: you will need to cr
 -   Evaluate how the outcome of your spin compares to your bet
 
 -   Make note of the net gain on that iteration
-
 
 ### Concepts used
 
@@ -65,4 +70,4 @@ Here is some structure that might help you design your code: you will need to cr
 
 Knit, commit, and push your project back to github.com using the GitHub Desktop client.
 
-Submit your knitted PDF onto Canvas.
+Submit your knitted PDF onto Canvas. You may need to install the `tinytex` package to knit to PDF.

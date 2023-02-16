@@ -93,6 +93,9 @@ If so, check the box and choose the white "Not Now" button
 
 1.  Open up the `lab-01-roulette.Rmd` file, and edit your name in the `author` section of the YAML, then knit the document.
 
+![](figs/git/commit_push.png){width="392"}
+
+
 2.  Open GitHub Desktop and make sure the Current Repository is the project of interest.
 
     -   On the left-hand side, you should see files you either *edited* or *created,* with a checked blue box. This is correct -- GitHub Desktop has automatically done the `add` step for you.
@@ -108,6 +111,7 @@ If so, check the box and choose the white "Not Now" button
     i.  There should be a tab that says `Push origin` with an upward arrow with a number next to it. That means you are ready! Click the button to `push` your changes to origin.
 
     ii. You will know the push was successful if this tab returns to say `Fetch origin`
+
 
 ## Checking your changes
 
