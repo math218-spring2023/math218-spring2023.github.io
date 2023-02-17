@@ -36,7 +36,7 @@ Because this is a casino game, we *know* that the house always wins. So, the pur
 
 Imagine that you have unlimited funds and will play roulette `n` number of times. You can choose any integer value of `n` greater than 200, but be sure to store it as a variable for reproducibility. [You will always bet on red and wager \$5]{.underline}. For each one of the `n` rounds, keep track of the net gain.
 
-At the end of your gambling, obtain and report the average of your net earnings.
+At the end of your gambling, obtain and report the sum and average of your net earnings.
 
 *Optional*: make a plot of a running total of your net gains (i.e. the x-axis represents the iteration/round of betting, and the y-axis represents the total gains up to and including that round).
 
