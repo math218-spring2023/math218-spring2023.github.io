@@ -11,7 +11,7 @@
     "href": "assignments.html#labs",
     "title": "Assignments",
     "section": "Labs",
-    "text": "Labs\n\n\n\n\n\nNo matching items"
+    "text": "Labs\n\n\n\n\n\n\n\nLab 01: Roulette\n\n\nCoding roulette\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments.html#implementations",
@@ -656,5 +656,26 @@
     "title": "What is statistical learning?",
     "section": "Data",
     "text": "Data\n\n# from the vegan library\ndata(\"mite\")\ndata(\"mite.env\")\nnames(mite)\n\n [1] \"Brachy\"   \"PHTH\"     \"HPAV\"     \"RARD\"     \"SSTR\"     \"Protopl\" \n [7] \"MEGR\"     \"MPRO\"     \"TVIE\"     \"HMIN\"     \"HMIN2\"    \"NPRA\"    \n[13] \"TVEL\"     \"ONOV\"     \"SUCT\"     \"LCIL\"     \"Oribatl1\" \"Ceratoz1\"\n[19] \"PWIL\"     \"Galumna1\" \"Stgncrs2\" \"HRUF\"     \"Trhypch1\" \"PPEL\"    \n[25] \"NCOR\"     \"SLAT\"     \"FSET\"     \"Lepidzts\" \"Eupelops\" \"Miniglmn\"\n[31] \"LRUG\"     \"PLAG2\"    \"Ceratoz3\" \"Oppiminu\" \"Trimalc2\"\n\n# Focus on just the LRUG mite abundances\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)\nhead(mite_dat)\n\n  SubsDens WatrCont Substrate Shrub    Topo abundance\n1    39.18   350.15   Sphagn1   Few Hummock         0\n2    54.99   434.81    Litter   Few Hummock         0\n3    46.07   371.72 Interface   Few Hummock         0\n4    48.19   360.50   Sphagn1   Few Hummock         0\n5    23.55   204.13   Sphagn1   Few Hummock         0\n6    57.32   311.55   Sphagn1   Few Hummock         0"
+  },
+  {
+    "objectID": "labs/lab-01-roulette.html",
+    "href": "labs/lab-01-roulette.html",
+    "title": "Lab 01: Roulette",
+    "section": "",
+    "text": "We will simulate the casino game of American roulette! On an American roulette wheel, there are 38 equally-sized spaces that differ in color and number value:\n\nTwo spaces are green, and are labelled 0 and 00\nThe remaining spaces alternate red and black and take on the values 1-36\n\nThere is no particular order to the numbers\n\n\nThe game is simple: a ball is dropped and spins along the roulette until it settles in one of the 38 spaces. Each space has an equal chance of being landed on.\n\n\n\n\n\nDiffering wagers or bets can be made on where the ball will end up landing. For example, it is common to bet on a color. If you “bet on black”, you think the ball will land in a black-colored space. Or you might “bet on events”, which means you think the ball will land in a space with an even number greater than 0.\nYou wager some money when you make a bet. For example, if I bet $5 and I win, I will get my original $5 back and also gain $5 from the house. So I net $5. If I lose, then the house takes my $5 and I net -$5. In summary:\n\nIf I win, I net the amount that I bet\nIf I lose, I net the negative amount that I bet\n\nIn either case, your net gain will be either positive or negative.\nBecause this is a casino game, we know that the house always wins. So, the purpose of this assignment is to simulate/demonstrate that the player will always lose money in the long run."
+  },
+  {
+    "objectID": "labs/lab-01-roulette.html#assignment",
+    "href": "labs/lab-01-roulette.html#assignment",
+    "title": "Lab 01: Roulette",
+    "section": "Assignment",
+    "text": "Assignment\nImagine that you have unlimited funds and will play roulette n number of times. You can choose any integer value of n greater than 200, but be sure to store it as a variable for reproducibility. You will always bet on red and wager $5. For each one of the n rounds, keep track of the net gain.\nAt the end of your gambling, obtain and report the sum and average of your net earnings.\nOptional: make a plot of a running total of your net gains (i.e. the x-axis represents the iteration/round of betting, and the y-axis represents the total gains up to and including that round).\nPlease clone the Lab 01 GitHub repository and work in the lab-01-roulette.Rmd file provided for you.\n\nDetails\nFor simplicity, you can assume that the red spaces take on the values (1, 2, …, 18) and the black spaces take on the values (19, 20, …, 36). You can decide how you would like to represent the two green spaces.\nHere is some structure that might help you design your code: you will need to create a for loop where on every iteration you should:\n\n“Spin” the roulette\nEvaluate how the outcome of your spin compares to your bet\nMake note of the net gain on that iteration\n\n\n\nConcepts used\n\nfor loops\nConditional statements\nComparing R objects\nCreating and modifying vectors\nWorking with GitHub: try to regularly commit your changes and push them back to GitHub!"
+  },
+  {
+    "objectID": "labs/lab-01-roulette.html#submission-details",
+    "href": "labs/lab-01-roulette.html#submission-details",
+    "title": "Lab 01: Roulette",
+    "section": "Submission details",
+    "text": "Submission details\nKnit, commit, and push your project back to github.com using the GitHub Desktop client.\nSubmit your knitted PDF onto Canvas. You may need to install the tinytex package to knit to PDF."
   }
 ]
