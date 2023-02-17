@@ -3,7 +3,7 @@ title: "Lab 01: Roulette"
 editor: visual
 description: "Coding roulette"
 categories: "Lab assignment"
-draft: true
+draft: false
 ---
 
 ## Introduction
