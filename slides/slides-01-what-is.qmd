@@ -38,13 +38,13 @@ knitr::opts_chunk$set(
 
 # Housekeeping
 
-Please accept the invitation to join our GitHub organization! Let me know if you did not receive an e-mail.
+-   2/21/23: Reminder that Lab 01 is due to Canvas this Thursday at 11:59pm
 
+    -   Office hours tomorrow 3-4pm, and by appointment via Calendly
 
 ::: footer
 Image on title slide: https://www.chaosofdelight.org/all-about-mites-oribatida
-::: 
-
+:::
 
 # Introduction
 
@@ -140,9 +140,6 @@ mite_dat <- mite.env %>%
 head(mite_dat)
 ```
 
-
-
-
 ## EDA {.scrollable}
 
 (scroll for more content)
@@ -178,7 +175,7 @@ mite_dat %>%
   plot_theme
 ```
 
-# Statistical learning tasks 
+# Statistical learning tasks
 
 ## Model building
 
@@ -215,27 +212,27 @@ mite_dat %>%
 
 ## Prediction
 
--   We have a set of inputs or predictors $X$, and we want to predict a corresponding $Y$. Assume the true model is $Y = f(X) + \epsilon$, but don't know $f$
+-   We have a set of inputs or predictors $x_{i}$, and we want to predict a corresponding $y_{i}$. Assume the true model is $y_{i} = f(x_{i}) + \epsilon_{i}$, but don't know $f$
 
--   Assuming the error $\epsilon$ is 0 on average, we can obtain predictions of $Y$ as $$\hat{Y} = \hat{f}(X)$$
+-   Assuming the error $\epsilon_{i}$ is 0 on average, we can obtain predictions of $y_{i}$ as $$\hat{y}_{i} = \hat{f}(x_{i})$$
 
-    -   Then, if we know the true $Y$, we can evaluate the accuracy of the prediction $\hat{Y}$
+    -   Then, if we know the true $y_{i}$, we can evaluate the accuracy of the prediction $\hat{y}_{i}$
 
--   Generally, $Y \neq \hat{Y}$. Why?
+-   Generally, $y_{i} \neq \hat{y}_{i}$. Why?
 
     1.  $\hat{f}$ will not be perfect estimate of $f$
-    2.  $Y$ is a function of $\epsilon$, which cannot be predicted using $X$
+    2.  $y_{i}$ is a function of $\epsilon_{i}$, which cannot be predicted using $x_{i}$
 
 ## Types of error
 
--   Model: $Y = f(X) + \epsilon$
+-   Model: $y_{i} = f(x_{i}) + \epsilon_{i}$
 
 -   ::: important
-    Irreducible error: $\epsilon$
+    Irreducible error: $\epsilon_{i}$
     :::
 
     -   Even if we knew $f$ perfectly, there is still some inherent variability
-    -   $\epsilon$ may also contain unmeasured variables that are not available to us
+    -   $\epsilon_{i}$ may also contain unmeasured variables that are not available to us
 
 -   ::: important
     Reducible error: how far $\hat{f}$ is from the true $f$
@@ -244,18 +241,19 @@ mite_dat %>%
 ## Prediction errors
 
 -   Ways to quantify error
-    -   Difference/error = $Y - \hat{Y}$
-    -   Absolute error = $|Y - \hat{Y}|$
-    -   Squared error = $(Y - \hat{Y})^2$
--   Intuitively, large error indicates worse prediction
+    -   Difference/error = $y_{i} - \hat{y}_{i}$
+    -   Absolute error = $|y_{i} - \hat{y}_{i}|$
+    -   Squared error = $(y_{i} - \hat{y}_{i})^2$
+-   Intuitively, larger error indicates worse prediction
+-   Question: are there scenarios where we might prefer one error over another?
 
 ## Prediction errors
 
--   Given $\hat{f}$ and $X$, we can obtain a prediction $\hat{Y} = \hat{f}(X)$ for $Y$
+-   Given $\hat{f}$ and $x_{i}$, we can obtain a prediction $\hat{y}_{i} = \hat{f}(x_{i})$ for $y_{i}$
 
 -   Mean-squared prediction error: \begin{align*}
-    \mathsf{E}[(Y - \hat{Y})^2] &= \mathsf{E}[( f(X) + \epsilon - \hat{f}(X))^2] \\
-    &= \underbrace{[f(X) - \hat{f}(X)]^2}_\text{reducible} + \underbrace{\text{Var}(\epsilon)}_\text{irreducible}
+    \mathsf{E}[(y_{i} - \hat{y}_{i})^2] &= \mathsf{E}[( f(x_{i}) + \epsilon_{i} - \hat{f}(x_{i}))^2] \\
+    &= \underbrace{[f(x_{i}) - \hat{f}(x_{i})]^2}_\text{reducible} + \underbrace{\text{Var}(\epsilon_{i})}_\text{irreducible}
     \end{align*}
 
 -   We cannot do much to decrease the irreducible error
@@ -278,9 +276,8 @@ mite_dat %>%
     -   To what extent is `LRUG` abundance associated with `microtopography`?
 
     -   Given a specific land profile, how many `LRUG` mites would we expect there to be?
-  
-# Assessment
 
+# Assessment
 
 ## Assessing model accuracy
 
@@ -294,16 +291,19 @@ mite_dat %>%
 
 -   A simpler model is often preferred over a very complex one
 
-
 ## Assessing model accuracy
 
 -   How can we know how well a chosen $\hat{f}$ is performing?
 
--   In regression setting, we often use **mean squared error (MSE)**
+-   In regression setting, we often use **mean squared error (MSE)** or **root MSE (RMSE)**
 
     -   $\text{MSE}=\frac{1}{n}\sum_{i=1}^{n}(y_{i}-\hat{f}(x_{i}))^2$
 
--   MSE will be small if predictions $\hat{y}_{i} = {f}(x_{i})$ are very close to the true $y_{i}$
+    -   $\text{RMSE}=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_{i}-\hat{f}(x_{i}))^2}$
+
+-   MSE (and RMSE) will be small if predictions $\hat{y}_{i} = \hat{f}(x_{i})$ are very close to true $y_{i}$
+
+-   Question: why might we prefer reporting RMSE over MSE?
 
 ## Training vs. test data
 
@@ -314,11 +314,11 @@ mite_dat %>%
 
 -   We are often most interested in accuracy of our predictions when applying the method to *previously unseen* data. Why?
 
--   We can compute the MSE for the training and test data respectively
+-   We can compute the MSE for the training and test data respectively...but we typically focus more attention to **test MSE**
 
 ## Example 1
 
-I generated some fake data and fit three models that differ in flexibility,
+I generated some fake data and fit three models that differ in flexibility. In this example, the generated data (points) follow a curve-y shape.
 
 ```{r mse_dat1}
 library(splines)
@@ -390,9 +390,9 @@ p_mse <- ggplot(data = mse_df %>%
 gridExtra::grid.arrange(p_fit, p_mse, nrow = 1)
 ```
 
-------------------------------------------------------------------------
-
 ## Example 2
+
+In this example, the generated data (points) look more linear.
 
 ```{r mse_dat2}
 library(splines)
@@ -569,8 +569,7 @@ bv_df2 <- data.frame(bias = colMeans(bias_mat^2), variance = colMeans(variance_m
 
 ## Bias-Variance trade-off (cont.)
 
-::: {.r-stack}
-
+::: r-stack
 ```{r fig.align='center', fig.width=8, fig.height=5}
 rbind(bv_df1, bv_df2) %>%
   mutate(quantity = "Squared bias") %>%
@@ -582,11 +581,12 @@ rbind(bv_df1, bv_df2) %>%
   geom_hline(yintercept = sd^2, linetype = "dashed")+
   facet_wrap(~scenario, scales = "free")+
   scale_color_manual(labels = c("Squared bias"), values = c("red"))  +
-  ggtitle( bquote( "Test MSE components"))+
+  ggtitle( bquote( "Test MSE components"),
+           subtitle = "Dashed line denotes irreducible error")+
   theme(text = element_text(size = 16))
 ```
 
-::: {.fragment}
+::: fragment
 ```{r fig.align='center', fig.width=8, fig.height=5}
 rbind(bv_df1, bv_df2) %>%
   # mutate(bias = bias^2) %>%
@@ -597,12 +597,13 @@ rbind(bv_df1, bv_df2) %>%
   geom_hline(yintercept = sd^2, linetype = "dashed")+
   facet_wrap(~scenario, scales = "free")+
   scale_color_manual(labels = c("Squared bias", "Variance"), values = c("red", "orange"))  +
-  ggtitle( bquote( "Test MSE components"))+
+  ggtitle( bquote( "Test MSE components"),
+           subtitle = "Dashed line denotes irreducible error")+
   theme(text = element_text(size = 16))
 ```
 :::
 
-::: {.fragment}
+::: fragment
 ```{r fig.align='center', fig.width=8, fig.height=5}
 rbind(bv_df1, bv_df2) %>%
   # mutate(bias = bias^2) %>%
@@ -613,14 +614,12 @@ rbind(bv_df1, bv_df2) %>%
   geom_hline(yintercept = sd^2, linetype = "dashed")+
   facet_wrap(~scenario, scales = "free")+
   scale_color_manual(labels = c("MSE", "Squared bias", "Variance"), values = c("blue", "red", "orange"))  +
-  ggtitle( bquote( "Test MSE components"))+
+  ggtitle( bquote( "Test MSE components"),
+           subtitle = "Dashed line denotes irreducible error")+
   theme(text = element_text(size = 16))
 ```
 :::
-
 :::
-
-
 
 <!-- ## Classification -->
 

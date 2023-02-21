@@ -27,6 +27,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -322,7 +386,7 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" data-background-image="figs/title/mlb.png" data-background-opacity="0.3" data-background-size="contain" class="quarto-title-block center">
   <h1 class="title">Linear Regression</h1>
 
 <div class="quarto-title-authors">
@@ -347,8 +411,18 @@
 <li class="fragment"><p>A simple, widely used approach in supervised learning</p></li>
 <li class="fragment"><p>Assumes that the dependence of <span class="math inline">\(Y\)</span> on the predictors <span class="math inline">\(X_{1}, \ldots, X_{p}\)</span> is linear</p></li>
 </ul>
-
-<img data-src="slides-02-linear-regression_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<div class="fragment">
+<div class="cell" data-layout-align="center" data-fig.subsdens="5">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slides-02-linear-regression_files/figure-revealjs/unnamed-chunk-1-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="possible-questions-of-interest" class="slide level2">
 <h2>Possible questions of interest</h2>
 <ul>
@@ -359,8 +433,13 @@
 <li class="fragment"><p>Is the relationship linear?</p></li>
 <li class="fragment"><p>How accurately can we predict the abundance of these mites?</p></li>
 </ul>
+</section></section>
+<section>
+<section id="simple-linear-regression" class="title-slide slide level1 center">
+<h1>Simple Linear Regression</h1>
+
 </section>
-<section id="simple-linear-regression" class="slide level2">
+<section id="simple-linear-regression-1" class="slide level2">
 <h2>Simple linear regression</h2>
 <ul>
 <li class="fragment"><div class="important">
@@ -385,13 +464,567 @@
 <li class="fragment"><p>Notice that the relationship between <span class="math inline">\(x_{i}\)</span> and <span class="math inline">\(y_{i}\)</span> is the same for all <span class="math inline">\(i\)</span></p></li>
 </ul></li>
 <li class="fragment"><p>In practice, <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span> are unknown, so we must estimate them</p></li>
-<li class="fragment"><p><strong>Goal</strong>: obtain (good) estimates <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> that are as close to the true values as possible, such that <span class="math inline">\(y_{i} \approx \hat{\beta}_{0} + \hat{\beta}_{1} x_{i}\)</span></p></li>
+<li class="fragment"><p><strong>Goal</strong>: obtain (good) estimates <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> that are as close to the true values as possible, such that <span class="math inline">\(y_{i} \approx \hat{\beta}_{0} + \hat{\beta}_{1} x_{i}\)</span></p>
+<ul>
+<li class="fragment">How? Minimize the <strong>least squares</strong> criterion</li>
+</ul></li>
 </ul>
+</section>
+<section id="least-squares" class="slide level2">
+<h2>Least squares</h2>
+<ul>
+<li class="fragment"><p>Let <span class="math inline">\(\hat{y}_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i}\)</span> be predicted response for <span class="math inline">\(i\)</span>-th observation with predictor <span class="math inline">\(x_{i}\)</span></p></li>
+<li class="fragment"><p>The <span class="math inline">\(i\)</span>-th <strong>residual</strong> <span class="math inline">\(e_{i}\)</span> is defined as <span class="math display">\[e_{i} = y_{i} - \hat{y}_{i}\]</span></p></li>
+<li class="fragment"><p>Define <strong>residual sum of squares</strong> (RSS) as <span class="math display">\[\text{RSS} = e_{1}^{2} + e_{2}^{2} + \ldots + e_{n}^{2} = \sum_{i=1}^{n} e_{i}^2\]</span></p></li>
+</ul>
+</section>
+<section id="estimation-by-least-squares" class="slide level2">
+<h2>Estimation by least squares</h2>
+<p><span class="math display">\[\text{RSS} = \sum_{i=1}^{n} e_{i}^2 = \sum_{i=1}^{n} (y_{i} - \hat{y}_{i})^2 = \sum_{i=1}^{n} (y_{i} - (\hat{\beta}_{0} + \hat{\beta}_{1}x_{i}))^2\]</span></p>
+<ul>
+<li class="fragment"><p>Least squares approach selects the pair <span class="math inline">\((\hat{\beta}_{0}, \hat{\beta}_{1})\)</span> that minimize the RSS. Can be shown that the minimizing values are: <span class="math display">\[\begin{align*}
+\hat{\beta}_{1} &amp;= \frac{\sum_{i=1}^{n}(x_{i} - \bar{x})(y_{i} - \bar{y})}{\sum_{i=1}^{n}(x_{i} - \bar{x})^2}\\
+\hat{\beta}_{0} &amp;= \bar{y} - \hat{\beta}_{1} \bar{x}
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\(\bar{y} = \frac{1}{n}\sum_{i=1}^{n}y_{i}\)</span> and <span class="math inline">\(\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_{i}\)</span></p></li>
+</ul>
+</section>
+<section id="mite-data" class="slide level2">
+<h2>Mite data</h2>
+<p>Least squares fit for <code>abundance</code> regressed on <code>WaterCont</code>, with residuals in orange.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(abundance <span class="sc">~</span> WatrCont, <span class="at">data =</span> mite_dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+<img data-src="slides-02-linear-regression_files/figure-revealjs/unnamed-chunk-3-1.png" width="768" class="r-stretch quarto-figure-center"><p>Let’s interpret this plot! Do you see anything strange or any patterns?</p>
+</section>
+<section id="interpreting-coefficients-and-estimates" class="slide level2">
+<h2>Interpreting Coefficients and Estimates</h2>
+<p><span class="math display">\[Y = \beta_{0} + \beta_{1} X + \epsilon\]</span></p>
+<ul>
+<li class="fragment"><p><span class="math inline">\(\beta_{0}\)</span> is the expected value of <span class="math inline">\(Y\)</span> when <span class="math inline">\(X = 0\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(\beta_{1}\)</span> is the average increase in <span class="math inline">\(Y\)</span> for one-unit increase in <span class="math inline">\(X\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(\epsilon\)</span> is error</p></li>
+<li class="fragment"><p>This equation is the <em>population regression line</em></p></li>
+<li class="fragment"><p>When using the least squares estimates for the coefficients, <span class="math inline">\(\hat{Y} = \hat{\beta}_{0} + \hat{\beta}_{1} X\)</span> is the <em>least squares line</em></p></li>
+</ul>
+</section>
+<section id="interpreting-coefficients-and-estimates-cont." class="slide level2 scrollable">
+<h2>Interpreting Coefficients and Estimates (cont.)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = abundance ~ WatrCont, data = mite_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-16.525  -8.033  -4.088   4.493  47.937 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)  0.63410    4.51171   0.141   0.8886  
+WatrCont     0.02385    0.01039   2.296   0.0248 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 12.29 on 68 degrees of freedom
+Multiple R-squared:  0.07194,   Adjusted R-squared:  0.05829 
+F-statistic: 5.271 on 1 and 68 DF,  p-value: 0.02477</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><span class="math display">\[\widehat{\text{LRUG}} = 0.634 + 0.024 \text{WatrCont}\]</span></p>
+</div>
+<ul>
+<li class="fragment"><p>How do I interpret <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> for this specific example?</p></li>
+<li class="fragment"><p>Note: the estimates <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> will depend on the observed data! If I took a different sample of <code>LRUG</code> mites, I would probably have different estimated values.</p>
+<ul>
+<li class="fragment">Isn’t that problematic? Can we asses how accurate are our estimates <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span>?</li>
+</ul></li>
+</ul>
+</section>
+<section id="assessing-accuracy-of-coefficient-estimates" class="slide level2">
+<h2>Assessing Accuracy of Coefficient Estimates</h2>
+<ul>
+<li class="fragment"><p><strong>Standard error</strong> (SE) of an estimator reflects how it varies under repeated sampling.</p></li>
+<li class="fragment"><p>For simple linear regression: <span class="math display">\[\text{SE}(\hat{\beta}_{0}) = \sigma^2 \left[ \frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n}(x_{i} - \bar{x})^2}\right] \qquad
+\text{SE}(\hat{\beta}_{1}) = \frac{\sigma^2}{\sum_{i=1}^{n}(x_{i} - \bar{x})^2}\]</span></p>
+<p>where <span class="math inline">\(\sigma^2 = \text{Var}(\epsilon)\)</span></p></li>
+<li class="fragment"><p>Typically <span class="math inline">\(\sigma^2\)</span> is not known, but can be estimated from the data.</p></li>
+<li class="fragment"><p>Estimate <span class="math inline">\(\hat{\sigma}\)</span> is <strong>residual standard error (RSE)</strong>, given by: <span class="math display">\[\hat{\sigma}= \text{RSE} = \sqrt{\frac{1}{n-2}\text{RSS}}\]</span></p></li>
+<li class="fragment"><p>We use this estimate to calculate <span class="math inline">\(\text{SE}(\hat{\beta}_{0})\)</span> and <span class="math inline">\(\text{SE}(\hat{\beta}_{1})\)</span></p></li>
+</ul>
+</section>
+<section id="hypothesis-testing" class="slide level2">
+<h2>Hypothesis Testing</h2>
+<ul>
+<li class="fragment"><p><strong>Hypothesis testing</strong> is a method of statistical inference to determine whether the data at hand sufficiently support a particular hypothesis</p>
+<ul>
+<li class="fragment"><p>Helps test the results of an experiment or survey to see if you have meaningful results</p></li>
+<li class="fragment"><p>Helps draw conclusions about a population parameter</p></li>
+</ul></li>
+<li class="fragment"><p>Standard errors can be used to perform hypothesis tests on the coefficients</p></li>
+</ul>
+</section>
+<section id="hypothesis-testing-1" class="slide level2">
+<h2>Hypothesis Testing</h2>
+<ul>
+<li class="fragment"><p>Notion of “null” versus “alternate” hypothesis</p>
+<ul>
+<li class="fragment"><p><strong>Null hypothesis</strong> <span class="math inline">\(H_{0}\)</span>: there is no relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span></p></li>
+<li class="fragment"><p><strong>Alternative hypothesis</strong> <span class="math inline">\(H_{A}\)</span>: there is some relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span></p></li>
+</ul></li>
+<li class="fragment"><p>Mathematically, corresponds to testing <span class="math display">\[H_{0}: \beta_{1} = 0 \quad \text{ vs. } \quad H_{A}: \beta_{1} \neq 0\]</span></p>
+<p>because if <span class="math inline">\(H_{0}\)</span> true, then the model reduces to <span class="math inline">\(Y = \beta_{0} + \epsilon\)</span> so there is no relationship</p></li>
+<li class="fragment"><p>To test this null hypothesis, want to determine if <span class="math inline">\(\hat{\beta}_{1}\)</span> is sufficiently far from zero</p>
+<ul>
+<li class="fragment">How much is ‘sufficiently far’? Depends on <span class="math inline">\(\text{SE}(\hat{\beta}_{1})\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="p-value" class="slide level2 scrollable">
+<h2>p-value</h2>
+<ul>
+<li class="fragment"><p>With lots of hand-waving: can calculate a <strong>p-value</strong>, which is a probability that we observed the data we did, given that <span class="math inline">\(H_{0}\)</span> is true. If the p-value is small, the observed data don’t seem to support <span class="math inline">\(H_{0}\)</span></p>
+<ul>
+<li class="fragment"><p>Compare <span class="math inline">\(p\)</span>-value to a pre-determined rejection level <span class="math inline">\(\alpha\)</span> (often 0.05).</p></li>
+<li class="fragment"><p>If <span class="math inline">\(p\)</span>-value <span class="math inline">\(&lt; \alpha\)</span>, reject <span class="math inline">\(H_{0}\)</span>. Otherwise, fail to reject <span class="math inline">\(H_{0}\)</span>.</p></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = abundance ~ WatrCont, data = mite_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-16.525  -8.033  -4.088   4.493  47.937 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)  0.63410    4.51171   0.141   0.8886  
+WatrCont     0.02385    0.01039   2.296   0.0248 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 12.29 on 68 degrees of freedom
+Multiple R-squared:  0.07194,   Adjusted R-squared:  0.05829 
+F-statistic: 5.271 on 1 and 68 DF,  p-value: 0.02477</code></pre>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment"><p><span class="math inline">\(H_{0}: \beta_{1} = 0\)</span> (there is no relationship between <code>LRUG</code> abundance and <code>WatrCont</code>)</p>
+<ul>
+<li class="fragment">What is the p-value for this hypothesis?</li>
+<li class="fragment">What is our decision in the mite example?</li>
+</ul></li>
+</ul>
+</section>
+<section id="why-hypothesis-testing" class="slide level2">
+<h2>Why hypothesis testing?</h2>
+<ul>
+<li class="fragment"><p>Hypothesis testing can help us determine if there is a relationship between the predictor and the response variable!</p>
+<ul>
+<li class="fragment"><div class="important">
+<p>This is the inference part of statistical learning</p>
+</div></li>
+</ul></li>
+<li class="fragment"><p>If there is a relationship, then it makes sense to interpret the strength of the relationship (i.e.&nbsp;interpret the value <span class="math inline">\(\hat{\beta}_{1}\)</span>)</p></li>
+</ul>
+</section></section>
+<section>
+<section id="multiple-linear-regression" class="title-slide slide level1 center">
+<h1>Multiple Linear Regression</h1>
+
+</section>
+<section id="multiple-linear-regression-1" class="slide level2">
+<h2>Multiple linear regression</h2>
+<ul>
+<li class="fragment"><p>In practice, we often have more than one predictor</p></li>
+<li class="fragment"><p>With <span class="math inline">\(p\)</span> predictors, the model is <span class="math display">\[Y = \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \ldots + \beta_{p}X_{p} +\epsilon\]</span></p></li>
+<li class="fragment"><p>Interpret <span class="math inline">\(\beta_{j}\)</span> as the <em>average</em> effect on <span class="math inline">\(Y\)</span> for a one-unit increase in <span class="math inline">\(X_{j}\)</span>, <strong>holding all other predictors</strong> fixed/constant</p></li>
+</ul>
+</section>
+<section id="mite-data-1" class="slide level2 scrollable">
+<h2>Mite data</h2>
+<p>Regressing abundance on both <code>WatrCont</code> and <code>SubsDens</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(abundance <span class="sc">~</span> WatrCont <span class="sc">+</span> SubsDens, <span class="at">data =</span> mite_dat)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = abundance ~ WatrCont + SubsDens, data = mite_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-20.192  -8.633  -1.385   6.866  44.245 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept) 10.30549    5.48833   1.878  0.06477 . 
+WatrCont     0.03444    0.01057   3.257  0.00177 **
+SubsDens    -0.35682    0.12604  -2.831  0.00612 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11.7 on 67 degrees of freedom
+Multiple R-squared:  0.1711,    Adjusted R-squared:  0.1464 
+F-statistic: 6.915 on 2 and 67 DF,  p-value: 0.001861</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><span class="math display">\[\widehat{abundance} = 10.306 + 0.034 \text{WatrCont} -0.357 \text{SubsDens}\]</span></p>
+</div>
+<ul>
+<li class="fragment"><p>How do we interpret the estimated coefficients?</p></li>
+<li class="fragment"><p>How do we interpret the p-values?</p>
+<ul>
+<li class="fragment">The p-value for <span class="math inline">\(\beta_{j}\)</span> corresponds to the test of <span class="math inline">\(H_{0}: \beta_{j} = 0\)</span> and <span class="math inline">\(\beta_{k} (k \neq j)\)</span> unrestricted</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="model-assessment" class="title-slide slide level1 center">
+<h1>Model assessment</h1>
+
+</section>
+<section id="model-fit" class="slide level2">
+<h2>Model fit</h2>
+<ul>
+<li class="fragment"><p>How well does our linear regression model “fit” the data? How accurate is our model?</p></li>
+<li class="fragment"><p>Residual standard error (RSE) <span class="math display">\[\text{RSE}  \sqrt{\frac{1}{n-p-1} \sum_{i=1}^{n} (y_{i} - \hat{y}_{i})^2},\]</span></p>
+<p>where <span class="math inline">\(p\)</span> is the number of predictors</p></li>
+<li class="fragment"><p>RSE is considered a measure of the <em>lack of fit</em> of the model</p>
+<ul>
+<li class="fragment">Measured in the units of <span class="math inline">\(Y\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="predictions" class="slide level2">
+<h2>Predictions</h2>
+<ul>
+<li class="fragment"><p>How well does our linear regression model <strong>predict</strong> new responses for a given set of covariates?</p></li>
+<li class="fragment"><p>For example, suppose I want to use our model to predict the abundance of <code>LRUG</code> mites at a new sampling location where the <code>WatrCont</code> is 400 g/L and the <code>SubsDens</code> is 30 g/L</p></li>
+<li class="fragment"><p>I will plug these values into our fitted model <code>m2</code>:</p></li>
+</ul>
+<div class="cell">
+
+</div>
+<div class="fragment">
+<p><span class="math display">\[\widehat{abundance} = 10.306 + 0.034 \times 400 -0.357 \times 30 = 13.3747829\]</span></p>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" data-code-line-numbers="1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">WatrCont =</span> <span class="dv">400</span>, <span class="at">SubsDens =</span> <span class="dv">30</span>)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>pred_mite <span class="ot">&lt;-</span> <span class="fu">predict</span>(m2, <span class="at">newdata =</span> new_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<ul>
+<li class="fragment">Okay…great! But should I trust these predictions?</li>
+</ul>
+</section>
+<section id="prediction-performance" class="slide level2">
+<h2>Prediction performance</h2>
+<ul>
+<li class="fragment"><p>We could get a better sense of a model’s prediction performance by comparing the predicted responses to the true values</p></li>
+<li class="fragment"><p>We should always compare prediction performance for “previously unseen” data (i.e.&nbsp;test data)</p>
+<ul>
+<li class="fragment">The model already “knows” the data used to fit it (i.e.&nbsp;the training data)</li>
+</ul></li>
+<li class="fragment"><div class="important">
+<p>Discuss: what are some important criteria for the testing data?</p>
+</div></li>
+</ul>
+</section></section>
+<section>
+<section id="qualitative-predictors" class="title-slide slide level1 center">
+<h1>Qualitative predictors</h1>
+
+</section>
+<section id="qualitative-predictors-1" class="slide level2">
+<h2>Qualitative predictors</h2>
+<ul>
+<li class="fragment"><p>Thus far, we have assumed that all predictors in our linear model are quantitative. In practice, we often have categorical predictors</p></li>
+<li class="fragment"><p>Our mite data has the following categorical variables: <code>Shrub</code>, <code>Substrate</code>, and <code>Topo</code></p></li>
+<li class="fragment"><p>Let’s begin with the simplest case: a categorical predictor with two categories/levels</p>
+<ul>
+<li class="fragment">e.g.&nbsp;the <code>Topo</code> variable takes on the values “Blanket” or “Hummock” only</li>
+</ul></li>
+</ul>
+</section>
+<section id="level-qualitative-predictor" class="slide level2">
+<h2>2-level qualitative predictor</h2>
+<ul>
+<li class="fragment"><p>We will create an <strong>indicator</strong> or dummy variable as follows: <span class="math display">\[\text{TopoBlanket}_{i} = \begin{cases} 1 &amp; \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Blanket} \\
+0 &amp; \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Hummock} \end{cases}\]</span></p></li>
+<li class="fragment"><p>Simple linear regression model for <code>LRUG</code> regressed on <code>Topo</code>: <span class="math display">\[\text{LRUG}_{i} = \beta_{0} + \beta_{1}\text{TopoBlanket}_{i} + \epsilon_{i} = \begin{cases}
+\beta_{0} + \epsilon_{i} &amp; \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Blanket} \\
+\beta_{0} + \beta_{1} + \epsilon_{i} &amp; \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Hummock}  \end{cases}\]</span></p></li>
+<li class="fragment"><div class="important">
+<p>How to interpret?</p>
+</div></li>
+</ul>
+</section>
+<section id="mite-data-2" class="slide level2">
+<h2>Mite data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(abundance <span class="sc">~</span> Topo, <span class="at">data =</span> mite_dat)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">summary</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = abundance ~ Topo, data = mite_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-15.318  -4.318  -2.154   4.473  41.682 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   15.318      1.658   9.238 1.26e-13 ***
+TopoHummock  -13.164      2.721  -4.838 7.85e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11 on 68 degrees of freedom
+Multiple R-squared:  0.2561,    Adjusted R-squared:  0.2452 
+F-statistic: 23.41 on 1 and 68 DF,  p-value: 7.851e-06</code></pre>
+</div>
+</div>
+<ul>
+<li class="fragment"><p>Fitted model is: <span class="math display">\[\widehat{\text{LRUG}} = 15.318 - 13.164 \text{TopoHummock}\]</span></p></li>
+<li class="fragment"><p>Interpret!</p></li>
+</ul>
+</section>
+<section id="more-than-two-levels" class="slide level2 scrollable">
+<h2>More than two levels</h2>
+<ul>
+<li class="fragment"><p>With more than two levels, we simply create additional dummy variables: <span class="math display">\[\begin{align*}\text{Shrub}_{i,Few} &amp;= \begin{cases} 1 &amp; \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{Few} \\
+0 &amp; \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{not Few} \end{cases} \\
+\text{Shrub}_{i, Many} &amp;= \begin{cases} 1 &amp; \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{Many} \\
+0 &amp; \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{not Many} \end{cases}
+\end{align*}\]</span></p></li>
+<li class="fragment"><p>Resulting regression model for <code>LRUG</code> with only <code>Shrub</code> as predictor: <span class="math display">\[\begin{align*} \text{LRUG}_{i} &amp;= \beta_{0} + \beta_{1} \text{Shrub}_{i, Few} + \beta_{2} \text{Shrub}_{i, Many} + \epsilon_{i}\\
+&amp;\approx \begin{cases}  \beta_{0} + \beta_{1} &amp; \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{Few} \\
+\beta_{0} + \beta_{2} &amp; \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{Many} \\
+\beta_{0} &amp; \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{None} \end{cases}\end{align*}\]</span></p></li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(abundance <span class="sc">~</span> Shrub, <span class="at">data =</span> mite_dat)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">summary</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = abundance ~ Shrub, data = mite_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-16.895  -8.060  -2.760   6.635  40.105 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   10.923      1.405   7.775 6.12e-11 ***
+Shrub.L       -9.288      2.505  -3.707 0.000427 ***
+Shrub.Q       -1.460      2.359  -0.619 0.538164    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11.64 on 67 degrees of freedom
+Multiple R-squared:  0.1791,    Adjusted R-squared:  0.1545 
+F-statistic: 7.306 on 2 and 67 DF,  p-value: 0.001348</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="remarks" class="slide level2 scrollable">
+<h2>Remarks</h2>
+<ul>
+<li class="fragment"><p>For a given categorical variable, there will always be one fewer dummy variables than levels</p>
+<ul>
+<li class="fragment">Level with no dummy variable is known as <em>baseline</em>. For model <code>m4</code> on previous slide, the “None” category was the baseline level</li>
+</ul></li>
+<li class="fragment"><p>Can have multiple categorical variables in a single model:</p></li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(abundance <span class="sc">~</span> Topo <span class="sc">+</span> Shrub, <span class="at">data =</span> mite_dat)</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">summary</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = abundance ~ Topo + Shrub, data = mite_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-16.895  -6.056   0.691   4.756  40.105 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   14.755      1.641   8.993 4.48e-13 ***
+TopoHummock  -11.253      2.997  -3.755 0.000369 ***
+Shrub.L       -4.832      2.580  -1.873 0.065552 .  
+Shrub.Q       -3.128      2.203  -1.420 0.160385    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 10.65 on 66 degrees of freedom
+Multiple R-squared:  0.3236,    Adjusted R-squared:  0.2928 
+F-statistic: 10.52 on 3 and 66 DF,  p-value: 9.593e-06</code></pre>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment"><p>Let’s write out the estimated regression model together</p>
+<ul>
+<li class="fragment"><p>What does <span class="math inline">\(\beta_{0}\)</span> represent?</p></li>
+<li class="fragment"><p>How do we interpret the coefficients?</p></li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="extensions-of-linear-model-optional" class="title-slide slide level1 center">
+<h1>Extensions of linear model (optional)</h1>
+
+</section>
+<section id="linear-model-is-restrictive" class="slide level2">
+<h2>Linear model is restrictive</h2>
+<ul>
+<li class="fragment"><p>Linear model is widely used and works quite well, but has several highly restrictive assumptions</p>
+<ul>
+<li class="fragment">Relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is additive</li>
+<li class="fragment">Relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is linear</li>
+</ul></li>
+<li class="fragment"><p>There are common approaches to loosen these assumptions. We will only discuss the first restriction here. Take a regression class for more!</p></li>
+</ul>
+</section>
+<section id="interactions" class="slide level2">
+<h2>Interactions</h2>
+<ul>
+<li class="fragment">Additive assumption: the association between a predictor <span class="math inline">\(X_{j}\)</span> and the response <span class="math inline">\(Y\)</span> does not depend on the value of any other predictors</li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[Y = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + \epsilon\]</span></p>
+<p>vs</p>
+<p><span class="math display">\[Y = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + \beta_{3}\color{orange}{X_{1}X_{2}} + \epsilon\]</span></p>
+</div>
+<ul>
+<li class="fragment"><p>This third predictor <span class="math inline">\(\color{orange}{X_{1}X_{2}}\)</span> is known as an <strong>interaction</strong> term</p></li>
+<li class="fragment"><p>The total effect of <span class="math inline">\(X_{1}\)</span> on <span class="math inline">\(Y\)</span> also depends on the value of <span class="math inline">\(X_{2}\)</span> through the interaction</p></li>
+<li class="fragment"><p>In the above equation, <span class="math inline">\(\beta_{1}\)</span> and <span class="math inline">\(\beta_{2}\)</span> are called the “main effects” of <span class="math inline">\(X_{1}\)</span> and <span class="math inline">\(X_{2}\)</span> respectively</p></li>
+</ul>
+</section>
+<section id="mite-data-3" class="slide level2">
+<h2>Mite data</h2>
+<ul>
+<li class="fragment">Suppose I want to regress <code>LRUG</code> abundance on <code>SubsDens</code> and <code>WatrCont</code> and their interaction:</li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>mod_int <span class="ot">&lt;-</span> <span class="fu">lm</span>(abundance <span class="sc">~</span> SubsDens <span class="sc">+</span> WatrCont <span class="sc">+</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>                SubsDens <span class="sc">*</span> WatrCont,</span>
+<span id="cb15-3"><a href="#cb15-3"></a>              <span class="at">data =</span> mite_dat)</span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">summary</span>(mod_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = abundance ~ SubsDens + WatrCont + SubsDens * WatrCont, 
+    data = mite_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-24.012  -7.155  -1.896   5.011  44.539 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)       -1.012e+01  1.369e+01  -0.740   0.4621  
+SubsDens           1.323e-01  3.256e-01   0.406   0.6859  
+WatrCont           8.667e-02  3.379e-02   2.565   0.0126 *
+SubsDens:WatrCont -1.210e-03  7.443e-04  -1.625   0.1088  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11.56 on 66 degrees of freedom
+Multiple R-squared:  0.203, Adjusted R-squared:  0.1668 
+F-statistic: 5.604 on 3 and 66 DF,  p-value: 0.001744</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="mite-data-4" class="slide level2">
+<h2>Mite data</h2>
+<ul>
+<li class="fragment"><p>Fitted model: <span class="math inline">\(\widehat{LRUG} = -10.12 + 0.132 \text{SubsDens} + 0.087 \text{WatrCont} -0.001 \text{SubsDens} \times \text{WatrCont}\)</span></p></li>
+<li class="fragment"><p>Interpretations?</p></li>
+</ul>
+<div class="cell">
+
+</div>
+<ul>
+<li class="fragment">Estimates suggest that a 1 g/L increase in the <span class="math inline">\(\color{blue}{\text{WaterCont}}\)</span> of the soil is associated with an increased abundance of (0.087 + -0.001 <span class="math inline">\(\times \color{blue}{\text{SubsDens}}\)</span>) LRUG mites</li>
+</ul>
+</section>
+<section id="interactions-with-categorical-variable" class="slide level2">
+<h2>Interactions with categorical variable</h2>
+<ul>
+<li class="fragment"><p>Can also have interactions involving categorical variables!</p></li>
+<li class="fragment"><p>In particular, the interaction between a quantitative and a categorical variable has nice interpretation</p></li>
+<li class="fragment"><p>Consider the effects of <code>SubsDens</code> and <code>Topo</code> and their interaction on the abundances: <span class="math display">\[\begin{align*}
+\text{LRUG}_{i} &amp;\approx \beta_{0} + \beta_{1} \text{SubsDens}_{i} + \beta_{2}\text{TopoBlanket}_{i} +  \beta_{3}  \text{SubsDens}_{i} \times \text{TopoBlanket}_{i} \\
+&amp; = \begin{cases}
+\beta_{0} + \beta_{1}\text{SubsDens}_{i} &amp; \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Blanket} \\
+(\beta_{0} + \beta_{2}) + (\beta_{1} + \beta_{3}) \text{SubsDens}_{i} &amp; \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Hummock}  \end{cases}
+\end{align*}\]</span></p></li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = abundance ~ SubsDens + Topo + SubsDens * Topo, data = mite_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-21.059  -4.764  -1.186   3.229  39.191 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           34.7881     5.3697   6.479 1.35e-08 ***
+SubsDens              -0.4695     0.1242  -3.781 0.000338 ***
+TopoHummock          -29.4584     9.0331  -3.261 0.001757 ** 
+SubsDens:TopoHummock   0.3803     0.2323   1.637 0.106406    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 10.11 on 66 degrees of freedom
+Multiple R-squared:  0.3901,    Adjusted R-squared:  0.3624 
+F-statistic: 14.07 on 3 and 66 DF,  p-value: 3.425e-07</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="fitted-regression-lines" class="slide level2">
+<h2>Fitted regression lines</h2>
+
+<img data-src="slides-02-linear-regression_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch quarto-figure-center"></section></section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
 
 <div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 

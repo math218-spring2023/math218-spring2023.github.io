@@ -1,0 +1,100 @@
+---
+title: "Lab 02: Linear regression"
+description: "Insurance costs"
+categories: "Lab assignment"
+draft: true
+---
+
+# Introduction
+
+The data can be found in the `insurance.csv` file in the `data` folder of this project. Load in the data using the following code (if you get an error, make sure you are set to the correct file directory):
+
+```{r eval = F}
+insurance <- read.csv("data/insurance.csv")
+```
+
+These data were obtained from [Kaggle](https://www.kaggle.com/datasets/mirichoi0218/insurance).
+
+# Part 0
+
+### Define/create functions
+
+In an R chunk, create a function that takes in two vectors: one of true values and one of corresponding predicted values. The function should return the root mean squared error (RMSE).
+
+### Data preparation
+
+Split your data into a 90% train set and a 10% test set. Be sure to set a seed for reproducibility!
+
+::: {style="color: maroon"}
+*This would be a good time to knit, commit, and push your changes to GitHub!*
+:::
+
+# Part 1
+
+### EDA
+
+Using the full data set, create some plots to examine the relationships between the response variable and some of the possible explanatory variables. Also create an EDA plot for the distribution of the response variable. Do you see any support for including an interaction term? If so, interaction(s) between which variables?
+
+::: {style="color: maroon"}
+*This would be a good time to knit, commit, and push your changes to GitHub!*
+:::
+
+### Fitting the model
+
+Use the *training* data to fit three linear regression models:
+
+1.  A model that only includes main effects (you may choose which predictors you would like to use)
+2.  A model with the same predictors as in (1) and also includes an interaction between `age` and `smoke` status
+3.  A model with the same predictors as in (1) and also includes an interaction between `bmi` and `smoke` status.
+
+### Interpretation
+
+For each of your models, display the summary of the estimated coefficients and interpret how smoke status is associated with insurance charges.
+
+### Predictions
+
+Using the `predict()` function, obtain predictions for the ***test*** data using each model. You should have three vectors of predictions.
+
+Obtain the test RMSE for each model using the function you created in Part 0. Interpret one of the RMSEs, and determine which model performs better at predictions.
+
+::: {style="color: maroon"}
+*This would be a good time to knit, commit, and push your changes to GitHub!*
+:::
+
+# Part 2
+
+You may have noticed in Part 1 that the distribution of our response is heavily right-skewed. When this happens, it is often common to fit a linear regression on a log transformation of the response variable. That is, instead of $y \approx \beta_{0} + \beta_{1}x_{1} + \ldots + \beta_{p} x_{p}$, our regression is $\log(y) \approx \beta_{0} + \beta_{1}x_{1} + \ldots + \beta_{p} x_{p}$. This is also referred to as a "log-linear regression model".
+
+Repeat all of components in Part 1 here, but now treating the log of the insurance `charge` as our response variable. Note: to take the log of a value `x` in `R`, simply use the function `log(x)`. You can either modify your data frames to create the log-ed variable using `mutate()`, or you can use the `log()` function in the `lm()` function directly:
+
+```{r}
+#| eval: false
+lm(log(response) ~ predctors, data)
+```
+
+::: {style="color: maroon"}
+*This would be a good time to knit, commit, and push your changes to GitHub!*
+:::
+
+# Part 3
+
+### Comparisons
+
+In Part 1, you determined a linear regression model for `charge` that performed the best predictions in terms of RMSE. In Part 2, you determined a linear regression model for `log(charge)` that performed the best predictions in terms of RMSE. Based on your findings, answer the following questions:
+
+1.  Do the two models you selected share the same sets of covariates?
+2.  Among all the models, which one do you prefer and why? If you do not have or cannot make a preference, explain why not.
+
+### Prediction uncertainty
+
+I fit a linear regression model for `log(charges)` using the training data (for the purposes of this exercise, the exact model does not matter), and obtained predictions for the test data.
+
+In the following plot, the points shown are the true `charge` values for each observation, plotted in ascending order of the predicted value. You will notice vertical colored error bars. These represent 95% *confidence* intervals (left) and *prediction* intervals (right) for each observation in the test data. If a bar is colored red, that means that the interval does not capture the true `charge` value. *Note*: the points are exactly the same between the two panels; the differences lie in the width of the error bars.
+
+![](figs/intervals.png)
+
+Now that I've describe what the plot is showing, **interpret the findings**. That is, discuss the differences and similarities between the two panels. What are they showing us? Why do they look so different? Is there any pattern with respect to when a confidence or prediction interval does not capture the true value?
+
+# Submission
+
+When you're finished, knit to PDF one last time and upload the PDF to Canvas. Commit and push your code back to GitHub.

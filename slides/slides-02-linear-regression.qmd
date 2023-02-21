@@ -1,6 +1,10 @@
 ---
 title: "Linear Regression"
 date: ""
+title-slide-attributes:
+    data-background-image: "figs/title/mlb.png"
+    data-background-size: contain
+    data-background-opacity: "0.3"
 format: 
   revealjs:
     theme: custom.scss
@@ -14,15 +18,15 @@ draft: true
 
 # Housekeeping
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = F, warning = F, message = F)
+```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
 
 library(tidyverse)
 library(broom)
 library(ggfortify)
 library(ISLR)
 library(vegan)
-plot_theme <- theme(text = element_text(size = 14))
+plot_theme <- theme(text = element_text(size = 16))
 data(mite)
 data(mite.env)
 mite_dat <- mite.env %>%
@@ -37,7 +41,8 @@ mite_dat <- mite.env %>%
 
 -   Assumes that the dependence of $Y$ on the predictors $X_{1}, \ldots, X_{p}$ is linear
 
-```{r fig.align="center",fig.width=8, fig.height=5}
+::: fragment
+```{r fig.align="center",fig.width=8, fig.SubsDens=5}
 mite_dat %>%
   pivot_longer(cols = 1:2, names_to = "variable", values_to = "value") %>%
   ggplot(., aes(x = value, y = abundance)) +
@@ -47,6 +52,7 @@ mite_dat %>%
   plot_theme +
   ylab("LRUG abundance")
 ```
+:::
 
 ## Possible questions of interest
 
@@ -57,6 +63,8 @@ mite_dat %>%
 -   Is the relationship linear?
 
 -   How accurately can we predict the abundance of these mites?
+
+# Simple Linear Regression
 
 ## Simple linear regression
 
@@ -87,3 +95,437 @@ mite_dat %>%
 -   In practice, $\beta_{0}$ and $\beta_{1}$ are unknown, so we must estimate them
 
 -   **Goal**: obtain (good) estimates $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ that are as close to the true values as possible, such that $y_{i} \approx \hat{\beta}_{0} + \hat{\beta}_{1} x_{i}$
+
+    -   How? Minimize the **least squares** criterion
+
+## Least squares
+
+-   Let $\hat{y}_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i}$ be predicted response for $i$-th observation with predictor $x_{i}$
+
+-   The $i$-th **residual** $e_{i}$ is defined as $$e_{i} = y_{i} - \hat{y}_{i}$$
+
+-   Define **residual sum of squares** (RSS) as $$\text{RSS} = e_{1}^{2} + e_{2}^{2} + \ldots + e_{n}^{2} = \sum_{i=1}^{n} e_{i}^2$$
+
+## Estimation by least squares
+
+$$\text{RSS} = \sum_{i=1}^{n} e_{i}^2 = \sum_{i=1}^{n} (y_{i} - \hat{y}_{i})^2 = \sum_{i=1}^{n} (y_{i} - (\hat{\beta}_{0} + \hat{\beta}_{1}x_{i}))^2$$
+
+-   Least squares approach selects the pair $(\hat{\beta}_{0}, \hat{\beta}_{1})$ that minimize the RSS. Can be shown that the minimizing values are: $$\begin{align*}
+    \hat{\beta}_{1} &= \frac{\sum_{i=1}^{n}(x_{i} - \bar{x})(y_{i} - \bar{y})}{\sum_{i=1}^{n}(x_{i} - \bar{x})^2}\\
+    \hat{\beta}_{0} &= \bar{y} - \hat{\beta}_{1} \bar{x}
+    \end{align*}$$
+
+    where $\bar{y} = \frac{1}{n}\sum_{i=1}^{n}y_{i}$ and $\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_{i}$
+
+## Mite data
+
+Least squares fit for `abundance` regressed on `WaterCont`, with residuals in orange.
+
+```{r}
+#| echo: true
+m1 <- lm(abundance ~ WatrCont, data = mite_dat)
+```
+
+```{r fig.align = "center", fig.SubsDens=5, fig.width=8}
+m1 <- lm(abundance ~ WatrCont, data = mite_dat)
+pred <- mite_dat %>%
+  mutate(abundance_pred = m1$coefficients[1] + m1$coefficients[2]*WatrCont) %>%
+  dplyr::select(abundance,  abundance_pred, WatrCont) %>%
+  mutate(group = row_number()) %>%
+  pivot_longer(cols = 1:2, names_to = "mod" )
+ggplot() +
+  geom_line(data = pred ,
+            aes(x = WatrCont, y = value, group = group), col = "orange") +
+      geom_point(data = mite_dat, aes(x = WatrCont, y = abundance))+
+    geom_smooth(data = mite_dat, aes(x = WatrCont, y = abundance), method = "lm", se = F) +
+labs(y = "Abundance")+
+  theme(text = element_text(size = 16))
+
+```
+
+Let's interpret this plot! Do you see anything strange or any patterns?
+
+## Interpreting Coefficients and Estimates
+
+$$Y = \beta_{0} + \beta_{1} X + \epsilon$$
+
+-   $\beta_{0}$ is the expected value of $Y$ when $X = 0$
+
+-   $\beta_{1}$ is the average increase in $Y$ for one-unit increase in $X$
+
+-   $\epsilon$ is error
+
+-   This equation is the *population regression line*
+
+-   When using the least squares estimates for the coefficients, $\hat{Y} = \hat{\beta}_{0} + \hat{\beta}_{1} X$ is the *least squares line*
+
+## Interpreting Coefficients and Estimates (cont.) {.scrollable}
+
+```{r}
+#| echo: true
+summary(m1)
+```
+
+::: fragment
+$$\widehat{\text{LRUG}} = 0.634 + 0.024 \text{WatrCont}$$
+:::
+
+-   How do I interpret $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ for this specific example?
+
+-   Note: the estimates $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ will depend on the observed data! If I took a different sample of `LRUG` mites, I would probably have different estimated values.
+
+    -   Isn't that problematic? Can we asses how accurate are our estimates $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$?
+
+## Assessing Accuracy of Coefficient Estimates
+
+-   **Standard error** (SE) of an estimator reflects how it varies under repeated sampling.
+
+-   For simple linear regression: $$\text{SE}(\hat{\beta}_{0}) = \sigma^2 \left[ \frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n}(x_{i} - \bar{x})^2}\right] \qquad
+    \text{SE}(\hat{\beta}_{1}) = \frac{\sigma^2}{\sum_{i=1}^{n}(x_{i} - \bar{x})^2}$$
+
+    where $\sigma^2 = \text{Var}(\epsilon)$
+
+-   Typically $\sigma^2$ is not known, but can be estimated from the data.
+
+-   Estimate $\hat{\sigma}$ is **residual standard error (RSE)**, given by: $$\hat{\sigma}= \text{RSE} = \sqrt{\frac{1}{n-2}\text{RSS}}$$
+
+-   We use this estimate to calculate $\text{SE}(\hat{\beta}_{0})$ and $\text{SE}(\hat{\beta}_{1})$
+
+## Hypothesis Testing
+
+-   **Hypothesis testing** is a method of statistical inference to determine whether the data at hand sufficiently support a particular hypothesis
+
+    -   Helps test the results of an experiment or survey to see if you have meaningful results
+
+    -   Helps draw conclusions about a population parameter
+
+-   Standard errors can be used to perform hypothesis tests on the coefficients
+
+## Hypothesis Testing
+
+-   Notion of "null" versus "alternate" hypothesis
+
+    -   **Null hypothesis** $H_{0}$: there is no relationship between $X$ and $Y$
+
+    -   **Alternative hypothesis** $H_{A}$: there is some relationship between $X$ and $Y$
+
+-   Mathematically, corresponds to testing $$H_{0}: \beta_{1} = 0 \quad \text{ vs. } \quad H_{A}: \beta_{1} \neq 0$$
+
+    because if $H_{0}$ true, then the model reduces to $Y = \beta_{0} + \epsilon$ so there is no relationship
+
+-   To test this null hypothesis, want to determine if $\hat{\beta}_{1}$ is sufficiently far from zero
+
+    -   How much is 'sufficiently far'? Depends on $\text{SE}(\hat{\beta}_{1})$.
+
+## p-value {.scrollable}
+
+-   With lots of hand-waving: can calculate a **p-value**, which is a probability that we observed the data we did, given that $H_{0}$ is true. If the p-value is small, the observed data don't seem to support $H_{0}$
+
+    -   Compare $p$-value to a pre-determined rejection level $\alpha$ (often 0.05).
+
+    -   If $p$-value $< \alpha$, reject $H_{0}$. Otherwise, fail to reject $H_{0}$.
+
+::: fragment
+```{r}
+#| echo: true
+summary(m1)
+```
+:::
+
+-   $H_{0}: \beta_{1} = 0$ (there is no relationship between `LRUG` abundance and `WatrCont`)
+
+    -   What is the p-value for this hypothesis?
+    -   What is our decision in the mite example?
+
+## Why hypothesis testing?
+
+-   Hypothesis testing can help us determine if there is a relationship between the predictor and the response variable!
+
+    -   ::: important
+        This is the inference part of statistical learning
+        :::
+
+-   If there is a relationship, then it makes sense to interpret the strength of the relationship (i.e. interpret the value $\hat{\beta}_{1}$)
+
+# Multiple Linear Regression
+
+## Multiple linear regression
+
+-   In practice, we often have more than one predictor
+
+-   With $p$ predictors, the model is $$Y = \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \ldots + \beta_{p}X_{p} +\epsilon$$
+
+-   Interpret $\beta_{j}$ as the *average* effect on $Y$ for a one-unit increase in $X_{j}$, **holding all other predictors** fixed/constant
+
+## Mite data {.scrollable}
+
+Regressing abundance on both `WatrCont` and `SubsDens`:
+
+```{r}
+#| echo: true
+m2 <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat)
+summary(m2)
+```
+
+::: fragment
+$$\widehat{abundance} = 10.306 + 0.034 \text{WatrCont} -0.357 \text{SubsDens}$$
+:::
+
+-   How do we interpret the estimated coefficients?
+
+-   How do we interpret the p-values?
+
+    -   The p-value for $\beta_{j}$ corresponds to the test of $H_{0}: \beta_{j} = 0$ and $\beta_{k} (k \neq j)$ unrestricted
+
+# Model assessment
+
+## Model fit
+
+-   How well does our linear regression model "fit" the data? How accurate is our model?
+
+-   Residual standard error (RSE) $$\text{RSE}  \sqrt{\frac{1}{n-p-1} \sum_{i=1}^{n} (y_{i} - \hat{y}_{i})^2},$$
+
+    where $p$ is the number of predictors
+
+-   RSE is considered a measure of the *lack of fit* of the model
+
+    -   Measured in the units of $Y$
+
+## Predictions
+
+-   How well does our linear regression model **predict** new responses for a given set of covariates?
+
+-   For example, suppose I want to use our model to predict the abundance of `LRUG` mites at a new sampling location where the `WatrCont` is 400 g/L and the `SubsDens` is 30 g/L
+
+-   I will plug these values into our fitted model `m2`:
+
+```{r}
+#| echo: false
+new_data <- data.frame(WatrCont = 400, SubsDens = 30)
+pred_mite <- predict(m2, newdata = new_data)
+```
+
+::: fragment
+$$\widehat{abundance} = 10.306 + 0.034 \times 400 -0.357 \times 30 = `r pred_mite`$$
+:::
+
+::: fragment
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "1|2"
+new_data <- data.frame(WatrCont = 400, SubsDens = 30)
+pred_mite <- predict(m2, newdata = new_data)
+```
+:::
+
+-   Okay...great! But should I trust these predictions?
+
+## Prediction performance
+
+-   We could get a better sense of a model's prediction performance by comparing the predicted responses to the true values
+
+-   We should always compare prediction performance for "previously unseen" data (i.e. test data)
+
+    -   The model already "knows" the data used to fit it (i.e. the training data)
+
+-   ::: important
+    Discuss: what are some important criteria for the testing data?
+    :::
+
+# Qualitative predictors
+
+## Qualitative predictors
+
+-   Thus far, we have assumed that all predictors in our linear model are quantitative. In practice, we often have categorical predictors
+
+-   Our mite data has the following categorical variables: `Shrub`, `Substrate`, and `Topo`
+
+-   Let's begin with the simplest case: a categorical predictor with two categories/levels
+
+    -   e.g. the `Topo` variable takes on the values "Blanket" or "Hummock" only
+
+## 2-level qualitative predictor
+
+-   We will create an **indicator** or dummy variable as follows: $$\text{TopoBlanket}_{i} = \begin{cases} 1 & \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Blanket} \\
+    0 & \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Hummock} \end{cases}$$
+
+-   Simple linear regression model for `LRUG` regressed on `Topo`: $$\text{LRUG}_{i} = \beta_{0} + \beta_{1}\text{TopoBlanket}_{i} + \epsilon_{i} = \begin{cases} 
+    \beta_{0} + \epsilon_{i} & \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Blanket} \\
+    \beta_{0} + \beta_{1} + \epsilon_{i} & \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Hummock}  \end{cases}$$
+
+-   ::: important
+    How to interpret?
+    :::
+
+## Mite data
+
+```{r}
+#| echo: true
+m3 <- lm(abundance ~ Topo, data = mite_dat)
+summary(m3)
+```
+
+-   Fitted model is: $$\widehat{\text{LRUG}} = 15.318 - 13.164 \text{TopoHummock}$$
+
+-   Interpret!
+
+## More than two levels {.scrollable}
+
+-   With more than two levels, we simply create additional dummy variables: $$\begin{align*}\text{Shrub}_{i,Few} &= \begin{cases} 1 & \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{Few} \\
+    0 & \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{not Few} \end{cases} \\
+    \text{Shrub}_{i, Many} &= \begin{cases} 1 & \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{Many} \\
+    0 & \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{not Many} \end{cases}
+    \end{align*}$$
+
+-   Resulting regression model for `LRUG` with only `Shrub` as predictor: $$\begin{align*} \text{LRUG}_{i} &= \beta_{0} + \beta_{1} \text{Shrub}_{i, Few} + \beta_{2} \text{Shrub}_{i, Many} + \epsilon_{i}\\
+    &\approx \begin{cases}  \beta_{0} + \beta_{1} & \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{Few} \\
+    \beta_{0} + \beta_{2} & \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{Many} \\
+    \beta_{0} & \text{ if } \color{blue}{\text{Shrub}_{i}} = \text{None} \end{cases}\end{align*}$$
+
+::: fragment
+```{r}
+#| echo: true
+m4 <- lm(abundance ~ Shrub, data = mite_dat)
+summary(m4)
+```
+:::
+
+## Remarks {.scrollable}
+
+-   For a given categorical variable, there will always be one fewer dummy variables than levels
+
+    -   Level with no dummy variable is known as *baseline*. For model `m4` on previous slide, the "None" category was the baseline level
+
+-   Can have multiple categorical variables in a single model:
+
+::: fragment
+```{r}
+#| echo: true
+m5 <- lm(abundance ~ Topo + Shrub, data = mite_dat)
+summary(m5)
+```
+:::
+
+-   Let's write out the estimated regression model together
+
+    -   What does $\beta_{0}$ represent?
+
+    -   How do we interpret the coefficients?
+
+# Extensions of linear model (optional)
+
+## Linear model is restrictive
+
+-   Linear model is widely used and works quite well, but has several highly restrictive assumptions
+
+    -   Relationship between $X$ and $Y$ is additive
+    -   Relationship between $X$ and $Y$ is linear
+
+-   There are common approaches to loosen these assumptions. We will only discuss the first restriction here. Take a regression class for more!
+
+## Interactions
+
+-   Additive assumption: the association between a predictor $X_{j}$ and the response $Y$ does not depend on the value of any other predictors
+
+::: fragment
+$$Y = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + \epsilon$$
+
+vs
+
+$$Y = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + \beta_{3}\color{orange}{X_{1}X_{2}} + \epsilon$$
+:::
+
+-   This third predictor $\color{orange}{X_{1}X_{2}}$ is known as an **interaction** term
+
+-   The total effect of $X_{1}$ on $Y$ also depends on the value of $X_{2}$ through the interaction
+
+-   In the above equation, $\beta_{1}$ and $\beta_{2}$ are called the "main effects" of $X_{1}$ and $X_{2}$ respectively
+
+## Mite data
+
+-   Suppose I want to regress `LRUG` abundance on `SubsDens` and `WatrCont` and their interaction:
+
+::: fragment
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "2"
+mod_int <- lm(abundance ~ SubsDens + WatrCont + 
+                SubsDens * WatrCont,
+              data = mite_dat)
+summary(mod_int)
+```
+:::
+
+::: fragment
+```{r}
+mod_int <- lm(abundance ~ SubsDens + WatrCont + 
+                SubsDens * WatrCont,
+              data = mite_dat)
+summary(mod_int)
+```
+:::
+
+## Mite data
+
+-   Fitted model: $\widehat{LRUG} = -10.12 + 0.132 \text{SubsDens} + 0.087 \text{WatrCont} -0.001 \text{SubsDens} \times \text{WatrCont}$
+
+-   Interpretations?
+
+```{r}
+coeffs <- round(mod_int$coefficients, 3)
+```
+
+-   Estimates suggest that a 1 g/L increase in the $\color{blue}{\text{WaterCont}}$ of the soil is associated with an increased abundance of (`r coeffs[3]` + `r coeffs[4]` $\times \color{blue}{\text{SubsDens}}$) LRUG mites
+
+## Interactions with categorical variable
+
+-   Can also have interactions involving categorical variables!
+
+-   In particular, the interaction between a quantitative and a categorical variable has nice interpretation
+
+-   Consider the effects of `SubsDens` and `Topo` and their interaction on the abundances: $$\begin{align*}
+    \text{LRUG}_{i} &\approx \beta_{0} + \beta_{1} \text{SubsDens}_{i} + \beta_{2}\text{TopoBlanket}_{i} +  \beta_{3}  \text{SubsDens}_{i} \times \text{TopoBlanket}_{i} \\
+    & = \begin{cases} 
+    \beta_{0} + \beta_{1}\text{SubsDens}_{i} & \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Blanket} \\
+    (\beta_{0} + \beta_{2}) + (\beta_{1} + \beta_{3}) \text{SubsDens}_{i} & \text{ if } \color{blue}{\text{Topo}_{i}} = \text{Hummock}  \end{cases}
+    \end{align*}$$
+
+::: fragment
+```{r}
+mod_int2 <- lm(abundance ~ SubsDens + Topo + SubsDens * Topo, mite_dat)
+summary(mod_int2)
+```
+:::
+
+## Fitted regression lines
+
+```{r fig.align="center", fig.SubsDens=6, fig.width=10}
+SubsDens_range <- seq(min(mite_dat$SubsDens), max(mite_dat$SubsDens))
+
+# mod no_int: blanket
+v1 <- data.frame(abundance = cbind(1, SubsDens_range, 0) %*% coefficients(lm(abundance ~ SubsDens + Topo, data = mite_dat))) %>%
+  mutate(SubsDens = SubsDens_range, Topo= "Blanket", mod  = "Non-Interaction")
+# mod no_int: hummock
+v2 <- data.frame(abundance = cbind(1, SubsDens_range, 1) %*% coefficients(lm(abundance ~ SubsDens + Topo, data = mite_dat))) %>%
+  mutate(SubsDens = SubsDens_range, Topo= "Hummock", mod  = "Non-Interaction")
+
+# mod int: Blanket
+v3 <- data.frame(abundance = cbind(1, SubsDens_range, 0, 0) %*% coefficients(lm(abundance ~ SubsDens + Topo + SubsDens*Topo, data = mite_dat))) %>%
+  mutate(SubsDens = SubsDens_range, Topo= "Blanket", mod  = "Interaction")
+# mod int: Hummock
+v4 <- data.frame(abundance = cbind(1, SubsDens_range, 1, SubsDens_range) %*% coefficients(lm(abundance ~ SubsDens + Topo + SubsDens*Topo, data = mite_dat))) %>%
+  mutate(SubsDens = SubsDens_range, Topo= "Hummock", mod  = "Interaction")
+
+p1 <- data.frame(rbind(v1,v2,v3,v4))  %>%
+  mutate(mod = factor(mod, c("Non-Interaction", "Interaction"))) %>%
+  ggplot(., aes(x = SubsDens, y = abundance, col = Topo))+
+  geom_line() +
+  facet_wrap(~mod)+
+  theme(text = element_text(size = 14)) 
+
+p1
+```
+
+# Summary

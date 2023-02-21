@@ -396,7 +396,12 @@
 </section>
 <section id="housekeeping" class="title-slide slide level1 center">
 <h1>Housekeeping</h1>
-<p>Please accept the invitation to join our GitHub organization! Let me know if you did not receive an e-mail.</p>
+<ul>
+<li class="fragment"><p>2/21/23: Reminder that Lab 01 is due to Canvas this Thursday at 11:59pm</p>
+<ul>
+<li class="fragment">Office hours tomorrow 3-4pm, and by appointment via Calendly</li>
+</ul></li>
+</ul>
 <div class="footer">
 <p>Image on title slide: https://www.chaosofdelight.org/all-about-mites-oribatida</p>
 </div>
@@ -573,28 +578,28 @@
 <section id="prediction" class="slide level2">
 <h2>Prediction</h2>
 <ul>
-<li class="fragment"><p>We have a set of inputs or predictors <span class="math inline">\(X\)</span>, and we want to predict a corresponding <span class="math inline">\(Y\)</span>. Assume the true model is <span class="math inline">\(Y = f(X) + \epsilon\)</span>, but don’t know <span class="math inline">\(f\)</span></p></li>
-<li class="fragment"><p>Assuming the error <span class="math inline">\(\epsilon\)</span> is 0 on average, we can obtain predictions of <span class="math inline">\(Y\)</span> as <span class="math display">\[\hat{Y} = \hat{f}(X)\]</span></p>
+<li class="fragment"><p>We have a set of inputs or predictors <span class="math inline">\(x_{i}\)</span>, and we want to predict a corresponding <span class="math inline">\(y_{i}\)</span>. Assume the true model is <span class="math inline">\(y_{i} = f(x_{i}) + \epsilon_{i}\)</span>, but don’t know <span class="math inline">\(f\)</span></p></li>
+<li class="fragment"><p>Assuming the error <span class="math inline">\(\epsilon_{i}\)</span> is 0 on average, we can obtain predictions of <span class="math inline">\(y_{i}\)</span> as <span class="math display">\[\hat{y}_{i} = \hat{f}(x_{i})\]</span></p>
 <ul>
-<li class="fragment">Then, if we know the true <span class="math inline">\(Y\)</span>, we can evaluate the accuracy of the prediction <span class="math inline">\(\hat{Y}\)</span></li>
+<li class="fragment">Then, if we know the true <span class="math inline">\(y_{i}\)</span>, we can evaluate the accuracy of the prediction <span class="math inline">\(\hat{y}_{i}\)</span></li>
 </ul></li>
-<li class="fragment"><p>Generally, <span class="math inline">\(Y \neq \hat{Y}\)</span>. Why?</p>
+<li class="fragment"><p>Generally, <span class="math inline">\(y_{i} \neq \hat{y}_{i}\)</span>. Why?</p>
 <ol type="1">
 <li class="fragment"><span class="math inline">\(\hat{f}\)</span> will not be perfect estimate of <span class="math inline">\(f\)</span></li>
-<li class="fragment"><span class="math inline">\(Y\)</span> is a function of <span class="math inline">\(\epsilon\)</span>, which cannot be predicted using <span class="math inline">\(X\)</span></li>
+<li class="fragment"><span class="math inline">\(y_{i}\)</span> is a function of <span class="math inline">\(\epsilon_{i}\)</span>, which cannot be predicted using <span class="math inline">\(x_{i}\)</span></li>
 </ol></li>
 </ul>
 </section>
 <section id="types-of-error" class="slide level2">
 <h2>Types of error</h2>
 <ul>
-<li class="fragment"><p>Model: <span class="math inline">\(Y = f(X) + \epsilon\)</span></p></li>
+<li class="fragment"><p>Model: <span class="math inline">\(y_{i} = f(x_{i}) + \epsilon_{i}\)</span></p></li>
 <li class="fragment"><div class="important">
-<p>Irreducible error: <span class="math inline">\(\epsilon\)</span></p>
+<p>Irreducible error: <span class="math inline">\(\epsilon_{i}\)</span></p>
 </div>
 <ul>
 <li class="fragment">Even if we knew <span class="math inline">\(f\)</span> perfectly, there is still some inherent variability</li>
-<li class="fragment"><span class="math inline">\(\epsilon\)</span> may also contain unmeasured variables that are not available to us</li>
+<li class="fragment"><span class="math inline">\(\epsilon_{i}\)</span> may also contain unmeasured variables that are not available to us</li>
 </ul></li>
 <li class="fragment"><div class="important">
 <p>Reducible error: how far <span class="math inline">\(\hat{f}\)</span> is from the true <span class="math inline">\(f\)</span></p>
@@ -606,20 +611,21 @@
 <ul>
 <li class="fragment">Ways to quantify error
 <ul>
-<li class="fragment">Difference/error = <span class="math inline">\(Y - \hat{Y}\)</span></li>
-<li class="fragment">Absolute error = <span class="math inline">\(|Y - \hat{Y}|\)</span></li>
-<li class="fragment">Squared error = <span class="math inline">\((Y - \hat{Y})^2\)</span></li>
+<li class="fragment">Difference/error = <span class="math inline">\(y_{i} - \hat{y}_{i}\)</span></li>
+<li class="fragment">Absolute error = <span class="math inline">\(|y_{i} - \hat{y}_{i}|\)</span></li>
+<li class="fragment">Squared error = <span class="math inline">\((y_{i} - \hat{y}_{i})^2\)</span></li>
 </ul></li>
-<li class="fragment">Intuitively, large error indicates worse prediction</li>
+<li class="fragment">Intuitively, larger error indicates worse prediction</li>
+<li class="fragment">Question: are there scenarios where we might prefer one error over another?</li>
 </ul>
 </section>
 <section id="prediction-errors-1" class="slide level2">
 <h2>Prediction errors</h2>
 <ul>
-<li class="fragment"><p>Given <span class="math inline">\(\hat{f}\)</span> and <span class="math inline">\(X\)</span>, we can obtain a prediction <span class="math inline">\(\hat{Y} = \hat{f}(X)\)</span> for <span class="math inline">\(Y\)</span></p></li>
+<li class="fragment"><p>Given <span class="math inline">\(\hat{f}\)</span> and <span class="math inline">\(x_{i}\)</span>, we can obtain a prediction <span class="math inline">\(\hat{y}_{i} = \hat{f}(x_{i})\)</span> for <span class="math inline">\(y_{i}\)</span></p></li>
 <li class="fragment"><p>Mean-squared prediction error: <span class="math display">\[\begin{align*}
-\mathsf{E}[(Y - \hat{Y})^2] &amp;= \mathsf{E}[( f(X) + \epsilon - \hat{f}(X))^2] \\
-&amp;= \underbrace{[f(X) - \hat{f}(X)]^2}_\text{reducible} + \underbrace{\text{Var}(\epsilon)}_\text{irreducible}
+\mathsf{E}[(y_{i} - \hat{y}_{i})^2] &amp;= \mathsf{E}[( f(x_{i}) + \epsilon_{i} - \hat{f}(x_{i}))^2] \\
+&amp;= \underbrace{[f(x_{i}) - \hat{f}(x_{i})]^2}_\text{reducible} + \underbrace{\text{Var}(\epsilon_{i})}_\text{irreducible}
 \end{align*}\]</span></p></li>
 <li class="fragment"><p>We cannot do much to decrease the irreducible error</p></li>
 <li class="fragment"><p>But we <em>can</em> potentially minimize the reducible error by choosing better <span class="math inline">\(\hat{f}\)</span>!</p></li>
@@ -665,11 +671,13 @@
 <h2>Assessing model accuracy</h2>
 <ul>
 <li class="fragment"><p>How can we know how well a chosen <span class="math inline">\(\hat{f}\)</span> is performing?</p></li>
-<li class="fragment"><p>In regression setting, we often use <strong>mean squared error (MSE)</strong></p>
+<li class="fragment"><p>In regression setting, we often use <strong>mean squared error (MSE)</strong> or <strong>root MSE (RMSE)</strong></p>
 <ul>
-<li class="fragment"><span class="math inline">\(\text{MSE}=\frac{1}{n}\sum_{i=1}^{n}(y_{i}-\hat{f}(x_{i}))^2\)</span></li>
+<li class="fragment"><p><span class="math inline">\(\text{MSE}=\frac{1}{n}\sum_{i=1}^{n}(y_{i}-\hat{f}(x_{i}))^2\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(\text{RMSE}=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_{i}-\hat{f}(x_{i}))^2}\)</span></p></li>
 </ul></li>
-<li class="fragment"><p>MSE will be small if predictions <span class="math inline">\(\hat{y}_{i} = {f}(x_{i})\)</span> are very close to the true <span class="math inline">\(y_{i}\)</span></p></li>
+<li class="fragment"><p>MSE (and RMSE) will be small if predictions <span class="math inline">\(\hat{y}_{i} = \hat{f}(x_{i})\)</span> are very close to true <span class="math inline">\(y_{i}\)</span></p></li>
+<li class="fragment"><p>Question: why might we prefer reporting RMSE over MSE?</p></li>
 </ul>
 </section>
 <section id="training-vs.-test-data" class="slide level2">
@@ -681,12 +689,12 @@
 <li class="fragment">Test set is used to assess model fit</li>
 </ul></li>
 <li class="fragment"><p>We are often most interested in accuracy of our predictions when applying the method to <em>previously unseen</em> data. Why?</p></li>
-<li class="fragment"><p>We can compute the MSE for the training and test data respectively</p></li>
+<li class="fragment"><p>We can compute the MSE for the training and test data respectively…but we typically focus more attention to <strong>test MSE</strong></p></li>
 </ul>
 </section>
 <section id="example-1" class="slide level2">
 <h2>Example 1</h2>
-<p>I generated some fake data and fit three models that differ in flexibility,</p>
+<p>I generated some fake data and fit three models that differ in flexibility. In this example, the generated data (points) follow a curve-y shape.</p>
 <div class="cell" data-layout-align="center">
 
 </div>
@@ -694,6 +702,7 @@
 <img data-src="slides-01-what-is_files/figure-revealjs/plot_mse1-1.png" width="3000" class="r-stretch quarto-figure-center"></section>
 <section id="example-2" class="slide level2">
 <h2>Example 2</h2>
+<p>In this example, the generated data (points) look more linear.</p>
 <div class="cell" data-layout-align="center">
 
 </div>

@@ -1,0 +1,89 @@
+---
+title: "Live code 03:"
+date: "February 21, 2023"
+description: "Creating functions"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+draft: true
+---
+
+## Creating functions in R
+
+Here we will learn how to write functions in `R`. Functions are *extremely* helpful for automating commons tasks that you might use often (e.g. computing the RMSE for a set of predictions). If you're going to use the same block of code more than twice, you should consider writing a function!
+
+There are three key steps to creating a new function:
+
+1.  Picking a ***NAME*** for the function
+2.  Listing the ***INPUTS/ARGUMENTS*** to the function called `function()`
+3.  Placing the code you have developed in the ***BODY*** of the function (between the sets of curly braces `{ }` that immediately follow `function()`
+    i.  Making sure to `return()` the output from the function
+
+### Example 
+
+For example, suppose that I want to create a function that takes in a matrix and returns the sums of the values within each column. (There is a function that already does this, but pretend there isn't!) The function might look like this:
+
+```{r}
+column_sums <- function(input_matrix){
+  n_cols <- ncol(input_matrix)
+  sums <- rep(NA, n_cols)
+  for(i in 1:n_cols){
+    sums[i] <- sum(input_matrix[,i])
+  }
+  return(sums)
+}
+```
+
+This looks scary, but let's break it down.
+
+-   The name of the function is `column_sums`.
+
+-   `R` knows I want to create a function because I use the `function()` function, where I specify that my function requires a single input that will be referred to as `input_matrix`.
+
+-   The code within the body specifies how I will use `input_matrix` to calculate the column sums.
+
+-   I finish the function by `return()`-ing a vector.
+
+Let's test this out: I will create a matrix of numbers, and then use/call my function as I normally would any `R` function:
+
+```{r}
+my_mat <- matrix(1:10, nrow = 2, ncol = 5)
+my_mat
+column_sums(my_mat)
+```
+
+Let's confirm this is the correct output with the pre-provided `R` function `colSums()`:
+
+```{r}
+colSums(my_mat)
+```
+
+How might we code a function that calculates the squared error between two values? Try it yourself, then check here to see if your code generally agrees with mine:
+
+```{r}
+#| code-fold: true
+squared_error <- function(x1, x2){
+  ret <- (x1 - x2)^2
+  return(ret)
+}
+
+```
+
+```{r}
+#| code-fold: true
+#| eval: false
+
+# test your code: you should get 16 for passing in -2 and 2
+squared_error(-2, 2)
+```
+
+## Your turn!
+
+Feel free to try any and all of the following:
+
+1.  Write a function that takes in a temperature in degrees Fahrenheit and returns the temperature in degrees Celsius. For reference, the conversion is $(\text{degreesF} - 32) * \frac{5}{9}$. Give your function an appropriate name.
+    i.  Check to make sure your function works by passing in $32^\circ$ F. You should get 0 back!
+2.  Write a more complicated version of Exercise 1 where the function takes in two inputs: 1) a temperature (in either Fahrenheit or Celsius) and 2) a string or Boolean (your choice!) that denotes if you want to convert to Fahrenheit or Celsius. Your function should return the correct conversion based on the user's inputs. Note: the conversion from Celsius to Fahrenheit is $\text{degreesC} * \frac{9}{5} + 32$.
+3. Last week we practiced coding `for()` loops by obtaining the factorial of a given positive integer. Create a function where the user specifies the integer they want to find the factorial of, and return the factorial. 

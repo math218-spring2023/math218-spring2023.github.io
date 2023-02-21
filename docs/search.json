@@ -137,28 +137,28 @@
     "href": "slides/slides-01-what-is.html#prediction",
     "title": "What is statistical learning?",
     "section": "Prediction",
-    "text": "Prediction\n\nWe have a set of inputs or predictors \\(X\\), and we want to predict a corresponding \\(Y\\). Assume the true model is \\(Y = f(X) + \\epsilon\\), but don’t know \\(f\\)\nAssuming the error \\(\\epsilon\\) is 0 on average, we can obtain predictions of \\(Y\\) as \\[\\hat{Y} = \\hat{f}(X)\\]\n\nThen, if we know the true \\(Y\\), we can evaluate the accuracy of the prediction \\(\\hat{Y}\\)\n\nGenerally, \\(Y \\neq \\hat{Y}\\). Why?\n\n\\(\\hat{f}\\) will not be perfect estimate of \\(f\\)\n\\(Y\\) is a function of \\(\\epsilon\\), which cannot be predicted using \\(X\\)"
+    "text": "Prediction\n\nWe have a set of inputs or predictors \\(x_{i}\\), and we want to predict a corresponding \\(y_{i}\\). Assume the true model is \\(y_{i} = f(x_{i}) + \\epsilon_{i}\\), but don’t know \\(f\\)\nAssuming the error \\(\\epsilon_{i}\\) is 0 on average, we can obtain predictions of \\(y_{i}\\) as \\[\\hat{y}_{i} = \\hat{f}(x_{i})\\]\n\nThen, if we know the true \\(y_{i}\\), we can evaluate the accuracy of the prediction \\(\\hat{y}_{i}\\)\n\nGenerally, \\(y_{i} \\neq \\hat{y}_{i}\\). Why?\n\n\\(\\hat{f}\\) will not be perfect estimate of \\(f\\)\n\\(y_{i}\\) is a function of \\(\\epsilon_{i}\\), which cannot be predicted using \\(x_{i}\\)"
   },
   {
     "objectID": "slides/slides-01-what-is.html#types-of-error",
     "href": "slides/slides-01-what-is.html#types-of-error",
     "title": "What is statistical learning?",
     "section": "Types of error",
-    "text": "Types of error\n\nModel: \\(Y = f(X) + \\epsilon\\)\n\nIrreducible error: \\(\\epsilon\\)\n\n\nEven if we knew \\(f\\) perfectly, there is still some inherent variability\n\\(\\epsilon\\) may also contain unmeasured variables that are not available to us\n\n\nReducible error: how far \\(\\hat{f}\\) is from the true \\(f\\)"
+    "text": "Types of error\n\nModel: \\(y_{i} = f(x_{i}) + \\epsilon_{i}\\)\n\nIrreducible error: \\(\\epsilon_{i}\\)\n\n\nEven if we knew \\(f\\) perfectly, there is still some inherent variability\n\\(\\epsilon_{i}\\) may also contain unmeasured variables that are not available to us\n\n\nReducible error: how far \\(\\hat{f}\\) is from the true \\(f\\)"
   },
   {
     "objectID": "slides/slides-01-what-is.html#prediction-errors",
     "href": "slides/slides-01-what-is.html#prediction-errors",
     "title": "What is statistical learning?",
     "section": "Prediction errors",
-    "text": "Prediction errors\n\nWays to quantify error\n\nDifference/error = \\(Y - \\hat{Y}\\)\nAbsolute error = \\(|Y - \\hat{Y}|\\)\nSquared error = \\((Y - \\hat{Y})^2\\)\n\nIntuitively, large error indicates worse prediction"
+    "text": "Prediction errors\n\nWays to quantify error\n\nDifference/error = \\(y_{i} - \\hat{y}_{i}\\)\nAbsolute error = \\(|y_{i} - \\hat{y}_{i}|\\)\nSquared error = \\((y_{i} - \\hat{y}_{i})^2\\)\n\nIntuitively, larger error indicates worse prediction\nQuestion: are there scenarios where we might prefer one error over another?"
   },
   {
     "objectID": "slides/slides-01-what-is.html#prediction-errors-1",
     "href": "slides/slides-01-what-is.html#prediction-errors-1",
     "title": "What is statistical learning?",
     "section": "Prediction errors",
-    "text": "Prediction errors\n\nGiven \\(\\hat{f}\\) and \\(X\\), we can obtain a prediction \\(\\hat{Y} = \\hat{f}(X)\\) for \\(Y\\)\nMean-squared prediction error: \\[\\begin{align*}\n\\mathsf{E}[(Y - \\hat{Y})^2] &= \\mathsf{E}[( f(X) + \\epsilon - \\hat{f}(X))^2] \\\\\n&= \\underbrace{[f(X) - \\hat{f}(X)]^2}_\\text{reducible} + \\underbrace{\\text{Var}(\\epsilon)}_\\text{irreducible}\n\\end{align*}\\]\nWe cannot do much to decrease the irreducible error\nBut we can potentially minimize the reducible error by choosing better \\(\\hat{f}\\)!"
+    "text": "Prediction errors\n\nGiven \\(\\hat{f}\\) and \\(x_{i}\\), we can obtain a prediction \\(\\hat{y}_{i} = \\hat{f}(x_{i})\\) for \\(y_{i}\\)\nMean-squared prediction error: \\[\\begin{align*}\n\\mathsf{E}[(y_{i} - \\hat{y}_{i})^2] &= \\mathsf{E}[( f(x_{i}) + \\epsilon_{i} - \\hat{f}(x_{i}))^2] \\\\\n&= \\underbrace{[f(x_{i}) - \\hat{f}(x_{i})]^2}_\\text{reducible} + \\underbrace{\\text{Var}(\\epsilon_{i})}_\\text{irreducible}\n\\end{align*}\\]\nWe cannot do much to decrease the irreducible error\nBut we can potentially minimize the reducible error by choosing better \\(\\hat{f}\\)!"
   },
   {
     "objectID": "slides/slides-01-what-is.html#inference",
@@ -186,28 +186,28 @@
     "href": "slides/slides-01-what-is.html#assessing-model-accuracy-1",
     "title": "What is statistical learning?",
     "section": "Assessing model accuracy",
-    "text": "Assessing model accuracy\n\nHow can we know how well a chosen \\(\\hat{f}\\) is performing?\nIn regression setting, we often use mean squared error (MSE)\n\n\\(\\text{MSE}=\\frac{1}{n}\\sum_{i=1}^{n}(y_{i}-\\hat{f}(x_{i}))^2\\)\n\nMSE will be small if predictions \\(\\hat{y}_{i} = {f}(x_{i})\\) are very close to the true \\(y_{i}\\)"
+    "text": "Assessing model accuracy\n\nHow can we know how well a chosen \\(\\hat{f}\\) is performing?\nIn regression setting, we often use mean squared error (MSE) or root MSE (RMSE)\n\n\\(\\text{MSE}=\\frac{1}{n}\\sum_{i=1}^{n}(y_{i}-\\hat{f}(x_{i}))^2\\)\n\\(\\text{RMSE}=\\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}(y_{i}-\\hat{f}(x_{i}))^2}\\)\n\nMSE (and RMSE) will be small if predictions \\(\\hat{y}_{i} = \\hat{f}(x_{i})\\) are very close to true \\(y_{i}\\)\nQuestion: why might we prefer reporting RMSE over MSE?"
   },
   {
     "objectID": "slides/slides-01-what-is.html#training-vs.-test-data",
     "href": "slides/slides-01-what-is.html#training-vs.-test-data",
     "title": "What is statistical learning?",
     "section": "Training vs. test data",
-    "text": "Training vs. test data\n\nIn practice, we split our data into training and test sets\n\nTraining set is used to fit the model\nTest set is used to assess model fit\n\nWe are often most interested in accuracy of our predictions when applying the method to previously unseen data. Why?\nWe can compute the MSE for the training and test data respectively"
+    "text": "Training vs. test data\n\nIn practice, we split our data into training and test sets\n\nTraining set is used to fit the model\nTest set is used to assess model fit\n\nWe are often most interested in accuracy of our predictions when applying the method to previously unseen data. Why?\nWe can compute the MSE for the training and test data respectively…but we typically focus more attention to test MSE"
   },
   {
     "objectID": "slides/slides-01-what-is.html#example-1",
     "href": "slides/slides-01-what-is.html#example-1",
     "title": "What is statistical learning?",
     "section": "Example 1",
-    "text": "Example 1\nI generated some fake data and fit three models that differ in flexibility,"
+    "text": "Example 1\nI generated some fake data and fit three models that differ in flexibility. In this example, the generated data (points) follow a curve-y shape."
   },
   {
     "objectID": "slides/slides-01-what-is.html#example-2",
     "href": "slides/slides-01-what-is.html#example-2",
     "title": "What is statistical learning?",
     "section": "Example 2",
-    "text": "Example 2"
+    "text": "Example 2\nIn this example, the generated data (points) look more linear."
   },
   {
     "objectID": "slides/slides-01-what-is.html#bias-variance-trade-off",
@@ -452,7 +452,7 @@
     "href": "live-code/live-code-02.html#new-function",
     "title": "Live code 02",
     "section": "New function:",
-    "text": "New function:\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random (where each value as 1/5 chance of being sampled) as follows:\n\nsample(1:5, 1)\n\n[1] 1\n\nsample(1:5, 1)\n\n[1] 2\n\nsample(1:5, 1)\n\n[1] 2\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!\nYou can sample with replacement or sample each value in vec with different probability by changing the arguments in the function call."
+    "text": "New function:\n\nThe sample(vec, m) function takes a random sample of size m from the vector vec . By default, we sample without replacement and each value in vec is equally likely. For example, I can draw one value between 1-5 at random (where each value as 1/5 chance of being sampled) as follows:\n\nsample(1:5, 1)\n\n[1] 1\n\nsample(1:5, 1)\n\n[1] 1\n\nsample(1:5, 1)\n\n[1] 3\n\n\n\nAs you see, running this code multiple times will lead to different values being sample-d!\nYou can sample with replacement or sample each value in vec with different probability by changing the arguments in the function call."
   },
   {
     "objectID": "live-code/live-code-02.html#conditional-statements",
@@ -480,6 +480,6 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nLinear regression\n\n\n\n\n\nR 2/23\nLinear regression (cont.)\n\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nLogistic regression\n\n\n\n\n\nR 3/2\nLogistic regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
+    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nWhat is statistical learning? (cont.)\nLinear regression?\nWhat is statistical learning?\n\n\n\n\nR 2/23\nLinear regression (cont.)\n\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nLogistic regression\n\n\n\n\n\nR 3/2\nLogistic regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
   }
 ]

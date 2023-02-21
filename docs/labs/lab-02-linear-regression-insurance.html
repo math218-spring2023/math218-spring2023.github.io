@@ -6,10 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-02-17">
-<meta name="description" content="Important coding skills">
+<meta name="description" content="Insurance costs">
 
-<title>Math 218 - Spring 2023 - Live code 02</title>
+<title>Math 218 - Spring 2023 - Lab 02: Linear regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -123,6 +122,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -175,14 +175,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#new-function" id="toc-new-function" class="nav-link active" data-scroll-target="#new-function">New function:</a></li>
-  <li><a href="#conditional-statements" id="toc-conditional-statements" class="nav-link" data-scroll-target="#conditional-statements">Conditional statements</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#part-0" id="toc-part-0" class="nav-link" data-scroll-target="#part-0">Part 0</a>
   <ul class="collapse">
-  <li><a href="#if-statements" id="toc-if-statements" class="nav-link" data-scroll-target="#if-statements"><code>if</code> statements</a></li>
-  <li><a href="#else-statements" id="toc-else-statements" class="nav-link" data-scroll-target="#else-statements"><code>else</code> statements</a></li>
+  <li><a href="#definecreate-functions" id="toc-definecreate-functions" class="nav-link" data-scroll-target="#definecreate-functions">Define/create functions</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data preparation</a></li>
   </ul></li>
-  <li><a href="#for-loops" id="toc-for-loops" class="nav-link" data-scroll-target="#for-loops"><code>for</code> loops</a></li>
-  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn">Your turn!</a></li>
+  <li><a href="#part-1" id="toc-part-1" class="nav-link" data-scroll-target="#part-1">Part 1</a>
+  <ul class="collapse">
+  <li><a href="#eda" id="toc-eda" class="nav-link" data-scroll-target="#eda">EDA</a></li>
+  <li><a href="#fitting-the-model" id="toc-fitting-the-model" class="nav-link" data-scroll-target="#fitting-the-model">Fitting the model</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
+  <li><a href="#predictions" id="toc-predictions" class="nav-link" data-scroll-target="#predictions">Predictions</a></li>
+  </ul></li>
+  <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
+  <li><a href="#part-3" id="toc-part-3" class="nav-link" data-scroll-target="#part-3">Part 3</a>
+  <ul class="collapse">
+  <li><a href="#comparisons" id="toc-comparisons" class="nav-link" data-scroll-target="#comparisons">Comparisons</a></li>
+  <li><a href="#prediction-uncertainty" id="toc-prediction-uncertainty" class="nav-link" data-scroll-target="#prediction-uncertainty">Prediction uncertainty</a></li>
+  </ul></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
   </ul>
 </nav>
     </div>
@@ -191,15 +203,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Live code 02</h1>
+<h1 class="title">Lab 02: Linear regression</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Live code</div>
+    <div class="quarto-category">Lab assignment</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Important coding skills
+    Insurance costs
   </div>
 </div>
 
@@ -207,12 +219,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">February 17, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -220,101 +226,91 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>We will continue working in base R, and begin learning about conditional statements and for loops!</p>
-<section id="new-function" class="level2">
-<h2 class="anchored" data-anchor-id="new-function">New function:</h2>
-<ul>
-<li><p>The <code>sample(vec, m)</code> function takes a random sample of size <code>m</code> from the vector <code>vec</code> . By default, we sample without replacement and each value in <code>vec</code> is equally likely. For example, I can draw one value between 1-5 at random (where each value as 1/5 chance of being sampled) as follows:</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The data can be found in the <code>insurance.csv</code> file in the <code>data</code> folder of this project. Load in the data using the following code (if you get an error, make sure you are set to the correct file directory):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/insurance.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3</code></pre>
-</div>
-</div></li>
-</ul>
-<p>As you see, running this code multiple times will lead to different values being <code>sample</code>-d!</p>
-<p>You can sample with replacement or sample each value in <code>vec</code> with different probability by changing the arguments in the function call.</p>
+<p>These data were obtained from <a href="https://www.kaggle.com/datasets/mirichoi0218/insurance">Kaggle</a>.</p>
 </section>
-<section id="conditional-statements" class="level2">
-<h2 class="anchored" data-anchor-id="conditional-statements">Conditional statements</h2>
-<p>Thus far, we have learned how to store values and relate different <code>R</code> objects. For example, we can obtain a boolean <code>TRUE</code> or <code>FALSE</code> value when we compare two objects as follows:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&lt;=</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE</code></pre>
-</div>
-</div>
-<p>Most often, we want to use the results from these logical operators to change the behavior of our code. That is, <em>if</em> a certain condition is satisfied, we want our code to do something. <em>Else</em>, our code should do something else.</p>
-<section id="if-statements" class="level3">
-<h3 class="anchored" data-anchor-id="if-statements"><code>if</code> statements</h3>
-<p>The <code>if</code> statement takes in a condition. If the condition evaluates to <code>TRUE</code>, then the <code>R</code> code we associate with the <code>if</code> statement is executed. The syntax is as follows:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (condition){</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  code</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Notice that the condition goes in parentheses <code>( )</code>, and the relevant code goes within curly braces <code>{ }</code>.</p>
-<p>For example:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (x <span class="sc">&lt;</span> <span class="dv">5</span>){</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"x is less than 5"</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Try this yourself! Set <code>x</code> to be a number, then run this code. If you chose <code>x</code> to be greater than or equal to 5, then the condition evaluates to <code>FALSE</code> and so we do not run the code within the curly braces and nothing is printed.</p>
+<section id="part-0" class="level1">
+<h1>Part 0</h1>
+<section id="definecreate-functions" class="level3">
+<h3 class="anchored" data-anchor-id="definecreate-functions">Define/create functions</h3>
+<p>In an R chunk, create a function that takes in two vectors: one of true values and one of corresponding predicted values. The function should return the root mean squared error (RMSE).</p>
 </section>
-<section id="else-statements" class="level3">
-<h3 class="anchored" data-anchor-id="else-statements"><code>else</code> statements</h3>
-<p>Now, maybe we want to a different block of code to run if the condition evaluates to <code>FALSE</code>. This is where the <code>else</code> statement comes in! Importantly, <code>else</code> statements <strong>always</strong> follows an <code>if</code> statement so there is no need to supply a conditional statement. The syntax is as follows:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (condition){</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  code associated with <span class="cn">TRUE</span> condition</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span>{</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  code associated with <span class="cn">FALSE</span> condition</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="data-preparation">Data preparation</h3>
+<p>Split your data into a 90% train set and a 10% test set. Be sure to set a seed for reproducibility!</p>
+<div style="color: maroon">
+<p><em>This would be a good time to knit, commit, and push your changes to GitHub!</em></p>
 </div>
-<p>Try modifying the <code>if</code> statement above to have a corresponding block of code that corrently prints when <code>x</code> is greater than or equal to 5.</p>
 </section>
 </section>
-<section id="for-loops" class="level2">
-<h2 class="anchored" data-anchor-id="for-loops"><code>for</code> loops</h2>
-<p>It is quite simple to perform repetitive tasks in <code>R</code>. If we want to execute the same operations over and over again, we will use a loop. If we want to repeat the operations for a specific number of times, we use a <code>for</code> loop.</p>
-<p>Let’s look at this code:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>){</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The <code>for()</code> code is telling <code>R</code> that we want to run a <code>for</code> loop, which means we want to repeat the code within the curly braces. How many times do we want to repeat? The code says we want to do this for every value in <code>1:5</code>.</p>
-<p>The confusing part is the index <code>i</code>, which is essentially a placeholder. Instead of <code>i</code>, we could use any character we’d like! However, people tend to use <code>i</code> for “iteration”. At the beginning, <code>i</code> is set to the first value in the vector <code>1:5</code>, (i.e.&nbsp;<code>i = 1</code> to begin with). All the code within the braces are executed with <code>i = 1</code> being the state of the world. Once we reach the end of the code within the braces, we go back to the top and set <code>i = 2</code>. We continue to do this until the last value in <code>1:5</code>, which would be 5.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>){</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1
-[1] 2
-[1] 3
-[1] 4
-[1] 5</code></pre>
-</div>
+<section id="part-1" class="level1">
+<h1>Part 1</h1>
+<section id="eda" class="level3">
+<h3 class="anchored" data-anchor-id="eda">EDA</h3>
+<p>Using the full data set, create some plots to examine the relationships between the response variable and some of the possible explanatory variables. Also create an EDA plot for the distribution of the response variable. Do you see any support for including an interaction term? If so, interaction(s) between which variables?</p>
+<div style="color: maroon">
+<p><em>This would be a good time to knit, commit, and push your changes to GitHub!</em></p>
 </div>
 </section>
-<section id="your-turn" class="level2">
-<h2 class="anchored" data-anchor-id="your-turn">Your turn!</h2>
+<section id="fitting-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="fitting-the-model">Fitting the model</h3>
+<p>Use the <em>training</em> data to fit three linear regression models:</p>
 <ol type="1">
-<li>Write code that outputs the square root of a number. If the number is negative, then print out an informative statement instead. <em>Note</em>: the square root of a number can be obtained via the <code>sqrt()</code> function.</li>
-<li>Write a <code>for</code> loop that calculates the factorial of a whole number of your choice. As a quick refresher, <code>5!</code> (which we read as “5 factorial”) is equal to <code>5 x 4 x 3 x 2 x 1</code>.</li>
-<li>Obtain a vector <code>y</code> of 5 values by using the <code>sample</code> function, where the possible values to sample from are integers ranging between 1 and 5. <strong>Here, I want you to sample with replacement</strong>. Write a <code>for</code> loop that loops for 5 iterations and print the number of elements in <code>y</code> equal to the current iteration. If the current iteration value is not contained in <code>y</code>, please print out a useful statement for the user instead.</li>
+<li>A model that only includes main effects (you may choose which predictors you would like to use)</li>
+<li>A model with the same predictors as in (1) and also includes an interaction between <code>age</code> and <code>smoke</code> status</li>
+<li>A model with the same predictors as in (1) and also includes an interaction between <code>bmi</code> and <code>smoke</code> status.</li>
 </ol>
+</section>
+<section id="interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation">Interpretation</h3>
+<p>For each of your models, display the summary of the estimated coefficients and interpret how smoke status is associated with insurance charges.</p>
+</section>
+<section id="predictions" class="level3">
+<h3 class="anchored" data-anchor-id="predictions">Predictions</h3>
+<p>Using the <code>predict()</code> function, obtain predictions for the <strong><em>test</em></strong> data using each model. You should have three vectors of predictions.</p>
+<p>Obtain the test RMSE for each model using the function you created in Part 0. Interpret one of the RMSEs, and determine which model performs better at predictions.</p>
+<div style="color: maroon">
+<p><em>This would be a good time to knit, commit, and push your changes to GitHub!</em></p>
+</div>
+</section>
+</section>
+<section id="part-2" class="level1">
+<h1>Part 2</h1>
+<p>You may have noticed in Part 1 that the distribution of our response is heavily right-skewed. When this happens, it is often common to fit a linear regression on a log transformation of the response variable. That is, instead of <span class="math inline">\(y \approx \beta_{0} + \beta_{1}x_{1} + \ldots + \beta_{p} x_{p}\)</span>, our regression is <span class="math inline">\(\log(y) \approx \beta_{0} + \beta_{1}x_{1} + \ldots + \beta_{p} x_{p}\)</span>. This is also referred to as a “log-linear regression model”.</p>
+<p>Repeat all of components in Part 1 here, but now treating the log of the insurance <code>charge</code> as our response variable. Note: to take the log of a value <code>x</code> in <code>R</code>, simply use the function <code>log(x)</code>. You can either modify your data frames to create the log-ed variable using <code>mutate()</code>, or you can use the <code>log()</code> function in the <code>lm()</code> function directly:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(<span class="fu">log</span>(response) <span class="sc">~</span> predctors, data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="color: maroon">
+<p><em>This would be a good time to knit, commit, and push your changes to GitHub!</em></p>
+</div>
+</section>
+<section id="part-3" class="level1">
+<h1>Part 3</h1>
+<section id="comparisons" class="level3">
+<h3 class="anchored" data-anchor-id="comparisons">Comparisons</h3>
+<p>In Part 1, you determined a linear regression model for <code>charge</code> that performed the best predictions in terms of RMSE. In Part 2, you determined a linear regression model for <code>log(charge)</code> that performed the best predictions in terms of RMSE. Based on your findings, answer the following questions:</p>
+<ol type="1">
+<li>Do the two models you selected share the same sets of covariates?</li>
+<li>Among all the models, which one do you prefer and why? If you do not have or cannot make a preference, explain why not.</li>
+</ol>
+</section>
+<section id="prediction-uncertainty" class="level3">
+<h3 class="anchored" data-anchor-id="prediction-uncertainty">Prediction uncertainty</h3>
+<p>I fit a linear regression model for <code>log(charges)</code> using the training data (for the purposes of this exercise, the exact model does not matter), and obtained predictions for the test data.</p>
+<p>In the following plot, the points shown are the true <code>charge</code> values for each observation, plotted in ascending order of the predicted value. You will notice vertical colored error bars. These represent 95% <em>confidence</em> intervals (left) and <em>prediction</em> intervals (right) for each observation in the test data. If a bar is colored red, that means that the interval does not capture the true <code>charge</code> value. <em>Note</em>: the points are exactly the same between the two panels; the differences lie in the width of the error bars.</p>
+<p><img src="figs/intervals.png" class="img-fluid"></p>
+<p>Now that I’ve describe what the plot is showing, <strong>interpret the findings</strong>. That is, discuss the differences and similarities between the two panels. What are they showing us? Why do they look so different? Is there any pattern with respect to when a confidence or prediction interval does not capture the true value?</p>
+</section>
+</section>
+<section id="submission" class="level1">
+<h1>Submission</h1>
+<p>When you’re finished, knit to PDF one last time and upload the PDF to Canvas. Commit and push your code back to GitHub.</p>
 
 
 </section>
