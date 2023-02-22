@@ -1,6 +1,6 @@
 ---
 title: "Linear Regression"
-date: ""
+date: "February 23, 2023"
 title-slide-attributes:
     data-background-image: "figs/title/mlb.png"
     data-background-size: contain
@@ -17,6 +17,10 @@ draft: true
 ---
 
 # Housekeeping
+
+-   Lab 01 due tonight to Canvas at 11:59pm
+
+-   Lab 02 assigned tomorrow (and has to do with baseball)
 
 ```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
@@ -86,7 +90,7 @@ mite_dat %>%
 
 -   Assuming $n$ observations, we have data of the form $(x_{1}, y_{1}), (x_{2}, y_{2}), \ldots, (x_{n}, y_{n})$
 
--   An SLR model says $$y_{i} = \beta_{0} + \beta_{1}x_{i}+ \epsilon \approx \beta_{0} + \beta_{1}x_{i}, \quad \text{ for all } i = 1,\ldots, n$$
+-   An SLR model says $$\begin{align*} y_{i} &= \beta_{0} + \beta_{1}x_{i}+ \epsilon\\ &\approx \beta_{0} + \beta_{1}x_{i}\ , \qquad \text{ for all } i = 1,\ldots, n \end{align*}$$
 
     -   In this model, $f(x_{i}) = \beta_{0} + \beta_{1} x_{i}$
 
@@ -281,11 +285,11 @@ $$\widehat{abundance} = 10.306 + 0.034 \text{WatrCont} -0.357 \text{SubsDens}$$
 
 ## Model fit
 
--   How well does our linear regression model "fit" the data? How accurate is our model?
+-   How well does our linear regression model "fit" the data it was trained on? How accurate is our model?
 
--   Residual standard error (RSE) $$\text{RSE}  \sqrt{\frac{1}{n-p-1} \sum_{i=1}^{n} (y_{i} - \hat{y}_{i})^2},$$
+-   Residual standard error (RSE) $$\text{RSE}  = \sqrt{\frac{1}{n-p-1} \sum_{i=1}^{n} (y_{i} - \hat{y}_{i})^2},$$
 
-    where $p$ is the number of predictors
+    where $p$ is the number of predictors, and $i$ indexes the observations used to fit the model
 
 -   RSE is considered a measure of the *lack of fit* of the model
 
@@ -328,6 +332,7 @@ pred_mite <- predict(m2, newdata = new_data)
 -   We should always compare prediction performance for "previously unseen" data (i.e. test data)
 
     -   The model already "knows" the data used to fit it (i.e. the training data)
+    
 
 -   ::: important
     Discuss: what are some important criteria for the testing data?

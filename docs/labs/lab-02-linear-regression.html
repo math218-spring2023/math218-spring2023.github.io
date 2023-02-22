@@ -177,10 +177,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#part-1-eda-and-data-wrangling" id="toc-part-1-eda-and-data-wrangling" class="nav-link" data-scroll-target="#part-1-eda-and-data-wrangling">Part 1: EDA and Data Wrangling</a>
   <ul class="collapse">
-  <li><a href="#data-wrangling-1" id="toc-data-wrangling-1" class="nav-link" data-scroll-target="#data-wrangling-1">Data wrangling (1)</a></li>
-  <li><a href="#eda-1" id="toc-eda-1" class="nav-link" data-scroll-target="#eda-1">EDA (1)</a></li>
-  <li><a href="#data-wrangling-2" id="toc-data-wrangling-2" class="nav-link" data-scroll-target="#data-wrangling-2">Data wrangling (2)</a></li>
-  <li><a href="#eda-2" id="toc-eda-2" class="nav-link" data-scroll-target="#eda-2">EDA (2)</a></li>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">Data wrangling</a></li>
+  <li><a href="#eda" id="toc-eda" class="nav-link" data-scroll-target="#eda">EDA</a></li>
+  <li><a href="#more-data-wrangling" id="toc-more-data-wrangling" class="nav-link" data-scroll-target="#more-data-wrangling">More data wrangling</a></li>
+  <li><a href="#more-eda" id="toc-more-eda" class="nav-link" data-scroll-target="#more-eda">More EDA</a></li>
   </ul></li>
   <li><a href="#part-2-model-for-wins" id="toc-part-2-model-for-wins" class="nav-link" data-scroll-target="#part-2-model-for-wins">Part 2: Model for wins</a>
   <ul class="collapse">
@@ -199,9 +199,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#part-5-prediction-performance" id="toc-part-5-prediction-performance" class="nav-link" data-scroll-target="#part-5-prediction-performance">Part 5: Prediction performance</a>
   <ul class="collapse">
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data preparation</a></li>
-  <li><a href="#model-fitting" id="toc-model-fitting" class="nav-link" data-scroll-target="#model-fitting">Model fitting</a></li>
+  <li><a href="#predict" id="toc-predict" class="nav-link" data-scroll-target="#predict">Predict</a></li>
   <li><a href="#prediction-error" id="toc-prediction-error" class="nav-link" data-scroll-target="#prediction-error">Prediction error</a></li>
   </ul></li>
+  <li><a href="#brief-comprehension-questions" id="toc-brief-comprehension-questions" class="nav-link" data-scroll-target="#brief-comprehension-questions">Brief comprehension questions</a></li>
   <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
   </ul>
 </nav>
@@ -274,29 +275,29 @@ Note
 </section>
 <section id="part-1-eda-and-data-wrangling" class="level1">
 <h1>Part 1: EDA and Data Wrangling</h1>
-<section id="data-wrangling-1" class="level3">
-<h3 class="anchored" data-anchor-id="data-wrangling-1">Data wrangling (1)</h3>
+<section id="data-wrangling" class="level3">
+<h3 class="anchored" data-anchor-id="data-wrangling">Data wrangling</h3>
 <p>The data provided to you have data ranging from 1962 to 2012. To re-create this famous analysis, we need to pretend it’s the year 2002 and thus we only have data through 2001.</p>
 <div style="color: maroon">
 <p>Create a new data frame called <code>moneyball</code> with the appropriate subset of the <code>baseball</code> data.</p>
 </div>
 </section>
-<section id="eda-1" class="level3">
-<h3 class="anchored" data-anchor-id="eda-1">EDA (1)</h3>
+<section id="eda" class="level3">
+<h3 class="anchored" data-anchor-id="eda">EDA</h3>
 <p>The goal of any MLB team (I think) is to make it to the playoffs. Billy Beane determined that a team needs to win at least 95 games to make it to the playoffs.</p>
 <div style="color: maroon">
 <p>Using some appropriate EDA, demonstrate how you think Billy Beane arrived at the number 95.</p>
 </div>
 </section>
-<section id="data-wrangling-2" class="level3">
-<h3 class="anchored" data-anchor-id="data-wrangling-2">Data wrangling (2)</h3>
+<section id="more-data-wrangling" class="level3">
+<h3 class="anchored" data-anchor-id="more-data-wrangling">More data wrangling</h3>
 <p>So, Billy Beane needed some way to understand what influences/determines the number of wins a team had in a given season. It was determined that the run differential was an important metric, calculated as the overall runs scored minus the runs allowed. A positive run differential means the team scores more than it allows (this is good).</p>
 <div style="color: maroon">
 <p>Modify your <code>moneyball</code> data frame to add a new variable called <code>RD</code> that is the run differential.</p>
 </div>
 </section>
-<section id="eda-2" class="level3">
-<h3 class="anchored" data-anchor-id="eda-2">EDA (2)</h3>
+<section id="more-eda" class="level3">
+<h3 class="anchored" data-anchor-id="more-eda">More EDA</h3>
 <div style="color: maroon">
 <p>Create a scatterplot of a team’s wins versus its run differential in each season. Does there appear to be a linear relationship?</p>
 </div>
@@ -424,27 +425,26 @@ Commit reminder
 </section>
 <section id="part-5-prediction-performance" class="level1">
 <h1>Part 5: Prediction performance</h1>
-<p>Billy Beane and Paul DePodesta ultimately decided to remove batting average from their model for runs scored because they had limited financial resources and wanted to find the skills that were undervalued. However, it could be the case that knowing the batting average of a player is important to explaining the runs scored, and also <em>predicting</em> the runs scored. After all, we had to make predictions for the 2002 season, so we would like a model that predicts the runs scored well. Let’s examine this now to see if the team would have made better predictions of runs scored if they had kept the batting average in the model.</p>
+<p>Billy Beane and Paul DePodesta ultimately decided to remove batting average from their model for runs scored because they had limited financial resources and wanted to find the skills that were undervalued. However, it could be the case that knowing the batting average of a player is important to explaining the runs scored, and also <em>predicting</em> the runs scored. After all, we had to make predictions for the 2002 season, so we would like a model that predicts the runs scored well. Let’s examine this now to see if the team would have made better predictions of runs scored if they had kept the batting average in the model. We will predict for the upcoming year 2002.</p>
 <section id="data-preparation" class="level3">
 <h3 class="anchored" data-anchor-id="data-preparation">Data preparation</h3>
 <div style="color: maroon">
-<p>Split your data into a 80% train set and a 20% test set. Be sure to set a seed for reproducibility!</p>
+<p>Create a new data frame called <code>baseball2002</code> that contains the observations from the year 2002 in the original <code>baseball</code> data.</p>
+<p>Then, create a new a variable called <code>RS_true</code> that holds the vector of true runs scored in 2002.</p>
 </div>
 </section>
-<section id="model-fitting" class="level3">
-<h3 class="anchored" data-anchor-id="model-fitting">Model fitting</h3>
+<section id="predict" class="level3">
+<h3 class="anchored" data-anchor-id="predict">Predict</h3>
 <div style="color: maroon">
-<p>Fit two new models called <code>mod_rs1_train</code> and <code>mod_rs2_train</code> which are the analogs of <code>mod_rs1</code> and <code>mod_rs2</code> but fit on the <em>train</em> data only.</p>
+<p>Obtain predictions of runs scored for the <code>baseball2002</code> data using both <code>mod_rs1</code> and <code>mod_rs2</code> (i.e.&nbsp;you should have two vectors of predictions).</p>
 </div>
+<p><em>Please do not report/display/print the vectors of predictions! Just store them using an appropriate variable name.</em></p>
 </section>
 <section id="prediction-error" class="level3">
 <h3 class="anchored" data-anchor-id="prediction-error">Prediction error</h3>
 <div style="color: maroon">
-<p>Obtain predictions of runs scored from both <code>mod_rs1_train</code> and <code>mod_rs2_train</code> for the <em>test</em> data. Then calculate and report the root mean squared error for the predictions from both of the models.</p>
-</div>
-<p><em>Please do not report/display/print the vectors of predictions! Just store them using an appropriate variable name.</em></p>
-<div style="color: maroon">
-<p>Based on your results, do you think the Oakland A’s should have kept batting average in their model for runs scored? Why or why not?</p>
+<p>Lastly, calculate and report the root mean squared error (RMSE) for the predictions from both of the models.</p>
+<p>Based on your results, do you think the Oakland A’s were correct to remove batting average from their model for runs scored? Why or why not?</p>
 </div>
 <!-- # Part 6: Prediction uncertainty -->
 <!-- I fit a linear regression model for runs scored `RS` using some training data (for the purposes of this exercise, the exact model does not matter), and obtained predictions for the test data. -->
@@ -452,6 +452,15 @@ Commit reminder
 <!-- ![](figs/intervals2.png) -->
 <!-- Now that I've describe what the plot is showing, **interpret the findings**. That is, discuss the differences and similarities between the two panels. What are they showing us? Why do they look so different? Is there any pattern with respect to when a confidence or prediction interval does not capture the true value? -->
 </section>
+</section>
+<section id="brief-comprehension-questions" class="level1">
+<h1>Brief comprehension questions</h1>
+<p>Please answer each of the following questions. Each question only requires a 1-2 sentence response at most!</p>
+<ol type="1">
+<li><p>For this analysis, did we have train and test datasets? If so, what was the train set and what was the test set?</p></li>
+<li><p>For this analysis, did we ask questions concerning <em>prediction</em>? If so, where?</p></li>
+<li><p>For this analysis, did we ask questions concerning <em>inference</em>? If so, where?</p></li>
+</ol>
 </section>
 <section id="submission" class="level1">
 <h1>Submission</h1>

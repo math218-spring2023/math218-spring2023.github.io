@@ -43,7 +43,7 @@ Each observation represents a team in a given year. The data dictionary is as fo
 
 # Part 1: EDA and Data Wrangling
 
-### Data wrangling (1)
+### Data wrangling
 
 The data provided to you have data ranging from 1962 to 2012. To re-create this famous analysis, we need to pretend it's the year 2002 and thus we only have data through 2001.
 
@@ -51,7 +51,7 @@ The data provided to you have data ranging from 1962 to 2012. To re-create this 
 Create a new data frame called `moneyball` with the appropriate subset of the `baseball` data.
 :::
 
-### EDA (1)
+### EDA
 
 The goal of any MLB team (I think) is to make it to the playoffs. Billy Beane determined that a team needs to win at least 95 games to make it to the playoffs.
 
@@ -59,7 +59,7 @@ The goal of any MLB team (I think) is to make it to the playoffs. Billy Beane de
 Using some appropriate EDA, demonstrate how you think Billy Beane arrived at the number 95.
 :::
 
-### Data wrangling (2)
+### More data wrangling
 
 So, Billy Beane needed some way to understand what influences/determines the number of wins a team had in a given season. It was determined that the run differential was an important metric, calculated as the overall runs scored minus the runs allowed. A positive run differential means the team scores more than it allows (this is good).
 
@@ -67,7 +67,7 @@ So, Billy Beane needed some way to understand what influences/determines the num
 Modify your `moneyball` data frame to add a new variable called `RD` that is the run differential.
 :::
 
-### EDA (2)
+### More EDA
 
 ::: {style="color: maroon"}
 Create a scatterplot of a team's wins versus its run differential in each season. Does there appear to be a linear relationship?
@@ -160,30 +160,30 @@ This would be a good time to knit, commit, and push your changes to GitHub!
 
 # Part 5: Prediction performance
 
-Billy Beane and Paul DePodesta ultimately decided to remove batting average from their model for runs scored because they had limited financial resources and wanted to find the skills that were undervalued. However, it could be the case that knowing the batting average of a player is important to explaining the runs scored, and also *predicting* the runs scored. After all, we had to make predictions for the 2002 season, so we would like a model that predicts the runs scored well. Let's examine this now to see if the team would have made better predictions of runs scored if they had kept the batting average in the model.
+Billy Beane and Paul DePodesta ultimately decided to remove batting average from their model for runs scored because they had limited financial resources and wanted to find the skills that were undervalued. However, it could be the case that knowing the batting average of a player is important to explaining the runs scored, and also *predicting* the runs scored. After all, we had to make predictions for the 2002 season, so we would like a model that predicts the runs scored well. Let's examine this now to see if the team would have made better predictions of runs scored if they had kept the batting average in the model. We will predict for the upcoming year 2002.
 
 ### Data preparation
 
 ::: {style="color: maroon"}
-Split your data into a 80% train set and a 20% test set. Be sure to set a seed for reproducibility!
+Create a new data frame called `baseball2002` that contains the observations from the year 2002 in the original `baseball` data.
+
+Then, create a new a variable called `RS_true` that holds the vector of true runs scored in 2002.
 :::
 
-### Model fitting
+### Predict
 
 ::: {style="color: maroon"}
-Fit two new models called `mod_rs1_train` and `mod_rs2_train` which are the analogs of `mod_rs1` and `mod_rs2` but fit on the *train* data only.
-:::
-
-### Prediction error
-
-::: {style="color: maroon"}
-Obtain predictions of runs scored from both `mod_rs1_train` and `mod_rs2_train` for the *test* data. Then calculate and report the root mean squared error for the predictions from both of the models.
+Obtain predictions of runs scored for the `baseball2002` data using both `mod_rs1` and `mod_rs2` (i.e. you should have two vectors of predictions).
 :::
 
 *Please do not report/display/print the vectors of predictions! Just store them using an appropriate variable name.*
 
+### Prediction error
+
 ::: {style="color: maroon"}
-Based on your results, do you think the Oakland A's should have kept batting average in their model for runs scored? Why or why not?
+Lastly, calculate and report the root mean squared error (RMSE) for the predictions from both of the models.
+
+Based on your results, do you think the Oakland A's were correct to remove batting average from their model for runs scored? Why or why not?
 :::
 
 <!-- # Part 6: Prediction uncertainty -->
@@ -195,6 +195,16 @@ Based on your results, do you think the Oakland A's should have kept batting ave
 <!-- ![](figs/intervals2.png) -->
 
 <!-- Now that I've describe what the plot is showing, **interpret the findings**. That is, discuss the differences and similarities between the two panels. What are they showing us? Why do they look so different? Is there any pattern with respect to when a confidence or prediction interval does not capture the true value? -->
+
+# Brief comprehension questions
+
+Please answer each of the following questions. Each question only requires a 1-2 sentence response at most!
+
+1.  For this analysis, did we have train and test datasets? If so, what was the train set and what was the test set?
+
+2.  For this analysis, did we ask questions concerning *prediction*? If so, where?
+
+3.  For this analysis, did we ask questions concerning *inference*? If so, where?
 
 # Submission
 
