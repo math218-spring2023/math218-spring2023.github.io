@@ -25,7 +25,7 @@
     "href": "assignments.html",
     "title": "Assignments",
     "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nImportant coding skills\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nFeb 21, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nImportant coding skills\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nFeb 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments.html#labs",
@@ -480,7 +480,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?,\nLive code: Writing functions\n\n\n\n\nR 2/23\nLinear regression (cont.)\nSlides: Linear regression\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nKNN regression\n\n\n\n\n\nR 3/2\nKNN regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
+    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?,\nLive code: Writing functions\n\n\n\n\nR 2/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nKNN regression\n\n\n\n\n\nR 3/2\nKNN regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
   },
   {
     "objectID": "live-code/live-code-03.html",
@@ -705,5 +705,12 @@
     "title": "Linear Regression",
     "section": "Fitted regression lines",
     "text": "Fitted regression lines"
+  },
+  {
+    "objectID": "live-code/live-code-04.html",
+    "href": "live-code/live-code-04.html",
+    "title": "Live code 04:",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(vegan) # install this in your Console: install.packages(\"vegan\")\ndata(mite)\ndata(mite.env)\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)"
   }
 ]

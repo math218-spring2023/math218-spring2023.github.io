@@ -1,0 +1,20 @@
+---
+title: "Live code 04:"
+date: "February 23, 2023"
+description: "Linear regression"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+draft: false
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan) # install this in your Console: install.packages("vegan")
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
