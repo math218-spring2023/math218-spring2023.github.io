@@ -480,7 +480,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nWhat is statistical learning? (cont.)\nLinear regression?\nWhat is statistical learning?,\nLive code: Writing functions\n\n\n\n\nR 2/23\nLinear regression (cont.)\n\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nLogistic regression\n\n\n\n\n\nR 3/2\nLogistic regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
+    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?,\nLive code: Writing functions\n\n\n\n\nR 2/23\nLinear regression (cont.)\nSlides: Linear regression\n\n\n\n\nF 2/24\nLab day\n\n\n\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nKNN regression\n\n\n\n\n\nR 3/2\nKNN regression (cont.)\n\n\n\n\n\nF 3/3\nLab day"
   },
   {
     "objectID": "live-code/live-code-03.html",
@@ -495,5 +495,215 @@
     "title": "Live code 03:",
     "section": "Your turn!",
     "text": "Your turn!\nFeel free to try any and all of the following:\n\nWrite a function that takes in a temperature in degrees Fahrenheit and returns the temperature in degrees Celsius. For reference, the conversion is \\((\\text{degreesF} - 32) * \\frac{5}{9}\\). Give your function an appropriate name.\n\nCheck to make sure your function works by passing in \\(32^\\circ\\) F. You should get 0 back!\n\nWrite a more complicated version of Exercise 1 where the function takes in two inputs: 1) a temperature (in either Fahrenheit or Celsius) and 2) a string or Boolean (your choice!) that denotes if you want to convert to Fahrenheit or Celsius. Your function should return the correct conversion based on the user’s inputs. Note: the conversion from Celsius to Fahrenheit is \\(\\text{degreesC} * \\frac{9}{5} + 32\\).\nWrit a function called get_rmse() that takes in two vectors as inputs: one of predictions, and one of true values. Your function should calculate and return the root mean squared error (see slides for equation).\nLast week we practiced coding for() loops by obtaining the factorial of a given positive integer. Create a function where the user specifies the integer they want to find the factorial of, and return the factorial."
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#linear-regression-1",
+    "href": "slides/slides-02-linear-regression.html#linear-regression-1",
+    "title": "Linear Regression",
+    "section": "Linear regression",
+    "text": "Linear regression\n\nA simple, widely used approach in supervised learning\nAssumes that the dependence of \\(Y\\) on the predictors \\(X_{1}, \\ldots, X_{p}\\) is linear"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#possible-questions-of-interest",
+    "href": "slides/slides-02-linear-regression.html#possible-questions-of-interest",
+    "title": "Linear Regression",
+    "section": "Possible questions of interest",
+    "text": "Possible questions of interest\n\nIs there a relationship between the abundance of LRUG mites and substrate density or water content in the soil where they are found?\n\nIf so, how are strong are these relationships?\n\nIs the relationship linear?\nHow accurately can we predict the abundance of these mites?"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#simple-linear-regression-1",
+    "href": "slides/slides-02-linear-regression.html#simple-linear-regression-1",
+    "title": "Linear Regression",
+    "section": "Simple linear regression",
+    "text": "Simple linear regression\n\n\nSimple linear regression (SLR)\n\n\nAssumes a linear model for a quantitative response \\(Y\\) using a single predictor \\(X\\)\n\\[Y = \\beta_{0} + \\beta_{1} X + \\epsilon,\\]\nwhere \\(\\beta_{0}, \\beta_{1}\\) are unknown coefficients (parameters) and \\(\\epsilon\\) is the error\n\n\\(\\beta_{0}\\) is commonly referred to as the intercept, and \\(\\beta_{1}\\) is the slope\nFor example: abundance = \\(\\beta_{0}\\) + \\(\\beta_{1}\\) watercont + \\(\\epsilon\\)"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#parameter-estimation",
+    "href": "slides/slides-02-linear-regression.html#parameter-estimation",
+    "title": "Linear Regression",
+    "section": "Parameter estimation",
+    "text": "Parameter estimation\n\nAssuming \\(n\\) observations, we have data of the form \\((x_{1}, y_{1}), (x_{2}, y_{2}), \\ldots, (x_{n}, y_{n})\\)\nAn SLR model says \\[\\begin{align*} y_{i} &= \\beta_{0} + \\beta_{1}x_{i}+ \\epsilon\\\\ &\\approx \\beta_{0} + \\beta_{1}x_{i}\\ , \\qquad \\text{ for all } i = 1,\\ldots, n \\end{align*}\\]\n\nIn this model, \\(f(x_{i}) = \\beta_{0} + \\beta_{1} x_{i}\\)\nNotice that the relationship between \\(x_{i}\\) and \\(y_{i}\\) is the same for all \\(i\\)\n\nIn practice, \\(\\beta_{0}\\) and \\(\\beta_{1}\\) are unknown, so we must estimate them\nGoal: obtain (good) estimates \\(\\hat{\\beta}_{0}\\) and \\(\\hat{\\beta}_{1}\\) that are as close to the true values as possible, such that \\(y_{i} \\approx \\hat{\\beta}_{0} + \\hat{\\beta}_{1} x_{i}\\)\n\nHow? Minimize the least squares criterion"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#least-squares",
+    "href": "slides/slides-02-linear-regression.html#least-squares",
+    "title": "Linear Regression",
+    "section": "Least squares",
+    "text": "Least squares\n\nLet \\(\\hat{y}_{i} = \\hat{\\beta}_{0} + \\hat{\\beta}_{1}x_{i}\\) be predicted response for \\(i\\)-th observation with predictor \\(x_{i}\\)\nThe \\(i\\)-th residual \\(e_{i}\\) is defined as \\[e_{i} = y_{i} - \\hat{y}_{i}\\]\nDefine residual sum of squares (RSS) as \\[\\text{RSS} = e_{1}^{2} + e_{2}^{2} + \\ldots + e_{n}^{2} = \\sum_{i=1}^{n} e_{i}^2\\]"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#estimation-by-least-squares",
+    "href": "slides/slides-02-linear-regression.html#estimation-by-least-squares",
+    "title": "Linear Regression",
+    "section": "Estimation by least squares",
+    "text": "Estimation by least squares\n\\[\\text{RSS} = \\sum_{i=1}^{n} e_{i}^2 = \\sum_{i=1}^{n} (y_{i} - \\hat{y}_{i})^2 = \\sum_{i=1}^{n} (y_{i} - (\\hat{\\beta}_{0} + \\hat{\\beta}_{1}x_{i}))^2\\]\n\nLeast squares approach selects the pair \\((\\hat{\\beta}_{0}, \\hat{\\beta}_{1})\\) that minimize the RSS. Can be shown that the minimizing values are: \\[\\begin{align*}\n\\hat{\\beta}_{1} &= \\frac{\\sum_{i=1}^{n}(x_{i} - \\bar{x})(y_{i} - \\bar{y})}{\\sum_{i=1}^{n}(x_{i} - \\bar{x})^2}\\\\\n\\hat{\\beta}_{0} &= \\bar{y} - \\hat{\\beta}_{1} \\bar{x}\n\\end{align*}\\]\nwhere \\(\\bar{y} = \\frac{1}{n}\\sum_{i=1}^{n}y_{i}\\) and \\(\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n}x_{i}\\)"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#mite-data",
+    "href": "slides/slides-02-linear-regression.html#mite-data",
+    "title": "Linear Regression",
+    "section": "Mite data",
+    "text": "Mite data\nLeast squares fit for abundance regressed on WaterCont, with residuals in orange.\n\nm1 <- lm(abundance ~ WatrCont, data = mite_dat)\n\n\nLet’s interpret this plot! Do you see anything strange or any patterns?"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#interpreting-coefficients-and-estimates",
+    "href": "slides/slides-02-linear-regression.html#interpreting-coefficients-and-estimates",
+    "title": "Linear Regression",
+    "section": "Interpreting Coefficients and Estimates",
+    "text": "Interpreting Coefficients and Estimates\n\\[Y = \\beta_{0} + \\beta_{1} X + \\epsilon\\]\n\n\\(\\beta_{0}\\) is the expected value of \\(Y\\) when \\(X = 0\\)\n\\(\\beta_{1}\\) is the average increase in \\(Y\\) for one-unit increase in \\(X\\)\n\\(\\epsilon\\) is error\nThis equation is the population regression line\nWhen using the least squares estimates for the coefficients, \\(\\hat{Y} = \\hat{\\beta}_{0} + \\hat{\\beta}_{1} X\\) is the least squares line"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#interpreting-coefficients-and-estimates-cont.",
+    "href": "slides/slides-02-linear-regression.html#interpreting-coefficients-and-estimates-cont.",
+    "title": "Linear Regression",
+    "section": "Interpreting Coefficients and Estimates (cont.)",
+    "text": "Interpreting Coefficients and Estimates (cont.)\n\nsummary(m1)\n\n\nCall:\nlm(formula = abundance ~ WatrCont, data = mite_dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-16.525  -8.033  -4.088   4.493  47.937 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)  \n(Intercept)  0.63410    4.51171   0.141   0.8886  \nWatrCont     0.02385    0.01039   2.296   0.0248 *\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 12.29 on 68 degrees of freedom\nMultiple R-squared:  0.07194,   Adjusted R-squared:  0.05829 \nF-statistic: 5.271 on 1 and 68 DF,  p-value: 0.02477\n\n\n\n\\[\\widehat{\\text{LRUG}} = 0.634 + 0.024 \\text{WatrCont}\\]\n\n\nHow do I interpret \\(\\hat{\\beta}_{0}\\) and \\(\\hat{\\beta}_{1}\\) for this specific example?\nNote: the estimates \\(\\hat{\\beta}_{0}\\) and \\(\\hat{\\beta}_{1}\\) will depend on the observed data! If I took a different sample of LRUG mites, I would probably have different estimated values.\n\nIsn’t that problematic? Can we asses how accurate are our estimates \\(\\hat{\\beta}_{0}\\) and \\(\\hat{\\beta}_{1}\\)?"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#assessing-accuracy-of-coefficient-estimates",
+    "href": "slides/slides-02-linear-regression.html#assessing-accuracy-of-coefficient-estimates",
+    "title": "Linear Regression",
+    "section": "Assessing Accuracy of Coefficient Estimates",
+    "text": "Assessing Accuracy of Coefficient Estimates\n\nStandard error (SE) of an estimator reflects how it varies under repeated sampling.\nFor simple linear regression: \\[\\text{SE}(\\hat{\\beta}_{0}) = \\sigma^2 \\left[ \\frac{1}{n} + \\frac{\\bar{x}^2}{\\sum_{i=1}^{n}(x_{i} - \\bar{x})^2}\\right] \\qquad\n\\text{SE}(\\hat{\\beta}_{1}) = \\frac{\\sigma^2}{\\sum_{i=1}^{n}(x_{i} - \\bar{x})^2}\\]\nwhere \\(\\sigma^2 = \\text{Var}(\\epsilon)\\)\nTypically \\(\\sigma^2\\) is not known, but can be estimated from the data.\nEstimate \\(\\hat{\\sigma}\\) is residual standard error (RSE), given by: \\[\\hat{\\sigma}= \\text{RSE} = \\sqrt{\\frac{1}{n-2}\\text{RSS}}\\]\nWe use this estimate to calculate \\(\\text{SE}(\\hat{\\beta}_{0})\\) and \\(\\text{SE}(\\hat{\\beta}_{1})\\)"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#hypothesis-testing",
+    "href": "slides/slides-02-linear-regression.html#hypothesis-testing",
+    "title": "Linear Regression",
+    "section": "Hypothesis Testing",
+    "text": "Hypothesis Testing\n\nHypothesis testing is a method of statistical inference to determine whether the data at hand sufficiently support a particular hypothesis\n\nHelps test the results of an experiment or survey to see if you have meaningful results\nHelps draw conclusions about a population parameter\n\nStandard errors can be used to perform hypothesis tests on the coefficients"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#hypothesis-testing-1",
+    "href": "slides/slides-02-linear-regression.html#hypothesis-testing-1",
+    "title": "Linear Regression",
+    "section": "Hypothesis Testing",
+    "text": "Hypothesis Testing\n\nNotion of “null” versus “alternate” hypothesis\n\nNull hypothesis \\(H_{0}\\): there is no relationship between \\(X\\) and \\(Y\\)\nAlternative hypothesis \\(H_{A}\\): there is some relationship between \\(X\\) and \\(Y\\)\n\nMathematically, corresponds to testing \\[H_{0}: \\beta_{1} = 0 \\quad \\text{ vs. } \\quad H_{A}: \\beta_{1} \\neq 0\\]\nbecause if \\(H_{0}\\) true, then the model reduces to \\(Y = \\beta_{0} + \\epsilon\\) so there is no relationship\nTo test this null hypothesis, want to determine if \\(\\hat{\\beta}_{1}\\) is sufficiently far from zero\n\nHow much is ‘sufficiently far’? Depends on \\(\\text{SE}(\\hat{\\beta}_{1})\\)."
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#p-value",
+    "href": "slides/slides-02-linear-regression.html#p-value",
+    "title": "Linear Regression",
+    "section": "p-value",
+    "text": "p-value\n\nWith lots of hand-waving: can calculate a p-value, which is a probability that we observed the data we did, given that \\(H_{0}\\) is true. If the p-value is small, the observed data don’t seem to support \\(H_{0}\\)\n\nCompare \\(p\\)-value to a pre-determined rejection level \\(\\alpha\\) (often 0.05).\nIf \\(p\\)-value \\(< \\alpha\\), reject \\(H_{0}\\). Otherwise, fail to reject \\(H_{0}\\).\n\n\n\n\nsummary(m1)\n\n\nCall:\nlm(formula = abundance ~ WatrCont, data = mite_dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-16.525  -8.033  -4.088   4.493  47.937 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)  \n(Intercept)  0.63410    4.51171   0.141   0.8886  \nWatrCont     0.02385    0.01039   2.296   0.0248 *\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 12.29 on 68 degrees of freedom\nMultiple R-squared:  0.07194,   Adjusted R-squared:  0.05829 \nF-statistic: 5.271 on 1 and 68 DF,  p-value: 0.02477\n\n\n\n\n\\(H_{0}: \\beta_{1} = 0\\) (there is no relationship between LRUG abundance and WatrCont)\n\nWhat is the p-value for this hypothesis?\nWhat is our decision in the mite example?"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#why-hypothesis-testing",
+    "href": "slides/slides-02-linear-regression.html#why-hypothesis-testing",
+    "title": "Linear Regression",
+    "section": "Why hypothesis testing?",
+    "text": "Why hypothesis testing?\n\nHypothesis testing can help us determine if there is a relationship between the predictor and the response variable!\n\n\nThis is the inference part of statistical learning\n\n\nIf there is a relationship, then it makes sense to interpret the strength of the relationship (i.e. interpret the value \\(\\hat{\\beta}_{1}\\))"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#multiple-linear-regression-1",
+    "href": "slides/slides-02-linear-regression.html#multiple-linear-regression-1",
+    "title": "Linear Regression",
+    "section": "Multiple linear regression",
+    "text": "Multiple linear regression\n\nIn practice, we often have more than one predictor\nWith \\(p\\) predictors, the model is \\[Y = \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\ldots + \\beta_{p}X_{p} +\\epsilon\\]\nInterpret \\(\\beta_{j}\\) as the average effect on \\(Y\\) for a one-unit increase in \\(X_{j}\\), holding all other predictors fixed/constant"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#mite-data-1",
+    "href": "slides/slides-02-linear-regression.html#mite-data-1",
+    "title": "Linear Regression",
+    "section": "Mite data",
+    "text": "Mite data\nRegressing abundance on both WatrCont and SubsDens:\n\nm2 <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat)\nsummary(m2)\n\n\nCall:\nlm(formula = abundance ~ WatrCont + SubsDens, data = mite_dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-20.192  -8.633  -1.385   6.866  44.245 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)   \n(Intercept) 10.30549    5.48833   1.878  0.06477 . \nWatrCont     0.03444    0.01057   3.257  0.00177 **\nSubsDens    -0.35682    0.12604  -2.831  0.00612 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 11.7 on 67 degrees of freedom\nMultiple R-squared:  0.1711,    Adjusted R-squared:  0.1464 \nF-statistic: 6.915 on 2 and 67 DF,  p-value: 0.001861\n\n\n\n\\[\\widehat{abundance} = 10.306 + 0.034 \\text{WatrCont} -0.357 \\text{SubsDens}\\]\n\n\nHow do we interpret the estimated coefficients?\nHow do we interpret the p-values?\n\nThe p-value for \\(\\beta_{j}\\) corresponds to the test of \\(H_{0}: \\beta_{j} = 0\\) and \\(\\beta_{k} (k \\neq j)\\) unrestricted"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#model-fit",
+    "href": "slides/slides-02-linear-regression.html#model-fit",
+    "title": "Linear Regression",
+    "section": "Model fit",
+    "text": "Model fit\n\nHow well does our linear regression model “fit” the data it was trained on? How accurate is our model?\nResidual standard error (RSE) \\[\\text{RSE}  = \\sqrt{\\frac{1}{n-p-1} \\sum_{i=1}^{n} (y_{i} - \\hat{y}_{i})^2},\\]\nwhere \\(p\\) is the number of predictors, and \\(i\\) indexes the observations used to fit the model\nRSE is considered a measure of the lack of fit of the model\n\nMeasured in the units of \\(Y\\)"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#predictions",
+    "href": "slides/slides-02-linear-regression.html#predictions",
+    "title": "Linear Regression",
+    "section": "Predictions",
+    "text": "Predictions\n\nHow well does our linear regression model predict new responses for a given set of covariates?\nFor example, suppose I want to use our model to predict the abundance of LRUG mites at a new sampling location where the WatrCont is 400 g/L and the SubsDens is 30 g/L\nI will plug these values into our fitted model m2:\n\n\n\n\n\n\\[\\widehat{abundance} = 10.306 + 0.034 \\times 400 -0.357 \\times 30 = 13.3747829\\]\n\n\n\nnew_data <- data.frame(WatrCont = 400, SubsDens = 30)\npred_mite <- predict(m2, newdata = new_data)\n\n\n\nOkay…great! But should I trust these predictions?"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#prediction-performance",
+    "href": "slides/slides-02-linear-regression.html#prediction-performance",
+    "title": "Linear Regression",
+    "section": "Prediction performance",
+    "text": "Prediction performance\n\nWe could get a better sense of a model’s prediction performance by comparing the predicted responses to the true values\nWe should always compare prediction performance for “previously unseen” data (i.e. test data)\n\nThe model already “knows” the data used to fit it (i.e. the training data)\n\n\nDiscuss: what are some important criteria for the testing data?"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#qualitative-predictors-1",
+    "href": "slides/slides-02-linear-regression.html#qualitative-predictors-1",
+    "title": "Linear Regression",
+    "section": "Qualitative predictors",
+    "text": "Qualitative predictors\n\nThus far, we have assumed that all predictors in our linear model are quantitative. In practice, we often have categorical predictors\nOur mite data has the following categorical variables: Shrub, Substrate, and Topo\nLet’s begin with the simplest case: a categorical predictor with two categories/levels\n\ne.g. the Topo variable takes on the values “Blanket” or “Hummock” only"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#level-qualitative-predictor",
+    "href": "slides/slides-02-linear-regression.html#level-qualitative-predictor",
+    "title": "Linear Regression",
+    "section": "2-level qualitative predictor",
+    "text": "2-level qualitative predictor\n\nWe will create an indicator or dummy variable as follows: \\[\\text{TopoBlanket}_{i} = \\begin{cases} 1 & \\text{ if } \\color{blue}{\\text{Topo}_{i}} = \\text{Blanket} \\\\\n0 & \\text{ if } \\color{blue}{\\text{Topo}_{i}} = \\text{Hummock} \\end{cases}\\]\nSimple linear regression model for LRUG regressed on Topo: \\[\\text{LRUG}_{i} = \\beta_{0} + \\beta_{1}\\text{TopoBlanket}_{i} + \\epsilon_{i} = \\begin{cases}\n\\beta_{0} + \\epsilon_{i} & \\text{ if } \\color{blue}{\\text{Topo}_{i}} = \\text{Blanket} \\\\\n\\beta_{0} + \\beta_{1} + \\epsilon_{i} & \\text{ if } \\color{blue}{\\text{Topo}_{i}} = \\text{Hummock}  \\end{cases}\\]\n\nHow to interpret?"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#mite-data-2",
+    "href": "slides/slides-02-linear-regression.html#mite-data-2",
+    "title": "Linear Regression",
+    "section": "Mite data",
+    "text": "Mite data\n\nm3 <- lm(abundance ~ Topo, data = mite_dat)\nsummary(m3)\n\n\nCall:\nlm(formula = abundance ~ Topo, data = mite_dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-15.318  -4.318  -2.154   4.473  41.682 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)   15.318      1.658   9.238 1.26e-13 ***\nTopoHummock  -13.164      2.721  -4.838 7.85e-06 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 11 on 68 degrees of freedom\nMultiple R-squared:  0.2561,    Adjusted R-squared:  0.2452 \nF-statistic: 23.41 on 1 and 68 DF,  p-value: 7.851e-06\n\n\n\nFitted model is: \\[\\widehat{\\text{LRUG}} = 15.318 - 13.164 \\text{TopoHummock}\\]\nInterpret!"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#more-than-two-levels",
+    "href": "slides/slides-02-linear-regression.html#more-than-two-levels",
+    "title": "Linear Regression",
+    "section": "More than two levels",
+    "text": "More than two levels\n\nWith more than two levels, we simply create additional dummy variables: \\[\\begin{align*}\\text{Shrub}_{i,Few} &= \\begin{cases} 1 & \\text{ if } \\color{blue}{\\text{Shrub}_{i}} = \\text{Few} \\\\\n0 & \\text{ if } \\color{blue}{\\text{Shrub}_{i}} = \\text{not Few} \\end{cases} \\\\\n\\text{Shrub}_{i, Many} &= \\begin{cases} 1 & \\text{ if } \\color{blue}{\\text{Shrub}_{i}} = \\text{Many} \\\\\n0 & \\text{ if } \\color{blue}{\\text{Shrub}_{i}} = \\text{not Many} \\end{cases}\n\\end{align*}\\]\nResulting regression model for LRUG with only Shrub as predictor: \\[\\begin{align*} \\text{LRUG}_{i} &= \\beta_{0} + \\beta_{1} \\text{Shrub}_{i, Few} + \\beta_{2} \\text{Shrub}_{i, Many} + \\epsilon_{i}\\\\\n&\\approx \\begin{cases}  \\beta_{0} + \\beta_{1} & \\text{ if } \\color{blue}{\\text{Shrub}_{i}} = \\text{Few} \\\\\n\\beta_{0} + \\beta_{2} & \\text{ if } \\color{blue}{\\text{Shrub}_{i}} = \\text{Many} \\\\\n\\beta_{0} & \\text{ if } \\color{blue}{\\text{Shrub}_{i}} = \\text{None} \\end{cases}\\end{align*}\\]\n\n\n\nm4 <- lm(abundance ~ Shrub, data = mite_dat)\nsummary(m4)\n\n\nCall:\nlm(formula = abundance ~ Shrub, data = mite_dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-16.895  -8.060  -2.760   6.635  40.105 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)   10.923      1.405   7.775 6.12e-11 ***\nShrub.L       -9.288      2.505  -3.707 0.000427 ***\nShrub.Q       -1.460      2.359  -0.619 0.538164    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 11.64 on 67 degrees of freedom\nMultiple R-squared:  0.1791,    Adjusted R-squared:  0.1545 \nF-statistic: 7.306 on 2 and 67 DF,  p-value: 0.001348"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#remarks",
+    "href": "slides/slides-02-linear-regression.html#remarks",
+    "title": "Linear Regression",
+    "section": "Remarks",
+    "text": "Remarks\n\nFor a given categorical variable, there will always be one fewer dummy variables than levels\n\nLevel with no dummy variable is known as baseline. For model m4 on previous slide, the “None” category was the baseline level\n\nCan have multiple categorical variables in a single model:\n\n\n\nm5 <- lm(abundance ~ Topo + Shrub, data = mite_dat)\nsummary(m5)\n\n\nCall:\nlm(formula = abundance ~ Topo + Shrub, data = mite_dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-16.895  -6.056   0.691   4.756  40.105 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)   14.755      1.641   8.993 4.48e-13 ***\nTopoHummock  -11.253      2.997  -3.755 0.000369 ***\nShrub.L       -4.832      2.580  -1.873 0.065552 .  \nShrub.Q       -3.128      2.203  -1.420 0.160385    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 10.65 on 66 degrees of freedom\nMultiple R-squared:  0.3236,    Adjusted R-squared:  0.2928 \nF-statistic: 10.52 on 3 and 66 DF,  p-value: 9.593e-06\n\n\n\n\nLet’s write out the estimated regression model together\n\nWhat does \\(\\beta_{0}\\) represent?\nHow do we interpret the coefficients?"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#linear-model-is-restrictive",
+    "href": "slides/slides-02-linear-regression.html#linear-model-is-restrictive",
+    "title": "Linear Regression",
+    "section": "Linear model is restrictive",
+    "text": "Linear model is restrictive\n\nLinear model is widely used and works quite well, but has several highly restrictive assumptions\n\nRelationship between \\(X\\) and \\(Y\\) is additive\nRelationship between \\(X\\) and \\(Y\\) is linear\n\nThere are common approaches to loosen these assumptions. We will only discuss the first restriction here. Take a regression class for more!"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#interactions",
+    "href": "slides/slides-02-linear-regression.html#interactions",
+    "title": "Linear Regression",
+    "section": "Interactions",
+    "text": "Interactions\n\nAdditive assumption: the association between a predictor \\(X_{j}\\) and the response \\(Y\\) does not depend on the value of any other predictors\n\n\n\\[Y = \\beta_{0} + \\beta_{1} X_{1} + \\beta_{2} X_{2} + \\epsilon\\]\nvs\n\\[Y = \\beta_{0} + \\beta_{1} X_{1} + \\beta_{2} X_{2} + \\beta_{3}\\color{orange}{X_{1}X_{2}} + \\epsilon\\]\n\n\nThis third predictor \\(\\color{orange}{X_{1}X_{2}}\\) is known as an interaction term\nThe total effect of \\(X_{1}\\) on \\(Y\\) also depends on the value of \\(X_{2}\\) through the interaction\nIn the above equation, \\(\\beta_{1}\\) and \\(\\beta_{2}\\) are called the “main effects” of \\(X_{1}\\) and \\(X_{2}\\) respectively"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#mite-data-3",
+    "href": "slides/slides-02-linear-regression.html#mite-data-3",
+    "title": "Linear Regression",
+    "section": "Mite data",
+    "text": "Mite data\n\nSuppose I want to regress LRUG abundance on SubsDens and WatrCont and their interaction:\n\n\n\nmod_int <- lm(abundance ~ SubsDens + WatrCont + \n                SubsDens * WatrCont,\n              data = mite_dat)\nsummary(mod_int)\n\n\n\n\n\n\nCall:\nlm(formula = abundance ~ SubsDens + WatrCont + SubsDens * WatrCont, \n    data = mite_dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-24.012  -7.155  -1.896   5.011  44.539 \n\nCoefficients:\n                    Estimate Std. Error t value Pr(>|t|)  \n(Intercept)       -1.012e+01  1.369e+01  -0.740   0.4621  \nSubsDens           1.323e-01  3.256e-01   0.406   0.6859  \nWatrCont           8.667e-02  3.379e-02   2.565   0.0126 *\nSubsDens:WatrCont -1.210e-03  7.443e-04  -1.625   0.1088  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 11.56 on 66 degrees of freedom\nMultiple R-squared:  0.203, Adjusted R-squared:  0.1668 \nF-statistic: 5.604 on 3 and 66 DF,  p-value: 0.001744"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#mite-data-4",
+    "href": "slides/slides-02-linear-regression.html#mite-data-4",
+    "title": "Linear Regression",
+    "section": "Mite data",
+    "text": "Mite data\n\nFitted model: \\(\\widehat{LRUG} = -10.12 + 0.132 \\text{SubsDens} + 0.087 \\text{WatrCont} -0.001 \\text{SubsDens} \\times \\text{WatrCont}\\)\nInterpretations?\n\n\n\n\n\nEstimates suggest that a 1 g/L increase in the \\(\\color{blue}{\\text{WaterCont}}\\) of the soil is associated with an increased abundance of (0.087 + -0.001 \\(\\times \\color{blue}{\\text{SubsDens}}\\)) LRUG mites"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#interactions-with-categorical-variable",
+    "href": "slides/slides-02-linear-regression.html#interactions-with-categorical-variable",
+    "title": "Linear Regression",
+    "section": "Interactions with categorical variable",
+    "text": "Interactions with categorical variable\n\nCan also have interactions involving categorical variables!\nIn particular, the interaction between a quantitative and a categorical variable has nice interpretation\nConsider the effects of SubsDens and Topo and their interaction on the abundances: \\[\\begin{align*}\n\\text{LRUG}_{i} &\\approx \\beta_{0} + \\beta_{1} \\text{SubsDens}_{i} + \\beta_{2}\\text{TopoBlanket}_{i} +  \\beta_{3}  \\text{SubsDens}_{i} \\times \\text{TopoBlanket}_{i} \\\\\n& = \\begin{cases}\n\\beta_{0} + \\beta_{1}\\text{SubsDens}_{i} & \\text{ if } \\color{blue}{\\text{Topo}_{i}} = \\text{Blanket} \\\\\n(\\beta_{0} + \\beta_{2}) + (\\beta_{1} + \\beta_{3}) \\text{SubsDens}_{i} & \\text{ if } \\color{blue}{\\text{Topo}_{i}} = \\text{Hummock}  \\end{cases}\n\\end{align*}\\]\n\n\n\n\n\nCall:\nlm(formula = abundance ~ SubsDens + Topo + SubsDens * Topo, data = mite_dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-21.059  -4.764  -1.186   3.229  39.191 \n\nCoefficients:\n                     Estimate Std. Error t value Pr(>|t|)    \n(Intercept)           34.7881     5.3697   6.479 1.35e-08 ***\nSubsDens              -0.4695     0.1242  -3.781 0.000338 ***\nTopoHummock          -29.4584     9.0331  -3.261 0.001757 ** \nSubsDens:TopoHummock   0.3803     0.2323   1.637 0.106406    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 10.11 on 66 degrees of freedom\nMultiple R-squared:  0.3901,    Adjusted R-squared:  0.3624 \nF-statistic: 14.07 on 3 and 66 DF,  p-value: 3.425e-07"
+  },
+  {
+    "objectID": "slides/slides-02-linear-regression.html#fitted-regression-lines",
+    "href": "slides/slides-02-linear-regression.html#fitted-regression-lines",
+    "title": "Linear Regression",
+    "section": "Fitted regression lines",
+    "text": "Fitted regression lines"
   }
 ]
