@@ -18,3 +18,13 @@ data(mite.env)
 mite_dat <- mite.env %>%
   add_column(abundance = mite$LRUG)
 ```
+
+```{r}
+# SLR
+m1 <- lm(abundance ~ WatrCont, data = mite_dat)
+summary(m1)
+
+# MLR
+m2 <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat)
+summary(m2)
+```
