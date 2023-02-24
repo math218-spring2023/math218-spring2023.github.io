@@ -264,6 +264,15 @@ Multiple R-squared:  0.1711,    Adjusted R-squared:  0.1464
 F-statistic: 6.915 on 2 and 67 DF,  p-value: 0.001861</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>new_dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">WatrCont =</span> <span class="dv">400</span><span class="sc">:</span><span class="dv">405</span>, <span class="at">SubsDens =</span> <span class="dv">30</span><span class="sc">:</span><span class="dv">35</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(m2, <span class="at">newdata =</span> new_dat)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>preds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2        3        4        5        6 
+13.37478 13.05239 12.73000 12.40761 12.08523 11.76284 </code></pre>
+</div>
+</div>
 
 
 

@@ -28,3 +28,9 @@ summary(m1)
 m2 <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat)
 summary(m2)
 ```
+
+```{r}
+new_dat <- data.frame(WatrCont = 400:405, SubsDens = 30:35)
+preds <- predict(m2, newdata = new_dat)
+preds
+```
