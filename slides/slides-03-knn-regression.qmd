@@ -1,0 +1,125 @@
+---
+title: "KNN Regression"
+date: "February 23, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/mlb.png"
+    data-background-size: contain
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: false
+---
+
+# Housekeeping
+
+-   Lab 02 due Thursday to Canvas at 11:59pm
+
+-   Office hours today 3-4pm
+
+```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
+
+library(tidyverse)
+library(broom)
+library(ggfortify)
+library(ISLR)
+library(vegan)
+plot_theme <- theme(text = element_text(size = 16))
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+# K-nearest neighbors
+
+(Warning: there will be a *lot* of $K$'s in this class!)
+
+## K-nearest neighbors
+
+-   K-nearest neighbors (KNN) is a nonparametric supervised learning method
+
+-   Intuitive and simple
+
+-   Relies on the assumption: observations with similar predictors will have similar responses
+
+-   Works for both regression and classification (we will start with regression)
+
+## Algorithm (in words)
+
+-   Choose a positive integer $K$, and have your data split into a train set and test set
+
+-   For a given test observation with predictor $x_{0}$:
+
+    -   Identify the $K$ points in the train data that are **closest** (in predictor space) to $x_{0}$. Call this set of neighbors $\mathcal{N}_{0}$.
+
+    -   Predict $\hat{y}_{0}$ to be the average of the responses in the neighbor set, i.e. $$\hat{y}_{0} = \frac{1}{K} \sum_{i \in \mathcal{N}_{0}} y_{i}$$
+    
+## Example {.scrollable}
+
+::: r-stack
+```{r fig.width=7, fig.height=6}
+set.seed(1)
+n <- 20
+x1 <- runif(n, 5, 7)
+x2 <- runif(n, 2, 4)
+y <- x1 + x2 + rnorm(n, 0, 0.5)
+df <- data.frame(x1,x2, y) %>%
+  mutate(y = round(y, 3))
+p <- ggplot(df, aes(x = x1, y=x2, col = y)) +
+  geom_point(size = 3) +
+  viridis::scale_color_viridis(option = "magma") +
+  plot_theme
+p
+```
+::: fragment
+```{r fig.width=7, fig.height=6}
+test_pt <- c(6.82, 2.15)
+p +
+  geom_point(aes(x =  test_pt[1], y = test_pt[2]), col = "blue", pch = 8, size = 3) 
+```
+:::
+
+::: fragment
+```{r fig.width=7, fig.height=6}
+p +
+  geom_text(aes(label = y), nudge_y = 0.05) +
+  geom_point(aes(x = test_pt[1], y = test_pt[2]), col = "blue", pch = 8, size = 3) 
+
+```
+:::
+
+:::
+
+```{r}
+.dist <- function(x0, x){
+   n <- nrow(x)
+   p <- length(x0)
+   x0_mat <- matrix(x0, nrow = n, ncol = p, byrow = T)
+   sqrt(rowSums((x-x0_mat)^2))
+}
+dists <- .dist(test_pt, df[,1:2])
+nb_ids <- data.frame(d = dists) %>%
+   mutate(id = row_number()) %>%
+   arrange(d) %>%
+   pull(id)
+K <- 3
+nbs <- nb_ids[1:K]
+
+```
+
+
+- Using $K= `r K`$,  predicted $\hat{y}_{0} = \frac{1}{`r K`}(`r round(y[nbs[1]], 3)` + `r round(y[nbs[2]], 3)` + `r round(y[nbs[3]], 3)`) = `r round(mean(y[nbs]), 3)`$
+
+```{r}
+K <- 4
+nbs <- nb_ids[1:K]
+```
+
+- Using $K= `r K`$,  predicted $\hat{y}_{0} = \frac{1}{`r K`}(`r round(y[nbs[1]], 3)` + `r round(y[nbs[2]], 3)` + `r round(y[nbs[3]], 3)`  + `r round(y[nbs[4]], 3)`) = `r round(mean(y[nbs]), 3)`$
