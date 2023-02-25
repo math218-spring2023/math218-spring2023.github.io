@@ -780,8 +780,8 @@
     "objectID": "slides/slides-03-knn-regression.html#how-much-does-k-matter",
     "href": "slides/slides-03-knn-regression.html#how-much-does-k-matter",
     "title": "KNN Regression",
-    "section": "How much does \\(K\\) matter?",
-    "text": "How much does \\(K\\) matter?\n\nIt can matter a lot!\nAs we saw previously, you will get different predicted \\(\\hat{y}_{0}\\) for different choices of \\(K\\) in KNN regression\nDiscuss:\n\nWhat does \\(K=1\\) mean? Do you think \\(K = 1\\) is a good choice?\nGenerally, do you think it’s better to choose a small \\(K\\) or big \\(K\\)?"
+    "section": "How much does K matter?",
+    "text": "How much does K matter?\n\nIt can matter a lot!\nAs we saw previously, you will get different predicted \\(\\hat{y}_{0}\\) for different choices of \\(K\\) in KNN regression\nDiscuss:\n\nWhat does \\(K=1\\) mean? Do you think \\(K = 1\\) is a good choice?\nGenerally, do you think it’s better to choose a small \\(K\\) or big \\(K\\)?"
   },
   {
     "objectID": "slides/slides-03-knn-regression.html#example-cont.",
@@ -802,7 +802,7 @@
     "href": "slides/slides-03-knn-regression.html#mite-data-preparation",
     "title": "KNN Regression",
     "section": "Mite data: preparation",
-    "text": "Mite data: preparation\n\nThe following code divides my data into train and test sets.\n\nMake sure you understand what each line of code is doing! If you don’t, please ask!\n\n\n\nset.seed(6)\nn <- nrow(mite_dat)\ntest_ids <- sample(1:n, 2)\ntrain_dat <- mite_dat[-test_ids,]\ntest_dat <- mite_dat[test_ids,]\ntest_dat\n\n   SubsDens WatrCont Substrate Shrub    Topo abundance\n53    26.83   414.65 Interface  None Blanket        25\n10    32.14   220.73   Sphagn1  Many Hummock         0"
+    "text": "Mite data: preparation\n\nThe following code divides my data into train and test sets.\n\nMake sure you understand what each line of code is doing! If you don’t, please ask!\n\n\n\n\nset.seed(6)\nn <- nrow(mite_dat)\ntest_ids <- sample(1:n, 2)\ntrain_dat <- mite_dat[-test_ids,]\ntest_dat <- mite_dat[test_ids,]\ntest_dat\n\n   SubsDens WatrCont Substrate Shrub    Topo abundance\n53    26.83   414.65 Interface  None Blanket        25\n10    32.14   220.73   Sphagn1  Many Hummock         0"
   },
   {
     "objectID": "slides/slides-03-knn-regression.html#mite-data-knn",
@@ -824,5 +824,54 @@
     "title": "KNN Regression",
     "section": "Mite data: KNN continued",
     "text": "Mite data: KNN continued\n\n\n\nRunning KNN with \\(K = 3\\) and using Euclidean distance, I identify the following neighbor sets for each test point:\n\n\n\n\n\n\n\n\n\n\n\n\n\nPredicted abundance \\(\\hat{y}\\) and true abundance \\(y\\) for both test points, for a test RMSE of 9.428.\n\n\n\n\n# A tibble: 2 × 3\n  test_pt y_hat y_true\n    <int> <dbl>  <int>\n1       1  11.7     25\n2       2   0        0\n\n\n\n\n\nDiscuss: it seems like we did poorly for the first test observation. Does its neighbor set “make sense”?"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#scaling-code",
+    "href": "slides/slides-03-knn-regression.html#scaling-code",
+    "title": "KNN Regression",
+    "section": "Scaling code",
+    "text": "Scaling code\n\nmite_dat_scaled <- mite_dat %>%\n  mutate_at(.vars = c(\"SubsDens\", \"WatrCont\"), scale)\ntrain_dat <- mite_dat_scaled[-test_ids,]\ntest_dat <- mite_dat_scaled[test_ids,]\nhead(train_dat)\n\n\n\n\n      SubsDens   WatrCont Substrate Shrub    Topo abundance\n1 -0.008635713 -0.4248676   Sphagn1   Few Hummock         0\n2  1.315068441  0.1698066    Litter   Few Hummock         0\n3  0.568234725 -0.2733543 Interface   Few Hummock         0\n4  0.745733321 -0.3521665   Sphagn1   Few Hummock         0\n5 -1.317269232 -1.4505507   Sphagn1   Few Hummock         0\n6  1.510149446 -0.6960042   Sphagn1   Few Hummock         0\n\n\n\n\nImportant:\n\nI do not scale the response variable\nI scale before splitting into train/test"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#scaled-mite-data",
+    "href": "slides/slides-03-knn-regression.html#scaled-mite-data",
+    "title": "KNN Regression",
+    "section": "Scaled mite data",
+    "text": "Scaled mite data"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#scaled-mite-data-knn",
+    "href": "slides/slides-03-knn-regression.html#scaled-mite-data-knn",
+    "title": "KNN Regression",
+    "section": "Scaled mite data: KNN",
+    "text": "Scaled mite data: KNN"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#scaled-mite-data-knn-results",
+    "href": "slides/slides-03-knn-regression.html#scaled-mite-data-knn-results",
+    "title": "KNN Regression",
+    "section": "Scaled mite data: KNN results",
+    "text": "Scaled mite data: KNN results\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPredicted abundance \\(\\hat{y}\\) and true abundance \\(y\\) for both test points, for a test RMSE of 3.308.\n\n\n\n\n# A tibble: 2 × 3\n  test_pt  y_hat y_true\n    <int>  <dbl>  <int>\n1       1 20.3       25\n2       2  0.333      0\n\n\n\n\nNote how this RMSE compares to when we fit on original scale!\n\nEven though we do slightly worse predicting test point 2, we improve a lot on test point 1"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#mite-data-knn-results",
+    "href": "slides/slides-03-knn-regression.html#mite-data-knn-results",
+    "title": "KNN Regression",
+    "section": "Mite data: KNN results",
+    "text": "Mite data: KNN results\n\n\n\nRunning KNN with \\(K = 3\\) and using Euclidean distance, I identify the following neighbor sets for each test point:\n\n\n\n\n\n\n\n\n\n\n\n\n\nPredicted abundance \\(\\hat{y}\\) and true abundance \\(y\\) for both test points, for a test RMSE of 9.428.\n\n\n\n\n# A tibble: 2 × 3\n  test_pt y_hat y_true\n    <int> <dbl>  <int>\n1       1  11.7     25\n2       2   0        0\n\n\n\n\n\nDiscuss: it seems like we did poorly for the first test observation. Does its neighbor set “make sense”?"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#pro-and-cons",
+    "href": "slides/slides-03-knn-regression.html#pro-and-cons",
+    "title": "KNN Regression",
+    "section": "Pro and cons",
+    "text": "Pro and cons\n\nDiscuss: what do you think are some pros and cons of KNN regression?\n\nYou might want to compare to linear regression"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#considerations-1",
+    "href": "slides/slides-03-knn-regression.html#considerations-1",
+    "title": "KNN Regression",
+    "section": "Considerations",
+    "text": "Considerations\n\nWhen your predictors do are on very different scales, you should consider scaling them\nWe will learn later on in the semester how we might pick \\(K\\)\nWhat about categorical predictors?"
   }
 ]

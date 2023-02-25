@@ -1,6 +1,6 @@
 ---
 title: "KNN Regression"
-date: "February 23, 2023"
+date: "February 28, 2023"
 title-slide-attributes:
     data-background-image: "figs/title/animal_crossing.png"
     data-background-size: contain
@@ -37,6 +37,13 @@ mite_dat <- mite.env %>%
   add_column(abundance = mite$LRUG)
 get_rmse <- function(y_pred, true){
   sqrt(mean((y_pred-true)^2))
+}
+circleFun <- function(center = c(0,0),diameter = 1, npoints = 100){
+    r = diameter / 2
+    tt <- seq(0,2*pi,length.out = npoints)
+    xx <- center[1] + r * cos(tt)
+    yy <- center[2] + r * sin(tt)
+    return(data.frame(x = xx, y = yy))
 }
 ```
 
@@ -141,11 +148,11 @@ nbs <- nb_ids[1:K]
 
 ## Considerations
 
--   How do we determine who the neighbors $\mathcal{N}_{0}$ should be? On the previous slide, it may have seemed intuitive.
+1.  How do we determine who the neighbors $\mathcal{N}_{0}$ should be? On the previous slide, it may have seemed intuitive.
 
     -   i.e. how do we quantify "closeness"?
 
--   Which $K$ should we use?
+2.  Which $K$ should we use?
 
 # Consideration 1: Closeness
 
@@ -187,9 +194,9 @@ nbs <- nb_ids[1:K]
     Important: what would the points $\mathbf{a}$ and $\mathbf{b}$ be in KNN?
     :::
 
-# Consideration 2: $K$
+# Consideration 2: K
 
-## How much does $K$ matter?
+## How much does K matter?
 
 -   It can matter a lot!
 
@@ -201,6 +208,8 @@ nbs <- nb_ids[1:K]
 
     -   Generally, do you think it's better to choose a small $K$ or big $K$?
 
+# Example: mite data
+
 ## Mite data: preparation {.nonincremental}
 
 -   The following code divides my data into train and test sets.
@@ -208,6 +217,8 @@ nbs <- nb_ids[1:K]
 -   ::: important
     Make sure you understand what each line of code is doing! If you don't, please ask!
     :::
+
+::: fragment
 
 ```{r}
 #| echo: true
@@ -220,6 +231,8 @@ test_dat <- mite_dat[test_ids,]
 test_dat
 ```
 
+:::
+
 ```{r}
 K <- 3
 nbs_ls <- list()
@@ -230,13 +243,7 @@ for(i in 1:nrow(test_dat)){
     slice(1:K) 
 }
 
-circleFun <- function(center = c(0,0),diameter = 1, npoints = 100){
-    r = diameter / 2
-    tt <- seq(0,2*pi,length.out = npoints)
-    xx <- center[1] + r * cos(tt)
-    yy <- center[2] + r * sin(tt)
-    return(data.frame(x = xx, y = yy))
-}
+
 ```
 
 ## Mite data: KNN
@@ -244,8 +251,10 @@ circleFun <- function(center = c(0,0),diameter = 1, npoints = 100){
 ::: r-stack
 ::: fragment
 ```{r}
+#| fig-width: 7
+#| fig-height: 7
 p2 <- ggplot()+
-  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = abundance)) +
+  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = abundance), size = 3) +
   scale_color_viridis_c(option = "plasma") +
   plot_theme + 
   theme(legend.position = "bottom")+
@@ -256,16 +265,18 @@ p2
 
 ::: fragment
 ```{r}
+#| fig-width: 7
+#| fig-height: 7
 p2 + 
   geom_text(data = test_dat %>%
                mutate(test_pt = row_number()), 
-                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt))+
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt), size = 4)+
   labs(subtitle = "and test points")
 ```
 :::
 :::
 
-## Mite data: KNN continued {.scrollable}
+## Mite data: KNN results {.scrollable}
 
 ::: columns
 ::: {.column width="60%"}
@@ -312,20 +323,46 @@ summary_df
 :::
 
 -   ::: important
-    Discuss: it seems like we did poorly for the first test observation. Does its neighbor set "make sense"? 
+    Discuss: it seems like we did poorly for the first test observation. Does its neighbor set "make sense"?
     :::
 :::
 :::
 
-## Scaling
+## Scaling code
 
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: "1-2"
+mite_dat_scaled <- mite_dat %>%
+  mutate_at(.vars = c("SubsDens", "WatrCont"), scale)
+train_dat <- mite_dat_scaled[-test_ids,]
+test_dat <- mite_dat_scaled[test_ids,]
+head(train_dat)
+```
+
+::: fragment
 ```{r}
 mite_dat_scaled <- mite_dat %>%
   mutate_at(.vars = c("SubsDens", "WatrCont"), scale)
 
 train_dat <- mite_dat_scaled[-test_ids,]
 test_dat <- mite_dat_scaled[test_ids,]
+head(train_dat)
+```
+:::
 
+-   Important:
+    -   I do not scale the response variable
+    -   I scale before splitting into train/test
+
+## Scaled mite data
+
+::: r-stack
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
 nbs_ls <- list()
 for(i in 1:nrow(test_dat)){
   nbs_ls[[i]] <- data.frame(d = .dist(test_dat[i,1:2], train_dat[,1:2])) %>%
@@ -334,19 +371,40 @@ for(i in 1:nrow(test_dat)){
     slice(1:K) 
 }
 
-p2 <- ggplot()+
-  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = abundance)) +
-  scale_color_viridis_c(option = "plasma") 
+p3 <- ggplot()+
+  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = abundance), size = 3) +
+  scale_color_viridis_c(option = "plasma") +
+  plot_theme+
+  theme(legend.position = "bottom") +
+  ggtitle("Scaled train data")
 
-circleFun <- function(center = c(0,0),diameter = 1, npoints = 100){
-    r = diameter / 2
-    tt <- seq(0,2*pi,length.out = npoints)
-    xx <- center[1] + r * cos(tt)
-    yy <- center[2] + r * sin(tt)
-    return(data.frame(x = xx, y = yy))
-}
-p2 + 
-   geom_text(data = test_dat %>%
+p3
+```
+:::
+
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+p3 + 
+  geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt), size = 4)+
+  labs(subtitle = "and test points")
+```
+:::
+:::
+
+## Scaled mite data: KNN results {.scrollable}
+
+::: columns
+::: {.column width="60%"}
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+p3 + 
+  geom_text(data = test_dat %>%
                mutate(test_pt = row_number()), 
                       mapping = aes(x = SubsDens, y = WatrCont,label = test_pt))+
   geom_path(data = circleFun(center = as.numeric(test_dat[1,1:2]),
@@ -354,7 +412,12 @@ p2 +
             mapping = aes(x = x, y = y), linetype = "dashed") +
   geom_path(data = circleFun(center = as.numeric(test_dat[2,1:2]),
                              diameter = nbs_ls[[2]][K,1]*2),
-            mapping = aes(x = x, y = y), linetype = "dashed")
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  labs(subtitle= "with neighbor sets for test points")
+```
+:::
+
+```{r}
 summary_df <- train_dat %>%
   mutate(id = row_number()) %>%
   inner_join(., do.call(rbind,nbs_ls) %>%
@@ -365,5 +428,38 @@ summary_df <- train_dat %>%
   add_column(y_true = test_dat$abundance )
 rmse <- get_rmse(summary_df$y_hat, summary_df$y_true) 
 ```
+:::
 
-RMSE: `r rmse`
+::: {.column width="40%"}
+-   Predicted abundance $\hat{y}$ and true abundance $y$ for both test points, for a test RMSE of `r round(rmse, 3)`.
+
+::: fragment
+```{r}
+summary_df
+```
+:::
+
+-   Note how this RMSE compares to when we fit on original scale!
+
+    -   Even though we do slightly worse predicting test point 2, we improve a lot on test point 1
+:::
+:::
+
+# Summary
+
+- You will implement KNN regression in small groups this week!
+
+  - This will be the first implementation assignment.
+
+## Pro and cons
+
+-   Discuss: what do you think are some pros and cons of KNN regression?
+    -   You might want to compare to linear regression
+
+## Considerations
+
+-   When your predictors do are on very different scales, you should consider **scaling** them
+
+-   We will learn later on in the semester how we might pick $K$
+
+-   What about categorical predictors?

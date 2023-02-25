@@ -392,7 +392,7 @@
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2/23/23</p>
+  <p class="date">2/28/23</p>
 </section>
 <section id="housekeeping" class="title-slide slide level1 center">
 <h1>Housekeeping</h1>
@@ -479,13 +479,13 @@
 </section>
 <section id="considerations" class="slide level2">
 <h2>Considerations</h2>
-<ul>
+<ol type="1">
 <li class="fragment"><p>How do we determine who the neighbors <span class="math inline">\(\mathcal{N}_{0}\)</span> should be? On the previous slide, it may have seemed intuitive.</p>
 <ul>
 <li class="fragment">i.e.&nbsp;how do we quantify “closeness”?</li>
 </ul></li>
 <li class="fragment"><p>Which <span class="math inline">\(K\)</span> should we use?</p></li>
-</ul>
+</ol>
 </section></section>
 <section>
 <section id="consideration-1-closeness" class="title-slide slide level1 center">
@@ -535,11 +535,11 @@
 </section></section>
 <section>
 <section id="consideration-2-k" class="title-slide slide level1 center">
-<h1>Consideration 2: <span class="math inline">\(K\)</span></h1>
+<h1>Consideration 2: K</h1>
 
 </section>
 <section id="how-much-does-k-matter" class="slide level2">
-<h2>How much does <span class="math inline">\(K\)</span> matter?</h2>
+<h2>How much does K matter?</h2>
 <ul>
 <li class="fragment"><p>It can matter a lot!</p></li>
 <li class="fragment"><p>As we saw previously, you will get different predicted <span class="math inline">\(\hat{y}_{0}\)</span> for different choices of <span class="math inline">\(K\)</span> in KNN regression</p></li>
@@ -549,6 +549,11 @@
 <li class="fragment"><p>Generally, do you think it’s better to choose a small <span class="math inline">\(K\)</span> or big <span class="math inline">\(K\)</span>?</p></li>
 </ul></li>
 </ul>
+</section></section>
+<section>
+<section id="example-mite-data" class="title-slide slide level1 center">
+<h1>Example: mite data</h1>
+
 </section>
 <section id="mite-data-preparation" class="slide level2 nonincremental">
 <h2>Mite data: preparation</h2>
@@ -558,6 +563,7 @@
 <p>Make sure you understand what each line of code is doing! If you don’t, please ask!</p>
 </div></li>
 </ul>
+<div class="fragment">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" data-code-line-numbers="true"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">set.seed</span>(<span class="dv">6</span>)</span>
 <span id="cb1-2"><a href="#cb1-2"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(mite_dat)</span>
@@ -571,6 +577,7 @@
 10    32.14   220.73   Sphagn1  Many Hummock         0</code></pre>
 </div>
 </div>
+</div>
 <div class="cell">
 
 </div>
@@ -581,21 +588,21 @@
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="slides-03-knn-regression_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+<p><img data-src="slides-03-knn-regression_files/figure-revealjs/unnamed-chunk-9-1.png" width="672"></p>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="slides-03-knn-regression_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+<p><img data-src="slides-03-knn-regression_files/figure-revealjs/unnamed-chunk-10-1.png" width="672"></p>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="mite-data-knn-continued" class="slide level2 scrollable">
-<h2>Mite data: KNN continued</h2>
+<section id="mite-data-knn-results" class="slide level2 scrollable">
+<h2>Mite data: KNN results</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <ul>
@@ -634,10 +641,119 @@
 </div>
 </div>
 </section>
-<section id="scaling" class="slide level2">
-<h2>Scaling</h2>
+<section id="scaling-code" class="slide level2">
+<h2>Scaling code</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>mite_dat_scaled <span class="ot">&lt;-</span> mite_dat <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate_at</span>(<span class="at">.vars =</span> <span class="fu">c</span>(<span class="st">"SubsDens"</span>, <span class="st">"WatrCont"</span>), scale)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>train_dat <span class="ot">&lt;-</span> mite_dat_scaled[<span class="sc">-</span>test_ids,]</span>
+<span id="cb4-4"><a href="#cb4-4"></a>test_dat <span class="ot">&lt;-</span> mite_dat_scaled[test_ids,]</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="fu">head</span>(train_dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      SubsDens   WatrCont Substrate Shrub    Topo abundance
+1 -0.008635713 -0.4248676   Sphagn1   Few Hummock         0
+2  1.315068441  0.1698066    Litter   Few Hummock         0
+3  0.568234725 -0.2733543 Interface   Few Hummock         0
+4  0.745733321 -0.3521665   Sphagn1   Few Hummock         0
+5 -1.317269232 -1.4505507   Sphagn1   Few Hummock         0
+6  1.510149446 -0.6960042   Sphagn1   Few Hummock         0</code></pre>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Important:
+<ul>
+<li class="fragment">I do not scale the response variable</li>
+<li class="fragment">I scale before splitting into train/test</li>
+</ul></li>
+</ul>
+</section>
+<section id="scaled-mite-data" class="slide level2">
+<h2>Scaled mite data</h2>
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-03-knn-regression_files/figure-revealjs/unnamed-chunk-16-1.png" width="672"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-03-knn-regression_files/figure-revealjs/unnamed-chunk-17-1.png" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="scaled-mite-data-knn-results" class="slide level2 scrollable">
+<h2>Scaled mite data: KNN results</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-03-knn-regression_files/figure-revealjs/unnamed-chunk-18-1.png" width="672"></p>
+</div>
+</div>
+</div>
+<div class="cell">
 
-<img data-src="slides-03-knn-regression_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><p>RMSE: 3.3082389</p>
+</div>
+</div><div class="column" style="width:40%;">
+<ul>
+<li class="fragment">Predicted abundance <span class="math inline">\(\hat{y}\)</span> and true abundance <span class="math inline">\(y\)</span> for both test points, for a test RMSE of 3.308.</li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  test_pt  y_hat y_true
+    &lt;int&gt;  &lt;dbl&gt;  &lt;int&gt;
+1       1 20.3       25
+2       2  0.333      0</code></pre>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment"><p>Note how this RMSE compares to when we fit on original scale!</p>
+<ul>
+<li class="fragment">Even though we do slightly worse predicting test point 2, we improve a lot on test point 1</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+<ul>
+<li class="fragment"><p>You will implement KNN regression in small groups this week!</p>
+<ul>
+<li class="fragment">This will be the first implementation assignment.</li>
+</ul></li>
+</ul>
+</section>
+<section id="pro-and-cons" class="slide level2">
+<h2>Pro and cons</h2>
+<ul>
+<li class="fragment">Discuss: what do you think are some pros and cons of KNN regression?
+<ul>
+<li class="fragment">You might want to compare to linear regression</li>
+</ul></li>
+</ul>
+</section>
+<section id="considerations-1" class="slide level2">
+<h2>Considerations</h2>
+<ul>
+<li class="fragment"><p>When your predictors do are on very different scales, you should consider <strong>scaling</strong> them</p></li>
+<li class="fragment"><p>We will learn later on in the semester how we might pick <span class="math inline">\(K\)</span></p></li>
+<li class="fragment"><p>What about categorical predictors?</p></li>
+</ul>
 
 <div class="footer footer-default">
 
