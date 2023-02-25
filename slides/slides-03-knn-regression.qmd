@@ -2,7 +2,7 @@
 title: "KNN Regression"
 date: "February 23, 2023"
 title-slide-attributes:
-    data-background-image: "figs/title/mlb.png"
+    data-background-image: "figs/title/animal_crossing.png"
     data-background-size: contain
     data-background-opacity: "0.3"
 format: 
@@ -35,11 +35,14 @@ data(mite)
 data(mite.env)
 mite_dat <- mite.env %>%
   add_column(abundance = mite$LRUG)
+get_rmse <- function(y_pred, true){
+  sqrt(mean((y_pred-true)^2))
+}
 ```
 
 # K-nearest neighbors
 
-(Warning: there will be a *lot* of $K$'s in this class!)
+(Warning: there will be a *lot* of $K$'s in this course!)
 
 ## K-nearest neighbors
 
@@ -60,8 +63,20 @@ mite_dat <- mite.env %>%
     -   Identify the $K$ points in the train data that are **closest** (in predictor space) to $x_{0}$. Call this set of neighbors $\mathcal{N}_{0}$.
 
     -   Predict $\hat{y}_{0}$ to be the average of the responses in the neighbor set, i.e. $$\hat{y}_{0} = \frac{1}{K} \sum_{i \in \mathcal{N}_{0}} y_{i}$$
-    
-## Example {.scrollable}
+
+## Example
+
+```{r}
+test_pt <- c(6.8, 2.15)
+```
+
+-   On the next slide, you will see plot with a bunch of colored points
+
+-   Each point is plotted in predictor space $(x1, x2)$, and is colored according to the value of its response $y$
+
+-   I have a new point ($\color{blue}{*}$) and its covariates/predictors, but I need to make a prediction for its response
+
+## Example (cont.) {.scrollable}
 
 ::: r-stack
 ```{r fig.width=7, fig.height=6}
@@ -74,13 +89,13 @@ df <- data.frame(x1,x2, y) %>%
   mutate(y = round(y, 3))
 p <- ggplot(df, aes(x = x1, y=x2, col = y)) +
   geom_point(size = 3) +
-  viridis::scale_color_viridis(option = "magma") +
+  viridis::scale_color_viridis(option = "plasma") +
   plot_theme
 p
 ```
+
 ::: fragment
 ```{r fig.width=7, fig.height=6}
-test_pt <- c(6.82, 2.15)
 p +
   geom_point(aes(x =  test_pt[1], y = test_pt[2]), col = "blue", pch = 8, size = 3) 
 ```
@@ -94,15 +109,16 @@ p +
 
 ```
 :::
-
 :::
 
 ```{r}
 .dist <- function(x0, x){
    n <- nrow(x)
-   p <- length(x0)
-   x0_mat <- matrix(x0, nrow = n, ncol = p, byrow = T)
-   sqrt(rowSums((x-x0_mat)^2))
+   dists <- rep(NA, n)
+   for(i in 1:n){
+     dists[i] <- sqrt(sum((x0 - x[i,])^2))
+   }
+   dists
 }
 dists <- .dist(test_pt, df[,1:2])
 nb_ids <- data.frame(d = dists) %>%
@@ -114,12 +130,240 @@ nbs <- nb_ids[1:K]
 
 ```
 
-
-- Using $K= `r K`$,  predicted $\hat{y}_{0} = \frac{1}{`r K`}(`r round(y[nbs[1]], 3)` + `r round(y[nbs[2]], 3)` + `r round(y[nbs[3]], 3)`) = `r round(mean(y[nbs]), 3)`$
+-   Using $K= `r K`$, predicted $\hat{y}_{0} = \frac{1}{`r K`}(`r round(y[nbs[1]], 3)` + `r round(y[nbs[2]], 3)` + `r round(y[nbs[3]], 3)`) = `r round(mean(y[nbs]), 3)`$
 
 ```{r}
 K <- 4
 nbs <- nb_ids[1:K]
 ```
 
-- Using $K= `r K`$,  predicted $\hat{y}_{0} = \frac{1}{`r K`}(`r round(y[nbs[1]], 3)` + `r round(y[nbs[2]], 3)` + `r round(y[nbs[3]], 3)`  + `r round(y[nbs[4]], 3)`) = `r round(mean(y[nbs]), 3)`$
+-   Using $K= `r K`$, predicted $\hat{y}_{0} = \frac{1}{`r K`}(`r round(y[nbs[1]], 3)` + `r round(y[nbs[2]], 3)` + `r round(y[nbs[3]], 3)` + `r round(y[nbs[4]], 3)`) = `r round(mean(y[nbs]), 3)`$
+
+## Considerations
+
+-   How do we determine who the neighbors $\mathcal{N}_{0}$ should be? On the previous slide, it may have seemed intuitive.
+
+    -   i.e. how do we quantify "closeness"?
+
+-   Which $K$ should we use?
+
+# Consideration 1: Closeness
+
+-   We will quantify closeness using distance metrics
+
+## Euclidean distance
+
+-   One of the most common ways to measure distance between points is with **Euclidean distance**
+
+-   On a number line (one-dimension), the distance between two points $a$ and $b$ is simply the absolute value of their difference
+
+    -   Let $d(a,b)$ denote the Euclidean distance between $a$ and \$b\$. Then in 1-D, $d(a,b) = |a-b|$.
+
+-   In 2-D (think lon-lat coordinate system), the two points are $\mathbf{a} = (a_{1}, a_{2})$ and $\mathbf{b} = (b_{1}, b_{2})$ with Euclidean distance $$d(\mathbf{a}, \mathbf{b}) = \sqrt{(a_{1} - b_{1}) ^2 + (a_{2} - b_{2})^2}$$
+
+-   **Important**: the "two-dimensions" refers to the number of coordinates in each point, not the fact that we are calculating a distance between two points
+
+## Euclidean distance (cont.)
+
+-   Generalizing to $p$ dimensions: if $\mathbf{a} = (a_{1}, a_{2}, \ldots, a_{p})$ and $\mathbf{b} = (b_{1}, b_{2}, \ldots, b_{p})$, then $$d(\mathbf{a}, \mathbf{b}) = \sqrt{(a_{1} - b_{1}) ^2 + (a_{2} - b_{2})^2 + \ldots (a_{p} - b_{p})^2} = \sqrt{\sum_{j=1}^{p}(a_{j} - b_{j})^2}$$
+
+-   E.g. let $\mathbf{a} = (1, 0, 3)$ and $\mathbf{b} = (-1, 2, 2)$. What is $d(\mathbf{a}, \mathbf{b})$?
+
+## Euclidean distance
+
+-   Another common distance metric is **Manhattan distance**
+
+    -   Named after the grid-system of Manhattan's roads
+
+-   The Manhattan distance between two points $\mathbf{a}$ and $\mathbf{b}$ in $p$-dimensions is $$d_{m}(\mathbf{a}, \mathbf{b}) = |a_{1} - b_{1}| + |a_{2}  - b_{2}| + \ldots +|a_{p}  - b_{p}| = \sum_{j=1}^{p} |a_{j}  - b_{j}|$$
+
+-   E.g. let $\mathbf{a} = (1, 0, 3)$ and $\mathbf{b} = (-1, 2, 2)$. What is $d_{m}(\mathbf{a}, \mathbf{b})$?
+
+## Distance in KNN
+
+-   We want to find the closest neighbor(s) in the train set to a given test point $\mathbf{x}_{0}$, such that we can make a prediction $\hat{y}_{0}$.
+
+-   ::: important
+    Important: what would the points $\mathbf{a}$ and $\mathbf{b}$ be in KNN?
+    :::
+
+# Consideration 2: $K$
+
+## How much does $K$ matter?
+
+-   It can matter a lot!
+
+-   As we saw previously, you will get different predicted $\hat{y}_{0}$ for different choices of $K$ in KNN regression
+
+-   Discuss:
+
+    -   What does $K=1$ mean? Do you think $K = 1$ is a good choice?
+
+    -   Generally, do you think it's better to choose a small $K$ or big $K$?
+
+## Mite data: preparation {.nonincremental}
+
+-   The following code divides my data into train and test sets.
+
+-   ::: important
+    Make sure you understand what each line of code is doing! If you don't, please ask!
+    :::
+
+```{r}
+#| echo: true
+#| code-line-numbers: true
+set.seed(6)
+n <- nrow(mite_dat)
+test_ids <- sample(1:n, 2)
+train_dat <- mite_dat[-test_ids,]
+test_dat <- mite_dat[test_ids,]
+test_dat
+```
+
+```{r}
+K <- 3
+nbs_ls <- list()
+for(i in 1:nrow(test_dat)){
+  nbs_ls[[i]] <- data.frame(d = .dist(test_dat[i,1:2], train_dat[,1:2])) %>%
+    mutate(id = row_number()) %>%
+    arrange(d) %>%
+    slice(1:K) 
+}
+
+circleFun <- function(center = c(0,0),diameter = 1, npoints = 100){
+    r = diameter / 2
+    tt <- seq(0,2*pi,length.out = npoints)
+    xx <- center[1] + r * cos(tt)
+    yy <- center[2] + r * sin(tt)
+    return(data.frame(x = xx, y = yy))
+}
+```
+
+## Mite data: KNN
+
+::: r-stack
+::: fragment
+```{r}
+p2 <- ggplot()+
+  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = abundance)) +
+  scale_color_viridis_c(option = "plasma") +
+  plot_theme + 
+  theme(legend.position = "bottom")+
+  ggtitle("Train data")
+p2
+```
+:::
+
+::: fragment
+```{r}
+p2 + 
+  geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt))+
+  labs(subtitle = "and test points")
+```
+:::
+:::
+
+## Mite data: KNN continued {.scrollable}
+
+::: columns
+::: {.column width="60%"}
+-   Running KNN with $K = 3$ and using Euclidean distance, I identify the following neighbor sets for each test point:
+
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+p2 + 
+  geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt))+
+  geom_path(data = circleFun(center = as.numeric(test_dat[1,1:2]),
+                             diameter = nbs_ls[[1]][K,1]*2),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  geom_path(data = circleFun(center = as.numeric(test_dat[2,1:2]),
+                             diameter = nbs_ls[[2]][K,1]*2),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  labs(subtitle= "with neighbor sets for test points")
+```
+:::
+
+```{r}
+summary_df <- train_dat %>%
+  mutate(id = row_number()) %>%
+  inner_join(., do.call(rbind,nbs_ls) %>%
+               mutate(test_pt = rep(1:length(test_ids), each = K)),
+             by = "id") %>%
+  group_by(test_pt) %>%
+  summarise(y_hat = mean(abundance)) %>%
+  add_column(y_true = test_dat$abundance )
+rmse <- get_rmse(summary_df$y_hat, summary_df$y_true) 
+```
+:::
+
+::: {.column width="40%"}
+-   Predicted abundance $\hat{y}$ and true abundance $y$ for both test points, for a test RMSE of `r round(rmse, 3)`.
+
+::: fragment
+```{r}
+summary_df
+```
+:::
+
+-   ::: important
+    Discuss: it seems like we did poorly for the first test observation. Does its neighbor set "make sense"? 
+    :::
+:::
+:::
+
+## Scaling
+
+```{r}
+mite_dat_scaled <- mite_dat %>%
+  mutate_at(.vars = c("SubsDens", "WatrCont"), scale)
+
+train_dat <- mite_dat_scaled[-test_ids,]
+test_dat <- mite_dat_scaled[test_ids,]
+
+nbs_ls <- list()
+for(i in 1:nrow(test_dat)){
+  nbs_ls[[i]] <- data.frame(d = .dist(test_dat[i,1:2], train_dat[,1:2])) %>%
+    mutate(id = row_number()) %>%
+    arrange(d) %>%
+    slice(1:K) 
+}
+
+p2 <- ggplot()+
+  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = abundance)) +
+  scale_color_viridis_c(option = "plasma") 
+
+circleFun <- function(center = c(0,0),diameter = 1, npoints = 100){
+    r = diameter / 2
+    tt <- seq(0,2*pi,length.out = npoints)
+    xx <- center[1] + r * cos(tt)
+    yy <- center[2] + r * sin(tt)
+    return(data.frame(x = xx, y = yy))
+}
+p2 + 
+   geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt))+
+  geom_path(data = circleFun(center = as.numeric(test_dat[1,1:2]),
+                             diameter = nbs_ls[[1]][K,1]*2),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  geom_path(data = circleFun(center = as.numeric(test_dat[2,1:2]),
+                             diameter = nbs_ls[[2]][K,1]*2),
+            mapping = aes(x = x, y = y), linetype = "dashed")
+summary_df <- train_dat %>%
+  mutate(id = row_number()) %>%
+  inner_join(., do.call(rbind,nbs_ls) %>%
+               mutate(test_pt = rep(1:length(test_ids), each = K)),
+             by = "id") %>%
+  group_by(test_pt) %>%
+  summarise(y_hat = mean(abundance)) %>%
+  add_column(y_true = test_dat$abundance )
+rmse <- get_rmse(summary_df$y_hat, summary_df$y_true) 
+```
+
+RMSE: `r rmse`

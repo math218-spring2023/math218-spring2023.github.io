@@ -732,7 +732,7 @@
     "href": "slides/slides-03-knn-regression.html#example",
     "title": "KNN Regression",
     "section": "Example",
-    "text": "Example\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUsing \\(K= 3\\), predicted \\(\\hat{y}_{0} = \\frac{1}{3}(8.073 + 8.838 + 9.17) = 8.694\\)\n\n\n\n\n\nUsing \\(K= 4\\), predicted \\(\\hat{y}_{0} = \\frac{1}{4}(8.073 + 8.838 + 9.17 + 9.541) = 8.906\\)"
+    "text": "Example\n\n\n\n\nOn the next slide, you will see plot with a bunch of colored points\nEach point is plotted in predictor space \\((x1, x2)\\), and is colored according to the value of its response \\(y\\)\nI have a new point (\\(\\color{blue}{*}\\)) and its covariates/predictors, but I need to make a prediction for its response"
   },
   {
     "objectID": "labs/lab-02-linear-regression.html",
@@ -740,5 +740,89 @@
     "title": "Lab 02: Linear regression",
     "section": "",
     "text": "Note\n\n\n\nThroughout this document, you will see text in different colors. The text in maroon/red denotes the “deliverable” (i.e. what I will be looking for you to code/answer/address in your submission.\n\n\n\nIntroduction\nMoneyball tells the success story of the Oakland A baseball team in 2002. In 2001, the team was extremely poor, and so the General Manager named Billy Beane needed ideas on how to improve the team with limited financial resources.\nBilly Beane and his colleague Paul DePodesta did some analysis and explored models to assemble a competitive baseball team. Beane hypothesized that some skills of a baseball player were overvalued, whereas others undervalued. If they could detect the undervalued skills, they could find good players at a bargain (i.e. cheaper) contract. We will re-create their findings here.\nLoad in the data using the following code (if you get an error, make sure you are set to the correct file directory):\n\nbaseball <- read.csv(\"data/baseball.csv\")\n\nFor terminology, according to Wikipedia, “a run is scored when a player advances around first, second and third base and returns safely to home plate, touching the bases in that order, before three outs are recorded…The object of the game is for a team to score more runs than its opponent.”\nEach observation represents a team in a given year. The data dictionary is as follows:\n\nTeam: MLB team\nLeague: National League (NL) or American League (AL)\nYear: Year\nRS: Total runs scored\nRA: Total runs allowed (the amount of runs that score against a pitcher)\nW: Total wins in the season\nOBP: On-base percentage (how frequently a batter reaches base per plate appearance)\nSLG: Slugging percentage (total bases divided by at bats)\nBA: Batting average (total hit divided by total at-bats)\nPlayoffs: If the team made it to the playoffs (1) or did not (0)\nOOBP: Opponent’s on-base percentage\nOSLG: Opponent’s slugging percentage\n\n\n\nPart 1: EDA and Data Wrangling\n\nData wrangling\nThe data provided to you have data ranging from 1962 to 2012. To re-create this famous analysis, we need to pretend it’s the year 2002 and thus we only have data through 2001.\n\nCreate a new data frame called moneyball with the appropriate subset of the baseball data.\n\n\n\nEDA\nThe goal of any MLB team (I think) is to make it to the playoffs. Billy Beane determined that a team needs to win at least 95 games to make it to the playoffs.\n\nUsing some appropriate EDA, demonstrate how you think Billy Beane arrived at the number 95.\n\n\n\nMore data wrangling\nSo, Billy Beane needed some way to understand what influences/determines the number of wins a team had in a given season. It was determined that the run differential was an important metric, calculated as the overall runs scored minus the runs allowed. A positive run differential means the team scores more than it allows (this is good).\n\nModify your moneyball data frame to add a new variable called RD that is the run differential.\n\n\n\nMore EDA\n\nCreate a scatterplot of a team’s wins versus its run differential in each season. Does there appear to be a linear relationship?\n\n\n\n\n\n\n\nCommit reminder\n\n\n\n\n\nThis would be a good time to knit, commit, and push your changes to GitHub!\n\n\n\n\n\n\nPart 2: Model for wins\n\nFit the model\n\nFit a simple linear regression model with a team’s wins as the response variable and the run differential as the predictor. Call this model mod_wins. Interpret the coefficients.\nRecall that we need at least 95 wins to enter the playoffs. Based on your model, how large of a run differential do we need to get into the playoffs?\n\n\n\n\n\n\n\nCommit reminder\n\n\n\n\n\nThis would be a good time to knit, commit, and push your changes to GitHub!\n\n\n\n\n\n\nPart 3: Components of run differential\nRecall that the runs scored and the runs allowed determine the run differential. So, we also need to understand which variables impact both of these components and how.\n\nModel for runs scored\nThe Oakland A’s discovered that a team’s on-base percentage (OBP), the slugging percentage (SLG), and the batting average (BA) were important for determining how many runs are scored (RS).\n\nFit a linear regression model called mod_rs1 for the runs scored as the response regressed on these three predictors. Is a team’s batting average important for explaining its runs scored? Why or why not?\n\nThe Oakland A’s determined that a team’s batting average was overvalued. Because of this, the Oakland A’s decided to not consider batting average.\n\nUse your fitted model mod_rs1 to explain how they came to this conclusion. Then fit another linear regression model called mod_rs2 for runs scored regressed only on on-base percentage and the slugging percentage.\n\n\n\nModel for runs allowed\nThe Oakland A’s found that the runs allowed (RA) were influenced by the opponents on-base percentage (OOBP) and the opponents slugging percentage (OSLG).\n\nFit a multiple linear regression model called mod_ra for this relationship.\n\n\n\n\n\n\n\nCommit reminder\n\n\n\n\n\nThis would be a good time to knit, commit, and push your changes to GitHub!\n\n\n\n\n\n\nPart 4: Putting it all together\nRecap: for the upcoming 2002 baseball season, we need at least 95 wins to enter the playoffs. We fit a model (mod_wins) for a team’s wins based on its run differential. So, we need to predict the run differential for our team in the upcoming season. To do this, we can predict the runs scored and runs allowed for our new team given some statistics.\n\nCreate new team\nPaul DePodesta ultimately formulated a team of players with the following statistics:\n\nOBP: 0.339\nSLG: 0.430\nOOBP: 0.307\nOSLG: 0.373\n\n\nCreate a new data frame called pauls_team that contains these four statistics of the new team (i.e. pauls_team should have one row and four columns).\n\n\n\nPredictions\n\nUsing your models mod_rs2 and mod_ra and the predict() function, predict the runs scored and runs allowed for pauls_team. Based on these two predictions, what is the predicted run differential?\nBased on the predicted run differential, what is the predicted number of wins for our team in the upcoming season? Should we expect to enter the playoffs?\n\n\n\n\n\n\n\nCommit reminder\n\n\n\n\n\nThis would be a good time to knit, commit, and push your changes to GitHub!\n\n\n\n\n\n\nPart 5: Prediction performance\nBilly Beane and Paul DePodesta ultimately decided to remove batting average from their model for runs scored because they had limited financial resources and wanted to find the skills that were undervalued. However, it could be the case that knowing the batting average of a player is important to explaining the runs scored, and also predicting the runs scored. After all, we had to make predictions for the 2002 season, so we would like a model that predicts the runs scored well. Let’s examine this now to see if the team would have made better predictions of runs scored if they had kept the batting average in the model. We will predict for the upcoming year 2002.\n\nData preparation\n\nCreate a new data frame called baseball2002 that contains the observations from the year 2002 in the original baseball data.\nThen, create a new a variable called RS_true that holds the vector of true runs scored in 2002.\n\n\n\nPredict\n\nObtain predictions of runs scored for the baseball2002 data using both mod_rs1 and mod_rs2 (i.e. you should have two vectors of predictions).\n\nPlease do not report/display/print the vectors of predictions! Just store them using an appropriate variable name.\n\n\nPrediction error\n\nLastly, calculate and report the root mean squared error (RMSE) for the predictions from both of the models.\nBased on your results, do you think the Oakland A’s were correct to remove batting average from their model for runs scored? Why or why not?\n\n\n\n\n\n\n\n\n\nBrief comprehension questions\nPlease answer each of the following questions. Each question only requires a 1-2 sentence response at most!\n\nFor this analysis, did we have train and test datasets? If so, what was the train set and what was the test set?\nFor this analysis, did we ask questions concerning prediction? If so, where?\nFor this analysis, did we ask questions concerning inference? If so, where?\n\n\n\nSubmission\nWhen you’re finished, knit to PDF one last time and upload the PDF to Canvas. Commit and push your code back to GitHub one last time."
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#considerations",
+    "href": "slides/slides-03-knn-regression.html#considerations",
+    "title": "KNN Regression",
+    "section": "Considerations",
+    "text": "Considerations\n\nHow do we determine who the neighbors \\(\\mathcal{N}_{0}\\) should be? On the previous slide, it may have seemed intuitive.\n\ni.e. how do we quantify “closeness”?\n\nWhich \\(K\\) should we use?"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#euclidean-distance",
+    "href": "slides/slides-03-knn-regression.html#euclidean-distance",
+    "title": "KNN Regression",
+    "section": "Euclidean distance",
+    "text": "Euclidean distance\n\nOne of the most common ways to measure distance between points is with Euclidean distance\nOn a number line (one-dimension), the distance between two points \\(a\\) and \\(b\\) is simply the absolute value of their difference\n\nLet \\(d(a,b)\\) denote the Euclidean distance between \\(a\\) and $b$. Then in 1-D, \\(d(a,b) = |a-b|\\).\n\nIn 2-D (think lon-lat coordinate system), the two points are \\(\\mathbf{a} = (a_{1}, a_{2})\\) and \\(\\mathbf{b} = (b_{1}, b_{2})\\) with Euclidean distance \\[d(\\mathbf{a}, \\mathbf{b}) = \\sqrt{(a_{1} - b_{1}) ^2 + (a_{2} - b_{2})^2}\\]\nImportant: the “two-dimensions” refers to the number of coordinates in each point, not the fact that we are calculating a distance between two points"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#euclidean-distance-cont.",
+    "href": "slides/slides-03-knn-regression.html#euclidean-distance-cont.",
+    "title": "KNN Regression",
+    "section": "Euclidean distance (cont.)",
+    "text": "Euclidean distance (cont.)\n\nGeneralizing to \\(p\\) dimensions: if \\(\\mathbf{a} = (a_{1}, a_{2}, \\ldots, a_{p})\\) and \\(\\mathbf{b} = (b_{1}, b_{2}, \\ldots, b_{p})\\), then \\[d(\\mathbf{a}, \\mathbf{b}) = \\sqrt{(a_{1} - b_{1}) ^2 + (a_{2} - b_{2})^2 + \\ldots (a_{p} - b_{p})^2} = \\sqrt{\\sum_{j=1}^{p}(a_{j} - b_{j})^2}\\]\nE.g. let \\(\\mathbf{a} = (1, 0, 3)\\) and \\(\\mathbf{b} = (-1, 2, 2)\\). What is \\(d(\\mathbf{a}, \\mathbf{b})\\)?"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#euclidean-distance-1",
+    "href": "slides/slides-03-knn-regression.html#euclidean-distance-1",
+    "title": "KNN Regression",
+    "section": "Euclidean distance",
+    "text": "Euclidean distance\n\nAnother common distance metric is Manhattan distance\n\nNamed after the grid-system of Manhattan’s roads\n\nThe Manhattan distance between two points \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\) in \\(p\\)-dimensions is \\[d_{m}(\\mathbf{a}, \\mathbf{b}) = |a_{1} - b_{1}| + |a_{2}  - b_{2}| + \\ldots +|a_{p}  - b_{p}| = \\sum_{j=1}^{p} |a_{j}  - b_{j}|\\]\nE.g. let \\(\\mathbf{a} = (1, 0, 3)\\) and \\(\\mathbf{b} = (-1, 2, 2)\\). What is \\(d_{m}(\\mathbf{a}, \\mathbf{b})\\)?"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#distance-in-knn",
+    "href": "slides/slides-03-knn-regression.html#distance-in-knn",
+    "title": "KNN Regression",
+    "section": "Distance in KNN",
+    "text": "Distance in KNN\n\nWe want to find the closest neighbor(s) in the train set to a given test point \\(\\mathbf{x}_{0}\\), such that we can make a prediction \\(\\hat{y}_{0}\\).\n\nImportant: what would the points \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\) be in KNN?"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#how-much-does-k-matter",
+    "href": "slides/slides-03-knn-regression.html#how-much-does-k-matter",
+    "title": "KNN Regression",
+    "section": "How much does \\(K\\) matter?",
+    "text": "How much does \\(K\\) matter?\n\nIt can matter a lot!\nAs we saw previously, you will get different predicted \\(\\hat{y}_{0}\\) for different choices of \\(K\\) in KNN regression\nDiscuss:\n\nWhat does \\(K=1\\) mean? Do you think \\(K = 1\\) is a good choice?\nGenerally, do you think it’s better to choose a small \\(K\\) or big \\(K\\)?"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#example-cont.",
+    "href": "slides/slides-03-knn-regression.html#example-cont.",
+    "title": "KNN Regression",
+    "section": "Example (cont.)",
+    "text": "Example (cont.)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUsing \\(K= 3\\), predicted \\(\\hat{y}_{0} = \\frac{1}{3}(8.073 + 8.838 + 9.17) = 8.694\\)\n\n\n\n\n\nUsing \\(K= 4\\), predicted \\(\\hat{y}_{0} = \\frac{1}{4}(8.073 + 8.838 + 9.17 + 9.541) = 8.906\\)"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#mite-data",
+    "href": "slides/slides-03-knn-regression.html#mite-data",
+    "title": "KNN Regression",
+    "section": "Mite data",
+    "text": "Mite data\n\nset.seed(1)\nn <- nrow(mite_dat)\ntest_ids <- sample(1:n, 2)\ntrain_dat <- mite_dat[-test_ids,]\ntest_dat <- mite_dat[test_ids,]\ntest_dat\n\n   SubsDens WatrCont Substrate Shrub    Topo abundance\n68    29.24   590.11   Sphagn1  None Blanket         0\n39    64.75   691.79   Sphagn2   Few Blanket        18"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#mite-data-preparation",
+    "href": "slides/slides-03-knn-regression.html#mite-data-preparation",
+    "title": "KNN Regression",
+    "section": "Mite data: preparation",
+    "text": "Mite data: preparation\n\nThe following code divides my data into train and test sets.\n\nMake sure you understand what each line of code is doing! If you don’t, please ask!\n\n\n\nset.seed(6)\nn <- nrow(mite_dat)\ntest_ids <- sample(1:n, 2)\ntrain_dat <- mite_dat[-test_ids,]\ntest_dat <- mite_dat[test_ids,]\ntest_dat\n\n   SubsDens WatrCont Substrate Shrub    Topo abundance\n53    26.83   414.65 Interface  None Blanket        25\n10    32.14   220.73   Sphagn1  Many Hummock         0"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#mite-data-knn",
+    "href": "slides/slides-03-knn-regression.html#mite-data-knn",
+    "title": "KNN Regression",
+    "section": "Mite data: KNN",
+    "text": "Mite data: KNN"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#scaling",
+    "href": "slides/slides-03-knn-regression.html#scaling",
+    "title": "KNN Regression",
+    "section": "Scaling",
+    "text": "Scaling\n\nRMSE: 3.3082389"
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#mite-data-knn-continued",
+    "href": "slides/slides-03-knn-regression.html#mite-data-knn-continued",
+    "title": "KNN Regression",
+    "section": "Mite data: KNN continued",
+    "text": "Mite data: KNN continued\n\n\n\nRunning KNN with \\(K = 3\\) and using Euclidean distance, I identify the following neighbor sets for each test point:\n\n\n\n\n\n\n\n\n\n\n\n\n\nPredicted abundance \\(\\hat{y}\\) and true abundance \\(y\\) for both test points, for a test RMSE of 9.428.\n\n\n\n\n# A tibble: 2 × 3\n  test_pt y_hat y_true\n    <int> <dbl>  <int>\n1       1  11.7     25\n2       2   0        0\n\n\n\n\n\nDiscuss: it seems like we did poorly for the first test observation. Does its neighbor set “make sense”?"
   }
 ]
