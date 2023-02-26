@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-03-02">
+
+<title>Math 218 - Spring 2023 - KNN regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Math 218 - Spring 2023</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../schedule.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assignments.html">
+ <span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/math218-spring2023"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#group-introductions" id="toc-group-introductions" class="nav-link" data-scroll-target="#group-introductions">Group introductions</a></li>
+  </ul></li>
+  <li><a href="#step-1-compare-pseudocode" id="toc-step-1-compare-pseudocode" class="nav-link" data-scroll-target="#step-1-compare-pseudocode">Step 1: compare pseudocode</a></li>
+  <li><a href="#step-2-write-a-group-pseudocode" id="toc-step-2-write-a-group-pseudocode" class="nav-link" data-scroll-target="#step-2-write-a-group-pseudocode">Step 2: write a group pseudocode</a></li>
+  <li><a href="#step-3-implement-knn" id="toc-step-3-implement-knn" class="nav-link" data-scroll-target="#step-3-implement-knn">Step 3: implement KNN</a>
+  <ul class="collapse">
+  <li><a href="#general-advice" id="toc-general-advice" class="nav-link" data-scroll-target="#general-advice">General advice</a></li>
+  <li><a href="#check-your-code" id="toc-check-your-code" class="nav-link" data-scroll-target="#check-your-code">Check your code</a></li>
+  </ul></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">KNN regression</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Implementations</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 2, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>You and your group will implement KNN regression. I will break down the process for you below. Your group will build on this assignment over the next 2-3 weeks as we learn more content. Therefore, it is important that you communicate with and contribute to your group! Asking clarifying questions, explaining your thought process, throwing ideas out there, etc. all count as contributing.</p>
+<p>There will be a series of deliverables roughly 1-2 times a week. Even though you are working as a group, I want you to submit your deliverables individually. This is so you can continue to develop your skills as a coder and work at a pace that’s more comfortable for you!</p>
+<section id="group-introductions" class="level2">
+<h2 class="anchored" data-anchor-id="group-introductions">Group introductions</h2>
+<ul>
+<li><p>Introduce yourself (again): name, majors, anything at all</p></li>
+<li><p>Talk about how coding in R (base R or tidyverse) is going for you so well. Some people in the group may be more nervous about or proficient in coding, but I think it’s good to name it early on.</p></li>
+<li><p>Find a time and place to meet outside of class this week</p></li>
+</ul>
+</section>
+</section>
+<section id="step-1-compare-pseudocode" class="level1">
+<h1>Step 1: compare pseudocode</h1>
+<p>Compare your pseudocode for implementing KNN regression. This could look like:</p>
+<ul>
+<li><p>Having each person summarise the “order of events” in their pseudocode, before diving into each component</p></li>
+<li><p>Having someone talk through their pseudocode from beginning to end, then having the other members discuss what they did similarly or different</p></li>
+<li><p>Discussing what you were confused about</p></li>
+</ul>
+</section>
+<section id="step-2-write-a-group-pseudocode" class="level1">
+<h1>Step 2: write a group pseudocode</h1>
+<p>Now that you’ve compared your individual pseudocode, I want you write a new/final version as a group. Once you are happy with your pseudocode, call Becky over to have her check it.</p>
+</section>
+<section id="step-3-implement-knn" class="level1">
+<h1>Step 3: implement KNN</h1>
+<p>Once Becky has confirmed your pseudocode is detailed enough, your group can begin coding the implementation of KNN regression. The real fun begins!</p>
+<p>Clone the GitHub project called <code>knn_regression</code> and work in the file <code>knn_regression_implementation.Rmd</code>.</p>
+<div style="color: maroon">
+<p>Your final implementation must be a function that takes in the “minimal amount” of inputs and returns a vector of the predictions for the test data. “Minimal amount” means only the arguments that cannot be obtained/derived within the function itself (i.e.&nbsp;what the user of your function <em>must</em> specify in order to make your function run).</p>
+</div>
+<p><em>You may assume that the user only wants Euclidean distance for this implementation</em>.</p>
+<section id="general-advice" class="level3">
+<h3 class="anchored" data-anchor-id="general-advice">General advice</h3>
+<ul>
+<li><p>Start “big picture”:</p>
+<ul>
+<li><p>Begin by defining your function and its arguments using <code>function()</code> . Remember, you can always add to the arguments as you progress through your coding if you realize your function requires additional inputs.</p></li>
+<li><p>If you need to iterate the same procedure many times, begin by writing out the loop and then add comments for each step within the body of the for loop. Then start coding each step.</p></li>
+</ul></li>
+<li><p>Write functions that you can call within your implementation.</p></li>
+<li><p>Test your code frequently to make sure it’s doing what you want it to do! This is especially true of any functions that you create.</p></li>
+<li><p>Be as reproducible as possible. Try to avoid “hard-coding” if you can. This means you should not use specific variable names or indices. You want to be able to use your implementation for any future data set!</p></li>
+<li><p>If you get stuck, please ask Becky for help!</p></li>
+</ul>
+</section>
+<section id="check-your-code" class="level3">
+<h3 class="anchored" data-anchor-id="check-your-code">Check your code</h3>
+<p>Once you’ve finished your implementation, check it by seeing if you get the same results as I did for the <code>LRUG</code> mites data in the KNN regression slides.</p>
+<div style="color: maroon">
+<p>Specifically, use your brand new KNN function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of <span class="math inline">\(K\)</span>.</p>
+</div>
+</section>
+</section>
+<section id="submission" class="level1">
+<h1>Submission</h1>
+<p>Once you’ve finished, push your changes to GitHub. Upload a PDF of your implementation and your confirmatory “code check” to Canvas.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

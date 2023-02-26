@@ -10,20 +10,66 @@ draft: true
 
 You and your group will implement KNN regression. I will break down the process for you below. Your group will build on this assignment over the next 2-3 weeks as we learn more content. Therefore, it is important that you communicate with and contribute to your group! Asking clarifying questions, explaining your thought process, throwing ideas out there, etc. all count as contributing.
 
-There will be a series of deliverables each week. Even though you are working as a group, I want you to submit your deliverables individually. This is so you can continue to develop your skills as a coder and work at a pace that's more comfortable for you!
+There will be a series of deliverables roughly 1-2 times a week. Even though you are working as a group, I want you to submit your deliverables individually. This is so you can continue to develop your skills as a coder and work at a pace that's more comfortable for you!
 
 ## Group introductions
 
-- Introduce yourself (again): name, majors, anything at all
+-   Introduce yourself (again): name, majors, anything at all
 
-- Talk about how coding in R (base R or tidyverse) is going for you so well. Some people in the group may be more nervous about or proficient in coding, but I think it's good to name it early on.
+-   Talk about how coding in R (base R or tidyverse) is going for you so well. Some people in the group may be more nervous about or proficient in coding, but I think it's good to name it early on.
 
-- Find a time and place to meet outside of class this week
+-   Find a time and place to meet outside of class this week
 
-## Step 1: compare pseudocode
+# Step 1: compare pseudocode
 
-Compare your pseudocode for how you would implement KNN regression. Be as clear, thoughtful, and detailed as possible. This involves describing the algorithm step-by-step. 
+Compare your pseudocode for implementing KNN regression. This could look like:
 
-You may assume that all of our predictors are quantitative.
+-   Having each person summarise the "order of events" in their pseudocode, before diving into each component
 
-Part of your homework for this week is to write out \*\*pseudocode\*\* for implementing KNN methods. The section "Pseudocode 101" below describes what pseudocode is. \*Before we get there\*, you will discuss the methods wtihin your group.
+-   Having someone talk through their pseudocode from beginning to end, then having the other members discuss what they did similarly or different
+
+-   Discussing what you were confused about
+
+# Step 2: write a group pseudocode
+
+Now that you've compared your individual pseudocode, I want you write a new/final version as a group. Once you are happy with your pseudocode, call Becky over to have her check it.
+
+# Step 3: implement KNN
+
+Once Becky has confirmed your pseudocode is detailed enough, your group can begin coding the implementation of KNN regression. The real fun begins!
+
+Clone the GitHub project called `knn_regression` and work in the file `knn_regression_implementation.Rmd`.
+
+::: {style="color: maroon"}
+Your final implementation must be a function that takes in the "minimal amount" of inputs and returns a vector of the predictions for the test data. "Minimal amount" means only the arguments that cannot be obtained/derived within the function itself (i.e. what the user of your function *must* specify in order to make your function run).
+:::
+
+*You may assume that the user only wants Euclidean distance for this implementation*.
+
+### General advice
+
+-   Start "big picture":
+
+    -   Begin by defining your function and its arguments using `function()` . Remember, you can always add to the arguments as you progress through your coding if you realize your function requires additional inputs.
+
+    -   If you need to iterate the same procedure many times, begin by writing out the loop and then add comments for each step within the body of the for loop. Then start coding each step.
+
+-   Write functions that you can call within your implementation.
+
+-   Test your code frequently to make sure it's doing what you want it to do! This is especially true of any functions that you create.
+
+-   Be as reproducible as possible. Try to avoid "hard-coding" if you can. This means you should not use specific variable names or indices. You want to be able to use your implementation for any future data set!
+
+-   If you get stuck, please ask Becky for help!
+
+### Check your code
+
+Once you've finished your implementation, check it by seeing if you get the same results as I did for the `LRUG` mites data in the KNN regression slides.
+
+::: {style="color: maroon"}
+Specifically, use your brand new KNN function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of $K$.
+:::
+
+# Submission
+
+Once you've finished, push your changes to GitHub. Upload a PDF of your implementation and your confirmatory "code check" to Canvas.
