@@ -1,0 +1,29 @@
+---
+title: "KNN regression"
+date: "March 02, 2023"
+editor: visual
+categories: "Implementations"
+draft: true
+---
+
+# Introduction
+
+You and your group will implement KNN regression. I will break down the process for you below. Your group will build on this assignment over the next 2-3 weeks as we learn more content. Therefore, it is important that you communicate with and contribute to your group! Asking clarifying questions, explaining your thought process, throwing ideas out there, etc. all count as contributing.
+
+There will be a series of deliverables each week. Even though you are working as a group, I want you to submit your deliverables individually. This is so you can continue to develop your skills as a coder and work at a pace that's more comfortable for you!
+
+## Group introductions
+
+- Introduce yourself (again): name, majors, anything at all
+
+- Talk about how coding in R (base R or tidyverse) is going for you so well. Some people in the group may be more nervous about or proficient in coding, but I think it's good to name it early on.
+
+- Find a time and place to meet outside of class this week
+
+## Step 1: compare pseudocode
+
+Compare your pseudocode for how you would implement KNN regression. Be as clear, thoughtful, and detailed as possible. This involves describing the algorithm step-by-step. 
+
+You may assume that all of our predictors are quantitative.
+
+Part of your homework for this week is to write out \*\*pseudocode\*\* for implementing KNN methods. The section "Pseudocode 101" below describes what pseudocode is. \*Before we get there\*, you will discuss the methods wtihin your group.
