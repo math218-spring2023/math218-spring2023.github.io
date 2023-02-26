@@ -1,5 +1,5 @@
 ---
-title: "Live code 01:"
+title: "Live code:"
 date: "February 14, 2023"
 description: "Intro to base R"
 editor: visual

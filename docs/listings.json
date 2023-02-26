@@ -2,10 +2,10 @@
   {
     "listing": "/assignments.html",
     "items": [
-      "/live-code/live-code-01.html",
-      "/live-code/live-code-02.html",
-      "/live-code/live-code-03.html",
-      "/live-code/live-code-04.html",
+      "/live-code/live-code-base-R.html",
+      "/live-code/live-code-conditions.html",
+      "/live-code/live-code-lin-regression.html",
+      "/live-code/live-code-functions.html",
       "/labs/lab-01-roulette.html",
       "/labs/lab-02-linear-regression.html"
     ]

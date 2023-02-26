@@ -1,6 +1,6 @@
 ---
-title: "Live code 03:"
-date: "February 21, 2023"
+title: "Live code:"
+date: "February 28, 2023"
 description: "Creating functions"
 editor: visual
 categories: "Live code"
@@ -21,7 +21,7 @@ There are three key steps to creating a new function:
 3.  Placing the code you have developed in the ***BODY*** of the function (between the sets of curly braces `{ }` that immediately follow `function()`
     i.  Making sure to `return()` the output from the function
 
-### Example 
+### Example
 
 For example, suppose that I want to create a function that takes in a matrix and returns the sums of the values within each column. (There is a function that already does this, but pretend there isn't!) The function might look like this:
 
@@ -86,5 +86,5 @@ Feel free to try any and all of the following:
 1.  Write a function that takes in a temperature in degrees Fahrenheit and returns the temperature in degrees Celsius. For reference, the conversion is $(\text{degreesF} - 32) * \frac{5}{9}$. Give your function an appropriate name.
     i.  Check to make sure your function works by passing in $32^\circ$ F. You should get 0 back!
 2.  Write a more complicated version of Exercise 1 where the function takes in two inputs: 1) a temperature (in either Fahrenheit or Celsius) and 2) a string or Boolean (your choice!) that denotes if you want to convert to Fahrenheit or Celsius. Your function should return the correct conversion based on the user's inputs. Note: the conversion from Celsius to Fahrenheit is $\text{degreesC} * \frac{9}{5} + 32$.
-3. Writ a function called `get_rmse()` that takes in two vectors as inputs: one of predictions, and one of true values. Your function should calculate and return the root mean squared error (see slides for equation).
-4. Last week we practiced coding `for()` loops by obtaining the factorial of a given positive integer. Create a function where the user specifies the integer they want to find the factorial of, and return the factorial. 
+3.  Writ a function called `get_rmse()` that takes in two vectors as inputs: one of predictions, and one of true values. Your function should calculate and return the root mean squared error (see slides for equation).
+4.  Last week we practiced coding `for()` loops by obtaining the factorial of a given positive integer. Create a function where the user specifies the integer they want to find the factorial of, and return the factorial.
