@@ -198,6 +198,22 @@ nbs <- nb_ids[1:K]
     Important: what would the points $\mathbf{a}$ and $\mathbf{b}$ be in KNN?
     :::
 
+## Practice
+
+```{r}
+xx <- matrix(c(1,1, -1, 2, 0, 0, -1,1,0,0,1,0), byrow = T, ncol = 3)
+data.frame(xx) %>%
+  mutate(y = c(0,2,4,6))
+```
+
+- Suppose I have the above data, and I want to predict for a new test point `x0` with `X1 = 0, X2 = 0, X3 = 0`.
+
+- Calculate the distance between `x0` and each of the observed data points using:
+
+  - Euclidean distance
+  
+  - Manhattan distance
+
 # Consideration 2: K
 
 ## How much does K matter?
@@ -210,7 +226,7 @@ nbs <- nb_ids[1:K]
 
     -   What does $K=1$ mean? Do you think $K = 1$ is a good choice?
 
-    -   Generally, do you think it's better to choose a small $K$ or big $K$?
+    -   It is better to choose a small $K$ or big $K$?
 
 # Example: mite data
 

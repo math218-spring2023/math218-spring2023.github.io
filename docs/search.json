@@ -781,7 +781,7 @@
     "href": "slides/slides-03-knn-regression.html#how-much-does-k-matter",
     "title": "KNN Regression",
     "section": "How much does K matter?",
-    "text": "How much does K matter?\n\nIt can matter a lot!\nAs we saw previously, you will get different predicted \\(\\hat{y}_{0}\\) for different choices of \\(K\\) in KNN regression\nDiscuss:\n\nWhat does \\(K=1\\) mean? Do you think \\(K = 1\\) is a good choice?\nGenerally, do you think it’s better to choose a small \\(K\\) or big \\(K\\)?"
+    "text": "How much does K matter?\n\nIt can matter a lot!\nAs we saw previously, you will get different predicted \\(\\hat{y}_{0}\\) for different choices of \\(K\\) in KNN regression\nDiscuss:\n\nWhat does \\(K=1\\) mean? Do you think \\(K = 1\\) is a good choice?\nIt is better to choose a small \\(K\\) or big \\(K\\)?"
   },
   {
     "objectID": "slides/slides-03-knn-regression.html#example-cont.",
@@ -1020,5 +1020,12 @@
     "title": "Pseudocode: KNN",
     "section": "Pseudocode for KNN regression",
     "text": "Pseudocode for KNN regression\nAs “homework” for the next class, write (on paper/tablet) pseudocode for implementing KNN regression. For next class, come prepared to share your pseudocode for KNN regression with your group. Please do not begin coding up the method on your own because that takes away from the learning of the group."
+  },
+  {
+    "objectID": "slides/slides-03-knn-regression.html#practice",
+    "href": "slides/slides-03-knn-regression.html#practice",
+    "title": "KNN Regression",
+    "section": "Practice",
+    "text": "Practice\n\n\n  X1 X2 X3 y\n1  1  1 -1 0\n2  2  0  0 2\n3 -1  1  0 4\n4  0  1  0 6\n\n\n\nSuppose I have the above data, and I want to predict for a new test point x0 with X1 = 0, X2 = 0, X3 = 0.\nCalculate the distance between x0 and each of the observed data points using:\n\nEuclidean distance\nManhattan distance"
   }
 ]
