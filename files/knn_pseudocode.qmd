@@ -5,28 +5,27 @@ editor: visual
 
 ## Discuss: implementing KNN regression
 
-**Given a set of train data (predictors and responses), how would you would implement predictions for a set of test predictors using KNN regression?** Be as clear, thoughtful, and detailed as possible. This involves describing the algorithm step-by-step. 
+**Given a set of train data (predictors and responses), how would you would implement predictions for a set of test predictors using KNN regression?** Be as clear, thoughtful, and detailed as possible. This involves describing the algorithm step-by-step.
 
 *You may assume that all of our predictors are quantitative, and that we are currently not worried about scaling the predictors.*
 
 Some helpful guiding questions:
 
-  - What information (think data, variables) does your method require as input(s)? What do we want to output?
+-   What information (think data, variables) does your method require as input(s)? What do we want to output?
 
-  - What are the main components/parts/action for implementing this method? In other words, what do we generally need to "do"?
-  
-    - For each of the main components, what are the steps to achieve it? For example, if my hypothetical main action is "cook pasta", then the important steps might be to boil water, add salt *after* water is boiling, add pasta, set timer, then drain pasta. 
-    
-  - What information do we need to keep track of/store when implementing this method? 
-  
-  - Will I need to loop through and iterate many times? If so, what components does that affect?
-  
-  - What sorts of functions/calculations will I need?
+-   What are the main components/parts/action for implementing this method? In other words, what do we generally need to "do"?
 
-  
+    -   For each of the main components, what are the steps to achieve it? For example, if my hypothetical main action is "cook pasta", then the important steps might be to boil water, add salt *after* water is boiling, add pasta, set timer, then drain pasta.
+
+-   What information do we need to keep track of/store when implementing this method?
+
+-   Will I need to loop through and iterate many times? If so, what components does that affect?
+
+-   What sorts of functions/calculations will I need?
+
 ## Pseudocode 101
 
-Pseudocode is more of an art than a science. It is a kind of structured English for describing algorithms. It allows the designer to focus on the logic of the algorithm without being distracted by details of language syntax (ideally, the pseudocode would be agnostic to the programming language, but sometimes it's easier to write it specific to your domain). 
+Pseudocode is more of an art than a science. It is a kind of structured English for describing algorithms. It allows the designer to focus on the logic of the algorithm without being distracted by details of language syntax (ideally, the pseudocode would be agnostic to the programming language, but sometimes it's easier to write it specific to your domain).
 
 Pseudocode describes the entire logic of the algorithm so that implementation becomes a rote mechanical task of translating line by line into source code. I should be able to read your pseudocode and write working code from it. We use it here to demonstrate complete understanding of the method. In my mind, you don't truly understand how a statistical learning method works until you code it yourself!
 
@@ -39,11 +38,11 @@ When writing pseudocode, each specific action/piece of logic must be decomposed 
 Suppose I have a vector of numbers `vec` and I want to obtain their sum. I could write the following pseudocode:
 
     Set counter = 0, n = length(vec);
-    
+
     For i from 1, 2, ..., n:
       
       Add i-th value of vec to counter;
-    
+
     Return counter;
 
 #### Example 2
@@ -51,9 +50,9 @@ Suppose I have a vector of numbers `vec` and I want to obtain their sum. I could
 If maybe instead I wanted to obtain two separate sums, one of the even values and one of the odd, I might write:
 
     Set even_counter = 0, odd_counter = 0; n = length(vec);
-    
+
     For i from 1, 2, ..., n:
-    
+
       If the i-th value of vec is even:
         
         Add the  i-th value of vec to even_counter;
@@ -61,17 +60,17 @@ If maybe instead I wanted to obtain two separate sums, one of the even values an
       Else:
       
         Add the i-th value of vec to odd_counter;
-    
+
     Return even_counter and odd_counter;
-    
+
 #### Example 3
 
 Personally, I am fine with a little bit of actual code within the pseudocode, such as:
 
     Set even_counter = 0, odd_counter = 0; n = length(vec);
-    
+
     For i from 1:n:
-    
+
       if vec[i] is even:
         
         Add vec[i] to even_counter;
@@ -79,10 +78,9 @@ Personally, I am fine with a little bit of actual code within the pseudocode, su
       else:
       
         Add vec[i] to odd_counter;
-    
+
     Return even_counter and odd_counter;
 
 ## Pseudocode for KNN regression
 
 As "homework" for the next class, *write* (on paper/tablet) pseudocode for implementing KNN regression. For next class, come prepared to share your pseudocode for KNN regression with your group. Please *do not* begin coding up the method on your own because that takes away from the learning of the group.
-

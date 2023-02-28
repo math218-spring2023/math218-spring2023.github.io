@@ -22,6 +22,10 @@ draft: false
 
 -   Office hours today from 3-4pm
 
+- TA: Doug Rosin
+
+  - Office hours Sundays 7-9pm upstairs
+
 ```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
 
