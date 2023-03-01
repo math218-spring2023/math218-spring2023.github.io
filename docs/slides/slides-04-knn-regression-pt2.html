@@ -865,10 +865,12 @@ attr(,"scaled:scale")
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
 <ul>
-<li class="fragment"><p>Key point: when computing distances, you should consider <strong>scaling</strong> your predictors if they are on very different scales</p></li>
-<li class="fragment"><p>Discuss: what do you think are some pros and cons of KNN regression?</p>
+<li class="fragment"><p>Key point: when computing distances, you should consider <strong>standardizing</strong> your predictors if they are on very different scales</p></li>
+<li class="fragment"><p>To calculate distances between categorical variables, we need to <strong>encode</strong> them somehow</p></li>
+<li class="fragment"><p>Questions:</p>
 <ul>
-<li class="fragment">You might want to compare to linear regression</li>
+<li class="fragment"><p>Should we standardize our new encoded variables?</p></li>
+<li class="fragment"><p>Does anything need to change about your current KNN implementation to address standardizing and accomodating categorical predictors?</p></li>
 </ul></li>
 </ul>
 

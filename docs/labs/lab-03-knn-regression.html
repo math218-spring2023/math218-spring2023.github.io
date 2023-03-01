@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-03-02">
+<meta name="description" content="Forest fires">
 
-<title>Math 218 - Spring 2023 - KNN regression</title>
+<title>Math 218 - Spring 2023 - Untitled</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -114,16 +114,21 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
-  <li><a href="#group-introductions" id="toc-group-introductions" class="nav-link" data-scroll-target="#group-introductions">Group introductions</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#goal" id="toc-goal" class="nav-link" data-scroll-target="#goal">Goal</a></li>
   </ul></li>
-  <li><a href="#step-1-compare-pseudocode" id="toc-step-1-compare-pseudocode" class="nav-link" data-scroll-target="#step-1-compare-pseudocode">Step 1: compare pseudocode</a></li>
-  <li><a href="#step-2-write-a-group-pseudocode" id="toc-step-2-write-a-group-pseudocode" class="nav-link" data-scroll-target="#step-2-write-a-group-pseudocode">Step 2: write a group pseudocode</a></li>
-  <li><a href="#step-3-implement-knn" id="toc-step-3-implement-knn" class="nav-link" data-scroll-target="#step-3-implement-knn">Step 3: implement KNN</a>
+  <li><a href="#define-functions" id="toc-define-functions" class="nav-link" data-scroll-target="#define-functions">Define functions</a></li>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">Data wrangling</a>
   <ul class="collapse">
-  <li><a href="#general-advice" id="toc-general-advice" class="nav-link" data-scroll-target="#general-advice">General advice</a></li>
-  <li><a href="#check-your-code" id="toc-check-your-code" class="nav-link" data-scroll-target="#check-your-code">Check your code</a></li>
+  <li><a href="#general" id="toc-general" class="nav-link" data-scroll-target="#general">General</a></li>
+  <li><a href="#categorical-features" id="toc-categorical-features" class="nav-link" data-scroll-target="#categorical-features">Categorical features</a></li>
   </ul></li>
-  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
+  <li><a href="#prepare-data-for-assessment" id="toc-prepare-data-for-assessment" class="nav-link" data-scroll-target="#prepare-data-for-assessment">Prepare data for assessment</a>
+  <ul class="collapse">
+  <li><a href="#split-data" id="toc-split-data" class="nav-link" data-scroll-target="#split-data">Split data</a></li>
+  <li><a href="#standardize-data" id="toc-standardize-data" class="nav-link" data-scroll-target="#standardize-data">Standardize data</a></li>
+  </ul></li>
+  <li><a href="#predict-using-knn-regression" id="toc-predict-using-knn-regression" class="nav-link" data-scroll-target="#predict-using-knn-regression">Predict using KNN regression</a></li>
   </ul>
 </nav>
     </div>
@@ -132,23 +137,19 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">KNN regression</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Implementations</div>
-  </div>
-  </div>
+<h1 class="title">Untitled</h1>
+</div>
 
+<div>
+  <div class="description">
+    Forest fires
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">March 2, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -156,65 +157,106 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>You and your group will implement KNN regression. I will break down the process for you below. Your group will build on this assignment over the next 2-3 weeks as we learn more content. Therefore, it is important that you communicate with and contribute to your group! Asking clarifying questions, explaining your thought process, throwing ideas out there, etc. all count as contributing.</p>
-<p>There will be a series of small deliverables roughly 1-2 times a week. Even though you are working as a group, I want you to submit your deliverables individually. This is so you can continue to develop your skills as a coder and work at a pace that’s more comfortable for you!</p>
-<section id="group-introductions" class="level2">
-<h2 class="anchored" data-anchor-id="group-introductions">Group introductions</h2>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>By this point, you should have successfully implemented KNN regression. The purpose of this assignment is to work with categorical predictors and quantitative predictors on different scales.</p>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data</h3>
+<p>For this assignment, you will predict the size of forest fires in the northeast region of Portugal using meteorological and other covariates. The original data were obtained from the <a href="https://archive.ics.uci.edu/ml/datasets/Forest+Fires">UCI Machine Learning Repository</a>, and I have modified them slightly for the purposes of this implementation.</p>
+<p>Each row in the data set represents one fire. We have the following variables:</p>
 <ul>
-<li><p>Introduce yourself: name, majors, anything at all</p></li>
-<li><p>Talk about how coding in R (base R or tidyverse) is going for you so well. Some people in the group may be more nervous about or proficient in coding, but I think it’s good to name it early on.</p></li>
-<li><p>Find a time and place to meet outside of class this week</p></li>
+<li><code>fire_id</code>: a variable to identify each fire</li>
+<li><code>X</code>, <code>Y</code>: coordinates for the location of the fire</li>
+<li><code>month</code>: month of year</li>
+<li><code>day</code>: day of week</li>
+<li><code>FFMC</code>: Fine Fuel Moisture Code, represents fuel moisture of forest litter fuels under the shade of a forest canopy</li>
+<li><code>DMC</code>: Duff Moisture Code, represents fuel moisture of decomposed organic material underneath the litter</li>
+<li><code>drought</code>: drought status of location (“Low”, “Moderate”, “Extreme”)</li>
+<li><code>ISI</code>: Initial Spread Index, used to predict fire behavior</li>
+<li><code>temp</code>: temperature (Celsius)</li>
+<li><code>RH</code>: relative humidity (%)</li>
+<li><code>wind</code>: wind speed (km/h)</li>
+<li><code>rain</code>: outside rain (mm/m2)</li>
+<li><code>area</code>: the burned area of the forest (hectares). An <code>area</code> of 0 means that an area of lower than 100 square meters was burned.</li>
 </ul>
 </section>
+<section id="goal" class="level3">
+<h3 class="anchored" data-anchor-id="goal">Goal</h3>
+<p>Using KNN regression, we will predict the size of a fire given some of these features. We will also compare prediction performance under different modeling choices.</p>
 </section>
-<section id="step-1-compare-pseudocode" class="level1">
-<h1>Step 1: compare pseudocode</h1>
-<p>Compare your pseudocode for implementing KNN regression. This could look like:</p>
-<ul>
-<li><p>Having each person summarise the “order of events” in their pseudocode, before diving into each component</p></li>
-<li><p>Having someone talk through their pseudocode from beginning to end, then having the other members discuss what they did similarly or different</p></li>
-<li><p>Discussing what you were confused about</p></li>
-</ul>
 </section>
-<section id="step-2-write-a-group-pseudocode" class="level1">
-<h1>Step 2: write a group pseudocode</h1>
-<p>Now that you’ve compared your individual pseudocode, I want you write a new/final version as a group. Once you are happy with your pseudocode, call Becky over to have her check it.</p>
-</section>
-<section id="step-3-implement-knn" class="level1">
-<h1>Step 3: implement KNN</h1>
-<p>Once Becky has confirmed your pseudocode is detailed enough, your group can begin coding the implementation of KNN regression. The real fun begins!</p>
-<p>Clone the GitHub project called <code>knn_regression</code> and work in the file <code>knn_regression_implementation.Rmd</code>.</p>
+<section id="define-functions" class="level2">
+<h2 class="anchored" data-anchor-id="define-functions">Define functions</h2>
 <div style="color: maroon">
-<p>Your final implementation must be a function that takes in the “minimal amount” of inputs and returns a vector of the predictions for the test data. “Minimal amount” means only the arguments that cannot be obtained/derived within the function itself (i.e.&nbsp;what the user of your function <em>must</em> specify in order to make your function run).</p>
-</div>
-<p><em>You may assume that the user only wants Euclidean distance for this implementation</em>.</p>
-<section id="general-advice" class="level3">
-<h3 class="anchored" data-anchor-id="general-advice">General advice</h3>
-<ul>
-<li><p>Start “big picture”:</p>
-<ul>
-<li><p>Begin by defining your function and its arguments using <code>function()</code> . Remember, you can always add to the arguments as you progress through your coding if you realize your function requires additional inputs.</p></li>
-<li><p>If you need to iterate the same procedure many times, begin by writing out the loop and then add comments for each step within the body of the for loop. Then start coding each step.</p></li>
-</ul></li>
-<li><p>Write functions that you can call within your implementation.</p></li>
-<li><p>Test your code frequently to make sure it’s doing what you want it to do! This is especially true of any functions that you create.</p></li>
-<li><p>Be as reproducible as possible. Try to avoid “hard-coding” if you can. This means you should not use specific variable names or indices. You want to be able to use your implementation for any future data set!</p></li>
-<li><p>If you get stuck, please ask Becky for help!</p></li>
-</ul>
-</section>
-<section id="check-your-code" class="level3">
-<h3 class="anchored" data-anchor-id="check-your-code">Check your code</h3>
-<p>Once you’ve finished your implementation, check it by seeing if you get the same results as I did for the non-standardized <code>LRUG</code> mites data in the KNN regression slides.</p>
-<div style="color: maroon">
-<p>Specifically, use your brand new KNN function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of <span class="math inline">\(K\)</span>.</p>
+<p>Create a function called <code>get_rmse</code> that takes in two vectors as input: a vector of predictions and a vector of true values. Your function should return the root mean squared error (RMSE).</p>
 </div>
 </section>
+<section id="data-wrangling" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling">Data wrangling</h2>
+<p>Natural phenomena such as fires are notoriously difficult to predict. We will do a little bit of data wrangling to make the task more manageable.</p>
+<section id="general" class="level3">
+<h3 class="anchored" data-anchor-id="general">General</h3>
+<p>Read in the data called <code>forest_fires.csv</code> from your <code>data</code> folder of this project. This analysis will focus on the subset of the observations that:</p>
+<ul>
+<li>Occurred in August or September</li>
+<li>Have an area greater than 0</li>
+</ul>
+<div style="color: maroon">
+<p>Create a new data frame called <code>fire_subset</code> that only holds the observations that satisfy the above criteria.</p>
+</div>
+<p>For your own purposes, visualize the <code>area</code> of the forest fires. You should notice that it this variable is right-skewed. This large amount of variation tends to make predictions extremely difficult.</p>
+<div style="color: maroon">
+<p>Modify your <code>fire_subset</code> by adding a variable called <code>log_area</code> using the <code>log()</code> function.</p>
+</div>
+<p><strong><em>We will treat <code>log_area</code> as our response variable of interest for the remainder of this analysis.</em></strong></p>
 </section>
-<section id="submission" class="level1">
-<h1>Submission</h1>
-<p>Once you’ve finished, push your changes to GitHub. Upload a PDF of your implementation and your confirmatory “code check” to Canvas.</p>
+<section id="categorical-features" class="level3">
+<h3 class="anchored" data-anchor-id="categorical-features">Categorical features</h3>
+<p>We will use the following predictors for this analysis: <code>month</code>, <code>FFMC</code>, <code>DMC</code>, <code>drought</code>, <code>ISI</code>, <code>temp</code>, <code>RH</code>, <code>wind</code>, and <code>rain</code>.</p>
+<div style="color: maroon">
+<p>Wrangle your <code>fire_subset</code> data so that your KNN function can utilize the categorical predictors appropriately.</p>
+</div>
+</section>
+</section>
+<section id="prepare-data-for-assessment" class="level2">
+<h2 class="anchored" data-anchor-id="prepare-data-for-assessment">Prepare data for assessment</h2>
+<section id="split-data" class="level3">
+<h3 class="anchored" data-anchor-id="split-data">Split data</h3>
+<p>Split your data into train and test sets using an 80/20 split; i.e.&nbsp;a randomly selected 80% of the original observations go into the train set, and the remaining 20% go into the test set. Don’t forget to set a seed for reproducibility!</p>
+<div style="color: maroon">
+<p>Based on your split, you should create the four following <code>R</code> objects:</p>
+</div>
+<ul>
+<li><code>train_x</code>: data frame of the predictors in the train set</li>
+<li><code>test_x</code>: data frame of the predictors in the test set</li>
+<li><code>train_y</code>: vector of the observed responses in the train set</li>
+<li><code>test_y</code>: vector of the observed responses in the test set</li>
+</ul>
+</section>
+<section id="standardize-data" class="level3">
+<h3 class="anchored" data-anchor-id="standardize-data">Standardize data</h3>
+<p>As you should have noticed, the quantitative predictors are on extremely different scaled. Thus, it may advantageous to standardize the predictors. Here, we will create standardized versions of <code>train_x</code> and <code>test_x</code> above.</p>
+<div style="color: maroon">
+<p>Create a new data frame called <code>train_x_scaled</code> that is the same as <code>train_x</code>, but holds <strong>standardized versions</strong> of the quantitative (i.e.&nbsp;non-encoded) predictors.</p>
+<p>Next, create a new data frame called <code>test_x_scaled</code> that is the same as <code>test_x</code>, but holds standardized versions of the quantitative predictors using the same standardization as the training data.</p>
+</div>
+</section>
+</section>
+<section id="predict-using-knn-regression" class="level2">
+<h2 class="anchored" data-anchor-id="predict-using-knn-regression">Predict using KNN regression</h2>
+<div style="color: maroon">
+<p>Use your KNN regression function to obtain predictions of <code>log_area</code> for the test data using both the scaled and non-scaled versions of the data for the following choices of <span class="math inline">\(K\)</span>:</p>
+</div>
+<ul>
+<li><p><span class="math inline">\(K=5\)</span></p></li>
+<li><p><span class="math inline">\(K=20\)</span></p></li>
+<li><p><span class="math inline">\(K = 50\)</span></p></li>
+</ul>
+<p>That is, for every choice of <span class="math inline">\(K\)</span>, you should have two vectors of predictions. <em>Note</em>: your code might take a minute or two to run. <code>for()</code> loops are not very efficient…</p>
+<div style="color: maroon">
+<p>Using your <code>get_rmse()</code> function, obtain and report the RMSEs for each of the six predictions. For reproducibility, use in-line code when reporting your RMSEs.</p>
+<p>Comment on the prediction performance for the different choices of <span class="math inline">\(K\)</span> and for the different versions of the data (i.e.&nbsp;scaled or non-scaled). Do you notice any patterns? Based on your results, what is your best model?</p>
+</div>
 
 
 </section>

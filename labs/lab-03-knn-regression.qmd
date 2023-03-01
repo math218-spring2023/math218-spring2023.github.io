@@ -1,0 +1,117 @@
+---
+title: "Untitled"
+description: "Forest fires"
+editor: visual
+callout-appearance: default
+draft: true
+---
+
+## Introduction
+
+By this point, you should have successfully implemented KNN regression. The purpose of this assignment is to work with categorical predictors and quantitative predictors on different scales.
+
+### Data
+
+For this assignment, you will predict the size of forest fires in the northeast region of Portugal using meteorological and other covariates. The original data were obtained from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Forest+Fires), and I have modified them slightly for the purposes of this implementation.
+
+Each row in the data set represents one fire. We have the following variables:
+
+-   `fire_id`: a variable to identify each fire
+-   `X`, `Y`: coordinates for the location of the fire
+-   `month`: month of year
+-   `day`: day of week
+-   `FFMC`: Fine Fuel Moisture Code, represents fuel moisture of forest litter fuels under the shade of a forest canopy
+-   `DMC`: Duff Moisture Code, represents fuel moisture of decomposed organic material underneath the litter
+-   `drought`: drought status of location ("Low", "Moderate", "Extreme")
+-   `ISI`: Initial Spread Index, used to predict fire behavior
+-   `temp`: temperature (Celsius)
+-   `RH`: relative humidity (%)
+-   `wind`: wind speed (km/h)
+-   `rain`: outside rain (mm/m2)
+-   `area`: the burned area of the forest (hectares). An `area` of 0 means that an area of lower than 100 square meters was burned.
+
+### Goal
+
+Using KNN regression, we will predict the size of a fire given some of these features. We will also compare prediction performance under different modeling choices.
+
+## Define functions
+
+::: {style="color: maroon"}
+Create a function called `get_rmse` that takes in two vectors as input: a vector of predictions and a vector of true values. Your function should return the root mean squared error (RMSE).
+:::
+
+## Data wrangling
+
+Natural phenomena such as fires are notoriously difficult to predict. We will do a little bit of data wrangling to make the task more manageable.
+
+### General
+
+Read in the data called `forest_fires.csv` from your `data` folder of this project. This analysis will focus on the subset of the observations that:
+
+-   Occurred in August or September
+-   Have an area greater than 0
+
+::: {style="color: maroon"}
+Create a new data frame called `fire_subset` that only holds the observations that satisfy the above criteria.
+:::
+
+For your own purposes, visualize the `area` of the forest fires. You should notice that it this variable is right-skewed. This large amount of variation tends to make predictions extremely difficult.
+
+::: {style="color: maroon"}
+Modify your `fire_subset` by adding a variable called `log_area` using the `log()` function.
+:::
+
+***We will treat `log_area` as our response variable of interest for the remainder of this analysis.***
+
+### Categorical features
+
+We will use the following predictors for this analysis: `month`, `FFMC`, `DMC`, `drought`, `ISI`, `temp`, `RH`, `wind`, and `rain`.
+
+::: {style="color: maroon"}
+Wrangle your `fire_subset` data so that your KNN function can utilize the categorical predictors appropriately.
+:::
+
+## Prepare data for assessment
+
+### Split data
+
+Split your data into train and test sets using an 80/20 split; i.e. a randomly selected 80% of the original observations go into the train set, and the remaining 20% go into the test set. Don't forget to set a seed for reproducibility!
+
+::: {style="color: maroon"}
+Based on your split, you should create the four following `R` objects:
+:::
+
+-   `train_x`: data frame of the predictors in the train set
+-   `test_x`: data frame of the predictors in the test set
+-   `train_y`: vector of the observed responses in the train set
+-   `test_y`: vector of the observed responses in the test set
+
+### Standardize data
+
+As you should have noticed, the quantitative predictors are on extremely different scaled. Thus, it may advantageous to standardize the predictors. Here, we will create standardized versions of `train_x` and `test_x` above.
+
+::: {style="color: maroon"}
+Create a new data frame called `train_x_scaled` that is the same as `train_x`, but holds **standardized versions** of the quantitative (i.e. non-encoded) predictors.
+
+Next, create a new data frame called `test_x_scaled` that is the same as `test_x`, but holds standardized versions of the quantitative predictors using the same standardization as the training data.
+:::
+
+## Predict using KNN regression
+
+::: {style="color: maroon"}
+Use your KNN regression function to obtain predictions of `log_area` for the test data using both the scaled and non-scaled versions of the data for the following choices of $K$:
+:::
+
+-   $K=5$
+
+-   $K=20$
+
+-   $K = 50$
+
+That is, for every choice of $K$, you should have two vectors of predictions. *Note*: your code might take a minute or two to run. `for()` loops are not very efficient...
+
+::: {style="color: maroon"}
+Using your `get_rmse()` function, obtain and report the RMSEs for each of the six predictions. For reproducibility, use in-line code when reporting your RMSEs.
+
+Comment on the prediction performance for the different choices of $K$ and for the different versions of the data (i.e. scaled or non-scaled). Do you notice any patterns? Based on your results, what is your best model?
+:::

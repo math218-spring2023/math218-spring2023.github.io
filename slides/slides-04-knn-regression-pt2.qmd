@@ -330,23 +330,25 @@ summary_df
 
 -   Suppose we want to include the categorical predictors into our predictions:
 
-  -  `Topo` $\in \{ \text{Blanket, Hummock}\}$
-  -  `Shrub` $\in \{\text{None, Few, Many} \}$
-  - `Substrate` $\in \{\text{Sphagn1, Spaghn2, Sphagn3, Sphagn4, Litter, Barepeat, Interface}\}$
+-   `Topo` $\in \{ \text{Blanket, Hummock}\}$
+
+-   `Shrub` $\in \{\text{None, Few, Many} \}$
+
+-   `Substrate` $\in \{\text{Sphagn1, Spaghn2, Sphagn3, Sphagn4, Litter, Barepeat, Interface}\}$
 
 -   Discuss: how would you define "distance" or "closeness" between two observations based on:
 
-    -  `Topo`
+    -   `Topo`
 
     -   `Shrub`
-    
 
 -   We will create new quantitative variables to represent categorical variables
 
 ## Integer encoding
 
 -   The predictor `Shrub` is ordinal
-    - i.e. there is a natural ordering (None \< Few \< Many) to the $L = 3$ categories
+
+    -   i.e. there is a natural ordering (None \< Few \< Many) to the $L = 3$ categories
 
 -   The ordering should be reflected in the new quantitative variable
 
@@ -356,7 +358,7 @@ summary_df
     -   Second lowest level gets assigned 1
     -   ...
     -   "Highest" level gets assigned $L-1$
-    
+
 ## Mite data: integer encoding
 
 ```{r}
@@ -373,18 +375,18 @@ mite_dat %>%
   slice(1:5)
 ```
 
-- Now I can calculate distances using `Shrub_encode`!
+-   Now I can calculate distances using `Shrub_encode`!
 
 ## One-hot encoding
 
-- Question: why wouldn't I want to use integer encoding for a non-ordinal variable such as `Substrate`?
+-   Question: why wouldn't I want to use integer encoding for a non-ordinal variable such as `Substrate`?
 
-- **One-hot encoding**: map each level of the variable to a new binary 0/1 variable, where
+-   **One-hot encoding**: map each level of the variable to a new binary 0/1 variable, where
 
-  - 0 represents the absence of the category
-  - 1 represents the presence of the category
-  
-- These are called "dummy variables"; will have $L$ new variables
+    -   0 represents the absence of the category
+    -   1 represents the presence of the category
+
+-   These are called "dummy variables"; will have $L$ new variables
 
 ## Mite data: one-hot encoding
 
@@ -406,7 +408,6 @@ mite_dat %>%
 ## Mite data: one-hot encoding (cont.)
 
 One-hot encoding of the `Substrate` variable:
-
 
 ```{r}
 mite_dat <- mite_dat %>%
@@ -433,14 +434,16 @@ mite_dat %>%
   print(width = Inf)
 ```
 
-
--   Discuss: what are some potential issues with one-hot encoding? 
+-   Discuss: what are some potential issues with one-hot encoding?
 
 # Summary
 
--   Key point: when computing distances, you should consider **scaling** your predictors if they are on very different scales
+-   Key point: when computing distances, you should consider **standardizing** your predictors if they are on very different scales
 
--   Discuss: what do you think are some pros and cons of KNN regression?
+-   To calculate distances between categorical variables, we need to **encode** them somehow
 
-    -   You might want to compare to linear regression
+-   Questions:
 
+    -   Should we standardize our new encoded variables?
+
+    -   Does anything need to change about your current KNN implementation to address standardizing and accomodating categorical predictors?
