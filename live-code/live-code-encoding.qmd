@@ -1,0 +1,100 @@
+---
+title: "Live code:"
+date: "March 6, 2023"
+description: "Encoding categorical variables"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+---
+
+## Set-up
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+Recall that in our `mite_dat`, we have the following three categorical predictors:
+
+1.  `Shrub`, which takes values "None", "Few", and "Many"
+
+2.  `Topo`, which takes values "Hummock" and "Blanket"
+
+3.  `Substrate`, which takes values "Sphagn1", "Spaghn2", "Sphagn3", "Sphagn4", "Litter", "Barepeat", "Interface"
+
+We would like to be able to convert these categorical predictors into quantitative ones in order to compute distances.
+
+## Integer encoding
+
+```{r}
+#| eval: false
+mite_dat <- mite_dat %>%
+  mutate(Shrub_encode = case_when(
+    Shrub == "None" ~ 0,
+    Shrub == "Few" ~ 1, 
+    Shrub == "Many" ~ 2
+      )
+    )
+
+# compare your new variable to confirm it's correct:
+mite_dat %>%
+  select(Shrub, Shrub_encode) %>%
+  View()
+```
+
+## One-hot encoding (few levels)
+
+```{r}
+#| eval: false
+mite_dat <-  mite_dat %>%
+  mutate(
+    Topo_hummock = if_else(Topo == "Hummock", 1, 0),
+    Topo_blanket = if_else(Topo == "Blanket", 1, 0)
+  ) 
+
+# compare your new variable to confirm it's correct
+
+```
+
+## One-hot encoding (many levels)
+
+The `Substrate` variable has 7 levels! We could write 7 different `if_else()` statements, but that seems rather inefficient...
+
+Instead, we will make clever use of the of the `pivot_wider()` function. In the code below:
+
+-   Line 2: create a new place-holder variable `value` that gives us the mechanism to create dummy variables
+
+-   Line 3: `pivot_wider()` to create new variables, one for each level of `Substrate.` Each new variable gets its value from `value` (i.e. a 1) if the original `Substrate` variable belonged to that level.
+
+```{r}
+#| code-line-numbers: true
+#| eval: false
+mite_dat %>%
+  mutate(value = 1) %>% 
+  pivot_wider(names_from = Substrate, values_from = value) 
+```
+
+You should notice that we get a lot of `NA` values! We just need to replace those `NA`'s with 0s. In the code below:
+
+-   Line 4: use the `values_fill` argument to specify that `NA`s should be 0s
+
+-   Line 5: modify the names of our new variables to more clearly indicate that they correspond to the same original variable
+
+```{r}
+#| code-line-numbers: true
+mite_dat <- mite_dat %>%
+  mutate(value = 1) %>%
+  pivot_wider(names_from = Substrate, values_from = value, 
+              values_fill = 0,
+              names_prefix = "Sub_")
+mite_dat %>%
+  slice(1:6)
+```

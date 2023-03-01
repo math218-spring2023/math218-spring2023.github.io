@@ -480,7 +480,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?\n\n\n\n\nR 2/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 2/24\nLinear regression (cont.)\nLab day\n\nLab 02: Moneyball\n03/02 at 11:59pm\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nKNN regression\nSlides: KNN regression\nKNN pseudocode\n03/02 in class\n\n\nR 3/2\nKNN: implementation\nLive code: Writing functions\n\n\n\n\nF 3/3\nKNN: implementation"
+    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 2/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 2/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 2/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n2/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 2/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?\n\n\n\n\nR 2/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 2/24\nLinear regression (cont.)\nLab day\n\nLab 02: Moneyball\n03/02 at 11:59pm\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 2/28\nKNN regression\nSlides: KNN regression\nKNN pseudocode\n03/02 in class\n\n\nR 3/2\nKNN regression: implementation\nFinish KNN regression slides\nLive code: Writing functions\nGroup pseudocode\n03/03 in class\n\n\nF 3/3\nKNN: implementation\n\n\n\n\n\n\n\n\nWEEK 4\n\n\n\n\n\nT 3/7\nResampling\n\n\n\n\n\nR 3/9\nResampling (cont.)\n\n\n\n\n\nF 3/10\nResampling: Implementation\n\n\n\n\n\n\n\n\nWEEK 5\n\n\n\n\n\nT 3/14\nRegression trees\n\n\n\n\n\nR 3/16\nRegression trees (cont.)\n\n\n\n\n\nF 3/17\nLab: Regression trees"
   },
   {
     "objectID": "live-code/live-code-03.html",
@@ -1027,5 +1027,117 @@
     "title": "KNN Regression",
     "section": "Practice",
     "text": "Practice\n\n\n  X1 X2 X3 y\n1  1  1 -1 0\n2  2  0  0 2\n3 -1  1  0 4\n4  0  1  0 6\n\n\n\nSuppose I have the above data, and I want to predict for a new test point x0 with X1 = 0, X2 = 0, X3 = 0.\nCalculate the distance between x0 and each of the observed data points using:\n\nEuclidean distance\nManhattan distance"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#algorithm-recap",
+    "href": "slides/slides-04-knn-regression-pt2.html#algorithm-recap",
+    "title": "KNN Regression (cont.)",
+    "section": "Algorithm (recap)",
+    "text": "Algorithm (recap)\n\nChoose a positive integer \\(K\\), and have your data split into a train set and test set\nFor a given test observation with predictor \\(x_{0}\\):\n\nIdentify the \\(K\\) points in the train data that are closest (in predictor space) to \\(x_{0}\\). Call this set of neighbors \\(\\mathcal{N}_{0}\\).\nPredict \\(\\hat{y}_{0}\\) to be the average of the responses in the neighbor set, i.e. \\[\\hat{y}_{0} = \\frac{1}{K} \\sum_{i \\in \\mathcal{N}_{0}} y_{i}\\]"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data-preparation",
+    "href": "slides/slides-04-knn-regression-pt2.html#mite-data-preparation",
+    "title": "KNN Regression (cont.)",
+    "section": "Mite data: preparation",
+    "text": "Mite data: preparation\n\nThe following code divides my data into train and test sets.\n\nMake sure you understand what each line of code is doing! If you don’t, please ask!\n\n\n\n\nset.seed(6)\nn <- nrow(mite_dat)\ntest_ids <- sample(1:n, 2)\ntrain_x <- mite_dat[-test_ids, c(\"SubsDens\", \"WatrCont\")]\ntrain_y <-  mite_dat$abundance[-test_ids]\ntest_x <- mite_dat[test_ids,  c(\"SubsDens\", \"WatrCont\")]\ntest_y <-  mite_dat$abundance[test_ids]\nhead(train_x)\n\n  SubsDens WatrCont\n1    39.18   350.15\n2    54.99   434.81\n3    46.07   371.72\n4    48.19   360.50\n5    23.55   204.13\n6    57.32   311.55"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data-knn-results",
+    "href": "slides/slides-04-knn-regression-pt2.html#mite-data-knn-results",
+    "title": "KNN Regression (cont.)",
+    "section": "Mite data: KNN results",
+    "text": "Mite data: KNN results\n\n\n\nRunning KNN with \\(K = 3\\) and using Euclidean distance, I identify the following neighbor sets for each test point:\n\n\n\n\n\n\n\n\n\n\n\n\n\nPredicted abundance \\(\\hat{y}\\) and true abundance \\(y\\) for both test points, for a test RMSE of 9.428.\n\n\n\n\n# A tibble: 2 × 3\n  test_pt y_hat y_true\n    <int> <dbl>  <int>\n1       1  11.7     25\n2       2   0        0\n\n\n\n\n\nDiscuss: it seems like we did poorly for the first test observation. Does its neighbor set “make sense”?"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#standardizing-predictors-1",
+    "href": "slides/slides-04-knn-regression-pt2.html#standardizing-predictors-1",
+    "title": "KNN Regression (cont.)",
+    "section": "Standardizing predictors",
+    "text": "Standardizing predictors\nWe will standardize our predictors, meaning that each predictor \\(X_{j}\\) will be transformed to have mean 0 and standard deviation 1:\n\\[X_{j}^{\\text{std}} = \\frac{X_{j} - \\bar{X_{j}}}{\\sigma_{X_{j}}},\\]\nwhere \\(X_{j}\\) is the vector of the \\(j\\)-th predictor, \\(\\bar{X}_{j}\\) is the average of \\(X_{j}\\), and \\(\\sigma_{X_{j}}\\) is its standard deviation.\n\n\nscale(train_x$SubsDens)\n\n              [,1]\n [1,] -0.032638509\n [2,]  1.286001417\n [3,]  0.542024937\n [4,]  0.718844459\n [5,] -1.336265457\n [6,]  1.480336080\n [7,] -0.218632629\n [8,]  3.421180550\n [9,]  1.823132417\n[10,] -0.332064020\n[11,]  0.602910905\n[12,] -0.967613434\n[13,] -0.193610999\n[14,]  1.698024265\n[15,] -0.347076999\n[16,] -0.834998793\n[17,] -1.145267011\n[18,]  0.377716231\n[19,] -0.080179607\n[20,] -1.137760522\n[21,] -0.569769510\n[22,] -0.633157640\n[23,] -0.608970064\n[24,] -0.356251597\n[25,]  0.992414286\n[26,] -1.390478989\n[27,] -0.313714825\n[28,] -0.559760858\n[29,] -0.116877998\n[30,]  0.361035144\n[31,] -0.186938564\n[32,] -0.261169401\n[33,]  1.134203525\n[34,] -0.870029076\n[35,]  0.003225828\n[36,] -0.401290531\n[37,]  0.681312014\n[38,]  2.100038461\n[39,] -0.442993249\n[40,] -0.272012107\n[41,] -1.081878880\n[42,]  1.424454439\n[43,]  1.902367580\n[44,]  0.603744959\n[45,]  0.370209741\n[46,] -0.466346771\n[47,]  0.178377241\n[48,] -1.101062130\n[49,] -0.940923695\n[50,] -0.171925585\n[51,] -0.893382597\n[52,]  0.501990329\n[53,] -0.633157640\n[54,]  0.150853448\n[55,]  1.438633362\n[56,] -1.028499402\n[57,]  1.097505134\n[58,] -0.684034956\n[59,]  0.622094155\n[60,]  0.752206633\n[61,] -0.378771064\n[62,] -0.959272891\n[63,] -1.534770392\n[64,] -0.676528467\n[65,]  1.046627818\n[66,] -0.861688532\n[67,] -0.854182043\n[68,] -1.435517924\nattr(,\"scaled:center\")\n[1] 39.57132\nattr(,\"scaled:scale\")\n[1] 11.98963\n\n# confirming we have mean 0 and sd 1\nscaled_SubsDens <- scale(train_x$SubsDens)\nmean(scaled_SubsDens)\n\n[1] -4.865389e-16\n\nsd(scaled_SubsDens)\n\n[1] 1"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#standardizing-multiple-variables",
+    "href": "slides/slides-04-knn-regression-pt2.html#standardizing-multiple-variables",
+    "title": "KNN Regression (cont.)",
+    "section": "Standardizing multiple variables",
+    "text": "Standardizing multiple variables\n\n\n\n\ntrain_x_scaled <- train_x %>%\n  mutate_if(is.numeric, scale)\nhead(train_x_scaled)\n\n     SubsDens   WatrCont\n1 -0.03263851 -0.4434260\n2  1.28600142  0.1503860\n3  0.54202494 -0.2921323\n4  0.71884446 -0.3708303\n5 -1.33626546 -1.4676219\n6  1.48033608 -0.7141694\n\n\n\n\n\n\ntrain_x_scaled <- train_x\ntrain_x_scaled$SubsDens <- scale(train_x$SubsDens)\ntrain_x_scaled$WatrCont <- scale(train_x$WatrCont)\nhead(train_x_scaled)\n\n     SubsDens   WatrCont\n1 -0.03263851 -0.4434260\n2  1.28600142  0.1503860\n3  0.54202494 -0.2921323\n4  0.71884446 -0.3708303\n5 -1.33626546 -1.4676219\n6  1.48033608 -0.7141694"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#standardizing-the-test-data",
+    "href": "slides/slides-04-knn-regression-pt2.html#standardizing-the-test-data",
+    "title": "KNN Regression (cont.)",
+    "section": "Standardizing the test data",
+    "text": "Standardizing the test data\n\nWe should use the same statistics from the training data to scale the test data\n\ni.e. to standardize the \\(j\\)-th predictor of the test data, we should use the mean and standard deviation of the \\(j\\)-th predictor from the training data\n\n\nDiscuss: why not scale the predictors first, and then split into train/test sets?\n\n\n\n\n\n\n\n# note: I am not providing you the code for how I scaled my test observations!\ntest_x_scaled\n\n     SubsDens     WatrCont\n53 -1.0626956  0.008982148\n10 -0.6198128 -1.351188146\n\n\n\n\n\n\n\nImportant:\n\nI do not scale the response variable\nI scale after splitting into train/test"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#scaled-mite-data",
+    "href": "slides/slides-04-knn-regression-pt2.html#scaled-mite-data",
+    "title": "KNN Regression (cont.)",
+    "section": "Scaled mite data",
+    "text": "Scaled mite data"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#scaled-mite-data-knn-results",
+    "href": "slides/slides-04-knn-regression-pt2.html#scaled-mite-data-knn-results",
+    "title": "KNN Regression (cont.)",
+    "section": "Scaled mite data: KNN results",
+    "text": "Scaled mite data: KNN results\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPredicted abundance \\(\\hat{y}\\) and true abundance \\(y\\) for both test points, for a test RMSE of 3.308.\n\n\n\n\n# A tibble: 2 × 3\n  test_pt  y_hat y_true\n    <int>  <dbl>  <int>\n1       1 20.3       25\n2       2  0.333      0\n\n\n\n\nNote how this RMSE compares to when we fit on original scale!\n\nEven though we do slightly worse predicting test point 2, we improve a lot on test point 1"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#why-are-categorical-predictors-a-problem",
+    "href": "slides/slides-04-knn-regression-pt2.html#why-are-categorical-predictors-a-problem",
+    "title": "KNN Regression (cont.)",
+    "section": "Why are categorical predictors a problem?",
+    "text": "Why are categorical predictors a problem?\n\nSuppose we want to include the categorical predictors into our predictions:\nTopo \\(\\in \\{ \\text{Blanket, Hummock}\\}\\)\nShrub \\(\\in \\{\\text{None, Few, Many} \\}\\)\nSubstrate \\(\\in \\{\\text{Sphagn1, Spaghn2, Sphagn3, Sphagn4, Litter, Barepeat, Interface}\\}\\)\nDiscuss: how would you define “distance” or “closeness” between two observations based on:\n\nTopo\nShrub\n\nWe will create new quantitative variables to represent categorical variables"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#integer-encoding",
+    "href": "slides/slides-04-knn-regression-pt2.html#integer-encoding",
+    "title": "KNN Regression (cont.)",
+    "section": "Integer encoding",
+    "text": "Integer encoding\n\nThe predictor Shrub is ordinal\n\ni.e. there is a natural ordering (None < Few < Many) to the \\(L = 3\\) categories\n\nThe ordering should be reflected in the new quantitative variable\nInteger encoding: convert each label (category/level) into an integer value, where:\n\n“Lowest” level gets assigned 0\nSecond lowest level gets assigned 1\n…\n“Highest” level gets assigned \\(L-1\\)"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data-integer-encoding",
+    "href": "slides/slides-04-knn-regression-pt2.html#mite-data-integer-encoding",
+    "title": "KNN Regression (cont.)",
+    "section": "Mite data: integer encoding",
+    "text": "Mite data: integer encoding\n\n\n   Shrub Shrub_encode\n68  None            0\n39   Few            1\n1    Few            1\n34  Many            2\n43   Few            1\n\n\n\nNow I can calculate distances using Shrub_encode!"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#one-hot-encoding",
+    "href": "slides/slides-04-knn-regression-pt2.html#one-hot-encoding",
+    "title": "KNN Regression (cont.)",
+    "section": "One-hot encoding",
+    "text": "One-hot encoding\n\nQuestion: why wouldn’t I want to use integer encoding for a non-ordinal variable such as Substrate?\nOne-hot encoding: map each level of the variable to a new binary 0/1 variable, where\n\n0 represents the absence of the category\n1 represents the presence of the category\n\nThese are called “dummy variables”; will have \\(L\\) new variables"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data-one-hot-encoding",
+    "href": "slides/slides-04-knn-regression-pt2.html#mite-data-one-hot-encoding",
+    "title": "KNN Regression (cont.)",
+    "section": "Mite data: one-hot encoding",
+    "text": "Mite data: one-hot encoding\nOne-hot encoding of the Topo variable:\n\n\n      Topo Topo_hummock Topo_blanket\n68 Blanket            0            1\n39 Blanket            0            1\n1  Hummock            1            0\n34 Blanket            0            1\n43 Blanket            0            1"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data-one-hot-encoding-cont.",
+    "href": "slides/slides-04-knn-regression-pt2.html#mite-data-one-hot-encoding-cont.",
+    "title": "KNN Regression (cont.)",
+    "section": "Mite data: one-hot encoding (cont.)",
+    "text": "Mite data: one-hot encoding (cont.)\nOne-hot encoding of the Substrate variable:\n\n\n# A tibble: 8 × 8\n  Substrate Sub_Sphagn1 Sub_Litter Sub_Interface Sub_S…¹ Sub_S…² Sub_S…³ Sub_B…⁴\n  <fct>           <dbl>      <dbl>         <dbl>   <dbl>   <dbl>   <dbl>   <dbl>\n1 Sphagn2             0          0             0       0       0       1       0\n2 Interface           0          0             1       0       0       0       0\n3 Barepeat            0          0             0       0       0       0       1\n4 Sphagn1             1          0             0       0       0       0       0\n5 Sphagn1             1          0             0       0       0       0       0\n6 Interface           0          0             1       0       0       0       0\n7 Sphagn2             0          0             0       0       0       1       0\n8 Interface           0          0             1       0       0       0       0\n# … with abbreviated variable names ¹​Sub_Sphagn3, ²​Sub_Sphagn4, ³​Sub_Sphagn2,\n#   ⁴​Sub_Barepeat"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data",
+    "href": "slides/slides-04-knn-regression-pt2.html#mite-data",
+    "title": "KNN Regression (cont.)",
+    "section": "Mite data",
+    "text": "Mite data\nSo, our final set of predictors X that we could use in KNN regression for the response variable abundance would be:\n\n\n# A tibble: 6 × 12\n  SubsDens WatrCont Shrub_encode Topo_hummock Topo_blanket Sub_Sphagn1\n     <dbl>    <dbl>        <dbl>        <dbl>        <dbl>       <dbl>\n1     29.2     590.            0            0            1           1\n2     64.8     692.            1            0            1           0\n3     39.2     350.            1            1            0           1\n4     53.2     367.            2            0            1           0\n5     56.6     581             1            0            1           0\n6     37.2     240.            2            0            1           0\n  Sub_Litter Sub_Interface Sub_Sphagn3 Sub_Sphagn4 Sub_Sphagn2 Sub_Barepeat\n       <dbl>         <dbl>       <dbl>       <dbl>       <dbl>        <dbl>\n1          0             0           0           0           0            0\n2          0             0           0           0           1            0\n3          0             0           0           0           0            0\n4          0             1           0           0           0            0\n5          0             1           0           0           0            0\n6          0             1           0           0           0            0"
+  },
+  {
+    "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data-final-data-set",
+    "href": "slides/slides-04-knn-regression-pt2.html#mite-data-final-data-set",
+    "title": "KNN Regression (cont.)",
+    "section": "Mite data: final data set",
+    "text": "Mite data: final data set\nSo, our final set of predictors X that we could use in KNN regression for the response variable abundance would be:\n\n\n# A tibble: 70 × 12\n   SubsDens WatrCont Shrub_encode Topo_hummock Topo_blanket Sub_Sphagn1\n      <dbl>    <dbl>        <dbl>        <dbl>        <dbl>       <dbl>\n 1     46.8     406.            1            1            0           1\n 2     37.3     284.            2            0            1           0\n 3     29.2     590.            0            0            1           1\n 4     28.9     588.            0            0            1           1\n 5     46.8     539.            1            0            1           0\n 6     26.8     415.            0            0            1           0\n 7     47.0     626.            0            0            1           0\n 8     48.6     635.            0            0            1           0\n 9     56.6     581             1            0            1           0\n10     27.2     353.            0            0            1           1\n   Sub_Litter Sub_Interface Sub_Sphagn3 Sub_Sphagn4 Sub_Sphagn2 Sub_Barepeat\n        <dbl>         <dbl>       <dbl>       <dbl>       <dbl>        <dbl>\n 1          0             0           0           0           0            0\n 2          0             1           0           0           0            0\n 3          0             0           0           0           0            0\n 4          0             0           0           0           0            0\n 5          0             1           0           0           0            0\n 6          0             1           0           0           0            0\n 7          0             1           0           0           0            0\n 8          0             1           0           0           0            0\n 9          0             1           0           0           0            0\n10          0             0           0           0           0            0\n# … with 60 more rows\n\n\n\nDiscuss: what are some potential issues with one-hot encoding?"
   }
 ]

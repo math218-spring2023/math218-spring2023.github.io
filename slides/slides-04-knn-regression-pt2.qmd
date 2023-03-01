@@ -1,0 +1,446 @@
+---
+title: "KNN Regression (cont.)"
+date: "March 7, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/animal_crossing.png"
+    data-background-size: contain
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: false
+---
+
+# Housekeeping
+
+```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
+
+library(tidyverse)
+library(broom)
+library(ggfortify)
+library(ISLR)
+library(vegan)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+
+```
+
+# K-nearest neighbors: other considerations
+
+## Algorithm (recap)
+
+-   Choose a positive integer $K$, and have your data split into a train set and test set
+
+-   For a given test observation with predictor $x_{0}$:
+
+    -   Identify the $K$ points in the train data that are **closest** (in predictor space) to $x_{0}$. Call this set of neighbors $\mathcal{N}_{0}$.
+
+    -   Predict $\hat{y}_{0}$ to be the average of the responses in the neighbor set, i.e. $$\hat{y}_{0} = \frac{1}{K} \sum_{i \in \mathcal{N}_{0}} y_{i}$$
+
+# Standardizing predictors
+
+## Mite data: preparation {.nonincremental}
+
+-   The following code divides my data into train and test sets.
+
+-   ::: important
+    Make sure you understand what each line of code is doing! If you don't, please ask!
+    :::
+
+::: fragment
+```{r}
+#| echo: true
+#| code-line-numbers: true
+set.seed(6)
+n <- nrow(mite_dat)
+test_ids <- sample(1:n, 2)
+train_x <- mite_dat[-test_ids, c("SubsDens", "WatrCont")]
+train_y <-  mite_dat$abundance[-test_ids]
+test_x <- mite_dat[test_ids,  c("SubsDens", "WatrCont")]
+test_y <-  mite_dat$abundance[test_ids]
+head(train_x)
+```
+:::
+
+```{r}
+K <- 3
+nbs_ls <- list()
+for(i in 1:nrow(test_x)){
+  nbs_ls[[i]] <- data.frame(d = .dist(test_x[i,], train_x)) %>%
+    mutate(id = row_number()) %>%
+    arrange(d) %>%
+    slice(1:K) 
+}
+
+
+```
+
+## Mite data: KNN results {.scrollable}
+
+::: columns
+::: {.column width="60%"}
+-   Running KNN with $K = 3$ and using Euclidean distance, I identify the following neighbor sets for each test point:
+
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+train_dat <- data.frame(train_x) %>%
+  mutate(abundance = train_y)
+test_dat <- data.frame(test_x) %>%
+  mutate(abundance = test_y)
+p2 <- ggplot()+
+  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = abundance), size = 3) +
+  scale_color_viridis_c(option = "plasma") +
+  plot_theme + 
+  theme(legend.position = "bottom")+
+  ggtitle("Train data")
+p2 + 
+  geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt))+
+  geom_path(data = circleFun(center = as.numeric(test_dat[1,1:2]),
+                             diameter = nbs_ls[[1]][K,1]*2),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  geom_path(data = circleFun(center = as.numeric(test_dat[2,1:2]),
+                             diameter = nbs_ls[[2]][K,1]*2),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  labs(subtitle= "with neighbor sets for test points")
+```
+:::
+
+```{r}
+summary_df <- train_dat %>%
+  mutate(id = row_number()) %>%
+  inner_join(., do.call(rbind,nbs_ls) %>%
+               mutate(test_pt = rep(1:length(test_ids), each = K)),
+             by = "id") %>%
+  group_by(test_pt) %>%
+  summarise(y_hat = mean(abundance)) %>%
+  add_column(y_true = test_dat$abundance )
+rmse <- get_rmse(summary_df$y_hat, summary_df$y_true) 
+```
+:::
+
+::: {.column width="40%"}
+-   Predicted abundance $\hat{y}$ and true abundance $y$ for both test points, for a test RMSE of `r round(rmse, 3)`.
+
+::: fragment
+```{r}
+summary_df
+```
+:::
+
+-   ::: important
+    Discuss: it seems like we did poorly for the first test observation. Does its neighbor set "make sense"?
+    :::
+:::
+:::
+
+## Standardizing predictors {.scrollable}
+
+We will **standardize** our predictors, meaning that each predictor $X_{j}$ will be transformed to have mean 0 and standard deviation 1:
+
+$$X_{j}^{\text{std}} = \frac{X_{j} - \bar{X_{j}}}{\sigma_{X_{j}}},$$
+
+where $X_{j}$ is the vector of the $j$-th predictor, $\bar{X}_{j}$ is the average of $X_{j}$, and $\sigma_{X_{j}}$ is its standard deviation.
+
+::: fragment
+```{r}
+#| echo: true
+scale(train_x$SubsDens)
+
+# confirming we have mean 0 and sd 1
+scaled_SubsDens <- scale(train_x$SubsDens)
+mean(scaled_SubsDens)
+sd(scaled_SubsDens)
+```
+:::
+
+## Standardizing multiple variables
+
+::: columns
+::: {.column width="40%"}
+::: fragment
+```{r}
+#| echo: true
+train_x_scaled <- train_x %>%
+  mutate_if(is.numeric, scale)
+head(train_x_scaled)
+```
+:::
+:::
+
+::: {.column width="60%"}
+::: fragment
+```{r}
+#| echo: true
+#| code-line-numbers: "1-3"
+train_x_scaled <- train_x
+train_x_scaled$SubsDens <- scale(train_x$SubsDens)
+train_x_scaled$WatrCont <- scale(train_x$WatrCont)
+head(train_x_scaled)
+```
+:::
+:::
+:::
+
+## Standardizing the test data
+
+-   We should use the same statistics from the training data to scale the test data
+
+    -   i.e. to standardize the $j$-th predictor of the *test* data, we should use the mean and standard deviation of the $j$-th predictor from the *training* data
+
+-   ::: important
+    Discuss: why not scale the predictors first, and then split into train/test sets?
+    :::
+
+```{r}
+train_x_scaled <- train_x %>%
+  mutate_if(is.numeric, scale)
+train_means <- colMeans(train_x)
+train_sds <- apply(train_x, 2, sd)
+test_x_scaled <- test_x
+for(j in 1:ncol(test_x_scaled)){
+  test_x_scaled[,j] <- (test_x_scaled[,j] - train_means[j])/train_sds[j]
+}
+```
+
+::: fragment
+```{r}
+#| echo: true
+# note: I am not providing you the code for how I scaled my test observations!
+test_x_scaled
+```
+:::
+
+```{r}
+train_dat <- data.frame(train_x_scaled) %>%
+  mutate(abundance = train_y ) 
+test_dat <-  data.frame(test_x_scaled) %>%
+  mutate(abundance = test_y ) 
+```
+
+-   Important:
+    -   I do not scale the response variable
+    -   I scale after splitting into train/test
+
+## Scaled mite data
+
+::: r-stack
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+nbs_ls <- list()
+for(i in 1:nrow(test_dat)){
+  nbs_ls[[i]] <- data.frame(d = .dist(test_x_scaled[i,], train_x_scaled)) %>%
+    mutate(id = row_number()) %>%
+    arrange(d) %>%
+    slice(1:K) 
+}
+
+p3 <- ggplot()+
+  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = abundance), size = 3) +
+  scale_color_viridis_c(option = "plasma") +
+  plot_theme+
+  theme(legend.position = "bottom") +
+  ggtitle("Scaled train data")
+
+p3
+```
+:::
+
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+p3 + 
+  geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt), size = 4)+
+  labs(subtitle = "and test points")
+```
+:::
+:::
+
+## Scaled mite data: KNN results {.scrollable}
+
+::: columns
+::: {.column width="60%"}
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+p3 + 
+  geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt))+
+  geom_path(data = circleFun(center = as.numeric(test_dat[1,1:2]),
+                             diameter = nbs_ls[[1]][K,1]*2),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  geom_path(data = circleFun(center = as.numeric(test_dat[2,1:2]),
+                             diameter = nbs_ls[[2]][K,1]*2),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  labs(subtitle= "with neighbor sets for test points")
+```
+:::
+
+```{r}
+summary_df <- train_dat %>%
+  mutate(id = row_number()) %>%
+  inner_join(., do.call(rbind,nbs_ls) %>%
+               mutate(test_pt = rep(1:length(test_ids), each = K)),
+             by = "id") %>%
+  group_by(test_pt) %>%
+  summarise(y_hat = mean(abundance)) %>%
+  add_column(y_true = test_dat$abundance )
+rmse <- get_rmse(summary_df$y_hat, summary_df$y_true) 
+```
+:::
+
+::: {.column width="40%"}
+-   Predicted abundance $\hat{y}$ and true abundance $y$ for both test points, for a test RMSE of `r round(rmse, 3)`.
+
+::: fragment
+```{r}
+summary_df
+```
+:::
+
+-   Note how this RMSE compares to when we fit on original scale!
+
+    -   Even though we do slightly worse predicting test point 2, we improve a lot on test point 1
+:::
+:::
+
+# Categorical predictors
+
+## Why are categorical predictors a problem?
+
+-   Suppose we want to include the categorical predictors into our predictions:
+
+  -  `Topo` $\in \{ \text{Blanket, Hummock}\}$
+  -  `Shrub` $\in \{\text{None, Few, Many} \}$
+  - `Substrate` $\in \{\text{Sphagn1, Spaghn2, Sphagn3, Sphagn4, Litter, Barepeat, Interface}\}$
+
+-   Discuss: how would you define "distance" or "closeness" between two observations based on:
+
+    -  `Topo`
+
+    -   `Shrub`
+    
+
+-   We will create new quantitative variables to represent categorical variables
+
+## Integer encoding
+
+-   The predictor `Shrub` is ordinal
+    - i.e. there is a natural ordering (None \< Few \< Many) to the $L = 3$ categories
+
+-   The ordering should be reflected in the new quantitative variable
+
+-   **Integer encoding**: convert each label (category/level) into an integer value, where:
+
+    -   "Lowest" level gets assigned 0
+    -   Second lowest level gets assigned 1
+    -   ...
+    -   "Highest" level gets assigned $L-1$
+    
+## Mite data: integer encoding
+
+```{r}
+mite_dat <- mite_dat %>%
+  mutate(Shrub_encode = case_when(
+    Shrub == "None" ~ 0,
+    Shrub == "Few" ~ 1,
+    Shrub == "Many" ~ 2
+  ))
+set.seed(1)
+mite_dat %>%
+  dplyr::select(Shrub, Shrub_encode) %>%
+  sample_n(n) %>%
+  slice(1:5)
+```
+
+- Now I can calculate distances using `Shrub_encode`!
+
+## One-hot encoding
+
+- Question: why wouldn't I want to use integer encoding for a non-ordinal variable such as `Substrate`?
+
+- **One-hot encoding**: map each level of the variable to a new binary 0/1 variable, where
+
+  - 0 represents the absence of the category
+  - 1 represents the presence of the category
+  
+- These are called "dummy variables"; will have $L$ new variables
+
+## Mite data: one-hot encoding
+
+One-hot encoding of the `Topo` variable:
+
+```{r}
+mite_dat <- mite_dat %>%
+  mutate(
+    Topo_hummock = 1*(Topo == "Hummock"),
+    Topo_blanket = 1 * (Topo == "Blanket")
+  ) 
+set.seed(1)
+mite_dat %>%
+  dplyr::select(contains("Topo")) %>%
+  sample_n(n) %>%
+  slice(1:5)
+```
+
+## Mite data: one-hot encoding (cont.)
+
+One-hot encoding of the `Substrate` variable:
+
+
+```{r}
+mite_dat <- mite_dat %>%
+  mutate(value = 1,
+         Substrate_orig = Substrate) %>%
+  pivot_wider(names_from = Substrate, values_from = value, names_prefix = "Sub_", values_fill = 0) %>%
+  rename("Substrate" = "Substrate_orig") 
+set.seed(4)
+mite_dat %>%
+  dplyr::select(contains("Sub")) %>%
+  dplyr::select(-"SubsDens") %>%
+  sample_n(n) %>%
+  slice(1:8)
+```
+
+## Mite data: final data set
+
+So, our final set of predictors `X` that we could use in KNN regression for the response variable `abundance` would be:
+
+```{r}
+mite_dat %>%
+  dplyr::select(SubsDens, WatrCont, contains("_"))  %>%
+  sample_n(n) %>%
+  print(width = Inf)
+```
+
+
+-   Discuss: what are some potential issues with one-hot encoding? 
+
+# Summary
+
+-   Key point: when computing distances, you should consider **scaling** your predictors if they are on very different scales
+
+-   Discuss: what do you think are some pros and cons of KNN regression?
+
+    -   You might want to compare to linear regression
+
