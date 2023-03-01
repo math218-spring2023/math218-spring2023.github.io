@@ -22,9 +22,9 @@ draft: false
 
 -   Office hours today from 3-4pm
 
-- TA: Doug Rosin
+-   TA: Doug Rosin
 
-  - Office hours Sundays 7-9pm upstairs
+    -   Office hours Sundays 7-9pm upstairs
 
 ```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
@@ -206,13 +206,13 @@ data.frame(xx) %>%
   mutate(y = c(0,2,4,6))
 ```
 
-- Suppose I have the above data, and I want to predict for a new test point `x0` with `X1 = 0, X2 = 0, X3 = 0`.
+-   Suppose I have the above data, and I want to predict for a new test point `x0` with `X1 = 0, X2 = 0, X3 = 0`.
 
-- Calculate the distance between `x0` and each of the observed data points using:
+-   Calculate the distance between `x0` and each of the observed data points using:
 
-  - Euclidean distance
-  
-  - Manhattan distance
+    -   Euclidean distance
+
+    -   Manhattan distance
 
 # Consideration 2: K
 
@@ -532,16 +532,11 @@ summary_df
 
 # Summary
 
--   Discuss: what do you think are some pros and cons of KNN regression?
 
-    -   You might want to compare to linear regression
-    
-- Key point: in KNN, you should consider **scaling** your predictors if they are on very different scales
-  
-- Looking forward:
+-   Looking forward:
 
-  - You will implement KNN this week in small groups!
-  
-  -   We will learn later on in the semester how we might pick $K$
+    -   You will implement KNN this week in small groups!
 
-  -   What about categorical predictors?
+    -   We will learn later on in the semester how we might pick $K$
+
+    -   What about categorical predictors?

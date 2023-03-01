@@ -10,11 +10,11 @@ draft: true
 
 You and your group will implement KNN regression. I will break down the process for you below. Your group will build on this assignment over the next 2-3 weeks as we learn more content. Therefore, it is important that you communicate with and contribute to your group! Asking clarifying questions, explaining your thought process, throwing ideas out there, etc. all count as contributing.
 
-There will be a series of deliverables roughly 1-2 times a week. Even though you are working as a group, I want you to submit your deliverables individually. This is so you can continue to develop your skills as a coder and work at a pace that's more comfortable for you!
+There will be a series of small deliverables roughly 1-2 times a week. Even though you are working as a group, I want you to submit your deliverables individually. This is so you can continue to develop your skills as a coder and work at a pace that's more comfortable for you!
 
 ## Group introductions
 
--   Introduce yourself (again): name, majors, anything at all
+-   Introduce yourself: name, majors, anything at all
 
 -   Talk about how coding in R (base R or tidyverse) is going for you so well. Some people in the group may be more nervous about or proficient in coding, but I think it's good to name it early on.
 
@@ -64,7 +64,7 @@ Your final implementation must be a function that takes in the "minimal amount" 
 
 ### Check your code
 
-Once you've finished your implementation, check it by seeing if you get the same results as I did for the `LRUG` mites data in the KNN regression slides.
+Once you've finished your implementation, check it by seeing if you get the same results as I did for the non-standardized `LRUG` mites data in the KNN regression slides.
 
 ::: {style="color: maroon"}
 Specifically, use your brand new KNN function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of $K$.
