@@ -14,7 +14,7 @@ listing:
     fields: [title, date, description]
     sort: "date asc"
   - id: implementations
-    contents: "implementations/implementation-*.qmd"
+    contents: "implementations/implementation_*.qmd"
     type: grid
     date-format: medium
     fields: [title, date, description]

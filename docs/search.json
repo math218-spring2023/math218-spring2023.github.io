@@ -25,7 +25,7 @@
     "href": "assignments.html",
     "title": "Assignments",
     "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nConditions and for loops\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nFeb 28, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nConditions and for loops\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments.html#labs",
@@ -39,7 +39,7 @@
     "href": "assignments.html#implementations",
     "title": "Assignments",
     "section": "Implementations",
-    "text": "Implementations\n\n\n\n\n\nNo matching items"
+    "text": "Implementations\n\n\n\n\n\n\n\nKNN regression\n\n\nPart 1\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -1139,5 +1139,12 @@
     "title": "KNN Regression (cont.)",
     "section": "Mite data: final data set",
     "text": "Mite data: final data set\nSo, our final set of predictors X that we could use in KNN regression for the response variable abundance would be:\n\n\n# A tibble: 70 × 12\n   SubsDens WatrCont Shrub_encode Topo_hummock Topo_blanket Sub_Sphagn1\n      <dbl>    <dbl>        <dbl>        <dbl>        <dbl>       <dbl>\n 1     46.8     406.            1            1            0           1\n 2     37.3     284.            2            0            1           0\n 3     29.2     590.            0            0            1           1\n 4     28.9     588.            0            0            1           1\n 5     46.8     539.            1            0            1           0\n 6     26.8     415.            0            0            1           0\n 7     47.0     626.            0            0            1           0\n 8     48.6     635.            0            0            1           0\n 9     56.6     581             1            0            1           0\n10     27.2     353.            0            0            1           1\n   Sub_Litter Sub_Interface Sub_Sphagn3 Sub_Sphagn4 Sub_Sphagn2 Sub_Barepeat\n        <dbl>         <dbl>       <dbl>       <dbl>       <dbl>        <dbl>\n 1          0             0           0           0           0            0\n 2          0             1           0           0           0            0\n 3          0             0           0           0           0            0\n 4          0             0           0           0           0            0\n 5          0             1           0           0           0            0\n 6          0             1           0           0           0            0\n 7          0             1           0           0           0            0\n 8          0             1           0           0           0            0\n 9          0             1           0           0           0            0\n10          0             0           0           0           0            0\n# … with 60 more rows\n\n\n\nDiscuss: what are some potential issues with one-hot encoding?"
+  },
+  {
+    "objectID": "implementations/implementation_knn_regression_1.html",
+    "href": "implementations/implementation_knn_regression_1.html",
+    "title": "KNN regression",
+    "section": "",
+    "text": "You and your group will implement KNN regression. I will break down the process for you below. Your group will build on this assignment over the next 2-3 weeks as we learn more content. Therefore, it is important that you communicate with and contribute to your group! Asking clarifying questions, explaining your thought process, throwing ideas out there, etc. all count as contributing.\nThere will be a series of small deliverables roughly 1-2 times a week. Even though you are working as a group, I want you to submit your deliverables individually. This is so you can continue to develop your skills as a coder and work at a pace that’s more comfortable for you!\n\n\n\nIntroduce yourself: name, majors, anything at all\nTalk about how coding in R (base R or tidyverse) is going for you so well. Some people in the group may be more nervous about or proficient in coding, but I think it’s good to name it early on.\nFind a time and place to meet outside of class this week"
   }
 ]

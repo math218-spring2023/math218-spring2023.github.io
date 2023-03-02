@@ -1,9 +1,9 @@
 ---
 title: "KNN regression"
-date: "March 02, 2023"
 editor: visual
 categories: "Implementations"
-draft: true
+description: "Part 1"
+draft: false
 ---
 
 # Introduction
