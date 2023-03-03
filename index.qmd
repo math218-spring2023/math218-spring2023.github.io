@@ -16,7 +16,7 @@ title: "Math 218: Spring 2023"
 
 -   TA: Doug Rosin
 
-    -   Office hours: Sundays 7-9pm in Warner 216 (common space)
+    -   Office hours: Thursdays, Sundays 7-9pm in Warner 216 (common space)
 
 Visit the [schedule](schedule.qmd) page to see the current course schedule, lecture notes, and due dates.
 

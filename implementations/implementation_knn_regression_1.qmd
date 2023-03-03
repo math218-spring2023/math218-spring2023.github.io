@@ -46,7 +46,19 @@ Your final implementation must be a function called `.knn()` (note the period) t
 
 *You may assume that the user only wants Euclidean distance for this implementation*.
 
+### Deliverable
+
+Once you've finished your implementation, check it by seeing if you get the same results as I did for the non-standardized `LRUG` mites data in the KNN regression slides.
+
+::: {style="color: maroon"}
+Specifically, use your brand new `.knn()` function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of $K$.
+:::
+
 ### General advice
+
+-   Test your code frequently to make sure it's doing what you want it to do! This is especially true of any functions that you create.
+
+    -   This means you might want to create your train / test data now
 
 -   Start "big picture":
 
@@ -56,19 +68,11 @@ Your final implementation must be a function called `.knn()` (note the period) t
 
 -   Write functions that you can call within your implementation.
 
--   Test your code frequently to make sure it's doing what you want it to do! This is especially true of any functions that you create.
-
 -   Be as reproducible as possible. Try to avoid "hard-coding" if you can. This means you should not use specific variable names or indices. You want to be able to use your implementation for any future data set!
 
--   If you get stuck, please ask Becky for help!
+-   If you get stuck, please ask Becky or Doug for help!
 
-### Check your code
-
-Once you've finished your implementation, check it by seeing if you get the same results as I did for the non-standardized `LRUG` mites data in the KNN regression slides.
-
-::: {style="color: maroon"}
-Specifically, use your brand new `.knn()` function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of $K$.
-:::
+### 
 
 # Submission
 

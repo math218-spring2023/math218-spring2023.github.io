@@ -120,8 +120,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#step-2-write-a-group-pseudocode" id="toc-step-2-write-a-group-pseudocode" class="nav-link" data-scroll-target="#step-2-write-a-group-pseudocode">Step 2: write a group pseudocode</a></li>
   <li><a href="#step-3-implement-knn" id="toc-step-3-implement-knn" class="nav-link" data-scroll-target="#step-3-implement-knn">Step 3: implement KNN</a>
   <ul class="collapse">
+  <li><a href="#deliverable" id="toc-deliverable" class="nav-link" data-scroll-target="#deliverable">Deliverable</a></li>
   <li><a href="#general-advice" id="toc-general-advice" class="nav-link" data-scroll-target="#general-advice">General advice</a></li>
-  <li><a href="#check-your-code" id="toc-check-your-code" class="nav-link" data-scroll-target="#check-your-code">Check your code</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   </ul></li>
   <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
   </ul>
@@ -189,26 +190,32 @@ ul.task-list li input[type="checkbox"] {
 <p>Your final implementation must be a function called <code>.knn()</code> (note the period) that takes in the “minimal amount” of inputs and returns a vector of the predictions for the test data. “Minimal amount” means only the arguments that cannot be obtained/derived within the function itself (i.e.&nbsp;what the user of your function <em>must</em> specify in order to make your function run).</p>
 </div>
 <p><em>You may assume that the user only wants Euclidean distance for this implementation</em>.</p>
+<section id="deliverable" class="level3">
+<h3 class="anchored" data-anchor-id="deliverable">Deliverable</h3>
+<p>Once you’ve finished your implementation, check it by seeing if you get the same results as I did for the non-standardized <code>LRUG</code> mites data in the KNN regression slides.</p>
+<div style="color: maroon">
+<p>Specifically, use your brand new <code>.knn()</code> function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of <span class="math inline">\(K\)</span>.</p>
+</div>
+</section>
 <section id="general-advice" class="level3">
 <h3 class="anchored" data-anchor-id="general-advice">General advice</h3>
 <ul>
+<li><p>Test your code frequently to make sure it’s doing what you want it to do! This is especially true of any functions that you create.</p>
+<ul>
+<li>This means you might want to create your train / test data now</li>
+</ul></li>
 <li><p>Start “big picture”:</p>
 <ul>
 <li><p>Begin by defining your function and its arguments using <code>function()</code> . Remember, you can always add to the arguments as you progress through your coding if you realize your function requires additional inputs.</p></li>
 <li><p>If you need to iterate the same procedure many times, begin by writing out the loop and then add comments for each step within the body of the for loop. Then start coding each step.</p></li>
 </ul></li>
 <li><p>Write functions that you can call within your implementation.</p></li>
-<li><p>Test your code frequently to make sure it’s doing what you want it to do! This is especially true of any functions that you create.</p></li>
 <li><p>Be as reproducible as possible. Try to avoid “hard-coding” if you can. This means you should not use specific variable names or indices. You want to be able to use your implementation for any future data set!</p></li>
-<li><p>If you get stuck, please ask Becky for help!</p></li>
+<li><p>If you get stuck, please ask Becky or Doug for help!</p></li>
 </ul>
 </section>
-<section id="check-your-code" class="level3">
-<h3 class="anchored" data-anchor-id="check-your-code">Check your code</h3>
-<p>Once you’ve finished your implementation, check it by seeing if you get the same results as I did for the non-standardized <code>LRUG</code> mites data in the KNN regression slides.</p>
-<div style="color: maroon">
-<p>Specifically, use your brand new <code>.knn()</code> function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of <span class="math inline">\(K\)</span>.</p>
-</div>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
 </section>
 </section>
 <section id="submission" class="level1">
