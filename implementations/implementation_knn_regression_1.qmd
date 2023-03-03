@@ -41,7 +41,7 @@ Once Becky has confirmed your pseudocode is detailed enough, your group can begi
 Clone the GitHub project called `knn_regression` and work in the file `knn_regression_implementation.Rmd`.
 
 ::: {style="color: maroon"}
-Your final implementation must be a function that takes in the "minimal amount" of inputs and returns a vector of the predictions for the test data. "Minimal amount" means only the arguments that cannot be obtained/derived within the function itself (i.e. what the user of your function *must* specify in order to make your function run).
+Your final implementation must be a function called `.knn()` (note the period) that takes in the "minimal amount" of inputs and returns a vector of the predictions for the test data. "Minimal amount" means only the arguments that cannot be obtained/derived within the function itself (i.e. what the user of your function *must* specify in order to make your function run).
 :::
 
 *You may assume that the user only wants Euclidean distance for this implementation*.
@@ -67,7 +67,7 @@ Your final implementation must be a function that takes in the "minimal amount" 
 Once you've finished your implementation, check it by seeing if you get the same results as I did for the non-standardized `LRUG` mites data in the KNN regression slides.
 
 ::: {style="color: maroon"}
-Specifically, use your brand new KNN function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of $K$.
+Specifically, use your brand new `.knn()` function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of $K$.
 :::
 
 # Submission

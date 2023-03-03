@@ -1,0 +1,265 @@
+---
+title: "Resampling"
+date: "March 9, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/animal_crossing.png"
+    data-background-size: contain
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: false
+---
+
+# Housekeeping
+
+```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
+
+library(tidyverse)
+library(broom)
+library(ggfortify)
+library(ISLR)
+library(vegan)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+
+```
+
+## Resampling
+
+- Economically using a collected dataset by repeatedly drawing samples from the same training dataset and fitting a model of interest on each sample
+
+  - Obtain additional information about the fitted model
+
+- We will focus on two methods: **cross-validation** and the **bootstrap**
+
+- Cross-validation:
+
+  1. Validation set
+  2. LOOCV
+  3. k-fold CV (another k!)
+
+# Validation
+
+## Training vs Test errors
+
+- Recall the distinction between the training and test datasets
+
+  - Training data: used to fit model
+  - Test data: used to test/evaluate the model 
+  
+- These two datasets result in two types of error:
+
+  - **Training error**: average error resulting from using the model to predict the responses for the training data
+  - **Test error**: average error from using the model to predict the responses on new, "unseen" observations
+  
+  
+- Training error is often very different from test error
+
+## Validation-set approach
+
+- We have been using a *validation-set* approach: randomly divide (e.g. 50/50) the available data into two parts: a **training set** and a **test/validation/hold-out** set
+
+  - Model is fit on training set
+  - Fitted model predicts responses for the observations in the validation set
+  
+- The resulting validation-set error provides an estimate of the test error. This is typically assessed using RMSE 
+
+## Validation-set approach: drawbacks
+
+- Our estimate for test error will depend on the observations that are included in the training and validation sets
+
+  - Validation estimate of test error can be highly variable
+
+- Only a subset of the available data are used to fit the model
+
+  - i.e. fewer observations used to fit model might lead to *overestimating* test error rate
+  
+## Leave-One-Out Cross-Validation {.scrollable}
+
+- **Leave-one-out cross-validation** (LOOCV) attempts to address the drawbacks from validation set approach
+
+- Still splits all observations into two sets: training and validation
+
+- Key difference: just *one* observation is used for the validation set, leaving $n-1$ observations for training set
+
+- For example: choose observation $(x_{1}, y_{1})$ to be validation set, and fit model on training set $\{(x_{2}, y_{2}), (x_{3}, y_{3}), \ldots, (x_{n}, y_{n}) \}$
+
+  - $\text{RMSE}_{1} = \sqrt{(y_{1} -\hat{y}_{1})^2}$ an approximately unbiased estimate for test error
+
+- Repeat procedure by selecting the second observation to be validation set, then third, etc. 
+
+- Will end up with $n$ errors: $\text{RMSE}_{1}, \text{RMSE}_{2}, \ldots, \text{RMSE}_{n}$. Then LOOCV estimate for test RMSE is the average:
+
+$$\text{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \text{RMSE}_{i}$$
+
+
+## Discuss
+
+- Suppose I am fitting a simple linear regression model $Y = \beta_{0} + \beta_{1}X + \epsilon$. 
+
+- I want to obtain an estimate of the test error using LOOCV
+
+- Discuss exactly how you would implement this in code. Specific things to mention:
+
+  - What "actions"/functions you would use, and in what order
+  
+  - What values you would compute
+  
+  - What values you would store
+   
+## LOOCV pros and cos
+
+- Pros
+
+  - Each training set has $n-1$ observations $\rightarrow$ tend to not overestimate test error as much
+  - There is no randomness in training/validation set splits
+
+- Cons
+
+  - LOOCV can be *expensive* to implement -- must fit the model $n$ times
+  
+  - Estimates for each validation set $i$  are highly correlated, so the average can have high variance
+  
+## k-fold Cross-Validation {.scrollable}
+
+- In **k-fold CV**, the observations are randomly divided into $K$ groups (or folds) of approximately equal size. 
+
+- For each $k$ in $1, 2, \ldots, K$:
+  - Leave out $k$-th group as validation set, and fit model on remaining $K-1$ parts (combined)
+  - Prediction for the held-out $k$-th fold, and obtain a corresponding $\text{RMSE}_{k}$
+  
+- Letting the $k$-th fold have $n_{k}$ observations:
+
+  - $\text{MSE}_{k} = \frac{1}{n_{k}}\sum_{i \in \mathcal{C}_{k}} (y_{i} - \hat{y}^{(k)}_{i})^2$, where $\mathcal{C}_{k}$ is set of observations in $k$-th fold and $\hat{y}^{(k)}_{i}$ is fit for observation $i$ obtained from data with part $k$ removed
+  
+  - If $n$ is a multiple of $K$, then $n_{k} = n/K$
+  
+- The $k$-fold CV estimate of the test error is the average:
+
+$$\text{CV}_{(K)} = \frac{1}{K} \sum_{k=1}^{K} \text{RMSE}_{k}$$
+
+## Visual
+
+## Validation: remarks
+
+- LOOCV is a special case of $k$-fold CV. 
+
+  - Question: Which value of $k$ yields LOOCV?
+
+
+- $k$-fold CV estimate is still biased upward; bias minimized when $k = n$
+
+  - $k = 5$ or $k=10$ often used as a compromise for bias-variance tradeoff
+
+- LOOCV and $k$-fold CV are useful and commonly used because of their generality
+
+# The Bootstrap
+
+## The Bootstrap
+
+- The **bootstrap** is a flexible and powerful statistical tool that can be used to quantify the uncertainty associated with a given estimator or statistical learning method
+
+- Example: can be used to estimate the standard errors of the $\beta$ coefficients in linear regression
+
+- One goal of statistics: learn about a population.
+
+  - Usually, population is not available, so must make inference from sample data
+
+- Bootstrapping operates by *resampling* this sample data to create many simulated samples
+
+
+## The Bootstrap (cont.)
+
+- Bootstrapping resamples the original dataset **with replacement**
+
+- If the original datset has $n$ observations, then each bootstrap/resampled dataset also has $n$ observations
+
+  - Each observation has equal probability of being included in resampled dataset
+  - Can select an observation more than once for a resampled dataset
+
+
+## Example
+
+- Suppose a study on adult daily caffeine consumption (mg) collects 4 data points: 110, 130, 150, 200. I want to learn about the average consumption in adults.
+
+- Create my first bootstrap sample:
+
+```{r echo = T}
+dat <- c(110, 130, 150, 200)
+n <- length(dat)
+
+samp1 <- sample(x = dat, size = n, replace = T)
+samp1
+```
+
+
+- Obtain our first estimate for $\mu$, the population mean daily caffeine consumption in adults: $\hat{\mu}_{1} = `r mean(samp1)`$
+
+
+## Example (cont.)
+
+- Take second sample:
+
+```{r echo = T}
+samp2 <- sample(x = dat, size = n, replace = T)
+samp2
+```
+  
+- $\hat{\mu}_{2} = `r mean(samp2)`$
+
+
+- Repeat this process thousands of times!
+
+- ...
+
+
+```{r}
+B <- 1000
+samps <- t(replicate(B,  sample(x = dat, size = n, replace = T)))
+mu_ests <- rowMeans(samps)
+```
+
+- After `r B` bootstrap samples, we end up with `r B` estimates for $\mu$
+
+::: fragment
+
+```{r fig.align="center", fig.height=4, fig.width=4}
+ggplot(data.frame(mu = mu_ests), aes(x = mu)) +
+  geom_histogram(bins = 10)
+
+```
+
+:::
+
+- Mean over all estimates is $\hat{\mu} = `r mean(mu_ests)`$
+
+- Approximate 95% confidence interval for the mean are the 5% and 95% quantiles of the `r B` mean estimates: (`r quantile(mu_ests, c(0.025))`, `r quantile(mu_ests, c(0.975))`) 
+
+  - Called a *bootstrap percentile* confidence interval
+
+## Bootstrap: pros and cons
+
+- Real world vs bootstrap world
+
+- Pros:
+
+  - No assumptions about distribution of your data 
+  - Very general method that allows estimating sampling distribution of almost any statistic!
+  - Cost-effective
+
+- Cons:
+
+  - In more complex scenarios, figuring out appropriate way to bootstrap may require thought
+  - Can fail in some situations
+  - Relies quite heavily on the original sample

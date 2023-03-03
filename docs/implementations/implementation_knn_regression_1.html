@@ -186,7 +186,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Once Becky has confirmed your pseudocode is detailed enough, your group can begin coding the implementation of KNN regression. The real fun begins!</p>
 <p>Clone the GitHub project called <code>knn_regression</code> and work in the file <code>knn_regression_implementation.Rmd</code>.</p>
 <div style="color: maroon">
-<p>Your final implementation must be a function that takes in the “minimal amount” of inputs and returns a vector of the predictions for the test data. “Minimal amount” means only the arguments that cannot be obtained/derived within the function itself (i.e.&nbsp;what the user of your function <em>must</em> specify in order to make your function run).</p>
+<p>Your final implementation must be a function called <code>.knn()</code> (note the period) that takes in the “minimal amount” of inputs and returns a vector of the predictions for the test data. “Minimal amount” means only the arguments that cannot be obtained/derived within the function itself (i.e.&nbsp;what the user of your function <em>must</em> specify in order to make your function run).</p>
 </div>
 <p><em>You may assume that the user only wants Euclidean distance for this implementation</em>.</p>
 <section id="general-advice" class="level3">
@@ -207,7 +207,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="check-your-code">Check your code</h3>
 <p>Once you’ve finished your implementation, check it by seeing if you get the same results as I did for the non-standardized <code>LRUG</code> mites data in the KNN regression slides.</p>
 <div style="color: maroon">
-<p>Specifically, use your brand new KNN function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of <span class="math inline">\(K\)</span>.</p>
+<p>Specifically, use your brand new <code>.knn()</code> function and demonstrate that you obtain the same predictions as I did for the same set of test data (plus or minus some rounding error). Then, use your function to predict for a different choice of <span class="math inline">\(K\)</span>.</p>
 </div>
 </section>
 </section>
