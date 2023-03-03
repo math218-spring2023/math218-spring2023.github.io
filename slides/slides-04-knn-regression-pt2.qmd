@@ -446,4 +446,4 @@ mite_dat %>%
 
     -   Should we standardize our new encoded variables?
 
-    -   Does anything need to change about your current KNN implementation to address standardizing and accomodating categorical predictors?
+    -   Does anything need to change about your current KNN implementation to address standardizing variables and/or accomodating categorical predictors?

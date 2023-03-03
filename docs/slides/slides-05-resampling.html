@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.313">
 
-  <title>Math 218 - Spring 2023 - Resampling</title>
+  <title>Math 218 - Spring 2023 - Validation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -386,8 +386,8 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="figs/title/animal_crossing.png" data-background-opacity="0.3" data-background-size="contain" class="quarto-title-block center">
-  <h1 class="title">Resampling</h1>
+<section id="title-slide" data-background-image="figs/title/validation.png" data-background-opacity="0.3" data-background-size="contain" class="quarto-title-block center">
+  <h1 class="title">Validation</h1>
 
 <div class="quarto-title-authors">
 </div>
@@ -408,19 +408,14 @@
 <ul>
 <li class="fragment">Obtain additional information about the fitted model</li>
 </ul></li>
-<li class="fragment"><p>We will focus on two methods: <strong>cross-validation</strong> and the <strong>bootstrap</strong></p></li>
-<li class="fragment"><p>Cross-validation:</p>
+<li class="fragment"><p>Two methods: cross-validation and the bootstrap</p></li>
+<li class="fragment"><p>These slides will focus on the following topics of <strong>cross-validation</strong>:</p>
 <ol type="1">
 <li class="fragment">Validation set</li>
 <li class="fragment">LOOCV</li>
 <li class="fragment">k-fold CV (another k!)</li>
 </ol></li>
 </ul>
-</section></section>
-<section>
-<section id="validation" class="title-slide slide level1 center">
-<h1>Validation</h1>
-
 </section>
 <section id="training-vs-test-errors" class="slide level2">
 <h2>Training vs Test errors</h2>
@@ -437,20 +432,25 @@
 </ul></li>
 <li class="fragment"><p>Training error is often very different from test error</p></li>
 </ul>
+</section></section>
+<section>
+<section id="validation-set" class="title-slide slide level1 center">
+<h1>Validation set</h1>
+
 </section>
 <section id="validation-set-approach" class="slide level2">
-<h2>Validation-set approach</h2>
+<h2>Validation set approach</h2>
 <ul>
-<li class="fragment"><p>We have been using a <em>validation-set</em> approach: randomly divide (e.g.&nbsp;50/50) the available data into two parts: a <strong>training set</strong> and a <strong>test/validation/hold-out</strong> set</p>
+<li class="fragment"><p>We have been using a <em>validation set</em> approach: randomly divide (e.g.&nbsp;50/50) the available data into two parts: a <strong>training set</strong> and a <strong>test/validation/hold-out</strong> set</p>
 <ul>
 <li class="fragment">Model is fit on training set</li>
 <li class="fragment">Fitted model predicts responses for the observations in the validation set</li>
 </ul></li>
-<li class="fragment"><p>The resulting validation-set error provides an estimate of the test error. This is typically assessed using RMSE</p></li>
+<li class="fragment"><p>The resulting validation-set error provides an estimate of the test error (e.g.&nbsp;RMSE)</p></li>
 </ul>
 </section>
 <section id="validation-set-approach-drawbacks" class="slide level2">
-<h2>Validation-set approach: drawbacks</h2>
+<h2>Validation set approach: drawbacks</h2>
 <ul>
 <li class="fragment"><p>Our estimate for test error will depend on the observations that are included in the training and validation sets</p>
 <ul>
@@ -461,21 +461,31 @@
 <li class="fragment">i.e.&nbsp;fewer observations used to fit model might lead to <em>overestimating</em> test error rate</li>
 </ul></li>
 </ul>
+</section></section>
+<section>
+<section id="leave-one-out-cross-validation" class="title-slide slide level1 center">
+<h1>Leave-One-Out Cross-Validation</h1>
+
 </section>
-<section id="leave-one-out-cross-validation" class="slide level2 scrollable">
+<section id="leave-one-out-cross-validation-1" class="slide level2">
 <h2>Leave-One-Out Cross-Validation</h2>
 <ul>
 <li class="fragment"><p><strong>Leave-one-out cross-validation</strong> (LOOCV) attempts to address the drawbacks from validation set approach</p></li>
-<li class="fragment"><p>Still splits all observations into two sets: training and validation</p></li>
-<li class="fragment"><p>Key difference: just <em>one</em> observation is used for the validation set, leaving <span class="math inline">\(n-1\)</span> observations for training set</p></li>
-<li class="fragment"><p>For example: choose observation <span class="math inline">\((x_{1}, y_{1})\)</span> to be validation set, and fit model on training set <span class="math inline">\(\{(x_{2}, y_{2}), (x_{3}, y_{3}), \ldots, (x_{n}, y_{n}) \}\)</span></p>
+<li class="fragment"><p>We still split all observations into two sets: training and validation</p></li>
+<li class="fragment"><p>Key difference: instead of splitting just once, we split many times, where <em>one</em> observation is used for the validation set, leaving the remaining <span class="math inline">\(n-1\)</span> observations for training set</p></li>
+</ul>
+</section>
+<section id="loocv-method" class="slide level2">
+<h2>LOOCV: method</h2>
 <ul>
-<li class="fragment"><span class="math inline">\(\text{RMSE}_{1} = \sqrt{(y_{1} -\hat{y}_{1})^2}\)</span> an approximately unbiased estimate for test error</li>
-</ul></li>
+<li class="fragment"><p>Start by choosing first observation <span class="math inline">\((x_{1}, y_{1})\)</span> to be validation set, and fit model on remaining <span class="math inline">\(\{(x_{2}, y_{2}), (x_{3}, y_{3}), \ldots, (x_{n}, y_{n}) \}\)</span> as our training set</p></li>
+<li class="fragment"><p>Obtain <span class="math inline">\(\text{RMSE}_{1} = \sqrt{(y_{1} -\hat{y}_{1})^2}\)</span>, an approximately unbiased estimate for test error</p></li>
 <li class="fragment"><p>Repeat procedure by selecting the second observation to be validation set, then third, etc.</p></li>
 <li class="fragment"><p>Will end up with <span class="math inline">\(n\)</span> errors: <span class="math inline">\(\text{RMSE}_{1}, \text{RMSE}_{2}, \ldots, \text{RMSE}_{n}\)</span>. Then LOOCV estimate for test RMSE is the average:</p></li>
 </ul>
+<div class="fragment">
 <p><span class="math display">\[\text{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \text{RMSE}_{i}\]</span></p>
+</div>
 </section>
 <section id="discuss" class="slide level2">
 <h2>Discuss</h2>
@@ -490,42 +500,77 @@
 </ul></li>
 </ul>
 </section>
-<section id="loocv-pros-and-cos" class="slide level2">
-<h2>LOOCV pros and cos</h2>
+<section id="live-code" class="slide level2">
+<h2>Live code</h2>
+</section>
+<section id="loocv-pros-and-cons" class="slide level2">
+<h2>LOOCV pros and cons</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li class="fragment"><p>Pros</p>
 <ul>
 <li class="fragment">Each training set has <span class="math inline">\(n-1\)</span> observations <span class="math inline">\(\rightarrow\)</span> tend to not overestimate test error as much</li>
-<li class="fragment">There is no randomness in training/validation set splits</li>
+<li class="fragment">There is no randomness in how the original data is split</li>
 </ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
 <li class="fragment"><p>Cons</p>
 <ul>
 <li class="fragment"><p>LOOCV can be <em>expensive</em> to implement – must fit the model <span class="math inline">\(n\)</span> times</p></li>
 <li class="fragment"><p>Estimates for each validation set <span class="math inline">\(i\)</span> are highly correlated, so the average can have high variance</p></li>
 </ul></li>
 </ul>
+</div>
+</div>
+</section></section>
+<section>
+<section id="k-fold-cross-validation" class="title-slide slide level1 center">
+<h1>k-fold Cross-Validation</h1>
+
 </section>
-<section id="k-fold-cross-validation" class="slide level2 scrollable">
+<section id="k-fold-cross-validation-1" class="slide level2 scrollable">
 <h2>k-fold Cross-Validation</h2>
 <ul>
-<li class="fragment"><p>In <strong>k-fold CV</strong>, the observations are randomly divided into <span class="math inline">\(K\)</span> groups (or folds) of approximately equal size.</p></li>
-<li class="fragment"><p>For each <span class="math inline">\(k\)</span> in <span class="math inline">\(1, 2, \ldots, K\)</span>:</p>
+<li class="fragment"><p>In <strong>k-fold CV</strong>, the observations are randomly divided into <span class="math inline">\(k\)</span> partitions (or folds) of approximately equal size.</p></li>
+<li class="fragment"><p>For each <span class="math inline">\(j\)</span> in <span class="math inline">\(1, 2, \ldots, k\)</span>:</p>
 <ul>
-<li class="fragment">Leave out <span class="math inline">\(k\)</span>-th group as validation set, and fit model on remaining <span class="math inline">\(K-1\)</span> parts (combined)</li>
-<li class="fragment">Prediction for the held-out <span class="math inline">\(k\)</span>-th fold, and obtain a corresponding <span class="math inline">\(\text{RMSE}_{k}\)</span></li>
-</ul></li>
-<li class="fragment"><p>Letting the <span class="math inline">\(k\)</span>-th fold have <span class="math inline">\(n_{k}\)</span> observations:</p>
-<ul>
-<li class="fragment"><p><span class="math inline">\(\text{MSE}_{k} = \frac{1}{n_{k}}\sum_{i \in \mathcal{C}_{k}} (y_{i} - \hat{y}^{(k)}_{i})^2\)</span>, where <span class="math inline">\(\mathcal{C}_{k}\)</span> is set of observations in <span class="math inline">\(k\)</span>-th fold and <span class="math inline">\(\hat{y}^{(k)}_{i}\)</span> is fit for observation <span class="math inline">\(i\)</span> obtained from data with part <span class="math inline">\(k\)</span> removed</p></li>
-<li class="fragment"><p>If <span class="math inline">\(n\)</span> is a multiple of <span class="math inline">\(K\)</span>, then <span class="math inline">\(n_{k} = n/K\)</span></p></li>
+<li class="fragment">Leave out <span class="math inline">\(j\)</span>-th partition/fold as validation set, and fit model on remaining <span class="math inline">\(k-1\)</span> partitions (combined)</li>
+<li class="fragment">Predict for all observations in the held-out <span class="math inline">\(j\)</span>-th fold, and obtain a corresponding <span class="math inline">\(\text{RMSE}_{j}\)</span></li>
 </ul></li>
 <li class="fragment"><p>The <span class="math inline">\(k\)</span>-fold CV estimate of the test error is the average:</p></li>
 </ul>
-<p><span class="math display">\[\text{CV}_{(K)} = \frac{1}{K} \sum_{k=1}^{K} \text{RMSE}_{k}\]</span></p>
+<div class="fragment">
+<p><span class="math display">\[\text{CV}_{(k)} = \frac{1}{k} \sum_{j=1}^{k} \text{RMSE}_{j}\]</span></p>
+</div>
+</section>
+<section id="k-fold-cv-cont." class="slide level2">
+<h2>k-fold CV (cont.)</h2>
+<ul>
+<li class="fragment">Letting the <span class="math inline">\(j\)</span>-th fold have <span class="math inline">\(n_{j}\)</span> observations:</li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[\text{RMSE}_{j} = \sqrt{\frac{1}{n_{j}}\sum_{i \in \mathcal{C}_{j}} (y_{i} - \hat{y}^{(j)}_{i})^2},\]</span></p>
+</div>
+<div class="fragment">
+<p>where <span class="math inline">\(\mathcal{C}_{j}\)</span> is set of observations in the <span class="math inline">\(j\)</span>-th fold, so <span class="math inline">\(i\)</span> indexes the observations in <span class="math inline">\(\mathcal{C}_{j}\)</span>. <span class="math inline">\(\hat{y}^{(j)}_{i}\)</span> is the prediction for <span class="math inline">\(i\)</span>-th observation, obtained from data with part <span class="math inline">\(j\)</span> removed</p>
+</div>
+<ul>
+<li class="fragment">If <span class="math inline">\(n\)</span> is a multiple of <span class="math inline">\(k\)</span>, then <span class="math inline">\(n_{j} = \frac{n}{k}\)</span></li>
+</ul>
 </section>
 <section id="visual" class="slide level2">
 <h2>Visual</h2>
+<ul>
+<li class="fragment">Important: k is the number of folds/partitions, <em>not</em> the number of observations within each fold!</li>
+</ul>
 </section>
+<section id="example-varying-k" class="slide level2">
+<h2>Example: varying k</h2>
+<p>I fit the linear model <code>abundance</code> = <span class="math inline">\(\beta_{0} + \beta_{1}\)</span> <code>WatrCont</code> + <span class="math inline">\(\beta_{2}\)</span> <code>SubsDens</code> and obtain estimates of the test RMSE using k-fold CV for varying k:</p>
+
+<img data-src="slides-05-resampling_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch"></section>
 <section id="validation-remarks" class="slide level2">
 <h2>Validation: remarks</h2>
 <ul>
@@ -581,11 +626,11 @@
 <span id="cb1-4"><a href="#cb1-4"></a>samp1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> dat, <span class="at">size =</span> n, <span class="at">replace =</span> T)</span>
 <span id="cb1-5"><a href="#cb1-5"></a>samp1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 150 150 200 200</code></pre>
+<pre><code>[1] 130 200 130 200</code></pre>
 </div>
 </div>
 <ul>
-<li class="fragment">Obtain our first estimate for <span class="math inline">\(\mu\)</span>, the population mean daily caffeine consumption in adults: <span class="math inline">\(\hat{\mu}_{1} = 175\)</span></li>
+<li class="fragment">Obtain our first estimate for <span class="math inline">\(\mu\)</span>, the population mean daily caffeine consumption in adults: <span class="math inline">\(\hat{\mu}_{1} = 165\)</span></li>
 </ul>
 </section>
 <section id="example-cont." class="slide level2">
@@ -597,7 +642,7 @@
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>samp2 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> dat, <span class="at">size =</span> n, <span class="at">replace =</span> T)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>samp2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 130 150 110 130</code></pre>
+<pre><code>[1] 130 130 150 110</code></pre>
 </div>
 </div>
 <ul>
@@ -616,14 +661,14 @@
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="slides-05-resampling_files/figure-revealjs/unnamed-chunk-4-1.png" width="384"></p>
+<p><img data-src="slides-05-resampling_files/figure-revealjs/unnamed-chunk-5-1.png" width="384"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <ul>
-<li class="fragment"><p>Mean over all estimates is <span class="math inline">\(\hat{\mu} = 147.165\)</span></p></li>
+<li class="fragment"><p>Mean over all estimates is <span class="math inline">\(\hat{\mu} = 147.2125\)</span></p></li>
 <li class="fragment"><p>Approximate 95% confidence interval for the mean are the 5% and 95% quantiles of the 1000 mean estimates: (120, 182.5)</p>
 <ul>
 <li class="fragment">Called a <em>bootstrap percentile</em> confidence interval</li>

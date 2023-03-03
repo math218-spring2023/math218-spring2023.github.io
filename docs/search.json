@@ -1150,42 +1150,42 @@
   {
     "objectID": "slides/slides-05-resampling.html#resampling",
     "href": "slides/slides-05-resampling.html#resampling",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "Resampling",
-    "text": "Resampling\n\nEconomically using a collected dataset by repeatedly drawing samples from the same training dataset and fitting a model of interest on each sample\n\nObtain additional information about the fitted model\n\nWe will focus on two methods: cross-validation and the bootstrap\nCross-validation:\n\nValidation set\nLOOCV\nk-fold CV (another k!)"
+    "text": "Resampling\n\nEconomically using a collected dataset by repeatedly drawing samples from the same training dataset and fitting a model of interest on each sample\n\nObtain additional information about the fitted model\n\nTwo methods: cross-validation and the bootstrap\nThese slides will focus on the following topics of cross-validation:\n\nValidation set\nLOOCV\nk-fold CV (another k!)"
   },
   {
     "objectID": "slides/slides-05-resampling.html#training-vs-test-errors",
     "href": "slides/slides-05-resampling.html#training-vs-test-errors",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "Training vs Test errors",
     "text": "Training vs Test errors\n\nRecall the distinction between the training and test datasets\n\nTraining data: used to fit model\nTest data: used to test/evaluate the model\n\nThese two datasets result in two types of error:\n\nTraining error: average error resulting from using the model to predict the responses for the training data\nTest error: average error from using the model to predict the responses on new, “unseen” observations\n\nTraining error is often very different from test error"
   },
   {
     "objectID": "slides/slides-05-resampling.html#validation-set-approach",
     "href": "slides/slides-05-resampling.html#validation-set-approach",
-    "title": "Resampling",
-    "section": "Validation-set approach",
-    "text": "Validation-set approach\n\nWe have been using a validation-set approach: randomly divide (e.g. 50/50) the available data into two parts: a training set and a test/validation/hold-out set\n\nModel is fit on training set\nFitted model predicts responses for the observations in the validation set\n\nThe resulting validation-set error provides an estimate of the test error. This is typically assessed using RMSE"
+    "title": "Validation",
+    "section": "Validation set approach",
+    "text": "Validation set approach\n\nWe have been using a validation set approach: randomly divide (e.g. 50/50) the available data into two parts: a training set and a test/validation/hold-out set\n\nModel is fit on training set\nFitted model predicts responses for the observations in the validation set\n\nThe resulting validation-set error provides an estimate of the test error (e.g. RMSE)"
   },
   {
     "objectID": "slides/slides-05-resampling.html#validation-set-approach-drawbacks",
     "href": "slides/slides-05-resampling.html#validation-set-approach-drawbacks",
-    "title": "Resampling",
-    "section": "Validation-set approach: drawbacks",
-    "text": "Validation-set approach: drawbacks\n\nOur estimate for test error will depend on the observations that are included in the training and validation sets\n\nValidation estimate of test error can be highly variable\n\nOnly a subset of the available data are used to fit the model\n\ni.e. fewer observations used to fit model might lead to overestimating test error rate"
+    "title": "Validation",
+    "section": "Validation set approach: drawbacks",
+    "text": "Validation set approach: drawbacks\n\nOur estimate for test error will depend on the observations that are included in the training and validation sets\n\nValidation estimate of test error can be highly variable\n\nOnly a subset of the available data are used to fit the model\n\ni.e. fewer observations used to fit model might lead to overestimating test error rate"
   },
   {
     "objectID": "slides/slides-05-resampling.html#leave-one-out-cross-validation",
     "href": "slides/slides-05-resampling.html#leave-one-out-cross-validation",
     "title": "Resampling",
     "section": "Leave-One-Out Cross-Validation",
-    "text": "Leave-One-Out Cross-Validation\n\nLeave-one-out cross-validation (LOOCV) attempts to address the drawbacks from validation set approach\nStill splits all observations into two sets: training and validation\nKey difference: just one observation is used for the validation set, leaving \\(n-1\\) observations for training set\nFor example: choose observation \\((x_{1}, y_{1})\\) to be validation set, and fit model on training set \\(\\{(x_{2}, y_{2}), (x_{3}, y_{3}), \\ldots, (x_{n}, y_{n}) \\}\\)\n\n\\(\\text{RMSE}_{1} = \\sqrt{(y_{1} -\\hat{y}_{1})^2}\\) an approximately unbiased estimate for test error\n\nRepeat procedure by selecting the second observation to be validation set, then third, etc.\nWill end up with \\(n\\) errors: \\(\\text{RMSE}_{1}, \\text{RMSE}_{2}, \\ldots, \\text{RMSE}_{n}\\). Then LOOCV estimate for test RMSE is the average:\n\n\\[\\text{CV}_{(n)} = \\frac{1}{n}\\sum_{i=1}^{n} \\text{RMSE}_{i}\\]"
+    "text": "Leave-One-Out Cross-Validation\n\nLeave-one-out cross-validation (LOOCV) attempts to address the drawbacks from validation set approach\nStill splits all observations into two sets: training and validation\nKey difference: just one observation is used for the validation set, leaving \\(n-1\\) observations for training set\nFor example: choose observation \\((x_{1}, y_{1})\\) to be validation set, and fit model on training set \\(\\{(x_{2}, y_{2}), (x_{3}, y_{3}), \\ldots, (x_{n}, y_{n}) \\}\\)\n\n\\(\\text{RMSE}_{1} = \\sqrt{(y_{1} -\\hat{y}_{1})^2}\\) an approximately unbiased estimate for test error\n\nRepeat procedure by selecting the second observation to be validation set, then third, etc.\nWill end up with \\(n\\) errors: \\(\\text{RMSE}_{1}, \\text{RMSE}_{2}, \\ldots, \\text{RMSE}_{n}\\). Then LOOCV estimate for test RMSE is the average:\n\n\n\\[\\text{CV}_{(n)} = \\frac{1}{n}\\sum_{i=1}^{n} \\text{RMSE}_{i}\\]"
   },
   {
     "objectID": "slides/slides-05-resampling.html#discuss",
     "href": "slides/slides-05-resampling.html#discuss",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "Discuss",
     "text": "Discuss\n\nSuppose I am fitting a simple linear regression model \\(Y = \\beta_{0} + \\beta_{1}X + \\epsilon\\).\nI want to obtain an estimate of the test error using LOOCV\nDiscuss exactly how you would implement this in code. Specific things to mention:\n\nWhat “actions”/functions you would use, and in what order\nWhat values you would compute\nWhat values you would store"
   },
@@ -1194,21 +1194,21 @@
     "href": "slides/slides-05-resampling.html#loocv-pros-and-cos",
     "title": "Resampling",
     "section": "LOOCV pros and cos",
-    "text": "LOOCV pros and cos\n\nPros\n\nEach training set has \\(n-1\\) observations \\(\\rightarrow\\) tend to not overestimate test error as much\nThere is no randomness in training/validation set splits\n\nCons\n\nLOOCV can be expensive to implement – must fit the model \\(n\\) times\nEstimates for each validation set \\(i\\) are highly correlated, so the average can have high variance"
+    "text": "LOOCV pros and cos\n\n::: {.column width = “50%”} - Pros\nEach training set has \\(n-1\\) observations \\(\\rightarrow\\) tend to not overestimate test error as much\nThere is no randomness in training/validation set splits\n\n\n::: {.column width = “50%”} - Cons\n\nLOOCV can be expensive to implement – must fit the model \\(n\\) times\nEstimates for each validation set \\(i\\) are highly correlated, so the average can have high variance\n\n:::\n:::: ## k-fold Cross-Validation {.scrollable}\n\nIn k-fold CV, the observations are randomly divided into \\(K\\) groups (or folds) of approximately equal size.\nFor each \\(k\\) in \\(1, 2, \\ldots, K\\):\n\nLeave out \\(k\\)-th group as validation set, and fit model on remaining \\(K-1\\) parts (combined)\nPrediction for the held-out \\(k\\)-th fold, and obtain a corresponding \\(\\text{RMSE}_{k}\\)\n\nLetting the \\(k\\)-th fold have \\(n_{k}\\) observations:\n\n\\(\\text{RMSE}_{k} = \\sqrt{\\frac{1}{n_{k}}\\sum_{i \\in \\mathcal{C}_{k}} (y_{i} - \\hat{y}^{(k)}_{i})^2}\\), where \\(\\mathcal{C}_{k}\\) is set of observations in \\(k\\)-th fold and \\(\\hat{y}^{(k)}_{i}\\) is fit for observation \\(i\\) obtained from data with part \\(k\\) removed\nIf \\(n\\) is a multiple of \\(K\\), then \\(n_{k} = n/K\\)\n\nThe \\(k\\)-fold CV estimate of the test error is the average:\n\n\\[\\text{CV}_{(K)} = \\frac{1}{K} \\sum_{k=1}^{K} \\text{RMSE}_{k}\\]"
   },
   {
     "objectID": "slides/slides-05-resampling.html#k-fold-cross-validation",
     "href": "slides/slides-05-resampling.html#k-fold-cross-validation",
     "title": "Resampling",
     "section": "k-fold Cross-Validation",
-    "text": "k-fold Cross-Validation\n\nIn k-fold CV, the observations are randomly divided into \\(K\\) groups (or folds) of approximately equal size.\nFor each \\(k\\) in \\(1, 2, \\ldots, K\\):\n\nLeave out \\(k\\)-th group as validation set, and fit model on remaining \\(K-1\\) parts (combined)\nPrediction for the held-out \\(k\\)-th fold, and obtain a corresponding \\(\\text{RMSE}_{k}\\)\n\nLetting the \\(k\\)-th fold have \\(n_{k}\\) observations:\n\n\\(\\text{MSE}_{k} = \\frac{1}{n_{k}}\\sum_{i \\in \\mathcal{C}_{k}} (y_{i} - \\hat{y}^{(k)}_{i})^2\\), where \\(\\mathcal{C}_{k}\\) is set of observations in \\(k\\)-th fold and \\(\\hat{y}^{(k)}_{i}\\) is fit for observation \\(i\\) obtained from data with part \\(k\\) removed\nIf \\(n\\) is a multiple of \\(K\\), then \\(n_{k} = n/K\\)\n\nThe \\(k\\)-fold CV estimate of the test error is the average:\n\n\\[\\text{CV}_{(K)} = \\frac{1}{K} \\sum_{k=1}^{K} \\text{RMSE}_{k}\\]"
+    "text": "k-fold Cross-Validation\n\nIn k-fold CV, the observations are randomly divided into \\(k\\) partitions (or folds) of approximately equal size.\nFor each \\(j\\) in \\(1, 2, \\ldots, k\\):\n\nLeave out \\(j\\)-th group as validation set, and fit model on remaining \\(k-1\\) parts (combined)\nPredict for all observations in the held-out \\(j\\)-th fold, and obtain a corresponding \\(\\text{RMSE}_{j}\\)\n\nThe \\(k\\)-fold CV estimate of the test error is the average:\n\n\n\\[\\text{CV}_{(k)} = \\frac{1}{k} \\sum_{j=1}^{k} \\text{RMSE}_{j}\\]"
   },
   {
     "objectID": "slides/slides-05-resampling.html#visual",
     "href": "slides/slides-05-resampling.html#visual",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "Visual",
-    "text": "Visual"
+    "text": "Visual\n\nImportant: k is the number of folds/partitions, not the number of observations within each fold!"
   },
   {
     "objectID": "slides/slides-05-resampling.html#remarks",
@@ -1220,43 +1220,92 @@
   {
     "objectID": "slides/slides-05-resampling.html#the-bootstrap-1",
     "href": "slides/slides-05-resampling.html#the-bootstrap-1",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "The Bootstrap",
     "text": "The Bootstrap\n\nThe bootstrap is a flexible and powerful statistical tool that can be used to quantify the uncertainty associated with a given estimator or statistical learning method\nExample: can be used to estimate the standard errors of the \\(\\beta\\) coefficients in linear regression\nOne goal of statistics: learn about a population.\n\nUsually, population is not available, so must make inference from sample data\n\nBootstrapping operates by resampling this sample data to create many simulated samples"
   },
   {
     "objectID": "slides/slides-05-resampling.html#the-bootstrap-cont.",
     "href": "slides/slides-05-resampling.html#the-bootstrap-cont.",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "The Bootstrap (cont.)",
     "text": "The Bootstrap (cont.)\n\nBootstrapping resamples the original dataset with replacement\nIf the original datset has \\(n\\) observations, then each bootstrap/resampled dataset also has \\(n\\) observations\n\nEach observation has equal probability of being included in resampled dataset\nCan select an observation more than once for a resampled dataset"
   },
   {
     "objectID": "slides/slides-05-resampling.html#example",
     "href": "slides/slides-05-resampling.html#example",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "Example",
-    "text": "Example\n\nSuppose a study on adult daily caffeine consumption (mg) collects 4 data points: 110, 130, 150, 200. I want to learn about the average consumption in adults.\nCreate my first bootstrap sample:\n\n\ndat <- c(110, 130, 150, 200)\nn <- length(dat)\n\nsamp1 <- sample(x = dat, size = n, replace = T)\nsamp1\n\n[1] 150 150 200 200\n\n\n\nObtain our first estimate for \\(\\mu\\), the population mean daily caffeine consumption in adults: \\(\\hat{\\mu}_{1} = 175\\)"
+    "text": "Example\n\nSuppose a study on adult daily caffeine consumption (mg) collects 4 data points: 110, 130, 150, 200. I want to learn about the average consumption in adults.\nCreate my first bootstrap sample:\n\n\ndat <- c(110, 130, 150, 200)\nn <- length(dat)\n\nsamp1 <- sample(x = dat, size = n, replace = T)\nsamp1\n\n[1] 130 200 130 200\n\n\n\nObtain our first estimate for \\(\\mu\\), the population mean daily caffeine consumption in adults: \\(\\hat{\\mu}_{1} = 165\\)"
   },
   {
     "objectID": "slides/slides-05-resampling.html#example-cont.",
     "href": "slides/slides-05-resampling.html#example-cont.",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "Example (cont.)",
-    "text": "Example (cont.)\n\nTake second sample:\n\n\nsamp2 <- sample(x = dat, size = n, replace = T)\nsamp2\n\n[1] 130 150 110 130\n\n\n\n\\(\\hat{\\mu}_{2} = 130\\)\nRepeat this process thousands of times!\n…\n\n\n\n\n\nAfter 1000 bootstrap samples, we end up with 1000 estimates for \\(\\mu\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\nMean over all estimates is \\(\\hat{\\mu} = 147.165\\)\nApproximate 95% confidence interval for the mean are the 5% and 95% quantiles of the 1000 mean estimates: (120, 182.5)\n\nCalled a bootstrap percentile confidence interval"
+    "text": "Example (cont.)\n\nTake second sample:\n\n\nsamp2 <- sample(x = dat, size = n, replace = T)\nsamp2\n\n[1] 130 130 150 110\n\n\n\n\\(\\hat{\\mu}_{2} = 130\\)\nRepeat this process thousands of times!\n…\n\n\n\n\n\nAfter 1000 bootstrap samples, we end up with 1000 estimates for \\(\\mu\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\nMean over all estimates is \\(\\hat{\\mu} = 147.2125\\)\nApproximate 95% confidence interval for the mean are the 5% and 95% quantiles of the 1000 mean estimates: (120, 182.5)\n\nCalled a bootstrap percentile confidence interval"
   },
   {
     "objectID": "slides/slides-05-resampling.html#bootstrap-pros-and-cons",
     "href": "slides/slides-05-resampling.html#bootstrap-pros-and-cons",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "Bootstrap: pros and cons",
     "text": "Bootstrap: pros and cons\n\nReal world vs bootstrap world\nPros:\n\nNo assumptions about distribution of your data\nVery general method that allows estimating sampling distribution of almost any statistic!\nCost-effective\n\nCons:\n\nIn more complex scenarios, figuring out appropriate way to bootstrap may require thought\nCan fail in some situations\nRelies quite heavily on the original sample"
   },
   {
     "objectID": "slides/slides-05-resampling.html#validation-remarks",
     "href": "slides/slides-05-resampling.html#validation-remarks",
-    "title": "Resampling",
+    "title": "Validation",
     "section": "Validation: remarks",
     "text": "Validation: remarks\n\nLOOCV is a special case of \\(k\\)-fold CV.\n\nQuestion: Which value of \\(k\\) yields LOOCV?\n\n\\(k\\)-fold CV estimate is still biased upward; bias minimized when \\(k = n\\)\n\n\\(k = 5\\) or \\(k=10\\) often used as a compromise for bias-variance tradeoff\n\nLOOCV and \\(k\\)-fold CV are useful and commonly used because of their generality"
+  },
+  {
+    "objectID": "slides/slides-05-resampling.html#live-code",
+    "href": "slides/slides-05-resampling.html#live-code",
+    "title": "Validation",
+    "section": "Live code",
+    "text": "Live code"
+  },
+  {
+    "objectID": "slides/slides-05-resampling.html#example-varying-k",
+    "href": "slides/slides-05-resampling.html#example-varying-k",
+    "title": "Validation",
+    "section": "Example: varying k",
+    "text": "Example: varying k\nI fit the linear model abundance = \\(\\beta_{0} + \\beta_{1}\\) WatrCont + \\(\\beta_{2}\\) SubsDens and obtain estimates of the test RMSE using k-fold CV for varying k:"
+  },
+  {
+    "objectID": "slides/slides-05-resampling.html#loocv-pros-and-cons",
+    "href": "slides/slides-05-resampling.html#loocv-pros-and-cons",
+    "title": "Validation",
+    "section": "LOOCV pros and cons",
+    "text": "LOOCV pros and cons\n\n\n\nPros\n\nEach training set has \\(n-1\\) observations \\(\\rightarrow\\) tend to not overestimate test error as much\nThere is no randomness in how the original data is split\n\n\n\n\nCons\n\nLOOCV can be expensive to implement – must fit the model \\(n\\) times\nEstimates for each validation set \\(i\\) are highly correlated, so the average can have high variance"
+  },
+  {
+    "objectID": "slides/slides-05-resampling.html#k-fold-cv-cont.",
+    "href": "slides/slides-05-resampling.html#k-fold-cv-cont.",
+    "title": "Validation",
+    "section": "k-fold CV (cont.)",
+    "text": "k-fold CV (cont.)\n\nLetting the \\(j\\)-th fold have \\(n_{j}\\) observations:\n\n\n\\[\\text{RMSE}_{j} = \\sqrt{\\frac{1}{n_{j}}\\sum_{i \\in \\mathcal{C}_{j}} (y_{i} - \\hat{y}^{(j)}_{i})^2},\\]\n\n\nwhere \\(\\mathcal{C}_{j}\\) is set of observations in the \\(j\\)-th fold, so \\(i\\) indexes the observations in \\(\\mathcal{C}_{j}\\). \\(\\hat{y}^{(j)}_{i}\\) is the prediction for \\(i\\)-th observation, obtained from data with part \\(j\\) removed\n\n\nIf \\(n\\) is a multiple of \\(k\\), then \\(n_{j} = \\frac{n}{k}\\)"
+  },
+  {
+    "objectID": "slides/slides-05-resampling.html#leave-one-out-cross-validation-1",
+    "href": "slides/slides-05-resampling.html#leave-one-out-cross-validation-1",
+    "title": "Validation",
+    "section": "Leave-One-Out Cross-Validation",
+    "text": "Leave-One-Out Cross-Validation\n\nLeave-one-out cross-validation (LOOCV) attempts to address the drawbacks from validation set approach\nWe still split all observations into two sets: training and validation\nKey difference: instead of splitting just once, we split many times, where one observation is used for the validation set, leaving the remaining \\(n-1\\) observations for training set"
+  },
+  {
+    "objectID": "slides/slides-05-resampling.html#k-fold-cross-validation-1",
+    "href": "slides/slides-05-resampling.html#k-fold-cross-validation-1",
+    "title": "Validation",
+    "section": "k-fold Cross-Validation",
+    "text": "k-fold Cross-Validation\n\nIn k-fold CV, the observations are randomly divided into \\(k\\) partitions (or folds) of approximately equal size.\nFor each \\(j\\) in \\(1, 2, \\ldots, k\\):\n\nLeave out \\(j\\)-th partition/fold as validation set, and fit model on remaining \\(k-1\\) partitions (combined)\nPredict for all observations in the held-out \\(j\\)-th fold, and obtain a corresponding \\(\\text{RMSE}_{j}\\)\n\nThe \\(k\\)-fold CV estimate of the test error is the average:\n\n\n\\[\\text{CV}_{(k)} = \\frac{1}{k} \\sum_{j=1}^{k} \\text{RMSE}_{j}\\]"
+  },
+  {
+    "objectID": "slides/slides-05-resampling.html#loocv-method",
+    "href": "slides/slides-05-resampling.html#loocv-method",
+    "title": "Validation",
+    "section": "LOOCV: method",
+    "text": "LOOCV: method\n\nStart by choosing first observation \\((x_{1}, y_{1})\\) to be validation set, and fit model on remaining \\(\\{(x_{2}, y_{2}), (x_{3}, y_{3}), \\ldots, (x_{n}, y_{n}) \\}\\) as our training set\nObtain \\(\\text{RMSE}_{1} = \\sqrt{(y_{1} -\\hat{y}_{1})^2}\\), an approximately unbiased estimate for test error\nRepeat procedure by selecting the second observation to be validation set, then third, etc.\nWill end up with \\(n\\) errors: \\(\\text{RMSE}_{1}, \\text{RMSE}_{2}, \\ldots, \\text{RMSE}_{n}\\). Then LOOCV estimate for test RMSE is the average:\n\n\n\\[\\text{CV}_{(n)} = \\frac{1}{n}\\sum_{i=1}^{n} \\text{RMSE}_{i}\\]"
   }
 ]

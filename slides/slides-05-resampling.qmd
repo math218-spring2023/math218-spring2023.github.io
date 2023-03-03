@@ -1,8 +1,8 @@
 ---
-title: "Resampling"
+title: "Validation"
 date: "March 9, 2023"
 title-slide-attributes:
-    data-background-image: "figs/title/animal_crossing.png"
+    data-background-image: "figs/title/validation.png"
     data-background-size: contain
     data-background-opacity: "0.3"
 format: 
@@ -41,15 +41,14 @@ mite_dat <- mite.env %>%
 
   - Obtain additional information about the fitted model
 
-- We will focus on two methods: **cross-validation** and the **bootstrap**
+- Two methods: cross-validation and the bootstrap
 
-- Cross-validation:
+- These slides will focus on the following topics of **cross-validation**:
 
   1. Validation set
   2. LOOCV
   3. k-fold CV (another k!)
 
-# Validation
 
 ## Training vs Test errors
 
@@ -66,16 +65,19 @@ mite_dat <- mite.env %>%
   
 - Training error is often very different from test error
 
-## Validation-set approach
+# Validation set 
 
-- We have been using a *validation-set* approach: randomly divide (e.g. 50/50) the available data into two parts: a **training set** and a **test/validation/hold-out** set
+## Validation set approach
+
+- We have been using a *validation set* approach: randomly divide (e.g. 50/50) the available data into two parts: a **training set** and a **test/validation/hold-out** set
 
   - Model is fit on training set
   - Fitted model predicts responses for the observations in the validation set
-  
-- The resulting validation-set error provides an estimate of the test error. This is typically assessed using RMSE 
 
-## Validation-set approach: drawbacks
+  
+- The resulting validation-set error provides an estimate of the test error (e.g. RMSE)
+
+## Validation set approach: drawbacks
 
 - Our estimate for test error will depend on the observations that are included in the training and validation sets
 
@@ -85,24 +87,30 @@ mite_dat <- mite.env %>%
 
   - i.e. fewer observations used to fit model might lead to *overestimating* test error rate
   
-## Leave-One-Out Cross-Validation {.scrollable}
+# Leave-One-Out Cross-Validation 
+  
+## Leave-One-Out Cross-Validation 
 
 - **Leave-one-out cross-validation** (LOOCV) attempts to address the drawbacks from validation set approach
 
-- Still splits all observations into two sets: training and validation
+- We still split all observations into two sets: training and validation
 
-- Key difference: just *one* observation is used for the validation set, leaving $n-1$ observations for training set
+- Key difference: instead of splitting just once, we split many times, where *one* observation is used for the validation set, leaving the remaining $n-1$ observations for training set
 
-- For example: choose observation $(x_{1}, y_{1})$ to be validation set, and fit model on training set $\{(x_{2}, y_{2}), (x_{3}, y_{3}), \ldots, (x_{n}, y_{n}) \}$
+## LOOCV: method
 
-  - $\text{RMSE}_{1} = \sqrt{(y_{1} -\hat{y}_{1})^2}$ an approximately unbiased estimate for test error
+- Start by choosing first observation $(x_{1}, y_{1})$ to be validation set, and fit model on remaining  $\{(x_{2}, y_{2}), (x_{3}, y_{3}), \ldots, (x_{n}, y_{n}) \}$ as our training set
+
+- Obtain $\text{RMSE}_{1} = \sqrt{(y_{1} -\hat{y}_{1})^2}$, an approximately unbiased estimate for test error
 
 - Repeat procedure by selecting the second observation to be validation set, then third, etc. 
 
 - Will end up with $n$ errors: $\text{RMSE}_{1}, \text{RMSE}_{2}, \ldots, \text{RMSE}_{n}$. Then LOOCV estimate for test RMSE is the average:
 
-$$\text{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \text{RMSE}_{i}$$
+::: {.fragment}
 
+$$\text{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \text{RMSE}_{i}$$
+:::
 
 ## Discuss
 
@@ -117,13 +125,23 @@ $$\text{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \text{RMSE}_{i}$$
   - What values you would compute
   
   - What values you would store
+  
+## Live code
    
-## LOOCV pros and cos
+
+## LOOCV pros and cons
+
+:::: {.columns}
+
+::: {.column width="50%"}
 
 - Pros
 
   - Each training set has $n-1$ observations $\rightarrow$ tend to not overestimate test error as much
-  - There is no randomness in training/validation set splits
+  - There is no randomness in how the original data is split 
+:::
+
+::: {.column width="50%"}
 
 - Cons
 
@@ -131,25 +149,83 @@ $$\text{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \text{RMSE}_{i}$$
   
   - Estimates for each validation set $i$  are highly correlated, so the average can have high variance
   
+:::
+  
+::::
+
+# k-fold Cross-Validation
+
 ## k-fold Cross-Validation {.scrollable}
 
-- In **k-fold CV**, the observations are randomly divided into $K$ groups (or folds) of approximately equal size. 
+- In **k-fold CV**, the observations are randomly divided into $k$ partitions (or folds) of approximately equal size. 
 
-- For each $k$ in $1, 2, \ldots, K$:
-  - Leave out $k$-th group as validation set, and fit model on remaining $K-1$ parts (combined)
-  - Prediction for the held-out $k$-th fold, and obtain a corresponding $\text{RMSE}_{k}$
+- For each $j$ in $1, 2, \ldots, k$:
+  - Leave out $j$-th partition/fold as validation set, and fit model on remaining $k-1$ partitions (combined)
+  - Predict for all observations in the held-out $j$-th fold, and obtain a corresponding $\text{RMSE}_{j}$
   
-- Letting the $k$-th fold have $n_{k}$ observations:
-
-  - $\text{MSE}_{k} = \frac{1}{n_{k}}\sum_{i \in \mathcal{C}_{k}} (y_{i} - \hat{y}^{(k)}_{i})^2$, where $\mathcal{C}_{k}$ is set of observations in $k$-th fold and $\hat{y}^{(k)}_{i}$ is fit for observation $i$ obtained from data with part $k$ removed
-  
-  - If $n$ is a multiple of $K$, then $n_{k} = n/K$
   
 - The $k$-fold CV estimate of the test error is the average:
 
-$$\text{CV}_{(K)} = \frac{1}{K} \sum_{k=1}^{K} \text{RMSE}_{k}$$
+::: {.fragment}
+
+$$\text{CV}_{(k)} = \frac{1}{k} \sum_{j=1}^{k} \text{RMSE}_{j}$$
+
+:::
+
+## k-fold CV (cont.)
+
+- Letting the $j$-th fold have $n_{j}$ observations:
+
+::: {.fragment}
+
+  $$\text{RMSE}_{j} = \sqrt{\frac{1}{n_{j}}\sum_{i \in \mathcal{C}_{j}} (y_{i} - \hat{y}^{(j)}_{i})^2},$$
+:::
+
+::: {.fragment}
+
+   where $\mathcal{C}_{j}$ is set of observations in the $j$-th fold, so $i$ indexes the observations in $\mathcal{C}_{j}$. $\hat{y}^{(j)}_{i}$ is the prediction for $i$-th observation, obtained from data with part $j$ removed
+  
+:::
+
+- If $n$ is a multiple of $k$, then $n_{j} = \frac{n}{k}$
 
 ## Visual
+
+- Important: k is the number of folds/partitions, *not* the number of observations within each fold!
+
+## Example: varying k
+
+I fit the linear model `abundance` = $\beta_{0} + \beta_{1}$ `WatrCont` + $\beta_{2}$ `SubsDens` and obtain estimates of the test RMSE using k-fold CV for varying k:
+
+```{r}
+set.seed(144)
+n <- nrow(mite_dat)
+k_vec <- c(2,3,4, 5, 10, 15, 20, 25,  n)
+true_y <- mite_dat$abundance
+all_kfold_errs <- rep(NA, length(k_vec))
+for(kk in 1:length(k_vec)){
+  k <- k_vec[kk]
+  groups <- sample(1:k, n, replace = T)
+  if(k == n){groups <- 1:n}
+  errs <- rep(NA, k)
+  for(i in 1:k){
+    test_fold_ids <- which(groups == i)
+    mod <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat[-test_fold_ids,])
+    pred <- predict(mod, newdata = mite_dat[test_fold_ids,])
+    errs[i] <- get_rmse(true_y[test_fold_ids], pred) 
+  }
+  all_kfold_errs[kk] <- mean(errs)
+}
+
+data.frame(k = k_vec, cv_error = all_kfold_errs) %>%
+  ggplot(., aes(x = k_vec, y = cv_error)) +
+  geom_point() + 
+  geom_line() +
+  scale_x_log10(breaks = k_vec) +
+  labs(x = "k", y = "Estimated test RMSE",
+       title= "k-fold CV error for various k")+
+  plot_theme
+```
 
 ## Validation: remarks
 
