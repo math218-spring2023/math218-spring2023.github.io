@@ -198,18 +198,17 @@ $$\text{CV}_{(k)} = \frac{1}{k} \sum_{j=1}^{k} \text{RMSE}_{j}$$
 I fit the linear model `abundance` = $\beta_{0} + \beta_{1}$ `WatrCont` + $\beta_{2}$ `SubsDens` and obtain estimates of the test RMSE using k-fold CV for varying k:
 
 ```{r}
-set.seed(144)
+set.seed(17)
 n <- nrow(mite_dat)
 k_vec <- c(2,3,4, 5, 10, 15, 20, 25,  n)
 true_y <- mite_dat$abundance
 all_kfold_errs <- rep(NA, length(k_vec))
 for(kk in 1:length(k_vec)){
   k <- k_vec[kk]
-  groups <- sample(1:k, n, replace = T)
-  if(k == n){groups <- 1:n}
+  fold_ids <- split(sample(1:n), ceiling(seq_along(1:n)/(n/k)))
   errs <- rep(NA, k)
   for(i in 1:k){
-    test_fold_ids <- which(groups == i)
+    test_fold_ids <- fold_ids[[i]]
     mod <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat[-test_fold_ids,])
     pred <- predict(mod, newdata = mite_dat[test_fold_ids,])
     errs[i] <- get_rmse(true_y[test_fold_ids], pred) 

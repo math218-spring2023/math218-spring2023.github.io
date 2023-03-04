@@ -258,9 +258,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="obtain-the-indices-for-each-fold">Obtain the indices for each fold</h3>
 <p>We will perform 5-fold cross-validation. Using a method of your choice, randomly split the indices of the observations into 5 folds of (roughly) equal size. Because you will be randomly splitting, it is important for you to set a seed for reproducibility.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(ski_resorts)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>n_folds <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>n_folds <span class="ot">&lt;-</span> <span class="dv">10</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fold_ids <span class="ot">&lt;-</span> <span class="fu">split</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n), <span class="fu">ceiling</span>(<span class="fu">seq_along</span>(<span class="dv">1</span><span class="sc">:</span>n)<span class="sc">/</span>(n<span class="sc">/</span>n_folds)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -282,7 +282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>(lm_rmse <span class="ot">&lt;-</span> <span class="fu">mean</span>(lm_errs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 15.78683</code></pre>
+<pre><code>[1] 16.15013</code></pre>
 </div>
 </div>
 <div style="color: maroon">
@@ -310,7 +310,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>(knn_rmse <span class="ot">&lt;-</span> <span class="fu">mean</span>(knn_errs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 19.96229</code></pre>
+<pre><code>[1] 19.5177</code></pre>
 </div>
 </div>
 <div style="color: maroon">
@@ -361,7 +361,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>(knn_scaled_rmse <span class="ot">&lt;-</span> <span class="fu">mean</span>(knn_errs_scaled))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 17.55136</code></pre>
+<pre><code>[1] 17.08212</code></pre>
 </div>
 </div>
 <div style="color: maroon">
@@ -393,7 +393,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>(lm_scaled_rmse <span class="ot">&lt;-</span> <span class="fu">mean</span>(lm_errs_scaled))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 15.78683</code></pre>
+<pre><code>[1] 16.15013</code></pre>
 </div>
 </div>
 <div style="color: maroon">
@@ -403,9 +403,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="comprehension-questions" class="level2">
 <h2 class="anchored" data-anchor-id="comprehension-questions">Comprehension questions</h2>
+<ol type="1">
+<li>Based on your results, if you had to recommend a model for the <code>price</code> of lift tickets, which model would you choose and why?</li>
+<li>If you ran this analysis again with a different choice of seed in <code>set.seed()</code>, what would you expect to change and why? What would you expect to stay the same and why?</li>
+<li>If you ran this analysis again with a larger number of folds, how would you expect the estimated test RMSEs to change? Why?</li>
+<li>I mentioned that the fair way to compare models is to use the same folds/partitions for all models. Briefly explain why that is.</li>
+</ol>
 </section>
 <section id="submission" class="level2">
 <h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<p>When you’re finished, knit + commit + push to GitHub one last time. Then submit your knitted pdf to Canvas!</p>
 
 
 </section>

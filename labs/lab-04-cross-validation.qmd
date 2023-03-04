@@ -56,9 +56,9 @@ dat <- ski_resorts %>%
 We will perform 5-fold cross-validation. Using a method of your choice, randomly split the indices of the observations into 5 folds of (roughly) equal size. Because you will be randomly splitting, it is important for you to set a seed for reproducibility.
 
 ```{r}
-set.seed(1)
+set.seed(3)
 n <- nrow(ski_resorts)
-n_folds <- 5
+n_folds <- 10
 fold_ids <- split(sample(1:n), ceiling(seq_along(1:n)/(n/n_folds)))
 ```
 
@@ -203,4 +203,11 @@ Report your estimated test RMSE from running MLR with 5-fold CV on the standardi
 
 ## Comprehension questions
 
+1.  Based on your results, if you had to recommend a model for the `price` of lift tickets, which model would you choose and why?
+2.  If you ran this analysis again with a different choice of seed in `set.seed()`, what would you expect to change and why? What would you expect to stay the same and why?
+3.  If you ran this analysis again with a larger number of folds, how would you expect the estimated test RMSEs to change? Why?
+4.  I mentioned that the fair way to compare models is to use the same folds/partitions for all models. Briefly explain why that is.
+
 ## Submission
+
+When you're finished, knit + commit + push to GitHub one last time. Then submit your knitted pdf to Canvas!

@@ -1236,14 +1236,14 @@
     "href": "slides/slides-05-resampling.html#example",
     "title": "Validation",
     "section": "Example",
-    "text": "Example\n\nSuppose a study on adult daily caffeine consumption (mg) collects 4 data points: 110, 130, 150, 200. I want to learn about the average consumption in adults.\nCreate my first bootstrap sample:\n\n\ndat <- c(110, 130, 150, 200)\nn <- length(dat)\n\nsamp1 <- sample(x = dat, size = n, replace = T)\nsamp1\n\n[1] 130 200 130 200\n\n\n\nObtain our first estimate for \\(\\mu\\), the population mean daily caffeine consumption in adults: \\(\\hat{\\mu}_{1} = 165\\)"
+    "text": "Example\n\nSuppose a study on adult daily caffeine consumption (mg) collects 4 data points: 110, 130, 150, 200. I want to learn about the average consumption in adults.\nCreate my first bootstrap sample:\n\n\ndat <- c(110, 130, 150, 200)\nn <- length(dat)\n\nsamp1 <- sample(x = dat, size = n, replace = T)\nsamp1\n\n[1] 200 200 200 110\n\n\n\nObtain our first estimate for \\(\\mu\\), the population mean daily caffeine consumption in adults: \\(\\hat{\\mu}_{1} = 177.5\\)"
   },
   {
     "objectID": "slides/slides-05-resampling.html#example-cont.",
     "href": "slides/slides-05-resampling.html#example-cont.",
     "title": "Validation",
     "section": "Example (cont.)",
-    "text": "Example (cont.)\n\nTake second sample:\n\n\nsamp2 <- sample(x = dat, size = n, replace = T)\nsamp2\n\n[1] 130 130 150 110\n\n\n\n\\(\\hat{\\mu}_{2} = 130\\)\nRepeat this process thousands of times!\n…\n\n\n\n\n\nAfter 1000 bootstrap samples, we end up with 1000 estimates for \\(\\mu\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\nMean over all estimates is \\(\\hat{\\mu} = 147.2125\\)\nApproximate 95% confidence interval for the mean are the 5% and 95% quantiles of the 1000 mean estimates: (120, 182.5)\n\nCalled a bootstrap percentile confidence interval"
+    "text": "Example (cont.)\n\nTake second sample:\n\n\nsamp2 <- sample(x = dat, size = n, replace = T)\nsamp2\n\n[1] 150 110 150 150\n\n\n\n\\(\\hat{\\mu}_{2} = 140\\)\nRepeat this process thousands of times!\n…\n\n\n\n\n\nAfter 1000 bootstrap samples, we end up with 1000 estimates for \\(\\mu\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\nMean over all estimates is \\(\\hat{\\mu} = 147.365\\)\nApproximate 95% confidence interval for the mean are the 5% and 95% quantiles of the 1000 mean estimates: (120, 182.5)\n\nCalled a bootstrap percentile confidence interval"
   },
   {
     "objectID": "slides/slides-05-resampling.html#bootstrap-pros-and-cons",

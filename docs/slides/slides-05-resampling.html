@@ -626,11 +626,11 @@
 <span id="cb1-4"><a href="#cb1-4"></a>samp1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> dat, <span class="at">size =</span> n, <span class="at">replace =</span> T)</span>
 <span id="cb1-5"><a href="#cb1-5"></a>samp1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 130 200 130 200</code></pre>
+<pre><code>[1] 200 200 200 110</code></pre>
 </div>
 </div>
 <ul>
-<li class="fragment">Obtain our first estimate for <span class="math inline">\(\mu\)</span>, the population mean daily caffeine consumption in adults: <span class="math inline">\(\hat{\mu}_{1} = 165\)</span></li>
+<li class="fragment">Obtain our first estimate for <span class="math inline">\(\mu\)</span>, the population mean daily caffeine consumption in adults: <span class="math inline">\(\hat{\mu}_{1} = 177.5\)</span></li>
 </ul>
 </section>
 <section id="example-cont." class="slide level2">
@@ -642,11 +642,11 @@
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>samp2 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> dat, <span class="at">size =</span> n, <span class="at">replace =</span> T)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>samp2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 130 130 150 110</code></pre>
+<pre><code>[1] 150 110 150 150</code></pre>
 </div>
 </div>
 <ul>
-<li class="fragment"><p><span class="math inline">\(\hat{\mu}_{2} = 130\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(\hat{\mu}_{2} = 140\)</span></p></li>
 <li class="fragment"><p>Repeat this process thousands of times!</p></li>
 <li class="fragment"><p>…</p></li>
 </ul>
@@ -668,7 +668,7 @@
 </div>
 </div>
 <ul>
-<li class="fragment"><p>Mean over all estimates is <span class="math inline">\(\hat{\mu} = 147.2125\)</span></p></li>
+<li class="fragment"><p>Mean over all estimates is <span class="math inline">\(\hat{\mu} = 147.365\)</span></p></li>
 <li class="fragment"><p>Approximate 95% confidence interval for the mean are the 5% and 95% quantiles of the 1000 mean estimates: (120, 182.5)</p>
 <ul>
 <li class="fragment">Called a <em>bootstrap percentile</em> confidence interval</li>

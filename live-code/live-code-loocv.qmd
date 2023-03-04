@@ -49,11 +49,13 @@ Comprehension question check: why did I not take the square root in line 7 above
 n <- nrow(mite_dat)
 k <- 5
 set.seed(7)
-groups <- sample(1:k, n, replace = T)
+# the following creates a list
+fold_ids <- split(sample(1:n), ceiling(seq_along(1:n)/(n/k)))
 true_y <- mite_dat$abundance
 errs <- rep(NA, k)
 for(i in 1:k){
-  test_fold_ids <- which(groups == i)
+  # to access list elements, use double brackets
+  test_fold_ids <- fold_ids[[i]]
   mod <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat[-test_fold_ids,])
   pred <- predict(mod, newdata = mite_dat[test_fold_ids,])
   errs[i] <- get_rmse(true_y[test_fold_ids], pred) 
