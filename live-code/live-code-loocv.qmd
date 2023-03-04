@@ -1,0 +1,62 @@
+---
+title: "Live code:"
+date: "March 9, 2023"
+description: "LOOCV"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Data
+
+```{r message = F}
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+### LOOCV
+
+```{r}
+#| code-line-numbers: true
+n <- nrow(mite_dat)
+rmses <- rep(NA, n)
+true_y <- mite_dat$abundance
+for(i in 1:n){
+  mod <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat[-i,])
+  pred <- predict(mod, newdata = mite_dat[i,])
+  rmses[i] <- (true_y[i] - pred)^2
+}
+loocv_err <- mean(rmses)
+loocv_err
+```
+
+Comprehension question check: why did I not take the square root in line 7 above?
+
+
+```{r}
+#| echo: false
+#| eval: false
+n <- nrow(mite_dat)
+k <- 5
+set.seed(7)
+groups <- sample(1:k, n, replace = T)
+true_y <- mite_dat$abundance
+errs <- rep(NA, k)
+for(i in 1:k){
+  test_fold_ids <- which(groups == i)
+  mod <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat[-test_fold_ids,])
+  pred <- predict(mod, newdata = mite_dat[test_fold_ids,])
+  errs[i] <- get_rmse(true_y[test_fold_ids], pred) 
+}
+kfold_err <- mean(errs)
+```

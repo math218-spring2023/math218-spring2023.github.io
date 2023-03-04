@@ -1,0 +1,206 @@
+---
+title: "Lab 04: Cross-validation"
+description: "Ski resorts"
+editor: visual
+callout-appearance: default
+draft: true
+---
+
+## Introduction
+
+```{r packages, message = F}
+library(tidyverse)
+library(caret)
+source("../math218_fns.R")
+```
+
+```{r data}
+ski_resorts <- read.csv("data/ski_resorts.csv")
+```
+
+We will compare two models' prediction performance for the lift ticket `price` of these ski resorts using all the other *quantitative* variables as our predictors. We will compare the models via the estimated test RMSE obtained using k-fold cross-validation. The two models are:
+
+1.  A multiple linear regression model, and
+2.  A KNN regression model
+
+Now that you've implemented KNN regression and understand how it works, you are allowed to use the `knnreg()` R function provided in the `caret` library! This function is much faster than our own implementations. To use `knnreg()`:
+
+1.  Install the `caret` package in your console
+2.  Load in the `caret` package at the top of your .Rmd file
+3.  The `knnreg()` function works slightly differently than our implementation. It only fits a model to the training data, where you pass in a `train_x` and a `train_y`. Then to obtain prediction, you use the `predict()` function, just as you would for linear regression.
+    i.  By default, the `knnreg()` chooses a neighbor set of $K = 5$. If you want a different choice of neighbors, you must explicitly pass that into the argument `k`.
+
+    ii. The `train_y` you pass into `knnreg()` must be a vector, not a data frame!
+
+```{r}
+#| eval: false
+# suppose my train data are stored as train_x and train_y
+# suppose my test predictors are stores as test_x
+knn_mod <- knnreg(x= train_x, y = train_y, k = 7)
+preds <- predict(knn_mod, newdata = test_x)
+```
+
+## Analysis
+
+We will fit a total of four different models using k-fold cross-validation. For all the models, we will predict the `price` of the lift tickets using all of the *quantitative* variables. In order to have a fair comparison of the models, each model should be fit and tested on the same folds/partitions of the original data. Therefore, we will begin by creating a set of indices that tell us which fold each observation belongs to.
+
+*I suggest you modify your data such that it only contains the variables of interest for this analysis!*
+
+```{r}
+dat <- ski_resorts %>%
+  dplyr::select(-resort, -city, -state)
+```
+
+### Obtain the indices for each fold
+
+We will perform 5-fold cross-validation. Using a method of your choice, randomly split the indices of the observations into 5 folds of (roughly) equal size. Because you will be randomly splitting, it is important for you to set a seed for reproducibility.
+
+```{r}
+set.seed(1)
+n <- nrow(ski_resorts)
+n_folds <- 5
+fold_ids <- split(sample(1:n), ceiling(seq_along(1:n)/(n/n_folds)))
+```
+
+### MLR: original scale
+
+Using your folds in the previous step, run 5-fold CV to obtain an estimate of the test RMSE using MLR.
+
+*Note: suppose you are running `lm()` and the data you pass in only contains the response `y` and all of the predictors of interest. Rather than explicitly typing out the name of each predictor in `lm()`, you can simply type a `.` and `R` will recognize that you want to use all the other variables aside from `y` in the data frame as predictors:*
+
+```{r}
+#| eval: false
+lm(y ~ ., data)
+```
+
+```{r}
+y_true <- dat$price
+lm_errs <- rep(NA, n_folds)
+for(i in 1:n_folds){
+  test_fold_ids <- fold_ids[[i]]
+  mod <- lm(price ~ ., dat[-test_fold_ids,])
+  preds <- predict(mod, newdata = dat[test_fold_ids,])
+  lm_errs[i] <- get_rmse(y_true[test_fold_ids], preds)
+}
+(lm_rmse <- mean(lm_errs))
+```
+
+::: {style="color: maroon"}
+Report your estimated test RMSE from running MLR with 5-fold CV.
+:::
+
+### KNN: original scale
+
+Using the same folds, run 5-fold CV to obtain an estimate of the test RMSE using KNN regression. Don't forget to choose and set the number of neighbors for reproducibility! You may either use your own implementation of KNN, or you may use the `knnreg()` + `predict()` functions provided in `R`.
+
+```{r}
+K <- 10
+knn_errs <- rep(NA, n_folds)
+for(i in 1:n_folds){
+  test_fold_ids <- fold_ids[[i]]
+  train_x <- dat[-test_fold_ids,] %>%
+    select(-price)
+  train_y <- dat[-test_fold_ids,] %>%
+    select(price) %>%
+    pull()
+  test_x <- dat[test_fold_ids,] %>%
+    select(-price)
+  mod <- knnreg(train_x, train_y, k = K)
+  preds <- predict(mod, test_x)
+  knn_errs[i] <- get_rmse(y_true[test_fold_ids], preds)
+}
+(knn_rmse <- mean(knn_errs))
+```
+
+::: {style="color: maroon"}
+State your choice of the number of neighbors, and report your estimated test RMSE from running KNN regression with 5-fold CV. How does your estimated test RMSE compare to that obtained from MLR?
+:::
+
+### KNN regression: standardized data
+
+Remember that we should first standardize on the train data, and then use the mean and standard deviations from that standardization to standardize the test data! Therefore, make a function called `my_scale()` that takes in three arguments:
+
+1.  A data frame (or matrix) that needs to be standardized,
+2.  A vector of means, and
+3.  A vector of standard deviations.
+
+Your function `my_scale()` should return a standardized version of the data frame that was input.
+
+```{r}
+my_scale <- function(mat, mean_vec, sd_vec){
+  p <- length(mean_vec)
+  ret <- mat
+  for(i in 1:p){
+    mat[,i] <- (mat[,i] - mean_vec[i])/sd_vec[i]
+  }
+  return(mat)
+}
+```
+
+Now, we will run KNN regression where the predictors are standardized. Using the same folds, run 5-fold CV to obtain an estimate of the test RMSE using KNN regression on the standardized data. You should use your `my_scale()` function, and the same number of neighbors as in the previous section!
+
+```{r}
+knn_errs_scaled <- rep(NA, n_folds)
+for(i in 1:n_folds){
+  test_fold_ids <- fold_ids[[i]]
+  train_x <- dat  %>%
+    slice(-test_fold_ids) %>%
+    select(-price)
+  mean_vec <- colMeans(train_x)
+  sd_vec <- apply(train_x, 2, sd)
+  train_x <-  my_scale(train_x, mean_vec, sd_vec)
+  train_y <- dat %>%
+    slice(-test_fold_ids) %>%
+    select(price) %>%
+    pull()
+  test_x <- dat  %>%
+    slice(test_fold_ids) %>%
+    select(-price)
+  test_x <- my_scale(test_x, mean_vec, sd_vec)
+  mod <- knnreg(train_x, train_y, k = K)
+  preds <- predict(mod, newdata = test_x)
+  knn_errs_scaled[i] <- get_rmse(y_true[test_fold_ids], preds)
+}
+(knn_scaled_rmse <- mean(knn_errs_scaled))
+
+```
+
+::: {style="color: maroon"}
+State your choice of the number of neighbors, and report your estimated test RMSE from running KNN regression with 5-fold CV on the standardized predictors. How does your estimated test RMSE compare to the two previous test RMSEs?
+:::
+
+### MLR: standardized data
+
+Finally, we will run MLR regression where the predictors are standardized. Using the same folds, run 5-fold CV to obtain an estimate of the test RMSE using MLR on the standardized data. You should use your `my_scale()` function!
+
+```{r}
+lm_errs_scaled <- rep(NA, n_folds)
+for(i in 1:n_folds){
+  test_fold_ids <- fold_ids[[i]]
+  train_x <- dat  %>%
+    slice(-test_fold_ids) %>%
+    select(-price)
+  mean_vec <- colMeans(train_x)
+  sd_vec <- apply(train_x, 2, sd)
+  train_x <-  my_scale(train_x, mean_vec, sd_vec)
+  dat_scaled <- train_x %>%
+    mutate(price = dat$price[-test_fold_ids])
+  test_x <- dat  %>%
+    slice(test_fold_ids) %>%
+    select(-price)
+  test_x <- my_scale(test_x, mean_vec, sd_vec)
+  mod <- lm(price ~ ., dat_scaled)
+  preds <- predict(mod, newdata = test_x)
+  lm_errs_scaled[i] <- get_rmse(y_true[test_fold_ids], preds)
+}
+(lm_scaled_rmse <- mean(lm_errs_scaled))
+
+```
+
+::: {style="color: maroon"}
+Report your estimated test RMSE from running MLR with 5-fold CV on the standardized data. How does your estimate here compare to that obtained from running MLR on the non-standardized data?
+:::
+
+## Comprehension questions
+
+## Submission
