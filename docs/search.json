@@ -39,7 +39,7 @@
     "href": "assignments.html#implementations",
     "title": "Assignments",
     "section": "Implementations",
-    "text": "Implementations\n\n\n\n\n\n\n\nKNN regression\n\n\nPart 1\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Implementations\n\n\n\n\n\n\n\nKNN regression\n\n\nPart 1\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -1307,5 +1307,26 @@
     "title": "Validation",
     "section": "LOOCV: method",
     "text": "LOOCV: method\n\nStart by choosing first observation \\((x_{1}, y_{1})\\) to be validation set, and fit model on remaining \\(\\{(x_{2}, y_{2}), (x_{3}, y_{3}), \\ldots, (x_{n}, y_{n}) \\}\\) as our training set\nObtain \\(\\text{RMSE}_{1} = \\sqrt{(y_{1} -\\hat{y}_{1})^2}\\), an approximately unbiased estimate for test error\nRepeat procedure by selecting the second observation to be validation set, then third, etc.\nWill end up with \\(n\\) errors: \\(\\text{RMSE}_{1}, \\text{RMSE}_{2}, \\ldots, \\text{RMSE}_{n}\\). Then LOOCV estimate for test RMSE is the average:\n\n\n\\[\\text{CV}_{(n)} = \\frac{1}{n}\\sum_{i=1}^{n} \\text{RMSE}_{i}\\]"
+  },
+  {
+    "objectID": "implementations/implementation-knn_regression_2.html",
+    "href": "implementations/implementation-knn_regression_2.html",
+    "title": "KNN regression",
+    "section": "",
+    "text": "Now that you’ve implemented KNN regression, you will work on incorporating categorical features. Thankfully, you shouldn’t have to modify anything about your .knn() function!\nWe will continue to work with the mite_dat data, but will now extend the predictors to include Substrate, Shrub and Topo.\n\nlibrary(tidyverse)\nlibrary(vegan) \ndata(mite)\ndata(mite.env)\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)"
+  },
+  {
+    "objectID": "implementations/implementation-knn_regression_2.html#assignment",
+    "href": "implementations/implementation-knn_regression_2.html#assignment",
+    "title": "KNN regression",
+    "section": "Assignment",
+    "text": "Assignment\nRecall the slides from the first week of class where we did some EDA exploring the relationship between each predictor and the abundance of the mites. The whole class was of the opinion that the categorical predictors might be more useful than the quantitative predictors for predicting the abundance. We will explore that here!\n\nIn the file called knn_regresssion2.Rmd, copy and paste your .knn() function (and any accompanying functions) into the appropriate code chunk.\n\n\nCreate new data frame\n\nCreate a new data frame mite_dat2 that holds the original quantitative variables and response, and the appropriately encoded versions of the three categorical predictors.\n\n\n\nSplit into train/test sets\nThe following code splits the original data into a train set and a test set. As a group, discuss what each line of code is doing.\nCopy and paste this code into your .Rmd file in the appropriate code chunk.\n\nset.seed(1)\nn <- nrow(mite_dat2) \ntrain_ids <- sample(1:n, size = 0.7*n)\ntrain_dat <- mite_dat2[train_ids,]\ntest_dat <- mite_dat2[-train_ids,]\n\n\n\nRun KNN using all features\n\nWith \\(K = 5\\) neighbors, use your .knn() function to obtain predictions for the test data using all the predictors. Report your RMSE for the test data.\n\n\n\nRun KNN using quantitative features only\n\nNow use your .knn() function to obtain predictions for the test data using only the quantitative predictors WatrCont and SubsDens. Still use \\(K = 5\\) neighbors. Report your RMSE for the test data.\n\n\n\nRun KNN using categorical features only\n\nNow use your .knn() function to obtain predictions for the test data using only the encoded categorical predictors. Still use \\(K = 5\\) neighbors. Report your RMSE for the test data.\n\n\n\nDiscuss\n\nCompare and contrast the RMSEs from the three models you fit. What are you surprised or not surprised by? What do you think explains or contributes to the results you obtained?\n\nUsing the same test/train split and encodings, I also fit a fourth model where I used all the predictors but standardized the quantitative predictors. I obtained an RMSE of roughly 6.5 for the test data.\n\nComment on how this fourth RMSE compares to the ones you obtained. Are you surprised by this result? Why or why not? What do you think explains this result?"
+  },
+  {
+    "objectID": "implementations/implementation-knn_regression_2.html#submission",
+    "href": "implementations/implementation-knn_regression_2.html#submission",
+    "title": "KNN regression",
+    "section": "Submission",
+    "text": "Submission\nOnce you’ve finished, push your changes to GitHub. Upload the finished PDF to Canvas."
   }
 ]

@@ -6,10 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-03-07">
-<meta name="description" content="Encoding categorical variables">
+<meta name="description" content="Part 2">
 
-<title>Math 218 - Spring 2023 - Live code:</title>
+<title>Math 218 - Spring 2023 - KNN regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -123,6 +122,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -175,10 +175,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#set-up" id="toc-set-up" class="nav-link active" data-scroll-target="#set-up">Set-up</a></li>
-  <li><a href="#integer-encoding" id="toc-integer-encoding" class="nav-link" data-scroll-target="#integer-encoding">Integer encoding</a></li>
-  <li><a href="#one-hot-encoding-few-levels" id="toc-one-hot-encoding-few-levels" class="nav-link" data-scroll-target="#one-hot-encoding-few-levels">One-hot encoding (few levels)</a></li>
-  <li><a href="#one-hot-encoding-many-levels" id="toc-one-hot-encoding-many-levels" class="nav-link" data-scroll-target="#one-hot-encoding-many-levels">One-hot encoding (many levels)</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a>
+  <ul class="collapse">
+  <li><a href="#create-new-data-frame" id="toc-create-new-data-frame" class="nav-link" data-scroll-target="#create-new-data-frame">Create new data frame</a></li>
+  <li><a href="#split-into-traintest-sets" id="toc-split-into-traintest-sets" class="nav-link" data-scroll-target="#split-into-traintest-sets">Split into train/test sets</a></li>
+  <li><a href="#run-knn-using-all-features" id="toc-run-knn-using-all-features" class="nav-link" data-scroll-target="#run-knn-using-all-features">Run KNN using all features</a></li>
+  <li><a href="#run-knn-using-quantitative-features-only" id="toc-run-knn-using-quantitative-features-only" class="nav-link" data-scroll-target="#run-knn-using-quantitative-features-only">Run KNN using quantitative features only</a></li>
+  <li><a href="#run-knn-using-categorical-features-only" id="toc-run-knn-using-categorical-features-only" class="nav-link" data-scroll-target="#run-knn-using-categorical-features-only">Run KNN using categorical features only</a></li>
+  <li><a href="#discuss" id="toc-discuss" class="nav-link" data-scroll-target="#discuss">Discuss</a></li>
+  </ul></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
   </ul>
 </nav>
     </div>
@@ -187,15 +194,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Live code:</h1>
+<h1 class="title">KNN regression</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Live code</div>
+    <div class="quarto-category">Implementations</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Encoding categorical variables
+    Part 2
   </div>
 </div>
 
@@ -203,12 +210,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">March 7, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -216,94 +217,75 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="set-up" class="level2">
-<h2 class="anchored" data-anchor-id="set-up">Set-up</h2>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Now that you’ve implemented KNN regression, you will work on incorporating categorical features. Thankfully, you shouldn’t have to modify anything about your <code>.knn()</code> function!</p>
+<p>We will continue to work with the <code>mite_dat</code> data, but will now extend the predictors to include <code>Substrate</code>, <code>Shrub</code> and <code>Topo</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">data</span>(mite)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">data</span>(mite.env)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>mite_dat <span class="ot">&lt;-</span> mite.env <span class="sc">%&gt;%</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>  <span class="fu">add_column</span>(<span class="at">abundance =</span> mite<span class="sc">$</span>LRUG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Recall that in our <code>mite_dat</code>, we have the following three categorical predictors:</p>
-<ol type="1">
-<li><p><code>Shrub</code>, which takes values “None”, “Few”, and “Many”</p></li>
-<li><p><code>Topo</code>, which takes values “Hummock” and “Blanket”</p></li>
-<li><p><code>Substrate</code>, which takes values “Sphagn1”, “Spaghn2”, “Sphagn3”, “Sphagn4”, “Litter”, “Barepeat”, “Interface”</p></li>
-</ol>
-<p>We would like to be able to convert these categorical predictors into quantitative ones in order to compute distances.</p>
-</section>
-<section id="integer-encoding" class="level2">
-<h2 class="anchored" data-anchor-id="integer-encoding">Integer encoding</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>mite_dat <span class="ot">&lt;-</span> mite_dat <span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">mutate</span>(<span class="at">Shrub_encode =</span> <span class="fu">case_when</span>(</span>
-<span id="cb2-3"><a href="#cb2-3"></a>    Shrub <span class="sc">==</span> <span class="st">"None"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    Shrub <span class="sc">==</span> <span class="st">"Few"</span> <span class="sc">~</span> <span class="dv">1</span>, </span>
-<span id="cb2-5"><a href="#cb2-5"></a>    Shrub <span class="sc">==</span> <span class="st">"Many"</span> <span class="sc">~</span> <span class="dv">2</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>      )</span>
-<span id="cb2-7"><a href="#cb2-7"></a>    )</span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># compare your new variable to confirm it's correct:</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a>mite_dat <span class="sc">%&gt;%</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">select</span>(Shrub, Shrub_encode) <span class="sc">%&gt;%</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">View</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan) </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mite)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mite.env)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>mite_dat <span class="ot">&lt;-</span> mite.env <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">abundance =</span> mite<span class="sc">$</span>LRUG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="one-hot-encoding-few-levels" class="level2">
-<h2 class="anchored" data-anchor-id="one-hot-encoding-few-levels">One-hot encoding (few levels)</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>mite_dat <span class="ot">&lt;-</span>  mite_dat <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb3-3"><a href="#cb3-3"></a>    <span class="at">Topo_hummock =</span> <span class="fu">if_else</span>(Topo <span class="sc">==</span> <span class="st">"Hummock"</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb3-4"><a href="#cb3-4"></a>    <span class="at">Topo_blanket =</span> <span class="fu">if_else</span>(Topo <span class="sc">==</span> <span class="st">"Blanket"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  ) </span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># compare your new variable to confirm it's correct</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="assignment" class="level2">
+<h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
+<p>Recall the slides from the first week of class where we did some EDA exploring the relationship between each predictor and the <code>abundance</code> of the mites. The whole class was of the opinion that the categorical predictors might be more useful than the quantitative predictors for predicting the <code>abundance</code>. We will explore that here!</p>
+<div style="color: maroon">
+<p>In the file called <code>knn_regresssion2.Rmd</code>, copy and paste your <code>.knn()</code> function (and any accompanying functions) into the appropriate code chunk.</p>
+</div>
+<section id="create-new-data-frame" class="level3">
+<h3 class="anchored" data-anchor-id="create-new-data-frame">Create new data frame</h3>
+<div style="color: maroon">
+<p>Create a new data frame <code>mite_dat2</code> that holds the original quantitative variables and response, and the appropriately encoded versions of the three categorical predictors.</p>
 </div>
 </section>
-<section id="one-hot-encoding-many-levels" class="level2">
-<h2 class="anchored" data-anchor-id="one-hot-encoding-many-levels">One-hot encoding (many levels)</h2>
-<p>The <code>Substrate</code> variable has 7 levels! We could write 7 different <code>if_else()</code> statements, but that seems rather inefficient…</p>
-<p>Instead, we will make clever use of the of the <code>pivot_wider()</code> function. In the code below:</p>
-<ul>
-<li><p>Line 2: create a new place-holder variable <code>value</code> that gives us the mechanism to create dummy variables</p></li>
-<li><p>Line 3: <code>pivot_wider()</code> to create new variables, one for each level of <code>Substrate.</code> Each new variable gets its value from <code>value</code> (i.e.&nbsp;a 1) if the original <code>Substrate</code> variable belonged to that level.</p></li>
-</ul>
+<section id="split-into-traintest-sets" class="level3">
+<h3 class="anchored" data-anchor-id="split-into-traintest-sets">Split into train/test sets</h3>
+<p>The following code splits the original data into a train set and a test set. <em>As a group, discuss what each line of code is doing.</em></p>
+<p>Copy and paste this code into your .Rmd file in the appropriate code chunk.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>mite_dat <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate</span>(<span class="at">value =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Substrate, <span class="at">values_from =</span> value) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(mite_dat2) </span>
+<span id="cb2-3"><a href="#cb2-3"></a>train_ids <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="at">size =</span> <span class="fl">0.7</span><span class="sc">*</span>n)</span>
+<span id="cb2-4"><a href="#cb2-4"></a>train_dat <span class="ot">&lt;-</span> mite_dat2[train_ids,]</span>
+<span id="cb2-5"><a href="#cb2-5"></a>test_dat <span class="ot">&lt;-</span> mite_dat2[<span class="sc">-</span>train_ids,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You should notice that we get a lot of <code>NA</code> values! We just need to replace those <code>NA</code>’s with 0s. In the code below:</p>
-<ul>
-<li><p>Line 4: use the <code>values_fill</code> argument to specify that <code>NA</code>s should be 0s</p></li>
-<li><p>Line 5: modify the names of our new variables to more clearly indicate that they correspond to the same original variable</p></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>mite_dat <span class="ot">&lt;-</span> mite_dat <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">mutate</span>(<span class="at">value =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Substrate, <span class="at">values_from =</span> value, </span>
-<span id="cb5-4"><a href="#cb5-4"></a>              <span class="at">values_fill =</span> <span class="dv">0</span>,</span>
-<span id="cb5-5"><a href="#cb5-5"></a>              <span class="at">names_prefix =</span> <span class="st">"Sub_"</span>)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>mite_dat <span class="sc">%&gt;%</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 12
-  SubsDens WatrCont Shrub Topo   abund…¹ Sub_S…² Sub_L…³ Sub_I…⁴ Sub_S…⁵ Sub_S…⁶
-     &lt;dbl&gt;    &lt;dbl&gt; &lt;ord&gt; &lt;fct&gt;    &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-1     39.2     350. Few   Hummo…       0       1       0       0       0       0
-2     55.0     435. Few   Hummo…       0       0       1       0       0       0
-3     46.1     372. Few   Hummo…       0       0       0       1       0       0
-4     48.2     360. Few   Hummo…       0       1       0       0       0       0
-5     23.6     204. Few   Hummo…       0       1       0       0       0       0
-6     57.3     312. Few   Hummo…       0       1       0       0       0       0
-# … with 2 more variables: Sub_Sphagn2 &lt;dbl&gt;, Sub_Barepeat &lt;dbl&gt;, and
-#   abbreviated variable names ¹​abundance, ²​Sub_Sphagn1, ³​Sub_Litter,
-#   ⁴​Sub_Interface, ⁵​Sub_Sphagn3, ⁶​Sub_Sphagn4</code></pre>
+</section>
+<section id="run-knn-using-all-features" class="level3">
+<h3 class="anchored" data-anchor-id="run-knn-using-all-features">Run KNN using all features</h3>
+<div style="color: maroon">
+<p>With <span class="math inline">\(K = 5\)</span> neighbors, use your <code>.knn()</code> function to obtain predictions for the test data using all the predictors. Report your RMSE for the test data.</p>
 </div>
+</section>
+<section id="run-knn-using-quantitative-features-only" class="level3">
+<h3 class="anchored" data-anchor-id="run-knn-using-quantitative-features-only">Run KNN using quantitative features only</h3>
+<div style="color: maroon">
+<p>Now use your <code>.knn()</code> function to obtain predictions for the test data using only the quantitative predictors <code>WatrCont</code> and <code>SubsDens</code>. Still use <span class="math inline">\(K = 5\)</span> neighbors. Report your RMSE for the test data.</p>
 </div>
+</section>
+<section id="run-knn-using-categorical-features-only" class="level3">
+<h3 class="anchored" data-anchor-id="run-knn-using-categorical-features-only">Run KNN using categorical features only</h3>
+<div style="color: maroon">
+<p>Now use your <code>.knn()</code> function to obtain predictions for the test data using only the encoded categorical predictors. Still use <span class="math inline">\(K = 5\)</span> neighbors. Report your RMSE for the test data.</p>
+</div>
+</section>
+<section id="discuss" class="level3">
+<h3 class="anchored" data-anchor-id="discuss">Discuss</h3>
+<div style="color: maroon">
+<p>Compare and contrast the RMSEs from the three models you fit. What are you surprised or not surprised by? What do you think explains or contributes to the results you obtained?</p>
+</div>
+<p>Using the same test/train split and encodings, I also fit a fourth model where I used all the predictors but standardized the quantitative predictors. I obtained an RMSE of roughly 6.5 for the test data.</p>
+<div style="color: maroon">
+<p>Comment on how this fourth RMSE compares to the ones you obtained. Are you surprised by this result? Why or why not? What do you think explains this result?</p>
+</div>
+</section>
+</section>
+<section id="submission" class="level2">
+<h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<p>Once you’ve finished, push your changes to GitHub. Upload the finished PDF to Canvas.</p>
 
 
 </section>

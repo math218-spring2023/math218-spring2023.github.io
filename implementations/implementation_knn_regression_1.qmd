@@ -1,5 +1,6 @@
 ---
 title: "KNN regression"
+date: "March 2, 2023"
 editor: visual
 categories: "Implementations"
 description: "Part 1"

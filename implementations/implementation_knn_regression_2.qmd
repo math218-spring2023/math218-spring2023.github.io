@@ -1,0 +1,88 @@
+---
+title: "KNN regression"
+date: "March 7, 2023"
+editor: visual
+categories: "Implementations"
+description: "Part 2"
+draft: true
+---
+
+## Introduction
+
+Now that you've implemented KNN regression, you will work on incorporating categorical features. Thankfully, you shouldn't have to modify anything about your `.knn()` function!
+
+We will continue to work with the `mite_dat` data, but will now extend the predictors to include `Substrate`, `Shrub` and `Topo`.
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(vegan) 
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+## Assignment
+
+Recall the slides from the first week of class where we did some EDA exploring the relationship between each predictor and the `abundance` of the mites. The whole class was of the opinion that the categorical predictors might be more useful than the quantitative predictors for predicting the `abundance`. We will explore that here!
+
+::: {style="color: maroon"}
+In the file called `knn_regresssion2.Rmd`, copy and paste your `.knn()` function (and any accompanying functions) into the appropriate code chunk.
+:::
+
+### Create new data frame
+
+::: {style="color: maroon"}
+Create a new data frame `mite_dat2` that holds the original quantitative variables and response, and the appropriately encoded versions of the three categorical predictors.
+:::
+
+### Split into train/test sets
+
+The following code splits the original data into a train set and a test set. *As a group, discuss what each line of code is doing.*
+
+Copy and paste this code into your .Rmd file in the appropriate code chunk.
+
+```{r}
+#| eval: false
+#| code-line-numbers: true
+set.seed(1)
+n <- nrow(mite_dat2) 
+train_ids <- sample(1:n, size = 0.7*n)
+train_dat <- mite_dat2[train_ids,]
+test_dat <- mite_dat2[-train_ids,]
+```
+
+### Run KNN using all features
+
+::: {style="color: maroon"}
+With $K = 5$ neighbors, use your `.knn()` function to obtain predictions for the test data using all the predictors. Report your RMSE for the test data.
+:::
+
+### Run KNN using quantitative features only
+
+::: {style="color: maroon"}
+Now use your `.knn()` function to obtain predictions for the test data using only the quantitative predictors `WatrCont` and `SubsDens`. Still use $K = 5$ neighbors. Report your RMSE for the test data.
+:::
+
+### Run KNN using categorical features only
+
+::: {style="color: maroon"}
+Now use your `.knn()` function to obtain predictions for the test data using only the encoded categorical predictors. Still use $K = 5$ neighbors. Report your RMSE for the test data.
+:::
+
+### Discussion
+
+::: {style="color: maroon"}
+Compare and contrast the RMSEs from the three models you fit. What are you surprised or not surprised by? What do you think explains or contributes to the results you obtained?
+:::
+
+Using the same test/train split and encodings, I also fit a fourth model where I used all the predictors but standardized the quantitative predictors. I obtained an RMSE of roughly 6.5 for the test data.
+
+::: {style="color: maroon"}
+Comment on how this fourth RMSE compares to the ones you obtained. Are you surprised by this result? Why or why not? What do you think explains this result?
+:::
+
+## Submission
+
+Once you've finished, push your changes to GitHub. Upload the finished PDF to Canvas.

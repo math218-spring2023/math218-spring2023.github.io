@@ -1,6 +1,6 @@
 ---
 title: "Live code:"
-date: "March 6, 2023"
+date: "March 7, 2023"
 description: "Encoding categorical variables"
 editor: visual
 categories: "Live code"
