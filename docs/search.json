@@ -25,7 +25,7 @@
     "href": "assignments.html",
     "title": "Assignments",
     "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nConditions and for loops\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nConditions and for loops\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nEncoding categorical variables\n\n\n\nMar 7, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments.html#labs",
@@ -1096,7 +1096,7 @@
     "href": "slides/slides-04-knn-regression-pt2.html#integer-encoding",
     "title": "KNN Regression (cont.)",
     "section": "Integer encoding",
-    "text": "Integer encoding\n\nThe predictor Shrub is ordinal\n\ni.e. there is a natural ordering (None < Few < Many) to the \\(L = 3\\) categories\n\nThe ordering should be reflected in the new quantitative variable\nInteger encoding: convert each label (category/level) into an integer value, where:\n\n“Lowest” level gets assigned 0\nSecond lowest level gets assigned 1\n…\n“Highest” level gets assigned \\(L-1\\)"
+    "text": "Integer encoding\n\nThe predictor Shrub is ordinal\n\ni.e. there is a natural ordering (None < Few < Many) to the \\(L = 3\\) categories\n\nThe ordering should be reflected in the new quantitative variable\nInteger encoding: convert each label (category/level) into an integer value, where:\n\n“Lowest” level gets assigned 0\nSecond lowest level gets assigned 1\n…\n“Highest” level gets assigned \\(L-1\\)\n\n\nLive code"
   },
   {
     "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data-integer-encoding",
@@ -1110,7 +1110,7 @@
     "href": "slides/slides-04-knn-regression-pt2.html#one-hot-encoding",
     "title": "KNN Regression (cont.)",
     "section": "One-hot encoding",
-    "text": "One-hot encoding\n\nQuestion: why wouldn’t I want to use integer encoding for a non-ordinal variable such as Substrate?\nOne-hot encoding: map each level of the variable to a new binary 0/1 variable, where\n\n0 represents the absence of the category\n1 represents the presence of the category\n\nThese are called “dummy variables”; will have \\(L\\) new variables"
+    "text": "One-hot encoding\n\nQuestion: why wouldn’t I want to use integer encoding for a non-ordinal variable such as Substrate?\nOne-hot encoding: map each level of the variable to a new binary 0/1 variable, where\n\n0 represents the absence of the category\n1 represents the presence of the category\n\nThese are called “dummy variables”; will have \\(L\\) new variables\n\nLive code"
   },
   {
     "objectID": "slides/slides-04-knn-regression-pt2.html#mite-data-one-hot-encoding",
@@ -1328,5 +1328,33 @@
     "title": "KNN regression",
     "section": "Submission",
     "text": "Submission\nOnce you’ve finished, push your changes to GitHub. Upload the finished PDF to Canvas."
+  },
+  {
+    "objectID": "live-code/live-code-encoding.html",
+    "href": "live-code/live-code-encoding.html",
+    "title": "Live code:",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(vegan)\ndata(mite)\ndata(mite.env)\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)\n\nRecall that in our mite_dat, we have the following three categorical predictors:\n\nShrub, which takes values “None”, “Few”, and “Many”\nTopo, which takes values “Hummock” and “Blanket”\nSubstrate, which takes values “Sphagn1”, “Spaghn2”, “Sphagn3”, “Sphagn4”, “Litter”, “Barepeat”, “Interface”\n\nWe would like to be able to convert these categorical predictors into quantitative ones in order to compute distances."
+  },
+  {
+    "objectID": "live-code/live-code-encoding.html#integer-encoding",
+    "href": "live-code/live-code-encoding.html#integer-encoding",
+    "title": "Live code:",
+    "section": "Integer encoding",
+    "text": "Integer encoding\n\nmite_dat <- mite_dat %>%\n  mutate(Shrub_encode = case_when(\n    Shrub == \"None\" ~ 0,\n    Shrub == \"Few\" ~ 1, \n    Shrub == \"Many\" ~ 2\n      )\n    )\n\n# compare your new variable to confirm it's correct:\nmite_dat %>%\n  select(Shrub, Shrub_encode) %>%\n  View()"
+  },
+  {
+    "objectID": "live-code/live-code-encoding.html#one-hot-encoding-few-levels",
+    "href": "live-code/live-code-encoding.html#one-hot-encoding-few-levels",
+    "title": "Live code:",
+    "section": "One-hot encoding (few levels)",
+    "text": "One-hot encoding (few levels)\n\nmite_dat <-  mite_dat %>%\n  mutate(\n    Topo_hummock = if_else(Topo == \"Hummock\", 1, 0),\n    Topo_blanket = if_else(Topo == \"Blanket\", 1, 0)\n  ) \n\n# compare your new variable to confirm it's correct"
+  },
+  {
+    "objectID": "live-code/live-code-encoding.html#one-hot-encoding-many-levels",
+    "href": "live-code/live-code-encoding.html#one-hot-encoding-many-levels",
+    "title": "Live code:",
+    "section": "One-hot encoding (many levels)",
+    "text": "One-hot encoding (many levels)\nThe Substrate variable has 7 levels! We could write 7 different if_else() statements, but that seems rather inefficient…\nInstead, we will make clever use of the of the pivot_wider() function. In the code below:\n\nLine 2: create a new place-holder variable value that gives us the mechanism to create dummy variables\nLine 3: pivot_wider() to create new variables, one for each level of Substrate. Each new variable gets its value from value (i.e. a 1) if the original Substrate variable belonged to that level.\n\n\nmite_dat %>%\n  mutate(value = 1) %>% \n  pivot_wider(names_from = Substrate, values_from = value) \n\nYou should notice that we get a lot of NA values! We just need to replace those NA’s with 0s. In the code below:\n\nLine 4: use the values_fill argument to specify that NAs should be 0s\nLine 5: modify the names of our new variables to more clearly indicate that they correspond to the same original variable\n\n\nmite_dat <- mite_dat %>%\n  mutate(value = 1) %>%\n  pivot_wider(names_from = Substrate, values_from = value, \n              values_fill = 0,\n              names_prefix = \"Sub_\")\nmite_dat %>%\n  slice(1:6)\n\n# A tibble: 6 × 12\n  SubsDens WatrCont Shrub Topo   abund…¹ Sub_S…² Sub_L…³ Sub_I…⁴ Sub_S…⁵ Sub_S…⁶\n     <dbl>    <dbl> <ord> <fct>    <int>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>\n1     39.2     350. Few   Hummo…       0       1       0       0       0       0\n2     55.0     435. Few   Hummo…       0       0       1       0       0       0\n3     46.1     372. Few   Hummo…       0       0       0       1       0       0\n4     48.2     360. Few   Hummo…       0       1       0       0       0       0\n5     23.6     204. Few   Hummo…       0       1       0       0       0       0\n6     57.3     312. Few   Hummo…       0       1       0       0       0       0\n# … with 2 more variables: Sub_Sphagn2 <dbl>, Sub_Barepeat <dbl>, and\n#   abbreviated variable names ¹​abundance, ²​Sub_Sphagn1, ³​Sub_Litter,\n#   ⁴​Sub_Interface, ⁵​Sub_Sphagn3, ⁶​Sub_Sphagn4"
   }
 ]

@@ -359,6 +359,10 @@ summary_df
     -   ...
     -   "Highest" level gets assigned $L-1$
 
+-   ::: {style="color: maroon"}
+    Live code
+    :::
+
 ## Mite data: integer encoding
 
 ```{r}
@@ -387,6 +391,10 @@ mite_dat %>%
     -   1 represents the presence of the category
 
 -   These are called "dummy variables"; will have $L$ new variables
+
+-   ::: {style="color: maroon"}
+    Live code
+    :::
 
 ## Mite data: one-hot encoding
 
