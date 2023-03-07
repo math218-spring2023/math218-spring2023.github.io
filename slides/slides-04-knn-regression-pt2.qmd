@@ -18,6 +18,12 @@ draft: false
 
 # Housekeeping
 
+-   KNN implementations: due last night to Canvas (please submit your PDF if you haven't already)
+
+-   Will grade Lab 02: Moneyball today, and hopefully the KNN implementations tomorrow
+
+-   Another small KNN regression deliverable due this Thursday 03/09 11:59pm.
+
 ```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
 
@@ -454,4 +460,4 @@ mite_dat %>%
 
     -   Should we standardize our new encoded variables?
 
-    -   Does anything need to change about your current KNN implementation to address standardizing variables and/or accomodating categorical predictors?
+    -   Does anything need to change about your current KNN implementation to address standardizing variables and/or accommodating categorical predictors?
