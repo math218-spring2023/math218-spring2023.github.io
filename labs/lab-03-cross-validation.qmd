@@ -1,5 +1,5 @@
 ---
-title: "Lab 04: Cross-validation"
+title: "Lab 03: Cross-validation"
 description: "Ski resorts"
 editor: visual
 callout-appearance: default
