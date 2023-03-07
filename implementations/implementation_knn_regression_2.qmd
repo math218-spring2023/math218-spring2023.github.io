@@ -4,7 +4,7 @@ date: "March 7, 2023"
 editor: visual
 categories: "Implementations"
 description: "Part 2"
-draft: true
+draft: false
 ---
 
 ## Introduction
@@ -26,6 +26,12 @@ mite_dat <- mite.env %>%
 ## Assignment
 
 Recall the slides from the first week of class where we did some EDA exploring the relationship between each predictor and the `abundance` of the mites. The whole class was of the opinion that the categorical predictors might be more useful than the quantitative predictors for predicting the `abundance`. We will explore that here!
+
+::: {.callout-note collapse="false"}
+
+I have added a new .Rmd file to your `knn_regression` GitHub project. We will now practice *pulling* changes from GitHub to your local machine.
+
+:::
 
 ::: {style="color: maroon"}
 In the file called `knn_regresssion2.Rmd`, copy and paste your `.knn()` function (and any accompanying functions) into the appropriate code chunk.
