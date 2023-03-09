@@ -1,0 +1,98 @@
+---
+title: "Live code:"
+date: "March 10, 2023"
+description: "List"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Data
+
+```{r message = F}
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+## Lists
+
+Lists are simply another data object in R. List can hold elements of different types, such as vectors, strings, and numbers, and even more lists! We create a list using the `list()` function.
+
+```{r}
+my_list <- list("stat", c(2,1,8))
+
+```
+
+This produces the following result:
+
+```{r}
+my_list
+```
+
+That's great! Lists behave similar to, but not exactly like, vectors. You can find the length of the vector:
+
+```{r}
+length(my_list)
+```
+
+Also, it would be extremely useful to be able to access each element of `my_list`. However, if we were to use the usual `[ ]` notation to index, notice what happens:
+
+```{r}
+my_list[2]
+```
+
+This output isn't a vector; it's still a list, so I cannot do math on it! The following code wouldn't work:
+
+```{r}
+#| eval: false
+2 * my_list[2]
+```
+
+Instead, to access each item in a list, we need to use double brackets, i.e. `[[ ]]`:
+
+```{r}
+my_list[[2]]
+```
+
+Now we can work with the vector as normal
+
+```{r}
+2 * my_list[[2]]
+```
+
+Storing items into lists will also require the double brackets. For example,
+
+```{r}
+my_list[[3]] <- 5
+my_list
+```
+
+```{r}
+#| echo: false
+#| eval: false
+n <- nrow(mite_dat)
+k <- 5
+set.seed(7)
+# the following creates a list
+fold_ids <- split(sample(1:n), ceiling(seq_along(1:n)/(n/k)))
+true_y <- mite_dat$abundance
+errs <- rep(NA, k)
+for(i in 1:k){
+  # to access list elements, use double brackets
+  test_fold_ids <- fold_ids[[i]]
+  mod <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat[-test_fold_ids,])
+  pred <- predict(mod, newdata = mite_dat[test_fold_ids,])
+  errs[i] <- get_rmse(true_y[test_fold_ids], pred) 
+}
+kfold_err <- mean(errs)
+```

@@ -8,7 +8,7 @@ format:
   html: 
     code-fold: false
     code-line-numbers: true
-draft: true
+draft: false
 editor_options: 
   chunk_output_type: console
 ---
@@ -30,17 +30,31 @@ mite_dat <- mite.env %>%
 #| code-line-numbers: true
 n <- nrow(mite_dat)
 rmses <- rep(NA, n)
-true_y <- mite_dat$abundance
 for(i in 1:n){
-  mod <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat[-i,])
-  pred <- predict(mod, newdata = mite_dat[i,])
-  rmses[i] <- (true_y[i] - pred)^2
+  train_dat <- mite_dat[-i,]
+  test_dat <- mite_dat[i,]
+  mod <- lm(abundance ~ WatrCont, data = train_dat)
+  pred <- predict(mod, newdata = test_dat)
+  rmses[i] <- sqrt((test_dat$abundance - pred)^2)
 }
 loocv_err <- mean(rmses)
 loocv_err
 ```
 
-Comprehension question check: why did I not take the square root in line 7 above?
+How does this compare to when I take a usual validation set approach?
+
+```{r}
+set.seed(2)
+train_ids <- sample(n, 0.7 * n)
+train_dat <- mite_dat[train_ids,]
+test_dat <- mite_dat[-train_ids,]
+mod <- lm(abundance ~ WatrCont , data = train_dat)
+pred <- predict(mod, newdata = test_dat)
+rmse_val <- sqrt(mean((test_dat$abundance - pred)^2))
+rmse_val
+```
+
+Also, if you run with different seeds, you will get different estimated RMSEs!
 
 ```{r}
 #| echo: false
@@ -55,7 +69,7 @@ errs <- rep(NA, k)
 for(i in 1:k){
   # to access list elements, use double brackets
   test_fold_ids <- fold_ids[[i]]
-  mod <- lm(abundance ~ WatrCont + SubsDens, data = mite_dat[-test_fold_ids,])
+  mod <- lm(abundance ~ WatrCont, data = mite_dat[-test_fold_ids,])
   pred <- predict(mod, newdata = mite_dat[test_fold_ids,])
   errs[i] <- get_rmse(true_y[test_fold_ids], pred) 
 }

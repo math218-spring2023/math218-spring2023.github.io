@@ -42,6 +42,8 @@ knn_mod <- knnreg(x= train_x, y = train_y, k = 7)
 preds <- predict(knn_mod, newdata = test_x)
 ```
 
+*This is a challenging lab assignment because there are a lot of moving parts! Please do not put it off until the last minute!*
+
 ## Define functions
 
 To make our lives easier, we will write a function that standardizes data for you. Create a function called `my_scale()` that takes in three arguments:
@@ -79,7 +81,7 @@ Please do not include code that tests your `my_scale()` function in your final s
 
 ## Analysis
 
-We will fit a total of four different models using k-fold cross-validation. For all the models, we will predict the `price` of the lift tickets using all of the *quantitative* variables. In order to have a fair comparison of the models, each model should be fit and tested on the same folds/partitions of the original data. Therefore, we will begin by creating a set of indices that tell us which fold each observation belongs to.
+We will fit a total of four different models using k-fold cross-validation. For all the models, we will predict the `price` of the lift tickets using all of the remaining *quantitative* variables. In order to have a fair comparison of the models, each model should be fit and tested on the same folds/partitions of the original data. Therefore, we will begin by creating a set of indices that tell us which fold each observation belongs to.
 
 *I suggest you modify your data such that it only contains the variables of interest for this analysis!*
 

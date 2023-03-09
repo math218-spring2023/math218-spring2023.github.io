@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-03-09">
-<meta name="description" content="LOOCV">
+<meta name="dcterms.date" content="2023-03-10">
+<meta name="description" content="List">
 
 <title>Math 218 - Spring 2023 - Live code:</title>
 <style>
@@ -176,7 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
-  <li><a href="#loocv" id="toc-loocv" class="nav-link" data-scroll-target="#loocv">LOOCV</a></li>
+  <li><a href="#lists" id="toc-lists" class="nav-link" data-scroll-target="#lists">Lists</a></li>
   </ul>
 </nav>
     </div>
@@ -193,7 +193,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div>
   <div class="description">
-    LOOCV
+    List
   </div>
 </div>
 
@@ -204,7 +204,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 9, 2023</p>
+      <p class="date">March 10, 2023</p>
     </div>
   </div>
   
@@ -225,39 +225,71 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-6"><a href="#cb1-6"></a>  <span class="fu">add_column</span>(<span class="at">abundance =</span> mite<span class="sc">$</span>LRUG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="loocv" class="level3">
-<h3 class="anchored" data-anchor-id="loocv">LOOCV</h3>
+<section id="lists" class="level2">
+<h2 class="anchored" data-anchor-id="lists">Lists</h2>
+<p>Lists are simply another data object in R. List can hold elements of different types, such as vectors, strings, and numbers, and even more lists! We create a list using the <code>list()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(mite_dat)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>rmses <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  train_dat <span class="ot">&lt;-</span> mite_dat[<span class="sc">-</span>i,]</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  test_dat <span class="ot">&lt;-</span> mite_dat[i,]</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(abundance <span class="sc">~</span> WatrCont, <span class="at">data =</span> train_dat)</span>
-<span id="cb2-7"><a href="#cb2-7"></a>  pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod, <span class="at">newdata =</span> test_dat)</span>
-<span id="cb2-8"><a href="#cb2-8"></a>  rmses[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((test_dat<span class="sc">$</span>abundance <span class="sc">-</span> pred)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb2-9"><a href="#cb2-9"></a>}</span>
-<span id="cb2-10"><a href="#cb2-10"></a>loocv_err <span class="ot">&lt;-</span> <span class="fu">mean</span>(rmses)</span>
-<span id="cb2-11"><a href="#cb2-11"></a>loocv_err</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 9.513248</code></pre>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">"stat"</span>, <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>How does this compare to when I take a usual validation set approach?</p>
+<p>This produces the following result:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>train_ids <span class="ot">&lt;-</span> <span class="fu">sample</span>(n, <span class="fl">0.7</span> <span class="sc">*</span> n)</span>
-<span id="cb4-3"><a href="#cb4-3"></a>train_dat <span class="ot">&lt;-</span> mite_dat[train_ids,]</span>
-<span id="cb4-4"><a href="#cb4-4"></a>test_dat <span class="ot">&lt;-</span> mite_dat[<span class="sc">-</span>train_ids,]</span>
-<span id="cb4-5"><a href="#cb4-5"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(abundance <span class="sc">~</span> WatrCont , <span class="at">data =</span> train_dat)</span>
-<span id="cb4-6"><a href="#cb4-6"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod, <span class="at">newdata =</span> test_dat)</span>
-<span id="cb4-7"><a href="#cb4-7"></a>rmse_val <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((test_dat<span class="sc">$</span>abundance <span class="sc">-</span> pred)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb4-8"><a href="#cb4-8"></a>rmse_val</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>my_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 10.73352</code></pre>
+<pre><code>[[1]]
+[1] "stat"
+
+[[2]]
+[1] 2 1 8</code></pre>
 </div>
 </div>
-<p>Also, if you run with different seeds, you will get different estimated RMSEs!</p>
+<p>That’s great! Lists behave similar to, but not exactly like, vectors. You can find the length of the vector:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">length</span>(my_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+<p>Also, it would be extremely useful to be able to access each element of <code>my_list</code>. However, if we were to use the usual <code>[ ]</code> notation to index, notice what happens:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>my_list[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 2 1 8</code></pre>
+</div>
+</div>
+<p>This output isn’t a vector; it’s still a list, so I cannot do math on it! The following code wouldn’t work:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="dv">2</span> <span class="sc">*</span> my_list[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Instead, to access each item in a list, we need to use double brackets, i.e.&nbsp;<code>[[ ]]</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>my_list[[<span class="dv">2</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 1 8</code></pre>
+</div>
+</div>
+<p>Now we can work with the vector as normal</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="dv">2</span> <span class="sc">*</span> my_list[[<span class="dv">2</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  4  2 16</code></pre>
+</div>
+</div>
+<p>Storing items into lists will also require the double brackets. For example,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>my_list[[<span class="dv">3</span>]] <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>my_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "stat"
+
+[[2]]
+[1] 2 1 8
+
+[[3]]
+[1] 5</code></pre>
+</div>
+</div>
 <div class="cell">
 
 </div>
