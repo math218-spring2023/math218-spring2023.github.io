@@ -14,6 +14,10 @@ library(caret)
 source("../math218_fns.R")
 ```
 
+The data and `.Rmd` file can be found in your `lab-03-ski-resorts` GitHub project. Please clone it now! The data is `ski_resorts.csv`, and come from [Kaggle](https://www.kaggle.com/datasets/aryanjuyal/comparison-of-north-american-ski-resorts).
+
+We have data on ski resorts on the east coast. Each observation is a ski resort, and we information about the features of each resort (e.g. number of lifts, price of ticket, average elvation). A data dictionary can be found in the README.
+
 ```{r data}
 ski_resorts <- read.csv("data/ski_resorts.csv")
 ```
