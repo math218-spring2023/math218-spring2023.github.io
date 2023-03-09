@@ -176,6 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#define-functions" id="toc-define-functions" class="nav-link" data-scroll-target="#define-functions">Define functions</a></li>
   <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
   <ul class="collapse">
   <li><a href="#obtain-the-indices-for-each-fold" id="toc-obtain-the-indices-for-each-fold" class="nav-link" data-scroll-target="#obtain-the-indices-for-each-fold">Obtain the indices for each fold</a></li>
@@ -229,6 +230,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>A multiple linear regression model, and</li>
 <li>A KNN regression model</li>
 </ol>
+<p>This lab will also explore the effect of standardizing quantitative variables.</p>
 <p>Now that you’ve implemented KNN regression and understand how it works, you are allowed to use the <code>knnreg()</code> R function provided in the <code>caret</code> library! This function is much faster than our own implementations. To use <code>knnreg()</code>:</p>
 <ol type="1">
 <li>Install the <code>caret</code> package in your console</li>
@@ -246,22 +248,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn_mod, <span class="at">newdata =</span> test_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="define-functions" class="level2">
+<h2 class="anchored" data-anchor-id="define-functions">Define functions</h2>
+<p>To make our lives easier, we will write a function that standardizes data for you. Create a function called <code>my_scale()</code> that takes in three arguments:</p>
+<ol type="1">
+<li>A data frame (or matrix) that needs to be standardized,</li>
+<li>A vector of means, where element <span class="math inline">\(j\)</span> is the mean of the <span class="math inline">\(j\)</span>-th column of (1), and</li>
+<li>A vector of standard deviations where element <span class="math inline">\(j\)</span> is the standard deviation of the <span class="math inline">\(j\)</span>-th column of (1)</li>
+</ol>
+<p>Your function <code>my_scale()</code> should return a standardized version of the data frame that was input. The <code>R</code> function <code>sd()</code> takes a vector as input and outputs the standard deviation.</p>
+<div class="cell">
+
+</div>
+<p>You can confirm your <code>my_scale()</code> function is working by seeing if you get the same results as when you use the <code>scale()</code> function provided by R on the following data <code>temp</code> (you can also confirm if your <code>mean_vec</code> and <code>sd_vec</code> are correct by looking at the <code>attr</code>ibutes center and scale in the following output):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> <span class="fu">sqrt</span>(x))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">scale</span>(temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              x          y
+[1,] -1.2649111 -1.3900560
+[2,] -0.6324555 -0.5388977
+[3,]  0.0000000  0.1142190
+[4,]  0.6324555  0.6648219
+[5,]  1.2649111  1.1499128
+attr(,"scaled:center")
+       x        y 
+3.000000 1.676466 
+attr(,"scaled:scale")
+        x         y 
+1.5811388 0.4866469 </code></pre>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Please do not include code that tests your <code>my_scale()</code> function in your final submission.</p>
+</div>
+</div>
+</section>
 <section id="analysis" class="level2">
 <h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
 <p>We will fit a total of four different models using k-fold cross-validation. For all the models, we will predict the <code>price</code> of the lift tickets using all of the <em>quantitative</em> variables. In order to have a fair comparison of the models, each model should be fit and tested on the same folds/partitions of the original data. Therefore, we will begin by creating a set of indices that tell us which fold each observation belongs to.</p>
 <p><em>I suggest you modify your data such that it only contains the variables of interest for this analysis!</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> ski_resorts <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>resort, <span class="sc">-</span>city, <span class="sc">-</span>state)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 <section id="obtain-the-indices-for-each-fold" class="level3">
 <h3 class="anchored" data-anchor-id="obtain-the-indices-for-each-fold">Obtain the indices for each fold</h3>
-<p>We will perform 5-fold cross-validation. Using a method of your choice, randomly split the indices of the observations into 5 folds of (roughly) equal size. Because you will be randomly splitting, it is important for you to set a seed for reproducibility.</p>
+<p>We will perform 5-fold cross-validation.</p>
+<div style="color: maroon">
+<p>Randomly split the indices of the observations into 5 folds of equal size. Because you will be randomly splitting, it is important for you to set a seed for reproducibility. Use a seed of 3.</p>
+</div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(ski_resorts)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>n_folds <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fold_ids <span class="ot">&lt;-</span> <span class="fu">split</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n), <span class="fu">ceiling</span>(<span class="fu">seq_along</span>(<span class="dv">1</span><span class="sc">:</span>n)<span class="sc">/</span>(n<span class="sc">/</span>n_folds)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 </section>
 <section id="mlr-original-scale" class="level3">
@@ -272,18 +319,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> ., data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y_true <span class="ot">&lt;-</span> dat<span class="sc">$</span>price</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>lm_errs <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n_folds)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_folds){</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  test_fold_ids <span class="ot">&lt;-</span> fold_ids[[i]]</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> ., dat[<span class="sc">-</span>test_fold_ids,])</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod, <span class="at">newdata =</span> dat[test_fold_ids,])</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  lm_errs[i] <span class="ot">&lt;-</span> <span class="fu">get_rmse</span>(y_true[test_fold_ids], preds)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>(lm_rmse <span class="ot">&lt;-</span> <span class="fu">mean</span>(lm_errs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 16.15013</code></pre>
-</div>
+
 </div>
 <div style="color: maroon">
 <p>Report your estimated test RMSE from running MLR with 5-fold CV.</p>
@@ -291,110 +327,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="knn-original-scale" class="level3">
 <h3 class="anchored" data-anchor-id="knn-original-scale">KNN: original scale</h3>
-<p>Using the same folds, run 5-fold CV to obtain an estimate of the test RMSE using KNN regression. Don’t forget to choose and set the number of neighbors for reproducibility! You may either use your own implementation of KNN, or you may use the <code>knnreg()</code> + <code>predict()</code> functions provided in <code>R</code>.</p>
+<p>Using the same folds, run 5-fold CV to obtain an estimate of the test RMSE using KNN regression, with <span class="math inline">\(K = 10\)</span> neighbors. You may either use your own implementation of KNN, or you may use the <code>knnreg()</code> + <code>predict()</code> functions provided in <code>R</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>knn_errs <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n_folds)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_folds){</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  test_fold_ids <span class="ot">&lt;-</span> fold_ids[[i]]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  train_x <span class="ot">&lt;-</span> dat[<span class="sc">-</span>test_fold_ids,] <span class="sc">%&gt;%</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>price)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  train_y <span class="ot">&lt;-</span> dat[<span class="sc">-</span>test_fold_ids,] <span class="sc">%&gt;%</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(price) <span class="sc">%&gt;%</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>()</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  test_x <span class="ot">&lt;-</span> dat[test_fold_ids,] <span class="sc">%&gt;%</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>price)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> <span class="fu">knnreg</span>(train_x, train_y, <span class="at">k =</span> K)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod, test_x)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  knn_errs[i] <span class="ot">&lt;-</span> <span class="fu">get_rmse</span>(y_true[test_fold_ids], preds)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>(knn_rmse <span class="ot">&lt;-</span> <span class="fu">mean</span>(knn_errs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 19.5177</code></pre>
-</div>
+
 </div>
 <div style="color: maroon">
-<p>State your choice of the number of neighbors, and report your estimated test RMSE from running KNN regression with 5-fold CV. How does your estimated test RMSE compare to that obtained from MLR?</p>
+<p>State the number of neighbors, and report your estimated test RMSE from running KNN regression with 5-fold CV. How does your estimated test RMSE compare to that obtained from MLR?</p>
 </div>
 </section>
 <section id="knn-regression-standardized-data" class="level3">
 <h3 class="anchored" data-anchor-id="knn-regression-standardized-data">KNN regression: standardized data</h3>
-<p>Remember that we should first standardize on the train data, and then use the mean and standard deviations from that standardization to standardize the test data! Therefore, make a function called <code>my_scale()</code> that takes in three arguments:</p>
-<ol type="1">
-<li>A data frame (or matrix) that needs to be standardized,</li>
-<li>A vector of means, and</li>
-<li>A vector of standard deviations.</li>
-</ol>
-<p>Your function <code>my_scale()</code> should return a standardized version of the data frame that was input.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>my_scale <span class="ot">&lt;-</span> <span class="cf">function</span>(mat, mean_vec, sd_vec){</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">length</span>(mean_vec)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  ret <span class="ot">&lt;-</span> mat</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    mat[,i] <span class="ot">&lt;-</span> (mat[,i] <span class="sc">-</span> mean_vec[i])<span class="sc">/</span>sd_vec[i]</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mat)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>Now, we will run KNN regression where the predictors are standardized. Using the same folds, run 5-fold CV to obtain an estimate of the test RMSE using KNN regression on the standardized data. You should use your <code>my_scale()</code> function, and the same number of neighbors as in the previous section!</p>
+<p>Remember that we should first standardize on the train data, and then use the mean and standard deviations from that standardization to standardize the test data!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>knn_errs_scaled <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n_folds)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_folds){</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  test_fold_ids <span class="ot">&lt;-</span> fold_ids[[i]]</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  train_x <span class="ot">&lt;-</span> dat  <span class="sc">%&gt;%</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="sc">-</span>test_fold_ids) <span class="sc">%&gt;%</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>price)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  mean_vec <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(train_x)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  sd_vec <span class="ot">&lt;-</span> <span class="fu">apply</span>(train_x, <span class="dv">2</span>, sd)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  train_x <span class="ot">&lt;-</span>  <span class="fu">my_scale</span>(train_x, mean_vec, sd_vec)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  train_y <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="sc">-</span>test_fold_ids) <span class="sc">%&gt;%</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(price) <span class="sc">%&gt;%</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>()</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  test_x <span class="ot">&lt;-</span> dat  <span class="sc">%&gt;%</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(test_fold_ids) <span class="sc">%&gt;%</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>price)</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  test_x <span class="ot">&lt;-</span> <span class="fu">my_scale</span>(test_x, mean_vec, sd_vec)</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> <span class="fu">knnreg</span>(train_x, train_y, <span class="at">k =</span> K)</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod, <span class="at">newdata =</span> test_x)</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  knn_errs_scaled[i] <span class="ot">&lt;-</span> <span class="fu">get_rmse</span>(y_true[test_fold_ids], preds)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>(knn_scaled_rmse <span class="ot">&lt;-</span> <span class="fu">mean</span>(knn_errs_scaled))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 17.08212</code></pre>
-</div>
+
 </div>
 <div style="color: maroon">
-<p>State your choice of the number of neighbors, and report your estimated test RMSE from running KNN regression with 5-fold CV on the standardized predictors. How does your estimated test RMSE compare to the two previous test RMSEs?</p>
+<p>State the number of neighbors, and report your estimated test RMSE from running KNN regression with 5-fold CV on the standardized predictors. How does your estimated test RMSE compare to the two previous test RMSEs?</p>
 </div>
 </section>
 <section id="mlr-standardized-data" class="level3">
 <h3 class="anchored" data-anchor-id="mlr-standardized-data">MLR: standardized data</h3>
 <p>Finally, we will run MLR regression where the predictors are standardized. Using the same folds, run 5-fold CV to obtain an estimate of the test RMSE using MLR on the standardized data. You should use your <code>my_scale()</code> function!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>lm_errs_scaled <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n_folds)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_folds){</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  test_fold_ids <span class="ot">&lt;-</span> fold_ids[[i]]</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  train_x <span class="ot">&lt;-</span> dat  <span class="sc">%&gt;%</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="sc">-</span>test_fold_ids) <span class="sc">%&gt;%</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>price)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  mean_vec <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(train_x)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  sd_vec <span class="ot">&lt;-</span> <span class="fu">apply</span>(train_x, <span class="dv">2</span>, sd)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  train_x <span class="ot">&lt;-</span>  <span class="fu">my_scale</span>(train_x, mean_vec, sd_vec)</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  dat_scaled <span class="ot">&lt;-</span> train_x <span class="sc">%&gt;%</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">price =</span> dat<span class="sc">$</span>price[<span class="sc">-</span>test_fold_ids])</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  test_x <span class="ot">&lt;-</span> dat  <span class="sc">%&gt;%</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(test_fold_ids) <span class="sc">%&gt;%</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>price)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  test_x <span class="ot">&lt;-</span> <span class="fu">my_scale</span>(test_x, mean_vec, sd_vec)</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> ., dat_scaled)</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod, <span class="at">newdata =</span> test_x)</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  lm_errs_scaled[i] <span class="ot">&lt;-</span> <span class="fu">get_rmse</span>(y_true[test_fold_ids], preds)</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>(lm_scaled_rmse <span class="ot">&lt;-</span> <span class="fu">mean</span>(lm_errs_scaled))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 16.15013</code></pre>
-</div>
+
 </div>
 <div style="color: maroon">
 <p>Report your estimated test RMSE from running MLR with 5-fold CV on the standardized data. How does your estimate here compare to that obtained from running MLR on the non-standardized data?</p>
@@ -408,6 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>If you ran this analysis again with a different choice of seed in <code>set.seed()</code>, what would you expect to change and why? What would you expect to stay the same and why?</li>
 <li>If you ran this analysis again with a larger number of folds, how would you expect the estimated test RMSEs to change? Why?</li>
 <li>I mentioned that the fair way to compare models is to use the same folds/partitions for all models. Briefly explain why that is.</li>
+<li>Based on your results for the two linear regression models, what might be one advantage of fitting a linear regression model compared to a KNN regression model?</li>
 </ol>
 </section>
 <section id="submission" class="level2">

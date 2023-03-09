@@ -480,7 +480,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 02/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 02/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 02/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n02/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 02/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?\n\n\n\n\nR 02/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 02/24\nLinear regression (cont.)\nLab day\n\nLab 02: Moneyball\n03/02 at 11:59pm\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 02/28\nKNN regression\nSlides: KNN regression\nKNN pseudocode\n03/02 in class\n\n\nR 03/02\nKNN regression: implementation\nLive code: Writing functions\nKNN group pseudocode (steps 1-2)\n03/03 in class\n\n\nF 03/03\nKNN: implementation\n\nKNN group implementation (step 3)\n03/06 11:59pm\n\n\n\n\n\nWEEK 4\n\n\n\n\n\nT 03/07\nKNN regression (pt. 2)\nSlides\nLive code: encoding\nKNN regression: categorical features\n03/09 11:59pm\n\n\nR 03/09\nResampling\n\n\n\n\n\nF 3/10\nLab 03: Resampling\n\n\n03/16 11:59pm\n\n\n\n\n\nWEEK 5\n\n\n\n\n\nT 03/14\nRegression trees\n\n\n\n\n\nR 03/16\nRegression trees (cont.)\n\n\n\n\n\nF 03/17\nNO CLASS\nWork on Lab 04!\nLab 04\n03/30 11:59pm\n\n\n\n\n\nSPRING BREAK\n\n\n\n\n\n\n\n\nWEEK 6\n\n\n\n\n\nT 03/28\nBootstrap\n\n\n\n\n\nR 03/30\nBootstrap (cont.)\n\n\n\n\n\nF 03/31\nImbalanced data\n\nMidterm: computational assignment\n04/02 11:59pm"
+    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 02/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 02/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 02/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n02/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 02/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?\n\n\n\n\nR 02/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 02/24\nLinear regression (cont.)\nLab day\n\nLab 02: Moneyball\n03/02 at 11:59pm\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 02/28\nKNN regression\nSlides: KNN regression\nKNN pseudocode\n03/02 in class\n\n\nR 03/02\nKNN regression: implementation\nLive code: Writing functions\nKNN group pseudocode (steps 1-2)\n03/03 in class\n\n\nF 03/03\nKNN: implementation\n\nKNN group implementation (step 3)\n03/06 11:59pm\n\n\n\n\n\nWEEK 4\n\n\n\n\n\nT 03/07\nKNN regression (pt. 2)\nSlides\nLive code: encoding\nKNN regression: categorical features\n03/09 11:59pm\n\n\nR 03/09\nValidation\nSlides\n\n\n\n\nF 3/10\nLab 03: Validation\n\n\n03/16 11:59pm\n\n\n\n\n\nWEEK 5\n\n\n\n\n\nT 03/14\nRegression trees\n\n\n\n\n\nR 03/16\nRegression trees (cont.)\n\n\n\n\n\nF 03/17\nNO CLASS\nWork on Lab 04!\nLab 04\n03/30 11:59pm\n\n\n\n\n\nSPRING BREAK\n\n\n\n\n\n\n\n\nWEEK 6\n\n\n\n\n\nT 03/28\nBootstrap\n\n\n\n\n\nR 03/30\nBootstrap (cont.)\n\n\n\n\n\nF 03/31\nImbalanced data\n\nMidterm: computational assignment\n04/02 11:59pm"
   },
   {
     "objectID": "live-code/live-code-03.html",
@@ -1152,7 +1152,7 @@
     "href": "slides/slides-05-resampling.html#resampling",
     "title": "Validation",
     "section": "Resampling",
-    "text": "Resampling\n\nEconomically using a collected dataset by repeatedly drawing samples from the same training dataset and fitting a model of interest on each sample\n\nObtain additional information about the fitted model\n\nTwo methods: cross-validation and the bootstrap\nThese slides will focus on the following topics of cross-validation:\n\nValidation set\nLOOCV\nk-fold CV (another k!)"
+    "text": "Resampling\n\nEconomically use a collected dataset by repeatedly drawing samples from the same training dataset and fitting a model of interest on each sample\n\nObtain additional information about the fitted model\n\nTwo methods: cross-validation and the bootstrap\nThese slides will focus on the following topics of cross-validation:\n\nValidation set\nLOOCV\nk-fold CV (another k!)"
   },
   {
     "objectID": "slides/slides-05-resampling.html#training-vs-test-errors",
@@ -1187,7 +1187,7 @@
     "href": "slides/slides-05-resampling.html#discuss",
     "title": "Validation",
     "section": "Discuss",
-    "text": "Discuss\n\nSuppose I am fitting a simple linear regression model \\(Y = \\beta_{0} + \\beta_{1}X + \\epsilon\\).\nI want to obtain an estimate of the test error using LOOCV\nDiscuss exactly how you would implement this in code. Specific things to mention:\n\nWhat “actions”/functions you would use, and in what order\nWhat values you would compute\nWhat values you would store"
+    "text": "Discuss\n\nSuppose I am fitting a simple linear regression model \\(Y = \\beta_{0} + \\beta_{1}X + \\epsilon\\).\nI want to obtain an estimate of the test error using LOOCV\nDiscuss exactly how you would implement this in code. Specific things to mention:\n\nWhat “actions”/functions you would use, and in what order\nWhat values you would compute\nWhat values you would store\n\n\nLive code"
   },
   {
     "objectID": "slides/slides-05-resampling.html#loocv-pros-and-cos",
@@ -1377,5 +1377,138 @@
     "title": "KNN regression",
     "section": "Submission",
     "text": "Submission\nOnce you’ve finished, push your changes to GitHub. Upload the finished PDF to Canvas."
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#resampling",
+    "href": "slides/slides-05-validation.html#resampling",
+    "title": "Validation",
+    "section": "Resampling",
+    "text": "Resampling\n\nEconomically use a collected dataset by repeatedly drawing samples from the same training dataset and fitting a model of interest on each sample\n\nObtain additional information about the fitted model\n\nTwo methods: cross-validation and the bootstrap\nThese slides will focus on the following topics of cross-validation:\n\nValidation set\nLOOCV\nk-fold CV (another k!)"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#training-vs-test-errors",
+    "href": "slides/slides-05-validation.html#training-vs-test-errors",
+    "title": "Validation",
+    "section": "Training vs Test errors",
+    "text": "Training vs Test errors\n\nRecall the distinction between the training and test datasets\n\nTraining data: used to fit model\nTest data: used to test/evaluate the model\n\nThese two datasets result in two types of error:\n\nTraining error: average error resulting from using the model to predict the responses for the training data\nTest error: average error from using the model to predict the responses on new, “unseen” observations\n\nTraining error is often very different from test error"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#validation-set-approach",
+    "href": "slides/slides-05-validation.html#validation-set-approach",
+    "title": "Validation",
+    "section": "Validation set approach",
+    "text": "Validation set approach\n\nWe have been using a validation set approach: randomly divide (e.g. 50/50) the available data into two parts: a training set and a test/validation/hold-out set\n\nModel is fit on training set\nFitted model predicts responses for the observations in the validation set\n\nThe resulting validation-set error provides an estimate of the test error (e.g. RMSE)"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#validation-set-approach-drawbacks",
+    "href": "slides/slides-05-validation.html#validation-set-approach-drawbacks",
+    "title": "Validation",
+    "section": "Validation set approach: drawbacks",
+    "text": "Validation set approach: drawbacks\n\nOur estimate for test error will depend on the observations that are included in the training and validation sets\n\nValidation estimate of test error can be highly variable\n\nOnly a subset of the available data are used to fit the model\n\ni.e. fewer observations used to fit model might lead to overestimating test error rate"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#leave-one-out-cross-validation-1",
+    "href": "slides/slides-05-validation.html#leave-one-out-cross-validation-1",
+    "title": "Validation",
+    "section": "Leave-One-Out Cross-Validation",
+    "text": "Leave-One-Out Cross-Validation\n\nLeave-one-out cross-validation (LOOCV) attempts to address the drawbacks from validation set approach\nWe still split all observations into two sets: training and validation\nKey difference: instead of splitting just once, we split many times, where one observation is used for the validation set, leaving the remaining \\(n-1\\) observations for training set"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#loocv-method",
+    "href": "slides/slides-05-validation.html#loocv-method",
+    "title": "Validation",
+    "section": "LOOCV: method",
+    "text": "LOOCV: method\n\nStart by choosing first observation \\((x_{1}, y_{1})\\) to be validation set, and fit model on remaining \\(\\{(x_{2}, y_{2}), (x_{3}, y_{3}), \\ldots, (x_{n}, y_{n}) \\}\\) as our training set\nObtain \\(\\text{RMSE}_{1} = \\sqrt{(y_{1} -\\hat{y}_{1})^2}\\), an approximately unbiased estimate for test error\nRepeat procedure by selecting the second observation to be validation set, then third, etc.\nWill end up with \\(n\\) errors: \\(\\text{RMSE}_{1}, \\text{RMSE}_{2}, \\ldots, \\text{RMSE}_{n}\\). Then LOOCV estimate for test RMSE is the average:\n\n\n\\[\\text{CV}_{(n)} = \\frac{1}{n}\\sum_{i=1}^{n} \\text{RMSE}_{i}\\]"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#discuss",
+    "href": "slides/slides-05-validation.html#discuss",
+    "title": "Validation",
+    "section": "Discuss",
+    "text": "Discuss\n\nSuppose I am fitting a simple linear regression model \\(Y = \\beta_{0} + \\beta_{1}X + \\epsilon\\).\nI want to obtain an estimate of the test error using LOOCV\nDiscuss exactly how you would implement this in code. Specific things to mention:\n\nWhat “actions”/functions you would use, and in what order\nWhat values you would compute\nWhat values you would store\n\n\nLive code"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#loocv-pros-and-cons",
+    "href": "slides/slides-05-validation.html#loocv-pros-and-cons",
+    "title": "Validation",
+    "section": "LOOCV pros and cons",
+    "text": "LOOCV pros and cons\n\n\n\nPros\n\nEach training set has \\(n-1\\) observations \\(\\rightarrow\\) tend to not overestimate test error as much\nThere is no randomness in how the original data is split\n\n\n\n\nCons\n\nLOOCV can be expensive to implement – must fit the model \\(n\\) times\nEstimates for each validation set \\(i\\) are highly correlated, so the average can have high variance"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#k-fold-cross-validation-1",
+    "href": "slides/slides-05-validation.html#k-fold-cross-validation-1",
+    "title": "Validation",
+    "section": "k-fold Cross-Validation",
+    "text": "k-fold Cross-Validation\n\nIn k-fold CV, the observations are randomly divided into \\(k\\) partitions (or folds) of approximately equal size.\nFor each \\(j\\) in \\(1, 2, \\ldots, k\\):\n\nLeave out \\(j\\)-th partition/fold as validation set, and fit model on remaining \\(k-1\\) partitions (combined)\nPredict for all observations in the held-out \\(j\\)-th fold, and obtain a corresponding \\(\\text{RMSE}_{j}\\)\n\nThe \\(k\\)-fold CV estimate of the test error is the average:\n\n\n\\[\\text{CV}_{(k)} = \\frac{1}{k} \\sum_{j=1}^{k} \\text{RMSE}_{j}\\]"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#k-fold-cv-cont.",
+    "href": "slides/slides-05-validation.html#k-fold-cv-cont.",
+    "title": "Validation",
+    "section": "k-fold CV (cont.)",
+    "text": "k-fold CV (cont.)\n\nLetting the \\(j\\)-th fold have \\(n_{j}\\) observations:\n\n\n\\[\\text{RMSE}_{j} = \\sqrt{\\frac{1}{n_{j}}\\sum_{i \\in \\mathcal{C}_{j}} (y_{i} - \\hat{y}^{(j)}_{i})^2},\\]\n\n\nwhere \\(\\mathcal{C}_{j}\\) is set of observations in the \\(j\\)-th fold, so \\(i\\) indexes the observations in \\(\\mathcal{C}_{j}\\). \\(\\hat{y}^{(j)}_{i}\\) is the prediction for \\(i\\)-th observation, obtained from data with part \\(j\\) removed\n\n\nIf \\(n\\) is a multiple of \\(k\\), then \\(n_{j} = \\frac{n}{k}\\)"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#visual",
+    "href": "slides/slides-05-validation.html#visual",
+    "title": "Validation",
+    "section": "Visual",
+    "text": "Visual\n\nImportant: k is the number of folds/partitions, not the number of observations within each fold!"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#example-varying-k",
+    "href": "slides/slides-05-validation.html#example-varying-k",
+    "title": "Validation",
+    "section": "Example: varying k",
+    "text": "Example: varying k\nI fit the linear model abundance = \\(\\beta_{0} + \\beta_{1}\\) WatrCont + \\(\\beta_{2}\\) SubsDens and obtain estimates of the test RMSE using k-fold CV for varying k:"
+  },
+  {
+    "objectID": "slides/slides-05-validation.html#validation-remarks",
+    "href": "slides/slides-05-validation.html#validation-remarks",
+    "title": "Validation",
+    "section": "Validation: remarks",
+    "text": "Validation: remarks\n\nLOOCV is a special case of \\(k\\)-fold CV.\n\nQuestion: Which value of \\(k\\) yields LOOCV?\n\n\\(k\\)-fold CV estimate is still biased upward; bias minimized when \\(k = n\\)\n\n\\(k = 5\\) or \\(k=10\\) often used as a compromise for bias-variance tradeoff\n\nLOOCV and \\(k\\)-fold CV are useful and commonly used because of their generality"
+  },
+  {
+    "objectID": "slides/slides-bootstrap.html#resampling",
+    "href": "slides/slides-bootstrap.html#resampling",
+    "title": "Bootstrap",
+    "section": "Resampling",
+    "text": "Resampling\n\nEconomically use a collected dataset by repeatedly drawing samples from the same training dataset and fitting a model of interest on each sample\n\nObtain additional information about the fitted model\n\nTwo methods: cross-validation and the bootstrap\nThese slides will focus on thebootstrap"
+  },
+  {
+    "objectID": "slides/slides-bootstrap.html#the-bootstrap-1",
+    "href": "slides/slides-bootstrap.html#the-bootstrap-1",
+    "title": "Bootstrap",
+    "section": "The Bootstrap",
+    "text": "The Bootstrap\n\nThe bootstrap is a flexible and powerful statistical tool that can be used to quantify the uncertainty associated with a given estimator or statistical learning method\nExample: can be used to estimate the standard errors of the \\(\\beta\\) coefficients in linear regression\nOne goal of statistics: learn about a population.\n\nUsually, population is not available, so must make inference from sample data\n\nBootstrapping operates by resampling this sample data to create many simulated samples"
+  },
+  {
+    "objectID": "slides/slides-bootstrap.html#the-bootstrap-cont.",
+    "href": "slides/slides-bootstrap.html#the-bootstrap-cont.",
+    "title": "Bootstrap",
+    "section": "The Bootstrap (cont.)",
+    "text": "The Bootstrap (cont.)\n\nBootstrapping resamples the original dataset with replacement\nIf the original datset has \\(n\\) observations, then each bootstrap/resampled dataset also has \\(n\\) observations\n\nEach observation has equal probability of being included in resampled dataset\nCan select an observation more than once for a resampled dataset"
+  },
+  {
+    "objectID": "slides/slides-bootstrap.html#example",
+    "href": "slides/slides-bootstrap.html#example",
+    "title": "Bootstrap",
+    "section": "Example",
+    "text": "Example\n\nSuppose a study on adult daily caffeine consumption (mg) collects 4 data points: 110, 130, 150, 200. I want to learn about the average consumption in adults.\nCreate my first bootstrap sample:\n\n\ndat <- c(110, 130, 150, 200)\nn <- length(dat)\n\nsamp1 <- sample(x = dat, size = n, replace = T)\nsamp1\n\n[1] 200 130 150 130\n\n\n\nObtain our first estimate for \\(\\mu\\), the population mean daily caffeine consumption in adults: \\(\\hat{\\mu}_{1} = 152.5\\)"
+  },
+  {
+    "objectID": "slides/slides-bootstrap.html#example-cont.",
+    "href": "slides/slides-bootstrap.html#example-cont.",
+    "title": "Bootstrap",
+    "section": "Example (cont.)",
+    "text": "Example (cont.)\n\nTake second sample:\n\n\nsamp2 <- sample(x = dat, size = n, replace = T)\nsamp2\n\n[1] 150 150 130 110\n\n\n\n\\(\\hat{\\mu}_{2} = 135\\)\nRepeat this process thousands of times!\n…\n\n\n\n\n\nAfter 1000 bootstrap samples, we end up with 1000 estimates for \\(\\mu\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\nMean over all estimates is \\(\\hat{\\mu} = 148.2525\\)\nApproximate 95% confidence interval for the mean are the 5% and 95% quantiles of the 1000 mean estimates: (120, 182.5)\n\nCalled a bootstrap percentile confidence interval"
+  },
+  {
+    "objectID": "slides/slides-bootstrap.html#bootstrap-pros-and-cons",
+    "href": "slides/slides-bootstrap.html#bootstrap-pros-and-cons",
+    "title": "Bootstrap",
+    "section": "Bootstrap: pros and cons",
+    "text": "Bootstrap: pros and cons\n\nReal world vs bootstrap world\nPros:\n\nNo assumptions about distribution of your data\nVery general method that allows estimating sampling distribution of almost any statistic!\nCost-effective\n\nCons:\n\nIn more complex scenarios, figuring out appropriate way to bootstrap may require thought\nCan fail in some situations\nRelies quite heavily on the original sample"
   }
 ]

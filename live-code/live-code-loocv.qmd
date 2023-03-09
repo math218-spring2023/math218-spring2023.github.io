@@ -42,7 +42,6 @@ loocv_err
 
 Comprehension question check: why did I not take the square root in line 7 above?
 
-
 ```{r}
 #| echo: false
 #| eval: false
