@@ -9,6 +9,7 @@ draft: false
 ## Introduction
 
 ```{r packages, message = F}
+#| echo: false
 library(tidyverse)
 library(caret)
 source("../math218_fns.R")
@@ -29,7 +30,13 @@ We will compare two models' prediction performance for the lift ticket `price` o
 
 This lab will also explore the effect of standardizing quantitative variables.
 
-Now that you've implemented KNN regression and understand how it works, you are allowed to use the `knnreg()` R function provided in the `caret` library! This function is much faster than our own implementations. To use `knnreg()`:
+Now that you've implemented KNN regression and understand how it works, you are allowed to use the `knnreg()` R function provided in the `caret` library! This function is much faster than our own implementations.
+
+::: {.callout-warning}
+Some people are having issues with installing the `caret` package. It may be safer to use your own implementation!
+:::
+
+To use `knnreg()`:
 
 1.  Install the `caret` package in your console
 2.  Load in the `caret` package at the top of your .Rmd file

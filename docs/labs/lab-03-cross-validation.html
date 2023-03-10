@@ -218,14 +218,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../math218_fns.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 <p>The data and <code>.Rmd</code> file can be found in your <code>lab-03-ski-resorts</code> GitHub project. Please clone it now! The data is <code>ski_resorts.csv</code>, and come from <a href="https://www.kaggle.com/datasets/aryanjuyal/comparison-of-north-american-ski-resorts">Kaggle</a>.</p>
 <p>We have data on ski resorts on the east coast. Each observation is a ski resort, and we information about the features of each resort (e.g.&nbsp;number of lifts, price of ticket, average elvation). A data dictionary can be found in the README.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ski_resorts <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/ski_resorts.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ski_resorts <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/ski_resorts.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will compare two models’ prediction performance for the lift ticket <code>price</code> of these ski resorts using all the other <em>quantitative</em> variables as our predictors. We will compare the models via the estimated test RMSE obtained using k-fold cross-validation. The two models are:</p>
 <ol type="1">
@@ -233,7 +231,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>A KNN regression model</li>
 </ol>
 <p>This lab will also explore the effect of standardizing quantitative variables.</p>
-<p>Now that you’ve implemented KNN regression and understand how it works, you are allowed to use the <code>knnreg()</code> R function provided in the <code>caret</code> library! This function is much faster than our own implementations. To use <code>knnreg()</code>:</p>
+<p>Now that you’ve implemented KNN regression and understand how it works, you are allowed to use the <code>knnreg()</code> R function provided in the <code>caret</code> library! This function is much faster than our own implementations.</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Some people are having issues with installing the <code>caret</code> package. It may be safer to use your own implementation!</p>
+</div>
+</div>
+<p>To use <code>knnreg()</code>:</p>
 <ol type="1">
 <li>Install the <code>caret</code> package in your console</li>
 <li>Load in the <code>caret</code> package at the top of your .Rmd file</li>
@@ -244,10 +256,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose my train data are stored as train_x and train_y</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose my test predictors are stores as test_x</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>knn_mod <span class="ot">&lt;-</span> <span class="fu">knnreg</span>(<span class="at">x=</span> train_x, <span class="at">y =</span> train_y, <span class="at">k =</span> <span class="dv">7</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn_mod, <span class="at">newdata =</span> test_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose my train data are stored as train_x and train_y</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose my test predictors are stores as test_x</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>knn_mod <span class="ot">&lt;-</span> <span class="fu">knnreg</span>(<span class="at">x=</span> train_x, <span class="at">y =</span> train_y, <span class="at">k =</span> <span class="dv">7</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn_mod, <span class="at">newdata =</span> test_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><em>This is a challenging lab assignment because there are a lot of moving parts! Please do not put it off until the last minute!</em></p>
 </section>
@@ -265,9 +277,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>You can confirm your <code>my_scale()</code> function is working by seeing if you get the same results as when you use the <code>scale()</code> function provided by R on the following data <code>temp</code> (you can also confirm if your <code>mean_vec</code> and <code>sd_vec</code> are correct by looking at the <code>attr</code>ibutes center and scale in the following output):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> <span class="fu">sqrt</span>(x))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">scale</span>(temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> <span class="fu">sqrt</span>(x))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">scale</span>(temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              x          y
 [1,] -1.2649111 -1.3900560
@@ -319,7 +331,7 @@ Note
 <p>Using your folds in the previous step, run 5-fold CV to obtain an estimate of the test RMSE using MLR.</p>
 <p><em>Note: suppose you are running <code>lm()</code> and the data you pass in only contains the response <code>y</code> and all of the predictors of interest. Rather than explicitly typing out the name of each predictor in <code>lm()</code>, you can simply type a <code>.</code> and <code>R</code> will recognize that you want to use all the other variables aside from <code>y</code> in the data frame as predictors:</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> ., data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> ., data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 
