@@ -77,6 +77,19 @@ my_list[[3]] <- 5
 my_list
 ```
 
+Why are we working with lists? We'll need them for k-fold CV! 
+
+## apply()
+
+A useful function is the `apply()` function, which applies the same function to either ALL the rows or ALL the columns. It takes three arguments: what R object you want to apply the function two, by row (1) or by column (2), and the function itself.
+
+In the following code, I am applying the mean function to each column of `dat`. Notice that I get back a vector of column means!
+
+```{r}
+dat <- data.frame(x = 1:10, y = 11:20)
+apply(dat, 2, mean)
+```
+
 ```{r}
 #| echo: false
 #| eval: false

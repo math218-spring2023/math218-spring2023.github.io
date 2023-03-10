@@ -177,6 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
   <li><a href="#lists" id="toc-lists" class="nav-link" data-scroll-target="#lists">Lists</a></li>
+  <li><a href="#apply" id="toc-apply" class="nav-link" data-scroll-target="#apply">apply()</a></li>
   </ul>
 </nav>
     </div>
@@ -288,6 +289,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 [[3]]
 [1] 5</code></pre>
+</div>
+</div>
+<p>Why are we working with lists? We’ll need them for k-fold CV!</p>
+</section>
+<section id="apply" class="level2">
+<h2 class="anchored" data-anchor-id="apply">apply()</h2>
+<p>A useful function is the <code>apply()</code> function, which applies the same function to either ALL the rows or ALL the columns. It takes three arguments: what R object you want to apply the function two, by row (1) or by column (2), and the function itself.</p>
+<p>In the following code, I am applying the mean function to each column of <code>dat</code>. Notice that I get back a vector of column means!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">apply</span>(dat, <span class="dv">2</span>, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   x    y 
+ 5.5 15.5 </code></pre>
 </div>
 </div>
 <div class="cell">
