@@ -1,14 +1,14 @@
 ---
 title: "Live code:"
 date: "March 10, 2023"
-description: "List"
+description: "Listw"
 editor: visual
 categories: "Live code"
 format:
   html: 
     code-fold: false
     code-line-numbers: true
-draft: true
+draft: false
 editor_options: 
   chunk_output_type: console
 ---

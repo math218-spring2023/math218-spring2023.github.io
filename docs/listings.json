@@ -8,8 +8,10 @@
       "/live-code/live-code-functions.html",
       "/live-code/live-code-encoding.html",
       "/live-code/live-code-loocv.html",
+      "/live-code/live-code-lists.html",
       "/labs/lab-01-roulette.html",
       "/labs/lab-02-linear-regression.html",
+      "/labs/lab-03-cross-validation.html",
       "/implementations/implementation_knn_regression_1.html",
       "/implementations/implementation_knn_regression_2.html"
     ]

@@ -3,7 +3,7 @@ title: "Lab 03: Cross-validation"
 description: "Ski resorts"
 editor: visual
 callout-appearance: default
-draft: true
+draft: false
 ---
 
 ## Introduction
@@ -101,7 +101,7 @@ dat <- ski_resorts %>%
 We will perform 5-fold cross-validation.
 
 ::: {style="color: maroon"}
-Randomly split the indices of the observations into 5 folds of equal size. Because you will be randomly splitting, it is important for you to set a seed for reproducibility. Use a seed of 3.
+Randomly split the indices of the observations into 5 folds of equal size. Because you will be randomly splitting, it is important for you to set a seed for reproducibility. Use a seed of 3. *Hint: you will most likely need to use a list!*
 :::
 
 ```{r}
