@@ -1,0 +1,598 @@
+---
+title: "Regression Trees"
+date: "March 9, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/validation.png"
+    data-background-size: contain
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: true
+---
+
+# Housekeeping
+
+```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
+
+library(tidyverse)
+library(broom)
+library(ggfortify)
+library(ISLR)
+library(tree)
+library(vegan)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+
+```
+
+# Tree-based methods
+
+## Tree-based methods
+
+-   These methods use a series of if-then rules to divide/segment the predictor space into a number of simple regions
+
+-   The splitting rules can be summarized in a tree, so these approaches are known as **decision-tree** methods
+
+-   Can be simple and useful for interpretation
+
+-   Decision trees can be applied to both regression and classification problems
+
+-   Typically not competitive with the best supervised learning approaches in terms of prediction accuracy
+
+## Mite data
+
+```{r fig.width=8, fig.height=5}
+ggplot(data = mite_dat)+
+  geom_point(aes(x = SubsDens, y = WatrCont, col = abundance), size = 3) +
+  scale_color_viridis_c(option = "plasma") +
+  plot_theme + 
+  theme(legend.position = "bottom")
+```
+
+-   We will begin by showing the results of a regression tree, then we will discuss how to build one
+
+## Mite data: regression tree {.scrollable}
+
+::: fragment
+```{r}
+set.seed(1)
+tree1 <- tree(abundance ~ WatrCont + SubsDens, data = mite_dat)
+plot(tree1, col = "blue")
+text(tree1, pretty = 0, cex = 2)
+```
+:::
+
+-   Top split: observations with `WatrCont` \< 323.54 are assigned to left branch
+
+-   Observations with `WatrCont` $\geq$ 323.54 are assigned to right branch, and are further subdivided by `SubsDens` and finer values of `WatrCont`
+
+-   For a new observation, the predicted `abundance` of a location with `WatrCont` \< 323.54 is 0.85
+
+-   Remarks:
+
+    -   If condition evaluates to true, we "go left"
+    -   The splits are always in terms of $<$ for consistency
+
+## Terminology {.scrollable}
+
+-   **Internal nodes**: points along the tree where the predictor space is split
+
+    -   Six internal nodes on previous slide
+
+-   First node is often referred to as **root node**
+
+-   **Terminal nodes** or **leaves**: regions where there is no further splitting
+
+    -   Seven terminal nodes on previous slide
+
+    -   The value in each terminal node is the value we predict for an observation that follows the path in predictor space to that terminal node
+
+    -   Decision trees are typically drawn upside down (leaves at bottom)
+
+-   Any subnode of a given node is called a *child node*, and the given node, in turn, is the child's *parent node*.
+
+## Draw partitions
+
+## Interpretation of results
+
+-   Extremely rough interpretation!!
+
+-   `WatrCont` may be most important factor for determining the `abundance` of mites (among these two predictors)
+
+-   Environments with low `WatrCont` tend to have very low abundances, as do environments with high `SubsDens`
+
+-   Likely an oversimplification of the true relationships, but easy to display and interpret
+
+# Building the tree
+
+## Building and using regression tree
+
+1.  Training/fitting model: Divide predictor space (the set of possible values for $X_{1}, \ldots, X_{p}$) into $M$ distinct and non-overlapping regions, $R_{1}, \ldots, R_{M}$
+
+2.  Prediction/using model: For every observation that lands in $R_{m}$, we output the same predicted $\hat{y}$: the mean of the training responses in $R_{m}$: $$\hat{y}_{R_{m}} = \frac{1}{n_{m}} \sum_{i \in R_{m}} y_{i}$$
+
+## Fitting a regression tree
+
+-   In theory, regions $R_{1},\ldots, R_{M}$ could have any shape. For simplicity, we divde predictor space into high-dimensional rectangles or *boxes*
+
+-   Goal: to train the model, we want to find boxes $R_{1},\ldots, R_{M}$ that minimize the residual sum of squares (**RSS**), given by $$\sum_{m=1}^{M} \sum_{i\in R_{m}} (y_{i} - \hat{y}_{R_{m}})^2,$$
+
+    where $\hat{y}_{R_{m}}$ is the predicted/fitted value for $y_{i} \in R_{m}$ in the *training data*
+
+-   Unfortunately, it is computationally infeasible to consider every possible partition of the feature space into $M$ boxes!
+
+## Fitting a regression tree (cont.)
+
+-   We take a **top-down, greedy** approach known as *recursive binary splitting*
+
+-   "Top-down": we begin at the top of tree where all observations belong to a single region, and then successively partition
+
+-   "Greedy": at each step, the *best* split is made at that current snap-shot in time, rather than looking ahead and picking a split that would be better in some future step
+
+-   Note: at every stage of the tree, all predictors are candidates for the decision split (e.g. in mite data, `WatrCont` was first split, but showed up later down the tree)
+
+-   Continue making splits on the data as we go
+
+## Details
+
+-   At very beginning of model fit, all observations belong in a single region. We must decide the first split/cut-point
+
+-   We select the predictor $X_{j}$ and the cutpoint value $c$ such that splitting the predictor space into the regions $\{X | X_{j} < c\}$ and $\{X | X_{j} \geq c\}$ leads to lowest RSS
+
+    -   i.e., for any predictor $j$ and cutpoint $c$, we define the pair
+
+        $$S_l(j,c) = \{X | X_{j} < c\} \text{ and } S_{r}(j,c) = \{X | X_{j} \geq c\}$$
+
+-   We seek the values of $(j, c)$ that minimize $$\sum_{i:x_{i}\in S_l(j,c)} (y_{i} - \hat{y}_{S_{l}})^2 + \sum_{i:x_{i}\in S_r(j,c)} (y_{i} - \hat{y}_{S_{r}})^2,$$
+
+    where $\hat{y}_{S_{l}}$ is the average of the training responses in $S_l(j,s)$
+
+## What are the cut-points?
+
+Consider some hypothetical data, where I have a single predictor `x` and a response variable `y`:
+
+```{r}
+#| echo: false
+data.frame(x = c(0, 3, 4, 10), y = 1:4)
+```
+
+-   Only makes sense to split the data based on the observed values of `x`
+
+    -   i.e. splitting on `x < 15` is silly
+
+-   Notice that choosing a cut-point of $c = 1$ or $c= 2$ leads to same partition of the data, and therefore same RSS
+
+-   So we consider cutpoints as the mean between consecutive values of observed `x`:
+
+    -   Examine RSS for $c = \{1.5, 3.5, 7\}$
+
+## Return to mite data {.smaller}
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: false
+mite_dat %>%
+  dplyr::select(SubsDens,WatrCont,  abundance) %>%
+  arrange(SubsDens, WatrCont) %>% 
+  DT::datatable(rownames = F, options = list(
+    pageLength = 5,
+    autoWidth = TRUE
+  ))
+```
+:::
+
+::: {.column width="50%"}
+-   At step one of the tree, all 70 observations are together. Deciding first split means considering all of the following:
+
+-   Splitting on `SubsDens` ($j = 1$):
+
+    -   $S_{l}(1,21.765) = \{\mathbf{X} | \text{SubsDens} < 21.765\}$ and $S_{r}(1, 21.765) = \{\mathbf{X} | \text{SubsDens} \geq 21.765 \}$
+    -   $S_{l}(1, 22.63) = \{\mathbf{X} | \text{SubsDens} < 22.63\}$ and $S_{r}(1, 22.63) = \{\mathbf{X} | \text{SubsDens} \geq 22.63\}$
+    -   ...
+
+-   Splitting on `WatrCont` ($j = 2$):
+
+    -   $S_{l}(2, 139.705) = \{\mathbf{X} | \text{WatrCont} < 139.705\}$ and $S_{r}(2, 139.705) = \{\mathbf{X} | \text{SubsDens} \geq 139.705\}$
+    -   $S_{l}(2, 145.48) = \{\mathbf{X} | \text{WatrCont} < 145.48\}$ and $S_{r}(2, 145.48) = \{\mathbf{X} | \text{SubsDens} \geq 145.48\}$
+    -   ...
+:::
+:::
+
+## Mini implementation
+
+```{r}
+mite_dat_quant <- mite_dat %>% select(SubsDens, WatrCont, abundance) %>%
+  arrange(SubsDens)
+rss1 <- mite_dat_quant %>%
+  mutate(split = if_else(SubsDens < 22.63, "left", "right")) %>%
+  group_by(split) %>%
+  mutate(y_hat = mean(abundance)) %>%
+  ungroup() %>%
+  mutate(sq_resid = (abundance - y_hat)^2) %>%
+  group_by(split) %>%
+  summarise(ssr = sum(sq_resid)) %>%
+  pull(ssr) %>%
+  sum()
+
+rss2 <- mite_dat_quant %>%
+  mutate(split = if_else(WatrCont < 145.48, "left", "right")) %>%
+  group_by(split) %>%
+  mutate(y_hat = mean(abundance)) %>%
+  ungroup() %>%
+  mutate(sq_resid = (abundance - y_hat)^2) %>%
+  group_by(split) %>%
+  summarise(ssr = sum(sq_resid)) %>%
+  pull(ssr) %>%
+  sum()
+```
+
+-   Let's compute the RSS for a few of these candidate splits. Live code!
+
+-   When splitting on `SubsDens` \< 22.63, we get the following RSS:
+
+::: fragment
+```{r}
+#| echo: false
+rss1
+```
+:::
+
+-   When splitting on `WatrCont` \< 145.48, we get an RSS of:
+
+::: fragment
+```{r}
+#| echo: false
+rss2
+```
+:::
+
+## Mini implementation (cont.) {.scrollable}
+
+::: columns
+::: {.column width="60%"}
+Doing this for all possible splits, we get the following SSRs:
+
+```{r mite_ssr, cache = T}
+#| echo: false
+get_ssr <- function(df, x_var, y_var, cutpoint){
+  x_var <- enquo(x_var)
+  y_var <- enquo(y_var)
+  df %>%
+    mutate(split = if_else( !!x_var < cutpoint, "left", "right")) %>%
+    group_by(split) %>%
+    mutate(y_hat = mean( (!!y_var))) %>%
+    ungroup() %>%
+    mutate(sq_resid = ( (!!y_var) - y_hat)^2) %>%
+    group_by(split) %>%
+    summarise(ssr = sum(sq_resid)) %>%
+    pull(ssr) %>%
+    sum()
+}
+  
+
+n <- nrow(mite_dat)
+loop_len <- n-2
+SubsDens_ssr <- WatrCont_ssr <- matrix(NA, nrow  = loop_len, ncol = 2) 
+mite_dat_quant <- mite_dat_quant %>% arrange(SubsDens)
+for(i in 1:loop_len){
+  cut_point <- (mite_dat_quant$SubsDens[i] +mite_dat_quant$SubsDens[i+1])/2
+  SubsDens_ssr[i, ] <- c(get_ssr(mite_dat_quant, SubsDens, abundance, cut_point),
+                         cut_point)
+}
+mite_dat_quant <- mite_dat_quant %>% arrange(WatrCont)
+for(i in 1:loop_len){
+  cut_point <- (mite_dat_quant$WatrCont[i] + mite_dat_quant$WatrCont[i+1])/2
+  WatrCont_ssr[i, ] <- c(get_ssr(mite_dat_quant,WatrCont, abundance, cut_point),
+                         cut_point)
+}
+```
+
+```{r}
+data.frame(SubsDens_ssr) %>%
+  mutate(Xj= "SubsDens") %>%
+  rbind(., data.frame(WatrCont_ssr) %>%
+          mutate(Xj = "WatrCont")) %>%
+  rename("SSR" = 1, "cutpoint" = 2) %>%
+  select(Xj, cutpoint, SSR) %>%
+  mutate(SSR = round(SSR, 3)) %>%
+  DT::datatable(rownames = F, options = list(
+    pageLength = 6,
+    autoWidth = TRUE
+  ))
+```
+:::
+
+::: {.column width="40%"}
+-   The split that resulted in lowest RSS out of all these possible splits is splitting on `WatrCont` \< 323.54, which is what we saw in the tree!
+:::
+:::
+
+## Details (cont.)
+
+-   Then, repeat the process of looking for the best predictor and best cut-point in order to split the data further so as to minimize RSS within each of the resulting regions
+
+-   Instead of splitting entire predictor space, we split one of the two previously identified regions
+
+-   Now we have three regions
+
+-   Again, split one of these further so as to minimize RSS. We continue this process until a stopping criterion is reached
+
+## Categorical predictors
+
+-   We can also split on qualitative predictors!
+
+-   If $X_{j}$ is categorical variable with categories "1", "2", "3", ..., then candidate split regions would be:
+
+    -   $S_{l}(j, ``1") = \{X | X_{j} = ``1"\} \qquad \text{ and } \qquad S_{r}(j, ``1") = \{X | X_{j} \neq ``1"\}$
+
+    -   $S_{l}(j, ``2") = \{X | X_{j} = ``2"\} \qquad \text{ and } \qquad S_{r}(j, ``2") = \{X | X_{j} \neq ``2"\}$
+
+    -   ...
+
+-   Notice that if $X_{j}$ has more than two levels, we would need to choose the level that yields the best split
+
+# Pruning
+
+This next section is a bit technical, but bear with me!
+
+## Possible issue
+
+-   This process may produce good predictions on the training set, but is likely to overfit the data. Why?
+
+-   A smaller tree with fewer splits/regions might lead to lower variance and better interpretation, at the cost of a little bias
+
+-   One possible fix: build the tree only so long as the decrease in the RSS due to each split exceeds some (high) threshold
+
+-   Will result in smaller trees, but may be short-sighted
+
+## Tree pruning
+
+-   A better strategy is to grow a very large tree $T_{0}$, and then **prune** it back in order to obtain a smaller **subtree**
+
+-   Idea: remove sections that are non-critical
+
+-   **Cost complexity pruning** or weakest link pruning: consider a sequence of trees indexed by a nonnegative tuning parameter $\alpha$. For each value of $\alpha$, there is a subtree $T \subset T_{0}$ such that $$\left(\sum_{m=1}^{|T|} \sum_{i: x_{i} \in R_{m}} (y_{i} - \hat{y}_{R_{m}})^2 \right)+ \alpha |T|$$ is as small as possible.
+
+## Cost complexity pruning (cont.)
+
+$$\left(\sum_{m=1}^{|T|} \sum_{i: x_{i} \in R_{m}} (y_{i} - \hat{y}_{R_{m}})^2 \right)+ \alpha |T|$$
+
+-   $|T|$ = number of terminal nodes of tree $T$
+
+-   $R_{m}$ is the rectangle corresponding to the $m$-th terminal node
+
+-   $\alpha$ controls trade-off between subtree's complexity and fit to the training data
+
+    -   What is the resultant tree $T$ when $\alpha = 0$?
+
+    -   What happens as $\alpha$ increases?
+
+-   Note: for every value of $\alpha$, we have a different fitted tree $\rightarrow$ need to choose a best $\alpha$
+
+-   Select an optimal $\alpha^{*}$ using cross-validation, then return to full data set and obtain the subtree corresponding to $\alpha^{*}$
+
+## Algorithm for building tree
+
+Suppose I just want to build a "best" regression tree to my data, but I'm not interesting in comparing the performance of my regression tree to a different model.
+
+1.  Using recursive binary splitting to grow a large tree on the data, stopping according to a pre-determined stopping rule
+
+2.  Apply cost complexity pruning to the large tree in order to obtain a sequence of best trees as a function of $\alpha$
+
+3.  Use $k$-fold CV to choose $\alpha$: divide data into $K$ folds. For each $k = 1,\ldots, K$:
+
+    a.  Repeat Steps 1 and 2 on all but the $k$-th fold
+
+    b.  Evaluate mean squared prediction error on the data in held-out $k$-th fold, as a function of $\alpha$. Average the result for each $\alpha$
+
+4.  Choose $\alpha^{*}$ that minimizes the average error. Return the subtree from Step 2 that corresponds to $\alpha^{*}$ as your "best" tree
+
+## Algorithm for building tree (comparisons)
+
+If instead I also want to *compare* my "best" regression tree against a different model, I need some train/test data to compare the two models
+
+0.  Split data into train and validation sets
+
+1.  Using recursive binary splitting to grow a large tree on the training data, stopping according to a pre-determined stopping rule
+
+2.  Apply cost complexity pruning to the large tree in order to obtain a sequence of best trees as a function of $\alpha$
+
+3.  Use $k$-fold CV to choose $\alpha$: divide training data into $K$ folds. For each $k = 1,\ldots, K$:
+
+    a.  Repeat Steps 1 and 2 on all but the $k$-th fold
+
+    b.  Evaluate mean squared prediction error on the data in held-out $k$-th fold, as a function of $\alpha$. Average the result for each $\alpha$
+
+4.  Choose $\alpha^{*}$ that minimizes the average error. Return the subtree from Step 2 that corresponds to $\alpha^{*}$ as "best" tree, and use that tree for predictions on test data.
+
+- Caution! Note that we have two froms of validation/testing going on here!
+
+## Mite data: entire process
+
+- Let's suppose I want to obtain the best regression tree for this mite data, and I want to use the tree to compare to other models
+
+- Step 0: split data into 80/20 train and validation set  
+
+- Step 1: use all predictors to build the large tree on the train set
+
+::: fragment
+
+```{r}
+set.seed(122)
+train_ids <- sample(1:n, 0.8*n)
+train_dat <- mite_dat[train_ids,]
+test_dat <- mite_dat[-train_ids,]
+# grow large tree on train data
+tree_train <- tree(abundance ~ ., train_dat,
+                   control=tree.control(nobs = length(train_ids), mindev = 0))
+summary(tree_train)
+```
+
+:::
+
+## Mite data: entire process (cont.)
+
+- Step 2: Perform minimal cost-complexity pruning, to get a sequence of possible/candidate best trees as a function of $\alpha$
+
+- Step 3: Select $\alpha^*$ (i.e. best tree) using 5-fold CV on the training data
+
+  - For each $\alpha$, there is an associated CV-error estimate when fitting on the training data (this is the one I care about for choosing one tree)
+  
+  - For each $\alpha$, there is also an associated test error on the held-out validation data (possibly of interest)
+  
+```{r mite_cv, cache = T}
+# CV for different alpha levels 
+K<- 5
+cv_tree <- cv.tree(tree_train, K = K)
+ids <- split(1:length(train_ids), ceiling(seq_along(1:length(train_ids))/(length(train_ids)/K))) 
+
+y_train <- train_dat$abundance
+y_test <- test_dat$abundance
+alphas <- (prune.tree(tree_train)$k)[-c(1, length(prune.tree(tree_train)$k))]
+M <- (prune.tree(tree_train)$size)[-c(1, length(prune.tree(tree_train)$k))]
+test_mse <- train_mse <- rep(NA, length(alphas))
+for(i in 1:length(alphas)){
+ # for  regression tree, devaince is sum of squared errors
+
+ m <- alphas[i]
+ pruned <- prune.tree(tree_train, k = m)
+  # train
+ train_mse[i] <- mean((predict(pruned, train_dat) - y_train)^2)
+ 
+ ## test
+ test_mse[i] <-  mean((predict(pruned, test_dat) - y_test)^2)
+ 
+}
+
+
+## k-fold CV
+cv_preds <- matrix(NA, nrow = K, ncol = length(alphas))
+for(k in 1:K){
+   temp_tree <- tree(abundance ~., data = train_dat[unlist(ids[-k]),])
+   temp_prune <- prune.tree(temp_tree)
+   # M_curr <- temp_prune$size[-length(temp_prune$size)]
+   for(i in 1:length(alphas)){
+     m <- alphas[i]
+     temp <- prune.tree(temp_tree, k = m)
+     if (attributes(temp)$class  == "singlenode"){
+       preds <- mean(y_train[ids[[k]]])
+     } else{
+       preds <- predict( temp,  train_dat[ids[[k]],])
+     }
+     
+     cv_preds[k,i] <- mean((preds - y_train[ids[[k]]])^2)
+   }
+   
+}
+
+cv_mse <- colMeans(cv_preds)
+```
+
+## Mite data: entire process (cont.)
+
+::: columns
+
+::: {.column width="60%"}
+
+```{r fig.width=8}
+alpha_hat <- alphas[which(cv_mse == min(cv_mse))]
+min_size_cv <- min(M[which(cv_mse == min(cv_mse))])
+min_size_test <- min(M[which(test_mse == min(test_mse))])
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+data.frame(size = M, test = test_mse, train = train_mse, cv = cv_mse) %>%
+ pivot_longer(cols = -1, names_to = "type") %>%
+ ggplot(., aes(x = size, y =sqrt(value), col = type))+
+ geom_point(size=3) + 
+ geom_line()+
+ scale_x_continuous(breaks = seq(1,max(M), 1))+
+ labs(x = "Tree size", y = "RMSE")+
+ theme(text = element_text(size = 20))+
+  geom_point(data.frame(x = c(min_size_cv, min_size_test),
+                        y = c(sqrt(min(cv_mse)), sqrt(min(test_mse))),
+                        type = c("cv", "test")), 
+             mapping = aes(x= x, y =y,col = type),
+             shape = 10, size = 7)+
+    guides(color = guide_legend(
+    override.aes=list(shape = 16)))+
+  ggtitle("RMSEs for trees fit to mite data")
+
+
+```
+
+- k-fold CV with k = 5. Best CV RMSE (red) at `r min_size_cv` leaves , so this would be our "best" tree
+
+:::
+
+::: {.column width="40%"}
+
+
+
+- Note: while the CV error is computed as a function of $\alpha$, we often display as a function of $|T|$, the number of leaves
+
+- Note: our best regression tree actually performs worse on the test data (green) compared to a tree with `r  min_size_test` leaves. Oh well!
+
+:::
+:::
+
+# Summary
+
+## Trees vs linear moedels {.scrollable}
+
+Trees vs. linear models: which is better? Depends on the true relationships between the response and the predictors
+
+
+```{r out.width="60%", fig.align="center"}
+knitr::include_graphics("figs/tree_linear.png")
+```
+
+::: aside
+Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani (2013). An introduction to statistical learning : with applications in R. New York :Springer
+:::
+
+
+## Pros and cons
+
+::: columns
+
+::: {.column width="50%"}
+
+Advantages: 
+
+- Easy to explain, and may more closely mirror human decision-making than other approaches we've seen
+ 
+- Can be displayed graphically and interpreted by non-expert
+ 
+- Can easily handle qualitative predictors without the need to encode or create dummy variables
+
+:::
+
+::: {.column width="50%"}
+
+Disadvantages:
+
+- Lower levels of predictive accuracy compared to some other approaches
+ 
+- Can be non-robust 
+ 
+
+- However, we may see that aggregating many trees can improve predictive performance!
+
+:::
+
+:::
+
