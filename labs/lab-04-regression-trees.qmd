@@ -1,0 +1,281 @@
+---
+title: "Lab 04: Regression trees"
+description: "Forest fires"
+editor: visual
+callout-appearance: default
+draft: true
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: false
+  eval: false
+---
+
+## Introduction
+
+The purpose of this lab is to gain familiarity and practice with fitting and evaluating regression trees in `R`.
+
+### Data
+
+For this assignment, you will predict the size of forest fires in the northeast region of Portugal using meteorological and other covariates. The original data were obtained from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Forest+Fires), and I have modified them slightly for the purposes of this implementation.
+
+Each row in the data set represents one fire. We have the following variables:
+
+-   `fire_id`: a variable to identify each fire
+-   `X`, `Y`: coordinates for the location of the fire
+-   `month`: month of year
+-   `day`: day of week
+-   `FFMC`: Fine Fuel Moisture Code, represents fuel moisture of forest litter fuels under the shade of a forest canopy
+-   `DMC`: Duff Moisture Code, represents fuel moisture of decomposed organic material underneath the litter
+-   `drought`: drought status of location ("Low", "Moderate", "Extreme")
+-   `ISI`: Initial Spread Index, used to predict fire behavior
+-   `temp`: temperature (Celsius)
+-   `RH`: relative humidity (%)
+-   `wind`: wind speed (km/h)
+-   `rain`: outside rain (mm/m2)
+-   `area`: the burned area of the forest (hectares). An `area` of 0 means that an area of lower than 100 square meters was burned.
+
+### Goal
+
+Using regression trees, we will predict the size of a fire given some of these features. We will also compare prediction performance under different modeling choices.
+
+## Prepare data
+
+The data are in `forest_fires.csv` in your `data` folder of this project. We will also require the `tidyverse` and `tree` packages. Go ahead and load the data and libraries now.
+
+Please save the data using the variable name `fire_dat`.
+
+```{r message=FALSE, warning = F}
+library(tidyverse)
+library(tree)
+fire_dat <- read.csv("~/Desktop/forest_fires.csv")
+get_rmse <- function(y_pred, true){
+  sqrt(mean((y_pred-true)^2))
+}
+
+```
+
+### Wrangle
+
+Wrangle your data to only retain observations from the months of March, July, August, and September. Also, we will not consider the `fire_id`, day of week, nor geographic location as predictors. Lastly, recall that the `tree()` function requires all categorical variables to be coded as factors.
+
+::: {style="color: maroon"}
+Modify your data to make all the required changes.
+:::
+
+```{r}
+fire_dat <- fire_dat %>%
+  filter(month %in% c("mar","jul","aug", "sep")) %>%
+  select(-c(fire_id, X, Y, day)) %>%
+  mutate_if(is.character, as.factor)
+```
+
+### EDA
+
+Now, a common issue in statistical modeling is *collinearity*. This occurs when there is non independence of predictor variables, usually in a regression-type analysis. It is a common feature of any descriptive ecological data set. While more commonly assessed for quantitative predictors, categorical predictors can also display dependence.
+
+Suppose we have two vectors `x1` and `x2` that represent two different categorical variables. We would like to get the counts of all the possible pairwise combinations of `x1` and `x2`. An easy way to do this is using the `table()` function:
+
+```{r}
+#| echo: true
+#| eval: false
+table(x1, x2)
+```
+
+::: {style="color: maroon"}
+Using `table()`, obtain the counts of the possible pairwise combinations of `month` and `drought` in your wrangled data frame.
+
+Based on what you see, do you think there is collinearity between the two predictors? Why or why not?
+:::
+
+```{r}
+table(fire_dat$month, fire_dat$drought)
+```
+
+When there is high collinearity between predictors, we typically remove one of the predictors from the model.
+
+::: {style="color: maroon"}
+If you determined `month` and `drought` to be collinear, remove one of the predictors from your data set. You must decide which one, and explain why!
+:::
+
+```{r}
+fire_dat <- fire_dat %>%
+  select(-month)
+```
+
+### Wrangle (again)
+
+Lastly, if you were to make a histogram of the response variable `area`, you would notice it is *heavily* right-skewed. One way to address this issue is to log-transform `area`. However, many observations have an observed `area = 0`, and the log of 0 is $-\infty$. A common way to get around this is to take the log of (response variable + 1).
+
+::: {style="color: maroon"}
+Create a new data frame called `fire_dat_log`, where you over-write the `area` variable using the appropriate log transform described above.
+:::
+
+```{r}
+fire_dat_log <- fire_dat %>%
+  mutate(area = log(area+1))
+```
+
+::: {.callout-caution collapse="true"}
+## Commit reminder
+
+This would be a good time to knit, commit, and push your changes to GitHub!
+:::
+
+## Regression tree for log area
+
+### Train/test ids
+
+We will compare a pruned regression tree to an unpruned regression tree to see if the pruning is actually helpful for predictions.
+
+::: {style="color: maroon"}
+Using a seed of 346, split your `fire_dat_log` data into an 80% training set and a 20% test set.
+:::
+
+```{r}
+n <- nrow(fire_dat_log)
+seed <- 346#500#346
+set.seed(seed)
+train_ids <- sample(1:n, 0.8*n)
+train_dat <- fire_dat_log[train_ids,]
+test_dat <- fire_dat_log[-train_ids,]
+```
+
+### Grow large tree
+
+::: {style="color: maroon"}
+Fit a regression tree to the training data for your logged `area` of the forest fires using all of the other variables as predictors. Explicitly let `R` grow a large tree by setting the `control` arguments in `tree()` to have `minsize = 2` (see live code for refresher).
+:::
+
+```{r}
+tree_fires <- tree(area ~ . , data = train_dat,
+                   control = tree.control(n = length(train_ids),
+                                          minsize = 2))
+```
+
+::: {style="color: maroon"}
+Display a `summary()` of your regression tree. How many leaves are there? Which (if any) of the predictors were *not* used in this regression tree?
+:::
+
+```{r}
+summary(tree_fires)
+```
+
+### Cost-complexity pruning
+
+Now, we will prune back the tree using cost-complexity. Because we will be performing k-fold CV, we should set a seed again in order to have reproducibility of the assignment of observations to folds.
+
+::: {style="color: maroon"}
+Set a seed of 346 again, and perform cost-complexity pruning using 10-fold CV.
+:::
+
+```{r}
+set.seed(seed) # 1,3
+K <- 10
+cv_fires <- cv.tree(tree_fires, K = K)
+```
+
+::: {style="color: maroon"}
+From your output, make a plot of the size of the candidate pruned trees on the x-axis and the CV deviance estimates on the y-axis (see live code for example plot). Based on your plot, which size tree should we use?
+:::
+
+```{r}
+
+data.frame(size = cv_fires$size, deviance = cv_fires$dev) %>%
+  ggplot(., aes(x = size, y = deviance)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = cv_fires$size)
+(min_size <- cv_fires$size[ max(which(min(cv_fires$dev) ==cv_fires$dev ))])
+```
+
+### Prune the tree
+
+::: {style="color: maroon"}
+Based on your previous answer, prune your original tree to obtain the "best" tree. Plot the pruned tree. How does it compare to your original large tree in terms of the predictors used and number of leaves?
+:::
+
+```{r}
+pruned_fires <- prune.tree(tree_fires, best = min_size)
+plot(pruned_fires)
+text(pruned_fires, pretty = 0)
+```
+
+### Model comparison
+
+Now, compare your pruned and unpruned trees by making predictions on the test data. You can use the `predict()` function just like we did for linear regression, passing in the fitted model first and specifying the `newdata` argument.
+
+::: {style="color: maroon"}
+Obtain and report the estimated test RMSEs from both models. Based on your results, did pruning seem to help? Why or why not?
+:::
+
+```{r}
+# predict
+y_test <- test_dat$area
+pruned_preds <- predict(pruned_fires, newdata = test_dat)
+original_preds <- predict(tree_fires, newdata = test_dat)
+get_rmse(pruned_preds, y_test)
+get_rmse(original_preds, y_test)
+
+```
+
+::: {.callout-caution collapse="true"}
+## Commit reminder
+
+This would be a good time to knit, commit, and push your changes to GitHub!
+:::
+
+## Examining variability
+
+In class, I mentioned that one disadvantage of regression trees is that they are highly variable. We will explore that here.
+
+::: {style="color: maroon"}
+Repeat your same analysis from above, but now setting seeds of 5.
+:::
+
+*Maybe helpful hint*: remember that the prediction for a new observation $x_{0}$ is the average of the training responses in the terminal node that $x_{0}$ falls into.
+
+::: {style="color: maroon"}
+You only need to provide code and to fit, prune, and predict from the tree (i.e. I won't be looking for plots). The only outputs I am looking for are the test RMSEs from the pruned and unpruned trees.
+
+Instead of answering the questions from the previous section, answer the following:
+:::
+
+1.  Based on this test/train split using a seed of 5, does the pruned or unpruned tree perform better on the test data?
+2.  How "useful" would you say your pruned tree here is for someone who is trying to understand what may impact the area burned in a forest fire in Portugal?
+3.  How does your pruned tree here (seed of 5) compare to the pruned tree in the previous section (seed of 346)?
+
+```{r}
+seed <- 5
+set.seed(seed)
+train_ids <- sample(1:n, 0.8*n)
+train_dat <- fire_dat_log[train_ids,]
+test_dat <- fire_dat_log[-train_ids,]
+tree_fires <- tree(area ~ . , data = train_dat,
+                   control = tree.control(n = length(train_ids),
+                                          minsize = 2))
+summary(tree_fires)
+set.seed(seed) # 1,3
+cv_fires <- cv.tree(tree_fires, K = K)
+# data.frame(size = cv_fires$size, deviance = cv_fires$dev) %>%
+#   ggplot(., aes(x = size, y = deviance)) +
+#   geom_point() +
+#   geom_line() +
+#   scale_x_continuous(breaks = cv_fires$size)
+min_size <- cv_fires$size[ max(which(min(cv_fires$dev) ==cv_fires$dev ))]
+pruned_fires <- prune.tree(tree_fires, best = min_size)
+
+y_test <- test_dat$area
+if(min_size == 1){
+  pruned_preds <- mean(train_dat$area)
+} else{
+  pruned_preds <- predict(pruned_fires, newdata = test_dat)
+}
+original_preds <- predict(tree_fires, newdata = test_dat)
+get_rmse(pruned_preds, y_test)
+get_rmse(original_preds, y_test)
+```
+
+## Submission
+
+When you're finished, knit to PDF one last time and upload the PDF to Canvas. Commit and push your code back to GitHub one last time.

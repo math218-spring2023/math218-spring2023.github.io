@@ -262,7 +262,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="wrangle" class="level3">
 <h3 class="anchored" data-anchor-id="wrangle">Wrangle</h3>
 <p>Wrangle your data to only retain observations from the months of March, July, August, and September. Also, we will not consider the <code>fire_id</code>, day of week, nor geographic location as predictors. Lastly, recall that the <code>tree()</code> function requires all categorical variables to be coded as factors.</p>
+<div style="color: maroon">
 <p>Modify your data to make all the required changes.</p>
+</div>
 <div class="cell">
 
 </div>
@@ -274,19 +276,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(x1, x2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div style="color: maroon">
 <p>Using <code>table()</code>, obtain the counts of the possible pairwise combinations of <code>month</code> and <code>drought</code> in your wrangled data frame.</p>
 <p>Based on what you see, do you think there is collinearity between the two predictors? Why or why not?</p>
+</div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>     
-      Extreme Low Moderate
-  aug     183   1        0
-  jul      24   0        8
-  mar       0  54        0
-  sep     172   0        0</code></pre>
+
 </div>
+<p>When there is high collinearity between predictors, we typically remove one of the predictors from the model.</p>
+<div style="color: maroon">
+<p>If you determined <code>month</code> and <code>drought</code> to be collinear, remove one of the predictors from your data set. You must decide which one, and explain why!</p>
 </div>
-<p>When there is high collinearity between predictors, we typically remove one of the predictors from the model. If you determined <code>month</code> and <code>drought</code> to be collinear, remove one of the predictors from your data set. You must decide which one, and explain why!</p>
 <div class="cell">
 
 </div>
@@ -294,7 +294,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="wrangle-again" class="level3">
 <h3 class="anchored" data-anchor-id="wrangle-again">Wrangle (again)</h3>
 <p>Lastly, if you were to make a histogram of the response variable <code>area</code>, you would notice it is <em>heavily</em> right-skewed. One way to address this issue is to log-transform <code>area</code>. However, many observations have an observed <code>area = 0</code>, and the log of 0 is <span class="math inline">\(-\infty\)</span>. A common way to get around this is to take the log of (response variable + 1).</p>
+<div style="color: maroon">
 <p>Create a new data frame called <code>fire_dat_log</code>, where you over-write the <code>area</code> variable using the appropriate log transform described above.</p>
+</div>
 <div class="cell">
 
 </div>
@@ -320,70 +322,62 @@ Commit reminder
 <h2 class="anchored" data-anchor-id="regression-tree-for-log-area">Regression tree for log area</h2>
 <section id="traintest-ids" class="level3">
 <h3 class="anchored" data-anchor-id="traintest-ids">Train/test ids</h3>
-<p>We will compare a pruned regression tree to an unpruned regression tree to see if the pruning is actually helpful for predictions. Using a seed of 346, split your <code>fire_dat_log</code> data into an 80% training set and a 20% test set.</p>
+<p>We will compare a pruned regression tree to an unpruned regression tree to see if the pruning is actually helpful for predictions.</p>
+<div style="color: maroon">
+<p>Using a seed of 346, split your <code>fire_dat_log</code> data into an 80% training set and a 20% test set.</p>
+</div>
 <div class="cell">
 
 </div>
 </section>
 <section id="grow-large-tree" class="level3">
 <h3 class="anchored" data-anchor-id="grow-large-tree">Grow large tree</h3>
+<div style="color: maroon">
 <p>Fit a regression tree to the training data for your logged <code>area</code> of the forest fires using all of the other variables as predictors. Explicitly let <code>R</code> grow a large tree by setting the <code>control</code> arguments in <code>tree()</code> to have <code>minsize = 2</code> (see live code for refresher).</p>
+</div>
 <div class="cell">
 
 </div>
+<div style="color: maroon">
 <p>Display a <code>summary()</code> of your regression tree. How many leaves are there? Which (if any) of the predictors were <em>not</em> used in this regression tree?</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Regression tree:
-tree(formula = area ~ ., data = train_dat, control = tree.control(n = length(train_ids), 
-    minsize = 2))
-Variables actually used in tree construction:
-[1] "DMC"  "temp" "ISI"  "wind" "FFMC" "RH"  
-Number of terminal nodes:  19 
-Residual mean deviance:  1.374 = 459 / 334 
-Distribution of residuals:
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
--2.1730 -0.9330 -0.2574  0.0000  0.7252  4.3530 </code></pre>
 </div>
+<div class="cell">
+
 </div>
 </section>
 <section id="cost-complexity-pruning" class="level3">
 <h3 class="anchored" data-anchor-id="cost-complexity-pruning">Cost-complexity pruning</h3>
 <p>Now, we will prune back the tree using cost-complexity. Because we will be performing k-fold CV, we should set a seed again in order to have reproducibility of the assignment of observations to folds.</p>
+<div style="color: maroon">
 <p>Set a seed of 346 again, and perform cost-complexity pruning using 10-fold CV.</p>
+</div>
 <div class="cell">
 
 </div>
+<div style="color: maroon">
 <p>From your output, make a plot of the size of the candidate pruned trees on the x-axis and the CV deviance estimates on the y-axis (see live code for example plot). Based on your plot, which size tree should we use?</p>
+</div>
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="lab-03-knn-regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 8</code></pre>
-</div>
+
 </div>
 </section>
 <section id="prune-the-tree" class="level3">
 <h3 class="anchored" data-anchor-id="prune-the-tree">Prune the tree</h3>
+<div style="color: maroon">
 <p>Based on your previous answer, prune your original tree to obtain the “best” tree. Plot the pruned tree. How does it compare to your original large tree in terms of the predictors used and number of leaves?</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="lab-03-knn-regression_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
+<div class="cell">
+
 </div>
 </section>
 <section id="model-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="model-comparison">Model comparison</h3>
-<p>Now, compare your pruned and unpruned trees by making predictions on the test data. You can use the <code>predict()</code> function just like we did for linear regression, passing in the fitted model first and specifying the <code>newdata</code> argument. Obtain and report the estimated test RMSEs from both models. Based on your results, did pruning seem to help? Why or why not?</p>
+<p>Now, compare your pruned and unpruned trees by making predictions on the test data. You can use the <code>predict()</code> function just like we did for linear regression, passing in the fitted model first and specifying the <code>newdata</code> argument.</p>
+<div style="color: maroon">
+<p>Obtain and report the estimated test RMSEs from both models. Based on your results, did pruning seem to help? Why or why not?</p>
+</div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.569442</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.71942</code></pre>
-</div>
+
 </div>
 <div class="callout-caution callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
@@ -405,35 +399,22 @@ Commit reminder
 </section>
 <section id="examining-variability" class="level2">
 <h2 class="anchored" data-anchor-id="examining-variability">Examining variability</h2>
-<p>In class, I mentioned that one disadvantage of regression trees is that they are highly variable. We will explore that here. Repeat your same analysis from above, but now setting seeds of 5.</p>
+<p>In class, I mentioned that one disadvantage of regression trees is that they are highly variable. We will explore that here.</p>
+<div style="color: maroon">
+<p>Repeat your same analysis from above, but now setting seeds of 5.</p>
+</div>
 <p><em>Maybe helpful hint</em>: remember that the prediction for a new observation <span class="math inline">\(x_{0}\)</span> is the average of the training responses in the terminal node that <span class="math inline">\(x_{0}\)</span> falls into.</p>
+<div style="color: maroon">
 <p>You only need to provide code and to fit, prune, and predict from the tree (i.e.&nbsp;I won’t be looking for plots). The only outputs I am looking for are the test RMSEs from the pruned and unpruned trees.</p>
 <p>Instead of answering the questions from the previous section, answer the following:</p>
+</div>
 <ol type="1">
 <li>Based on this test/train split using a seed of 5, does the pruned or unpruned tree perform better on the test data?</li>
 <li>How “useful” would you say your pruned tree here is for someone who is trying to understand what may impact the area burned in a forest fire in Portugal?</li>
 <li>How does your pruned tree here (seed of 5) compare to the pruned tree in the previous section (seed of 346)?</li>
 </ol>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Regression tree:
-tree(formula = area ~ ., data = train_dat, control = tree.control(n = length(train_ids), 
-    minsize = 2))
-Variables actually used in tree construction:
-[1] "temp" "DMC"  "ISI"  "FFMC" "RH"  
-Number of terminal nodes:  15 
-Residual mean deviance:  1.479 = 500.1 / 338 
-Distribution of residuals:
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
--2.1240 -0.8253 -0.3242  0.0000  0.7433  4.5220 </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.516953</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.843484</code></pre>
-</div>
+
 </div>
 </section>
 <section id="submission" class="level2">
