@@ -1,0 +1,115 @@
+---
+title: "Live code:"
+date: "March 14, 2023"
+description: "Regression trees (part 1)"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+## Mini implementation
+
+We will write code to understand how recursive binary splitting works. Specifically, we will pretend we are about to create the root node (i.e. first split) for a regression tree that uses `WatrCont` and `SubsDens` to predict `abundance` of the mites. We need to obtain the residual sum of squares (RSS) for each candidate split, and choose the split that yields the best (lowest) RSS at that step in the tree, where RSS is
+
+$$\sum_{i:x_{i}\in S_l(j,c)} (y_{i} - \hat{y}_{S_{l}})^2 + \sum_{i:x_{i}\in S_r(j,c)} (y_{i} - \hat{y}_{S_{r}})^2,$$
+
+and $\hat{y}_{S_{l}}$ is the average of the training responses in $S_l(j,s)$
+
+So from this, we need to:
+
+1.  Determine if each observation goes left or right based on the condition
+2.  Obtain the average of the training responses in each side ($\hat{y}_{S_{l}}$ and $\hat{y}_{S_{r}}$)
+3.  Obtain the residual of each observation
+4.  Obtain the RSS from each set $S_{l}$ and $S_{r}$
+5.  Obtain one single RSS, which is the sum of the two values in (4)
+
+We saw that one candidate split was `SubsDens` \< 22.63. Let's see what the resulting RSS is from this split.
+
+*Make sure you understand what each line of code is doing. If not, please ask!*
+
+```{r}
+mite_dat%>%
+  mutate(split = if_else(SubsDens < 22.63, "left", "right")) %>%
+  group_by(split) %>%
+  mutate(y_hat = mean(abundance)) %>%
+  ungroup() %>%
+  mutate(sq_resid = (abundance - y_hat)^2) %>%
+  group_by(split) %>%
+  summarise(ssr = sum(sq_resid)) %>%
+  pull(ssr) %>%
+  sum()
+```
+
+## Coding in R
+
+### trees() function
+
+Simple regression trees can be implemented in `R` using the `trees` library (you may have to install) using the `tree()` function. The syntax is just as in `lm()`:
+
+::: callout-warning
+Note: the `tree()` function we will use requires all categorical variables to be coded as *factors*. Additionally, no single categorical variable can have more than 32 levels.
+:::
+
+```{r}
+library(tree)
+tree_mites <- tree(abundance ~ WatrCont + SubsDens + Topo, 
+                   data = mite_dat)
+summary(tree_mites)
+```
+
+Above, lines 2-3 fit the regression trees for `abundance` using the three specified predictores from `mite_dat` data. Similar to `lm()`, we can wrap the tree object with `summary()` to get some more information about the model fit. We see number of terminal notes $|T_{0}|$, the predictors that were used to build the tree, and residual mean deviance:
+
+-   If you don't see list of predictors, then the tree used all of them
+
+-   Residual mean deviance: $\text{RSS}/(n - |T_{0}|)$
+
+Typing the name of the `tree` object prints the tree in text form:
+
+```{r}
+#| echo: true
+tree_mites
+```
+
+We can interpret the tree as follows:
+
+-   The \* denotes a terminal node
+
+-   `split`: condition used to branch at the node
+
+-   `n`: the number of observations following the left-side of the branch
+
+-   `deviance`: the deviance associated with that branch
+
+-   `yval`: predicted value at the node
+
+### Plotting trees
+
+We will use base `R` plots; I'm sure there are much more beautiful `ggplot` functions out there, but I'm not in the business of it today! We simply pass the tree object into `plot()`:
+
+```{r}
+#| echo: true
+plot(tree_mites)
+```
+
+Notice that there is no text! This isn't helpful. We need to explicitly add the labels using the `text()` function:
+
+```{r}
+#| echo: true
+plot(tree_mites)
+text(tree_mites, pretty = 0)
+```
+
+The argument `pretty = 0` instructs `R` to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c... letter for each category.

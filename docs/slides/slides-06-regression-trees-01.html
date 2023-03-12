@@ -27,70 +27,6 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -652,117 +588,13 @@
 <li class="fragment"><p>Notice that if <span class="math inline">\(X_{j}\)</span> has more than two levels, we would need to choose the level that yields the best split</p></li>
 </ul>
 </section></section>
-<section>
-<section id="coding-trees-in-r" class="title-slide slide level1 center">
-<h1>Coding trees in R</h1>
-
-</section>
-<section id="coding-regression-trees" class="slide level2">
-<h2>Coding regression trees</h2>
-<p>Simple regression trees can be implemented in <code>R</code> using the <code>trees</code> library</p>
-<ul>
-<li class="fragment"><p>Note: the <code>tree()</code> function we will use requires all categorical variables to be coded as <em>factors</em></p></li>
-<li class="fragment"><p>Syntax is just as in <code>lm()</code>:</p></li>
-</ul>
-<div class="fragment">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(tree)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>tree_mites <span class="ot">&lt;-</span> <span class="fu">tree</span>(abundance <span class="sc">~</span> WatrCont <span class="sc">+</span> SubsDens <span class="sc">+</span> Topo, </span>
-<span id="cb4-3"><a href="#cb4-3"></a>                   <span class="at">data =</span> mite_dat)</span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">summary</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Regression tree:
-tree(formula = abundance ~ WatrCont + SubsDens + Topo, data = mite_dat)
-Number of terminal nodes:  8 
-Residual mean deviance:  64.95 = 4027 / 62 
-Distribution of residuals:
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
--23.0000  -3.3590  -0.8571   0.0000   2.4890  28.3300 </code></pre>
-</div>
-</div>
-</div>
-<ul>
-<li class="fragment"><p>We see number of terminal notes <span class="math inline">\(|T_{0}|\)</span>, the predictors that were used to build the tree, and residual mean deviance</p>
-<ul>
-<li class="fragment"><p>If you don’t see list of predictors, then the tree used all of them</p></li>
-<li class="fragment"><p>Residual mean deviance: <span class="math inline">\(\text{RSS}/(n - |T_{0}|)\)</span></p></li>
-</ul></li>
-</ul>
-</section>
-<section id="tree-output" class="slide level2 scrollable">
-<h2>tree() output</h2>
-<p>Typing the name of the <code>tree</code> object prints the tree in text form:</p>
-<div class="columns">
-<div class="column" style="width:60%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tree_mites</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>node), split, n, deviance, yval
-      * denotes terminal node
-
- 1) root 70 11060.0 10.4300  
-   2) Topo: Blanket 44  7760.0 15.3200  
-     4) SubsDens &lt; 48.165 33  5734.0 18.8800  
-       8) WatrCont &lt; 308.725 5    33.2  2.6000 *
-       9) WatrCont &gt; 308.725 28  4139.0 21.7900  
-        18) WatrCont &lt; 386.835 5  1250.0 31.0000 *
-        19) WatrCont &gt; 386.835 23  2372.0 19.7800  
-          38) SubsDens &lt; 41.545 17  1074.0 18.4100  
-            76) WatrCont &lt; 466.975 11   308.7 20.5500 *
-            77) WatrCont &gt; 466.975 6   623.5 14.5000 *
-          39) SubsDens &gt; 41.545 6  1175.0 23.6700 *
-     5) SubsDens &gt; 48.165 11   352.5  4.6360 *
-   3) Topo: Hummock 26   467.4  2.1540  
-     6) WatrCont &lt; 457.02 21   120.6  0.8571 *
-     7) WatrCont &gt; 457.02 5   163.2  7.6000 *</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:40%;">
-<div class="fragment">
-<ul>
-<li class="fragment"><p>The * denotes a terminal node</p></li>
-<li class="fragment"><p><code>split</code>: condition used to branch at the node</p></li>
-<li class="fragment"><p><code>n</code>: the number of observations following the left-side of the branch</p></li>
-<li class="fragment"><p><code>deviance</code>: the deviance associated with that branch</p></li>
-<li class="fragment"><p><code>yval</code>: predicted value at the node</p></li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="plotting-trees" class="slide level2">
-<h2>Plotting trees</h2>
-<ul>
-<li class="fragment">We will use base <code>R</code> plots; I’m sure there are much more beautiful <code>ggplot</code> functions out there, but I’m not in the business of it today!</li>
-</ul>
-<div class="r-stack">
-<div class="fragment">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img data-src="slides-06-regression-trees-01_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(tree_mites)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">text</span>(tree_mites, <span class="at">pretty =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img data-src="slides-06-regression-trees-01_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
-</div>
-</div>
-</div>
-</div>
-<ul>
-<li class="fragment">The argument <code>pretty = 0</code> instructs <code>R</code> to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c… letter for each category.</li>
-</ul>
+<section id="live-code" class="title-slide slide level1 center">
+<h1>Live code</h1>
 
 <div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 

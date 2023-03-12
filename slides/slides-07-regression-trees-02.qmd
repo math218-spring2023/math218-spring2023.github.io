@@ -237,100 +237,9 @@ data.frame(size = M, test = test_mse, train = train_mse, cv = cv_mse) %>%
 :::
 
 
-# Pruning in R
+# Live code
 
-## Create large tree {.scrollable}
-
-Fit a large regression tree for `abundance` using all the predictors:
-
-```{r}
-#| echo: true
-tree_mites <- tree(abundance ~ ., data = mite_dat)
-summary(tree_mites)
-```
-
-::: fragment
-```{r}
-plot(tree_mites)
-text(tree_mites,pretty = 0)
-```
-:::
-
-## How to prune in R
-
-- Maybe we think this tree is too complex and might want to prune it to improve results
-
-- We can use `cv.tree()` to perform k-fold cross-validation in order to determine the optimal level of tree complexity
-
-  - This function uses cost-complexity pruning, and defaults to k=10 for the k-fold CV
-  
-## cv.tree()
-
-::: columns
-
-::: {.column width="50%"}
-
-```{r}
-#| echo: true
-#| eval: false
-set.seed(3) # why am I setting a seed?
-cv_mites <- cv.tree(tree_mites, K = 5)
-cv_mites
-```
-
-::: fragment
-```{r}
-#| echo: false
-set.seed(3)
-cv_mites <- cv.tree(tree_mites, K = 5)
-cv_mites
-```
-:::
-:::
-
-::: {.column width="50%"}
-- `size`: number of terminal nodes of each tree considered 
-- `dev`: corresponding deviance of each tree
-- `k`: value of the cost-complexity parameter used ($\alpha$ in our notation)
-- We want tree with lowest `dev`iance. Which candidate tree should we use?
-:::
-
-:::
-
-## Choosing pruned tree
-
-```{r}
-min_size <- cv_mites$size[which.min(cv_mites$dev)]
-data.frame(error_rate = cv_mites$dev, size = cv_mites$size, k = cv_mites$k) %>%
-  pivot_longer(cols = 2:3, names_to = "var", values_to = "value") %>%
-  ggplot(., aes(x = value, y = error_rate)) +
-  geom_point()+
-  geom_line()+
-  facet_wrap(~var, scales = "free") +
-  labs(y = "deviance") +
-  plot_theme
-```
-
-- Based on output, the tree with `r min_size` terminal nodes seems to be best. 
-
-## prune.tree()
-
-```{r}
-#| echo: true
-min_size <- 4
-prune_mites <- prune.tree(tree_mites, best = min_size)
-```
-
-::: fragment
-
-
-```{r}
-plot(prune_mites)
-text(prune_mites, pretty = 0)
-```
-:::
-
-- Results in a much simpler tree which we could then use for predictions!
+Pruning in R
 
 # Summary
 
@@ -357,6 +266,8 @@ Advantages:
 -   Can be displayed graphically and interpreted by non-expert
 
 -   Can easily handle qualitative predictors without the need to encode or create dummy variables
+
+- Making predictions is fast: no calculations needed!
 :::
 
 ::: {.column width="50%"}
@@ -364,7 +275,7 @@ Disadvantages:
 
 -   Lower levels of predictive accuracy compared to some other approaches
 
--   Can be non-robust
+-   Can be non-robust (high variance)
 
 -   However, we may see that aggregating many trees can improve predictive performance!
 :::

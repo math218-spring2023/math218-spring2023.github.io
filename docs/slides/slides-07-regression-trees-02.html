@@ -27,70 +27,6 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -530,113 +466,11 @@ Distribution of residuals:
 </div>
 </div>
 </section></section>
-<section>
-<section id="pruning-in-r" class="title-slide slide level1 center">
-<h1>Pruning in R</h1>
-
+<section id="live-code" class="title-slide slide level1 center">
+<h1>Live code</h1>
+<p>Pruning in R</p>
 </section>
-<section id="create-large-tree" class="slide level2 scrollable">
-<h2>Create large tree</h2>
-<p>Fit a large regression tree for <code>abundance</code> using all the predictors:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>tree_mites <span class="ot">&lt;-</span> <span class="fu">tree</span>(abundance <span class="sc">~</span> ., <span class="at">data =</span> mite_dat)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">summary</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Regression tree:
-tree(formula = abundance ~ ., data = mite_dat)
-Variables actually used in tree construction:
-[1] "Topo"     "SubsDens" "WatrCont" "Shrub"   
-Number of terminal nodes:  8 
-Residual mean deviance:  61.75 = 3828 / 62 
-Distribution of residuals:
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
--23.0000  -3.5750  -0.8571   0.0000   1.9570  26.8800 </code></pre>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="how-to-prune-in-r" class="slide level2">
-<h2>How to prune in R</h2>
-<ul>
-<li class="fragment"><p>Maybe we think this tree is too complex and might want to prune it to improve results</p></li>
-<li class="fragment"><p>We can use <code>cv.tree()</code> to perform k-fold cross-validation in order to determine the optimal level of tree complexity</p>
-<ul>
-<li class="fragment">This function uses cost-complexity pruning, and defaults to k=10 for the k-fold CV</li>
-</ul></li>
-</ul>
-</section>
-<section id="cv.tree" class="slide level2">
-<h2>cv.tree()</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>) <span class="co"># why am I setting a seed?</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>cv_mites <span class="ot">&lt;-</span> <span class="fu">cv.tree</span>(tree_mites, <span class="at">K =</span> <span class="dv">5</span>)</span>
-<span id="cb4-3"><a href="#cb4-3"></a>cv_mites</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>$size
-[1] 8 7 6 5 4 3 2 1
 
-$dev
-[1] 10790.748 10335.579 10419.939 10273.679  9604.771 12336.495 13379.901
-[8] 12952.863
-
-$k
-[1]      -Inf  112.9333  183.6132  350.1047  516.8012 1561.6009 1673.4848
-[8] 2832.2128
-
-$method
-[1] "deviance"
-
-attr(,"class")
-[1] "prune"         "tree.sequence"</code></pre>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<ul>
-<li class="fragment"><code>size</code>: number of terminal nodes of each tree considered</li>
-<li class="fragment"><code>dev</code>: corresponding deviance of each tree</li>
-<li class="fragment"><code>k</code>: value of the cost-complexity parameter used (<span class="math inline">\(\alpha\)</span> in our notation)</li>
-<li class="fragment">We want tree with lowest <code>dev</code>iance. Which candidate tree should we use?</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="choosing-pruned-tree" class="slide level2">
-<h2>Choosing pruned tree</h2>
-
-<img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"><ul>
-<li class="fragment">Based on output, the tree with 4 terminal nodes seems to be best.</li>
-</ul>
-</section>
-<section id="prune.tree" class="slide level2">
-<h2>prune.tree()</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>min_size <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>prune_mites <span class="ot">&lt;-</span> <span class="fu">prune.tree</span>(tree_mites, <span class="at">best =</span> min_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
-</div>
-</div>
-</div>
-<ul>
-<li class="fragment">Results in a much simpler tree which we could then use for predictions!</li>
-</ul>
-</section></section>
 <section>
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
@@ -667,12 +501,13 @@ attr(,"class")
 <li class="fragment"><p>Easy to explain, and may more closely mirror human decision-making than other approaches we’ve seen</p></li>
 <li class="fragment"><p>Can be displayed graphically and interpreted by non-expert</p></li>
 <li class="fragment"><p>Can easily handle qualitative predictors without the need to encode or create dummy variables</p></li>
+<li class="fragment"><p>Making predictions is fast: no calculations needed!</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p>Disadvantages:</p>
 <ul>
 <li class="fragment"><p>Lower levels of predictive accuracy compared to some other approaches</p></li>
-<li class="fragment"><p>Can be non-robust</p></li>
+<li class="fragment"><p>Can be non-robust (high variance)</p></li>
 <li class="fragment"><p>However, we may see that aggregating many trees can improve predictive performance!</p></li>
 </ul>
 </div>

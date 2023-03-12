@@ -1,0 +1,99 @@
+---
+title: "Live code:"
+date: "March 16, 2023"
+description: "Regression trees (pruning)"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+## Pruning in R
+
+We will use a few more functions from the `tree` package to prune a large tree and obtain a "best" subtree via cost-complexity pruning and k-fold CV.
+
+### Grow large tree
+
+First, we will grow a large regression tree for `abundance` using all the predictors. *Note*: by default, the `tree()` function will grow a large tree, but will not perfectly fit the training data. It defaults to growing a tree that has *at least* five observations in each child node.
+
+If we want to explicitly tell `tree()` to grow a larger tree, we can specify the optional argument called `control`. We set `nobs = n` (i.e. the number of training observations), and another optional control argument such as `mindev`, `minsize`, or `mincut`. `mindev = 0` . See the help file for `tree.control` for more details.
+
+Here, we will specify `minsize = 2`, which means that the smallest allowed node size is 2. If you view the text version of the tree, you'll see we have many leaves where only one training observation follows a given path.
+
+```{r}
+library(tree)
+n <- nrow(mite_dat)
+tree_mites <- tree(abundance ~ ., data = mite_dat,
+                   control=tree.control(nobs = n, minsize = 2))
+summary(tree_mites)
+```
+
+## Prune the large tree
+
+Maybe we think this `tree_mites` is too complex and might want to prune it to improve results. First we need to consider a bunch of candidate subtrees, then ultimately choose one single "best" tree.
+
+### Cost-complexity pruning with k-fold CV
+
+We can use `cv.tree()` to perform k-fold cross-validation in order to determine the optimal level of tree complexity. This function performs cost-complexity pruning on the passed-in tree for various values of $\alpha$. It defaults to k=10 for the k-fold CV. See the help file for more details.
+
+Comprehension question check: why am I setting a seed?
+
+```{r}
+set.seed(3) 
+cv_mites <- cv.tree(tree_mites, K = 5)
+cv_mites
+```
+
+The returned output contains the cross-validated results from each sub-tree:
+
+-   `size`: number of terminal nodes of each tree considered
+-   `dev`: corresponding deviance of each tree
+-   `k`: value of the cost-complexity parameter used ($\alpha$ in our notation)
+
+We want tree with lowest `dev`iance. Which candidate tree should we use?
+
+```{r}
+best_id <- which.min(cv_mites$dev)
+min_size <- cv_mites$size[best_id]
+min_size
+```
+
+Sometimes, it's nice to plot the CV test error as a function of $\alpha$ (`k`) or the size of each subtree:
+
+```{r}
+#| echo: false
+data.frame(cv_error = cv_mites$dev, size = cv_mites$size) %>%
+  ggplot(., aes(x = size, y = cv_error)) +
+  geom_point()+
+  geom_line()+
+  labs(y = "deviance") +
+  scale_x_continuous(breaks = sort(cv_mites$size))+
+  theme(panel.grid.minor.x = element_blank())
+```
+
+
+## Pruning to obtain final tree 
+
+We will use `prune.tree()` to prune our original large tree `tree_mites` to the size we found from `cv.tree()`. Results in a much simpler tree which we could then use for predictions!
+
+
+```{r}
+prune_mites <- prune.tree(tree_mites, best = min_size)
+plot(prune_mites)
+text(prune_mites, pretty = 0)
+```
+
