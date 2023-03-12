@@ -1,8 +1,9 @@
 ---
 title: "Regression Trees"
-date: "March 9, 2023"
+subtitle: "Part 1: Introduction"
+date: "March 14, 2023"
 title-slide-attributes:
-    data-background-image: "figs/title/validation.png"
+    data-background-image: "figs/title/gingko.png"
     data-background-size: contain
     data-background-opacity: "0.3"
 format: 
@@ -343,256 +344,81 @@ data.frame(SubsDens_ssr) %>%
 
 -   Notice that if $X_{j}$ has more than two levels, we would need to choose the level that yields the best split
 
-# Pruning
+# Coding trees in R
 
-This next section is a bit technical, but bear with me!
+## Coding regression trees
 
-## Possible issue
+Simple regression trees can be implemented in `R` using the `trees` library
 
--   This process may produce good predictions on the training set, but is likely to overfit the data. Why?
+-   Note: the `tree()` function we will use requires all categorical variables to be coded as *factors*
 
--   A smaller tree with fewer splits/regions might lead to lower variance and better interpretation, at the cost of a little bias
-
--   One possible fix: build the tree only so long as the decrease in the RSS due to each split exceeds some (high) threshold
-
--   Will result in smaller trees, but may be short-sighted
-
-## Tree pruning
-
--   A better strategy is to grow a very large tree $T_{0}$, and then **prune** it back in order to obtain a smaller **subtree**
-
--   Idea: remove sections that are non-critical
-
--   **Cost complexity pruning** or weakest link pruning: consider a sequence of trees indexed by a nonnegative tuning parameter $\alpha$. For each value of $\alpha$, there is a subtree $T \subset T_{0}$ such that $$\left(\sum_{m=1}^{|T|} \sum_{i: x_{i} \in R_{m}} (y_{i} - \hat{y}_{R_{m}})^2 \right)+ \alpha |T|$$ is as small as possible.
-
-## Cost complexity pruning (cont.)
-
-$$\left(\sum_{m=1}^{|T|} \sum_{i: x_{i} \in R_{m}} (y_{i} - \hat{y}_{R_{m}})^2 \right)+ \alpha |T|$$
-
--   $|T|$ = number of terminal nodes of tree $T$
-
--   $R_{m}$ is the rectangle corresponding to the $m$-th terminal node
-
--   $\alpha$ controls trade-off between subtree's complexity and fit to the training data
-
-    -   What is the resultant tree $T$ when $\alpha = 0$?
-
-    -   What happens as $\alpha$ increases?
-
--   Note: for every value of $\alpha$, we have a different fitted tree $\rightarrow$ need to choose a best $\alpha$
-
--   Select an optimal $\alpha^{*}$ using cross-validation, then return to full data set and obtain the subtree corresponding to $\alpha^{*}$
-
-## Algorithm for building tree
-
-Suppose I just want to build a "best" regression tree to my data, but I'm not interesting in comparing the performance of my regression tree to a different model.
-
-1.  Using recursive binary splitting to grow a large tree on the data, stopping according to a pre-determined stopping rule
-
-2.  Apply cost complexity pruning to the large tree in order to obtain a sequence of best trees as a function of $\alpha$
-
-3.  Use $k$-fold CV to choose $\alpha$: divide data into $K$ folds. For each $k = 1,\ldots, K$:
-
-    a.  Repeat Steps 1 and 2 on all but the $k$-th fold
-
-    b.  Evaluate mean squared prediction error on the data in held-out $k$-th fold, as a function of $\alpha$. Average the result for each $\alpha$
-
-4.  Choose $\alpha^{*}$ that minimizes the average error. Return the subtree from Step 2 that corresponds to $\alpha^{*}$ as your "best" tree
-
-## Algorithm for building tree (comparisons)
-
-If instead I also want to *compare* my "best" regression tree against a different model, I need some train/test data to compare the two models
-
-0.  Split data into train and validation sets
-
-1.  Using recursive binary splitting to grow a large tree on the training data, stopping according to a pre-determined stopping rule
-
-2.  Apply cost complexity pruning to the large tree in order to obtain a sequence of best trees as a function of $\alpha$
-
-3.  Use $k$-fold CV to choose $\alpha$: divide training data into $K$ folds. For each $k = 1,\ldots, K$:
-
-    a.  Repeat Steps 1 and 2 on all but the $k$-th fold
-
-    b.  Evaluate mean squared prediction error on the data in held-out $k$-th fold, as a function of $\alpha$. Average the result for each $\alpha$
-
-4.  Choose $\alpha^{*}$ that minimizes the average error. Return the subtree from Step 2 that corresponds to $\alpha^{*}$ as "best" tree, and use that tree for predictions on test data.
-
-- Caution! Note that we have two froms of validation/testing going on here!
-
-## Mite data: entire process
-
-- Let's suppose I want to obtain the best regression tree for this mite data, and I want to use the tree to compare to other models
-
-- Step 0: split data into 80/20 train and validation set  
-
-- Step 1: use all predictors to build the large tree on the train set
+-   Syntax is just as in `lm()`:
 
 ::: fragment
-
 ```{r}
-set.seed(122)
-train_ids <- sample(1:n, 0.8*n)
-train_dat <- mite_dat[train_ids,]
-test_dat <- mite_dat[-train_ids,]
-# grow large tree on train data
-tree_train <- tree(abundance ~ ., train_dat,
-                   control=tree.control(nobs = length(train_ids), mindev = 0))
-summary(tree_train)
+#| echo: true
+library(tree)
+tree_mites <- tree(abundance ~ WatrCont + SubsDens + Topo, 
+                   data = mite_dat)
+summary(tree_mites)
 ```
-
 :::
 
-## Mite data: entire process (cont.)
+-   We see number of terminal notes $|T_{0}|$, the predictors that were used to build the tree, and residual mean deviance
 
-- Step 2: Perform minimal cost-complexity pruning, to get a sequence of possible/candidate best trees as a function of $\alpha$
+    -   If you don't see list of predictors, then the tree used all of them
 
-- Step 3: Select $\alpha^*$ (i.e. best tree) using 5-fold CV on the training data
+    -   Residual mean deviance: $\text{RSS}/(n - |T_{0}|)$
 
-  - For each $\alpha$, there is an associated CV-error estimate when fitting on the training data (this is the one I care about for choosing one tree)
-  
-  - For each $\alpha$, there is also an associated test error on the held-out validation data (possibly of interest)
-  
-```{r mite_cv, cache = T}
-# CV for different alpha levels 
-K<- 5
-cv_tree <- cv.tree(tree_train, K = K)
-ids <- split(1:length(train_ids), ceiling(seq_along(1:length(train_ids))/(length(train_ids)/K))) 
+## tree() output {.scrollable}
 
-y_train <- train_dat$abundance
-y_test <- test_dat$abundance
-alphas <- (prune.tree(tree_train)$k)[-c(1, length(prune.tree(tree_train)$k))]
-M <- (prune.tree(tree_train)$size)[-c(1, length(prune.tree(tree_train)$k))]
-test_mse <- train_mse <- rep(NA, length(alphas))
-for(i in 1:length(alphas)){
- # for  regression tree, devaince is sum of squared errors
-
- m <- alphas[i]
- pruned <- prune.tree(tree_train, k = m)
-  # train
- train_mse[i] <- mean((predict(pruned, train_dat) - y_train)^2)
- 
- ## test
- test_mse[i] <-  mean((predict(pruned, test_dat) - y_test)^2)
- 
-}
-
-
-## k-fold CV
-cv_preds <- matrix(NA, nrow = K, ncol = length(alphas))
-for(k in 1:K){
-   temp_tree <- tree(abundance ~., data = train_dat[unlist(ids[-k]),])
-   temp_prune <- prune.tree(temp_tree)
-   # M_curr <- temp_prune$size[-length(temp_prune$size)]
-   for(i in 1:length(alphas)){
-     m <- alphas[i]
-     temp <- prune.tree(temp_tree, k = m)
-     if (attributes(temp)$class  == "singlenode"){
-       preds <- mean(y_train[ids[[k]]])
-     } else{
-       preds <- predict( temp,  train_dat[ids[[k]],])
-     }
-     
-     cv_preds[k,i] <- mean((preds - y_train[ids[[k]]])^2)
-   }
-   
-}
-
-cv_mse <- colMeans(cv_preds)
-```
-
-## Mite data: entire process (cont.)
+Typing the name of the `tree` object prints the tree in text form:
 
 ::: columns
 
 ::: {.column width="60%"}
 
-```{r fig.width=8}
-alpha_hat <- alphas[which(cv_mse == min(cv_mse))]
-min_size_cv <- min(M[which(cv_mse == min(cv_mse))])
-min_size_test <- min(M[which(test_mse == min(test_mse))])
-gg_color_hue <- function(n) {
-  hues = seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100)[1:n]
-}
-data.frame(size = M, test = test_mse, train = train_mse, cv = cv_mse) %>%
- pivot_longer(cols = -1, names_to = "type") %>%
- ggplot(., aes(x = size, y =sqrt(value), col = type))+
- geom_point(size=3) + 
- geom_line()+
- scale_x_continuous(breaks = seq(1,max(M), 1))+
- labs(x = "Tree size", y = "RMSE")+
- theme(text = element_text(size = 20))+
-  geom_point(data.frame(x = c(min_size_cv, min_size_test),
-                        y = c(sqrt(min(cv_mse)), sqrt(min(test_mse))),
-                        type = c("cv", "test")), 
-             mapping = aes(x= x, y =y,col = type),
-             shape = 10, size = 7)+
-    guides(color = guide_legend(
-    override.aes=list(shape = 16)))+
-  ggtitle("RMSEs for trees fit to mite data")
-
-
+```{r}
+#| echo: true
+tree_mites
 ```
-
-- k-fold CV with k = 5. Best CV RMSE (red) at `r min_size_cv` leaves , so this would be our "best" tree
 
 :::
 
 ::: {.column width="40%"}
 
+::: fragment
+-   The \* denotes a terminal node
 
+-   `split`: condition used to branch at the node
 
-- Note: while the CV error is computed as a function of $\alpha$, we often display as a function of $|T|$, the number of leaves
+-   `n`: the number of observations following the left-side of the branch
 
-- Note: our best regression tree actually performs worse on the test data (green) compared to a tree with `r  min_size_test` leaves. Oh well!
+-   `deviance`: the deviance associated with that branch
 
+-   `yval`: predicted value at the node
 :::
 :::
+:::
+## Plotting trees
 
-# Summary
+-   We will use base `R` plots; I'm sure there are much more beautiful `ggplot` functions out there, but I'm not in the business of it today!
 
-## Trees vs linear moedels {.scrollable}
-
-Trees vs. linear models: which is better? Depends on the true relationships between the response and the predictors
-
-
-```{r out.width="60%", fig.align="center"}
-knitr::include_graphics("figs/tree_linear.png")
+::: r-stack
+::: fragment
+```{r}
+#| echo: true
+plot(tree_mites)
 ```
-
-::: aside
-Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani (2013). An introduction to statistical learning : with applications in R. New York :Springer
 :::
 
-
-## Pros and cons
-
-::: columns
-
-::: {.column width="50%"}
-
-Advantages: 
-
-- Easy to explain, and may more closely mirror human decision-making than other approaches we've seen
- 
-- Can be displayed graphically and interpreted by non-expert
- 
-- Can easily handle qualitative predictors without the need to encode or create dummy variables
-
+::: fragment
+```{r}
+#| echo: true
+plot(tree_mites)
+text(tree_mites, pretty = 0)
+```
+:::
 :::
 
-::: {.column width="50%"}
-
-Disadvantages:
-
-- Lower levels of predictive accuracy compared to some other approaches
- 
-- Can be non-robust 
- 
-
-- However, we may see that aggregating many trees can improve predictive performance!
-
-:::
-
-:::
-
+- The argument `pretty = 0` instructs `R` to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c… letter for each category.

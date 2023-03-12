@@ -27,6 +27,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -334,7 +398,7 @@
 
 <section id="title-slide" data-background-image="figs/title/gingko.png" data-background-opacity="0.3" data-background-size="contain" class="quarto-title-block center">
   <h1 class="title">Regression Trees</h1>
-  <p class="subtitle">Part 1</p>
+  <p class="subtitle">Part 1: Introduction</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -366,7 +430,7 @@
 <section id="mite-data" class="slide level2">
 <h2>Mite data</h2>
 
-<img data-src="slides-06-regression-trees_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch"><ul>
+<img data-src="slides-06-regression-trees-01_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch"><ul>
 <li class="fragment">We will begin by showing the results of a regression tree, then we will discuss how to build one</li>
 </ul>
 </section>
@@ -375,7 +439,7 @@
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="slides-06-regression-trees_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+<p><img data-src="slides-06-regression-trees-01_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -549,7 +613,7 @@
 <div class="columns">
 <div class="column" style="width:60%;">
 <p>Doing this for all possible splits, we get the following SSRs:</p>
-<div class="cell" data-hash="slides-06-regression-trees_cache/revealjs/mite_ssr_0c92d451c8008b6c5f990ade14fd1425">
+<div class="cell" data-hash="slides-06-regression-trees-01_cache/revealjs/mite_ssr_b3a249a4756cfe2ec30a413f29db0224">
 
 </div>
 <div class="cell">
@@ -589,173 +653,111 @@
 </ul>
 </section></section>
 <section>
-<section id="pruning" class="title-slide slide level1 center">
-<h1>Pruning</h1>
-<p>This next section is a bit technical, but bear with me!</p>
+<section id="coding-trees-in-r" class="title-slide slide level1 center">
+<h1>Coding trees in R</h1>
+
 </section>
-<section id="possible-issue" class="slide level2">
-<h2>Possible issue</h2>
+<section id="coding-regression-trees" class="slide level2">
+<h2>Coding regression trees</h2>
+<p>Simple regression trees can be implemented in <code>R</code> using the <code>trees</code> library</p>
 <ul>
-<li class="fragment"><p>This process may produce good predictions on the training set, but is likely to overfit the data. Why?</p></li>
-<li class="fragment"><p>A smaller tree with fewer splits/regions might lead to lower variance and better interpretation, at the cost of a little bias</p></li>
-<li class="fragment"><p>One possible fix: build the tree only so long as the decrease in the RSS due to each split exceeds some (high) threshold</p></li>
-<li class="fragment"><p>Will result in smaller trees, but may be short-sighted</p></li>
-</ul>
-</section>
-<section id="tree-pruning" class="slide level2">
-<h2>Tree pruning</h2>
-<ul>
-<li class="fragment"><p>A better strategy is to grow a very large tree <span class="math inline">\(T_{0}\)</span>, and then <strong>prune</strong> it back in order to obtain a smaller <strong>subtree</strong></p></li>
-<li class="fragment"><p>Idea: remove sections that are non-critical</p></li>
-<li class="fragment"><p><strong>Cost complexity pruning</strong> or weakest link pruning: consider a sequence of trees indexed by a nonnegative tuning parameter <span class="math inline">\(\alpha\)</span>. For each value of <span class="math inline">\(\alpha\)</span>, there is a subtree <span class="math inline">\(T \subset T_{0}\)</span> such that <span class="math display">\[\left(\sum_{m=1}^{|T|} \sum_{i: x_{i} \in R_{m}} (y_{i} - \hat{y}_{R_{m}})^2 \right)+ \alpha |T|\]</span> is as small as possible.</p></li>
-</ul>
-</section>
-<section id="cost-complexity-pruning-cont." class="slide level2">
-<h2>Cost complexity pruning (cont.)</h2>
-<p><span class="math display">\[\left(\sum_{m=1}^{|T|} \sum_{i: x_{i} \in R_{m}} (y_{i} - \hat{y}_{R_{m}})^2 \right)+ \alpha |T|\]</span></p>
-<ul>
-<li class="fragment"><p><span class="math inline">\(|T|\)</span> = number of terminal nodes of tree <span class="math inline">\(T\)</span></p></li>
-<li class="fragment"><p><span class="math inline">\(R_{m}\)</span> is the rectangle corresponding to the <span class="math inline">\(m\)</span>-th terminal node</p></li>
-<li class="fragment"><p><span class="math inline">\(\alpha\)</span> controls trade-off between subtree’s complexity and fit to the training data</p>
-<ul>
-<li class="fragment"><p>What is the resultant tree <span class="math inline">\(T\)</span> when <span class="math inline">\(\alpha = 0\)</span>?</p></li>
-<li class="fragment"><p>What happens as <span class="math inline">\(\alpha\)</span> increases?</p></li>
-</ul></li>
-<li class="fragment"><p>Note: for every value of <span class="math inline">\(\alpha\)</span>, we have a different fitted tree <span class="math inline">\(\rightarrow\)</span> need to choose a best <span class="math inline">\(\alpha\)</span></p></li>
-<li class="fragment"><p>Select an optimal <span class="math inline">\(\alpha^{*}\)</span> using cross-validation, then return to full data set and obtain the subtree corresponding to <span class="math inline">\(\alpha^{*}\)</span></p></li>
-</ul>
-</section>
-<section id="algorithm-for-building-tree" class="slide level2">
-<h2>Algorithm for building tree</h2>
-<p>Suppose I just want to build a “best” regression tree to my data, but I’m not interesting in comparing the performance of my regression tree to a different model.</p>
-<ol type="1">
-<li class="fragment"><p>Using recursive binary splitting to grow a large tree on the data, stopping according to a pre-determined stopping rule</p></li>
-<li class="fragment"><p>Apply cost complexity pruning to the large tree in order to obtain a sequence of best trees as a function of <span class="math inline">\(\alpha\)</span></p></li>
-<li class="fragment"><p>Use <span class="math inline">\(k\)</span>-fold CV to choose <span class="math inline">\(\alpha\)</span>: divide data into <span class="math inline">\(K\)</span> folds. For each <span class="math inline">\(k = 1,\ldots, K\)</span>:</p>
-<ol type="a">
-<li class="fragment"><p>Repeat Steps 1 and 2 on all but the <span class="math inline">\(k\)</span>-th fold</p></li>
-<li class="fragment"><p>Evaluate mean squared prediction error on the data in held-out <span class="math inline">\(k\)</span>-th fold, as a function of <span class="math inline">\(\alpha\)</span>. Average the result for each <span class="math inline">\(\alpha\)</span></p></li>
-</ol></li>
-<li class="fragment"><p>Choose <span class="math inline">\(\alpha^{*}\)</span> that minimizes the average error. Return the subtree from Step 2 that corresponds to <span class="math inline">\(\alpha^{*}\)</span> as your “best” tree</p></li>
-</ol>
-</section>
-<section id="algorithm-for-building-tree-comparisons" class="slide level2">
-<h2>Algorithm for building tree (comparisons)</h2>
-<p>If instead I also want to <em>compare</em> my “best” regression tree against a different model, I need some train/test data to compare the two models</p>
-<ol start="0" type="1">
-<li class="fragment"><p>Split data into train and validation sets</p></li>
-<li class="fragment"><p>Using recursive binary splitting to grow a large tree on the training data, stopping according to a pre-determined stopping rule</p></li>
-<li class="fragment"><p>Apply cost complexity pruning to the large tree in order to obtain a sequence of best trees as a function of <span class="math inline">\(\alpha\)</span></p></li>
-<li class="fragment"><p>Use <span class="math inline">\(k\)</span>-fold CV to choose <span class="math inline">\(\alpha\)</span>: divide training data into <span class="math inline">\(K\)</span> folds. For each <span class="math inline">\(k = 1,\ldots, K\)</span>:</p>
-<ol type="a">
-<li class="fragment"><p>Repeat Steps 1 and 2 on all but the <span class="math inline">\(k\)</span>-th fold</p></li>
-<li class="fragment"><p>Evaluate mean squared prediction error on the data in held-out <span class="math inline">\(k\)</span>-th fold, as a function of <span class="math inline">\(\alpha\)</span>. Average the result for each <span class="math inline">\(\alpha\)</span></p></li>
-</ol></li>
-<li class="fragment"><p>Choose <span class="math inline">\(\alpha^{*}\)</span> that minimizes the average error. Return the subtree from Step 2 that corresponds to <span class="math inline">\(\alpha^{*}\)</span> as “best” tree, and use that tree for predictions on test data.</p></li>
-</ol>
-<ul>
-<li class="fragment">Caution! Note that we have two froms of validation/testing going on here!</li>
-</ul>
-</section>
-<section id="mite-data-entire-process" class="slide level2">
-<h2>Mite data: entire process</h2>
-<ul>
-<li class="fragment"><p>Let’s suppose I want to obtain the best regression tree for this mite data, and I want to use the tree to compare to other models</p></li>
-<li class="fragment"><p>Step 0: split data into 80/20 train and validation set</p></li>
-<li class="fragment"><p>Step 1: use all predictors to build the large tree on the train set</p></li>
+<li class="fragment"><p>Note: the <code>tree()</code> function we will use requires all categorical variables to be coded as <em>factors</em></p></li>
+<li class="fragment"><p>Syntax is just as in <code>lm()</code>:</p></li>
 </ul>
 <div class="fragment">
 <div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(tree)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>tree_mites <span class="ot">&lt;-</span> <span class="fu">tree</span>(abundance <span class="sc">~</span> WatrCont <span class="sc">+</span> SubsDens <span class="sc">+</span> Topo, </span>
+<span id="cb4-3"><a href="#cb4-3"></a>                   <span class="at">data =</span> mite_dat)</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">summary</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Regression tree:
-tree(formula = abundance ~ ., data = train_dat, control = tree.control(nobs = length(train_ids), 
-    mindev = 0))
-Variables actually used in tree construction:
-[1] "Topo"     "SubsDens" "Shrub"    "WatrCont"
-Number of terminal nodes:  9 
-Residual mean deviance:  52.66 = 2475 / 47 
+tree(formula = abundance ~ WatrCont + SubsDens + Topo, data = mite_dat)
+Number of terminal nodes:  8 
+Residual mean deviance:  64.95 = 4027 / 62 
 Distribution of residuals:
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
--14.800  -3.450  -0.300   0.000   3.483  24.440 </code></pre>
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-23.0000  -3.3590  -0.8571   0.0000   2.4890  28.3300 </code></pre>
 </div>
 </div>
 </div>
-</section>
-<section id="mite-data-entire-process-cont." class="slide level2">
-<h2>Mite data: entire process (cont.)</h2>
 <ul>
-<li class="fragment"><p>Step 2: Perform minimal cost-complexity pruning, to get a sequence of possible/candidate best trees as a function of <span class="math inline">\(\alpha\)</span></p></li>
-<li class="fragment"><p>Step 3: Select <span class="math inline">\(\alpha^*\)</span> (i.e.&nbsp;best tree) using 5-fold CV on the training data</p>
+<li class="fragment"><p>We see number of terminal notes <span class="math inline">\(|T_{0}|\)</span>, the predictors that were used to build the tree, and residual mean deviance</p>
 <ul>
-<li class="fragment"><p>For each <span class="math inline">\(\alpha\)</span>, there is an associated CV-error estimate when fitting on the training data (this is the one I care about for choosing one tree)</p></li>
-<li class="fragment"><p>For each <span class="math inline">\(\alpha\)</span>, there is also an associated test error on the held-out validation data (possibly of interest)</p></li>
+<li class="fragment"><p>If you don’t see list of predictors, then the tree used all of them</p></li>
+<li class="fragment"><p>Residual mean deviance: <span class="math inline">\(\text{RSS}/(n - |T_{0}|)\)</span></p></li>
 </ul></li>
 </ul>
-<div class="cell" data-hash="slides-06-regression-trees_cache/revealjs/mite_cv_8460d8f24f242095d793295b0a38fd52">
-
-</div>
 </section>
-<section id="mite-data-entire-process-cont.-1" class="slide level2">
-<h2>Mite data: entire process (cont.)</h2>
+<section id="tree-output" class="slide level2 scrollable">
+<h2>tree() output</h2>
+<p>Typing the name of the <code>tree</code> object prints the tree in text form:</p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="cell">
-<div class="cell-output-display">
-<p><img data-src="slides-06-regression-trees_files/figure-revealjs/unnamed-chunk-10-1.png" width="768"></p>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tree_mites</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>node), split, n, deviance, yval
+      * denotes terminal node
+
+ 1) root 70 11060.0 10.4300  
+   2) Topo: Blanket 44  7760.0 15.3200  
+     4) SubsDens &lt; 48.165 33  5734.0 18.8800  
+       8) WatrCont &lt; 308.725 5    33.2  2.6000 *
+       9) WatrCont &gt; 308.725 28  4139.0 21.7900  
+        18) WatrCont &lt; 386.835 5  1250.0 31.0000 *
+        19) WatrCont &gt; 386.835 23  2372.0 19.7800  
+          38) SubsDens &lt; 41.545 17  1074.0 18.4100  
+            76) WatrCont &lt; 466.975 11   308.7 20.5500 *
+            77) WatrCont &gt; 466.975 6   623.5 14.5000 *
+          39) SubsDens &gt; 41.545 6  1175.0 23.6700 *
+     5) SubsDens &gt; 48.165 11   352.5  4.6360 *
+   3) Topo: Hummock 26   467.4  2.1540  
+     6) WatrCont &lt; 457.02 21   120.6  0.8571 *
+     7) WatrCont &gt; 457.02 5   163.2  7.6000 *</code></pre>
 </div>
 </div>
-<ul>
-<li class="fragment">k-fold CV with k = 5. Best CV RMSE (red) at 4 leaves , so this would be our “best” tree</li>
-</ul>
 </div><div class="column" style="width:40%;">
+<div class="fragment">
 <ul>
-<li class="fragment"><p>Note: while the CV error is computed as a function of <span class="math inline">\(\alpha\)</span>, we often display as a function of <span class="math inline">\(|T|\)</span>, the number of leaves</p></li>
-<li class="fragment"><p>Note: our best regression tree actually performs worse on the test data (green) compared to a tree with 3 leaves. Oh well!</p></li>
+<li class="fragment"><p>The * denotes a terminal node</p></li>
+<li class="fragment"><p><code>split</code>: condition used to branch at the node</p></li>
+<li class="fragment"><p><code>n</code>: the number of observations following the left-side of the branch</p></li>
+<li class="fragment"><p><code>deviance</code>: the deviance associated with that branch</p></li>
+<li class="fragment"><p><code>yval</code>: predicted value at the node</p></li>
 </ul>
 </div>
 </div>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-
+</div>
 </section>
-<section id="trees-vs-linear-moedels" class="slide level2 scrollable">
-<h2>Trees vs linear moedels</h2>
-<p>Trees vs.&nbsp;linear models: which is better? Depends on the true relationships between the response and the predictors</p>
-<div class="cell" data-layout-align="center">
+<section id="plotting-trees" class="slide level2">
+<h2>Plotting trees</h2>
+<ul>
+<li class="fragment">We will use base <code>R</code> plots; I’m sure there are much more beautiful <code>ggplot</code> functions out there, but I’m not in the business of it today!</li>
+</ul>
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/tree_linear.png" style="width:60.0%"></p>
-</figure>
+<p><img data-src="slides-06-regression-trees-01_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </div>
 </div>
 </div>
-
-<aside><div>
-<p>Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani (2013). An introduction to statistical learning : with applications in R. New York :Springer</p>
-</div></aside></section>
-<section id="pros-and-cons" class="slide level2">
-<h2>Pros and cons</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Advantages:</p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(tree_mites)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">text</span>(tree_mites, <span class="at">pretty =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img data-src="slides-06-regression-trees-01_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li class="fragment"><p>Easy to explain, and may more closely mirror human decision-making than other approaches we’ve seen</p></li>
-<li class="fragment"><p>Can be displayed graphically and interpreted by non-expert</p></li>
-<li class="fragment"><p>Can easily handle qualitative predictors without the need to encode or create dummy variables</p></li>
+<li class="fragment">The argument <code>pretty = 0</code> instructs <code>R</code> to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c… letter for each category.</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<p>Disadvantages:</p>
-<ul>
-<li class="fragment"><p>Lower levels of predictive accuracy compared to some other approaches</p></li>
-<li class="fragment"><p>Can be non-robust</p></li>
-<li class="fragment"><p>However, we may see that aggregating many trees can improve predictive performance!</p></li>
-</ul>
-</div>
-</div>
 
 <div class="footer footer-default">
 

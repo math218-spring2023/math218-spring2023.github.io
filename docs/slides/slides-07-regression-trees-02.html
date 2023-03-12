@@ -27,6 +27,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -317,29 +381,19 @@
       margin-right: 0; 
     }
   </style>
-  
-  <script src="../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-  <link href="../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-  <script src="../site_libs/datatables-binding-0.26/datatables.js"></script>
-  <script src="../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-  <link href="../site_libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
-  <link href="../site_libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet">
-  <script src="../site_libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
-  <link href="../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
-  <script src="../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="figs/title/gingko.png" data-background-opacity="0.3" data-background-size="contain" class="quarto-title-block center">
+<section id="title-slide" data-background-image="figs/title/rainbow-eucalyptus.png" data-background-opacity="0.3" data-background-size="contain" class="quarto-title-block center">
   <h1 class="title">Regression Trees</h1>
-  <p class="subtitle">Part 1</p>
+  <p class="subtitle">Part 2: Pruning</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">3/14/23</p>
+  <p class="date">3/16/23</p>
 </section>
 <section id="housekeeping" class="title-slide slide level1 center">
 <h1>Housekeeping</h1>
@@ -349,246 +403,6 @@
 </section>
 
 <section>
-<section id="tree-based-methods" class="title-slide slide level1 center">
-<h1>Tree-based methods</h1>
-
-</section>
-<section id="tree-based-methods-1" class="slide level2">
-<h2>Tree-based methods</h2>
-<ul>
-<li class="fragment"><p>These methods use a series of if-then rules to divide/segment the predictor space into a number of simple regions</p></li>
-<li class="fragment"><p>The splitting rules can be summarized in a tree, so these approaches are known as <strong>decision-tree</strong> methods</p></li>
-<li class="fragment"><p>Can be simple and useful for interpretation</p></li>
-<li class="fragment"><p>Decision trees can be applied to both regression and classification problems</p></li>
-<li class="fragment"><p>Typically not competitive with the best supervised learning approaches in terms of prediction accuracy</p></li>
-</ul>
-</section>
-<section id="mite-data" class="slide level2">
-<h2>Mite data</h2>
-
-<img data-src="slides-06-regression-trees_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch"><ul>
-<li class="fragment">We will begin by showing the results of a regression tree, then we will discuss how to build one</li>
-</ul>
-</section>
-<section id="mite-data-regression-tree" class="slide level2 scrollable">
-<h2>Mite data: regression tree</h2>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="slides-06-regression-trees_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
-</div>
-</div>
-</div>
-<ul>
-<li class="fragment"><p>Top split: observations with <code>WatrCont</code> &lt; 323.54 are assigned to left branch</p></li>
-<li class="fragment"><p>Observations with <code>WatrCont</code> <span class="math inline">\(\geq\)</span> 323.54 are assigned to right branch, and are further subdivided by <code>SubsDens</code> and finer values of <code>WatrCont</code></p></li>
-<li class="fragment"><p>For a new observation, the predicted <code>abundance</code> of a location with <code>WatrCont</code> &lt; 323.54 is 0.85</p></li>
-<li class="fragment"><p>Remarks:</p>
-<ul>
-<li class="fragment">If condition evaluates to true, we “go left”</li>
-<li class="fragment">The splits are always in terms of <span class="math inline">\(&lt;\)</span> for consistency</li>
-</ul></li>
-</ul>
-</section>
-<section id="terminology" class="slide level2 scrollable">
-<h2>Terminology</h2>
-<ul>
-<li class="fragment"><p><strong>Internal nodes</strong>: points along the tree where the predictor space is split</p>
-<ul>
-<li class="fragment">Six internal nodes on previous slide</li>
-</ul></li>
-<li class="fragment"><p>First node is often referred to as <strong>root node</strong></p></li>
-<li class="fragment"><p><strong>Terminal nodes</strong> or <strong>leaves</strong>: regions where there is no further splitting</p>
-<ul>
-<li class="fragment"><p>Seven terminal nodes on previous slide</p></li>
-<li class="fragment"><p>The value in each terminal node is the value we predict for an observation that follows the path in predictor space to that terminal node</p></li>
-<li class="fragment"><p>Decision trees are typically drawn upside down (leaves at bottom)</p></li>
-</ul></li>
-<li class="fragment"><p>Any subnode of a given node is called a <em>child node</em>, and the given node, in turn, is the child’s <em>parent node</em>.</p></li>
-</ul>
-</section>
-<section id="draw-partitions" class="slide level2">
-<h2>Draw partitions</h2>
-</section>
-<section id="interpretation-of-results" class="slide level2">
-<h2>Interpretation of results</h2>
-<ul>
-<li class="fragment"><p>Extremely rough interpretation!!</p></li>
-<li class="fragment"><p><code>WatrCont</code> may be most important factor for determining the <code>abundance</code> of mites (among these two predictors)</p></li>
-<li class="fragment"><p>Environments with low <code>WatrCont</code> tend to have very low abundances, as do environments with high <code>SubsDens</code></p></li>
-<li class="fragment"><p>Likely an oversimplification of the true relationships, but easy to display and interpret</p></li>
-</ul>
-</section></section>
-<section>
-<section id="building-the-tree" class="title-slide slide level1 center">
-<h1>Building the tree</h1>
-
-</section>
-<section id="building-and-using-regression-tree" class="slide level2">
-<h2>Building and using regression tree</h2>
-<ol type="1">
-<li class="fragment"><p>Training/fitting model: Divide predictor space (the set of possible values for <span class="math inline">\(X_{1}, \ldots, X_{p}\)</span>) into <span class="math inline">\(M\)</span> distinct and non-overlapping regions, <span class="math inline">\(R_{1}, \ldots, R_{M}\)</span></p></li>
-<li class="fragment"><p>Prediction/using model: For every observation that lands in <span class="math inline">\(R_{m}\)</span>, we output the same predicted <span class="math inline">\(\hat{y}\)</span>: the mean of the training responses in <span class="math inline">\(R_{m}\)</span>: <span class="math display">\[\hat{y}_{R_{m}} = \frac{1}{n_{m}} \sum_{i \in R_{m}} y_{i}\]</span></p></li>
-</ol>
-</section>
-<section id="fitting-a-regression-tree" class="slide level2">
-<h2>Fitting a regression tree</h2>
-<ul>
-<li class="fragment"><p>In theory, regions <span class="math inline">\(R_{1},\ldots, R_{M}\)</span> could have any shape. For simplicity, we divde predictor space into high-dimensional rectangles or <em>boxes</em></p></li>
-<li class="fragment"><p>Goal: to train the model, we want to find boxes <span class="math inline">\(R_{1},\ldots, R_{M}\)</span> that minimize the residual sum of squares (<strong>RSS</strong>), given by <span class="math display">\[\sum_{m=1}^{M} \sum_{i\in R_{m}} (y_{i} - \hat{y}_{R_{m}})^2,\]</span></p>
-<p>where <span class="math inline">\(\hat{y}_{R_{m}}\)</span> is the predicted/fitted value for <span class="math inline">\(y_{i} \in R_{m}\)</span> in the <em>training data</em></p></li>
-<li class="fragment"><p>Unfortunately, it is computationally infeasible to consider every possible partition of the feature space into <span class="math inline">\(M\)</span> boxes!</p></li>
-</ul>
-</section>
-<section id="fitting-a-regression-tree-cont." class="slide level2">
-<h2>Fitting a regression tree (cont.)</h2>
-<ul>
-<li class="fragment"><p>We take a <strong>top-down, greedy</strong> approach known as <em>recursive binary splitting</em></p></li>
-<li class="fragment"><p>“Top-down”: we begin at the top of tree where all observations belong to a single region, and then successively partition</p></li>
-<li class="fragment"><p>“Greedy”: at each step, the <em>best</em> split is made at that current snap-shot in time, rather than looking ahead and picking a split that would be better in some future step</p></li>
-<li class="fragment"><p>Note: at every stage of the tree, all predictors are candidates for the decision split (e.g.&nbsp;in mite data, <code>WatrCont</code> was first split, but showed up later down the tree)</p></li>
-<li class="fragment"><p>Continue making splits on the data as we go</p></li>
-</ul>
-</section>
-<section id="details" class="slide level2">
-<h2>Details</h2>
-<ul>
-<li class="fragment"><p>At very beginning of model fit, all observations belong in a single region. We must decide the first split/cut-point</p></li>
-<li class="fragment"><p>We select the predictor <span class="math inline">\(X_{j}\)</span> and the cutpoint value <span class="math inline">\(c\)</span> such that splitting the predictor space into the regions <span class="math inline">\(\{X | X_{j} &lt; c\}\)</span> and <span class="math inline">\(\{X | X_{j} \geq c\}\)</span> leads to lowest RSS</p>
-<ul>
-<li class="fragment"><p>i.e., for any predictor <span class="math inline">\(j\)</span> and cutpoint <span class="math inline">\(c\)</span>, we define the pair</p>
-<p><span class="math display">\[S_l(j,c) = \{X | X_{j} &lt; c\} \text{ and } S_{r}(j,c) = \{X | X_{j} \geq c\}\]</span></p></li>
-</ul></li>
-<li class="fragment"><p>We seek the values of <span class="math inline">\((j, c)\)</span> that minimize <span class="math display">\[\sum_{i:x_{i}\in S_l(j,c)} (y_{i} - \hat{y}_{S_{l}})^2 + \sum_{i:x_{i}\in S_r(j,c)} (y_{i} - \hat{y}_{S_{r}})^2,\]</span></p>
-<p>where <span class="math inline">\(\hat{y}_{S_{l}}\)</span> is the average of the training responses in <span class="math inline">\(S_l(j,s)\)</span></p></li>
-</ul>
-</section>
-<section id="what-are-the-cut-points" class="slide level2">
-<h2>What are the cut-points?</h2>
-<p>Consider some hypothetical data, where I have a single predictor <code>x</code> and a response variable <code>y</code>:</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>   x y
-1  0 1
-2  3 2
-3  4 3
-4 10 4</code></pre>
-</div>
-</div>
-<ul>
-<li class="fragment"><p>Only makes sense to split the data based on the observed values of <code>x</code></p>
-<ul>
-<li class="fragment">i.e.&nbsp;splitting on <code>x &lt; 15</code> is silly</li>
-</ul></li>
-<li class="fragment"><p>Notice that choosing a cut-point of <span class="math inline">\(c = 1\)</span> or <span class="math inline">\(c= 2\)</span> leads to same partition of the data, and therefore same RSS</p></li>
-<li class="fragment"><p>So we consider cutpoints as the mean between consecutive values of observed <code>x</code>:</p>
-<ul>
-<li class="fragment">Examine RSS for <span class="math inline">\(c = \{1.5, 3.5, 7\}\)</span></li>
-</ul></li>
-</ul>
-</section>
-<section id="return-to-mite-data" class="slide level2 smaller">
-<h2>Return to mite data</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="cell-output-display">
-
-<div id="htmlwidget-f843a680a1fcd62a0dd1" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f843a680a1fcd62a0dd1">{"x":{"filter":"none","vertical":false,"data":[[21.17,22.36,22.9,23.55,25.84,25.93,26.37,26.6,26.83,27.24,27.97,28.07,28.29,28.86,29.14,29.24,29.33,29.56,31.37,31.46,31.98,31.98,32.14,32.27,32.74,32.86,33.98,34.26,34.76,35.03,35.3,35.41,35.59,35.81,36.31,36.44,36.95,37.25,37.33,37.51,38.17,38.61,39.18,39.61,41.38,41.71,43.9,44.01,44.1,45.59,46.07,46.8,46.81,47.03,47.74,48.19,48.59,51.47,52.12,52.73,53.17,54.99,56.65,56.82,57.32,59.93,61.43,62.38,64.75,80.59],[479.39,517.36,145.28,204.13,276.44,184.04,363.87,386.37,414.65,353.39,243.7,434.96,434.28,588.28,287.27,590.11,479.23,296.95,465.8,514.85,398.73,447.65,220.73,291.59,185.89,323.12,323.96,398.2,393.62,482.27,293.49,321.87,134.13,354.56,468.15,387.3,378.93,239.51,284.27,465.27,403.32,145.68,350.15,418.01,532.88,506.86,494.24,451.45,383.83,530.51,371.72,405.91,538.51,626.36,528.44,360.5,634.75,488.55,826.96,656.35,367.11,434.81,581,613.39,311.55,350.64,310.7,708.16,691.79,266.78],[4,16,1,0,0,0,25,31,25,57,0,16,14,31,4,0,6,0,28,21,3,15,0,0,1,2,34,26,21,5,1,0,1,11,13,23,0,0,7,26,12,0,0,20,17,29,12,19,8,15,0,0,52,9,18,0,2,0,11,2,11,0,3,2,0,1,0,1,18,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>SubsDens<\/th>\n      <th>WatrCont<\/th>\n      <th>abundance<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"autoWidth":true,"columnDefs":[{"className":"dt-right","targets":[0,1,2]}],"order":[],"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<ul>
-<li class="fragment"><p>At step one of the tree, all 70 observations are together. Deciding first split means considering all of the following:</p></li>
-<li class="fragment"><p>Splitting on <code>SubsDens</code> (<span class="math inline">\(j = 1\)</span>):</p>
-<ul>
-<li class="fragment"><span class="math inline">\(S_{l}(1,21.765) = \{\mathbf{X} | \text{SubsDens} &lt; 21.765\}\)</span> and <span class="math inline">\(S_{r}(1, 21.765) = \{\mathbf{X} | \text{SubsDens} \geq 21.765 \}\)</span></li>
-<li class="fragment"><span class="math inline">\(S_{l}(1, 22.63) = \{\mathbf{X} | \text{SubsDens} &lt; 22.63\}\)</span> and <span class="math inline">\(S_{r}(1, 22.63) = \{\mathbf{X} | \text{SubsDens} \geq 22.63\}\)</span></li>
-<li class="fragment">…</li>
-</ul></li>
-<li class="fragment"><p>Splitting on <code>WatrCont</code> (<span class="math inline">\(j = 2\)</span>):</p>
-<ul>
-<li class="fragment"><span class="math inline">\(S_{l}(2, 139.705) = \{\mathbf{X} | \text{WatrCont} &lt; 139.705\}\)</span> and <span class="math inline">\(S_{r}(2, 139.705) = \{\mathbf{X} | \text{SubsDens} \geq 139.705\}\)</span></li>
-<li class="fragment"><span class="math inline">\(S_{l}(2, 145.48) = \{\mathbf{X} | \text{WatrCont} &lt; 145.48\}\)</span> and <span class="math inline">\(S_{r}(2, 145.48) = \{\mathbf{X} | \text{SubsDens} \geq 145.48\}\)</span></li>
-<li class="fragment">…</li>
-</ul></li>
-</ul>
-</div>
-</div>
-</section>
-<section id="mini-implementation" class="slide level2">
-<h2>Mini implementation</h2>
-<div class="cell">
-
-</div>
-<ul>
-<li class="fragment"><p>Let’s compute the RSS for a few of these candidate splits. Live code!</p></li>
-<li class="fragment"><p>When splitting on <code>SubsDens</code> &lt; 22.63, we get the following RSS:</p></li>
-</ul>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 11058.76</code></pre>
-</div>
-</div>
-</div>
-<ul>
-<li class="fragment">When splitting on <code>WatrCont</code> &lt; 145.48, we get an RSS of:</li>
-</ul>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 10876.12</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="mini-implementation-cont." class="slide level2 scrollable">
-<h2>Mini implementation (cont.)</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p>Doing this for all possible splits, we get the following SSRs:</p>
-<div class="cell" data-hash="slides-06-regression-trees_cache/revealjs/mite_ssr_0c92d451c8008b6c5f990ade14fd1425">
-
-</div>
-<div class="cell">
-<div class="cell-output-display">
-
-<div id="htmlwidget-ba32e0541469b5ed4906" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ba32e0541469b5ed4906">{"x":{"filter":"none","vertical":false,"data":[["SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","SubsDens","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont","WatrCont"],[21.765,22.63,23.225,24.695,25.885,26.15,26.485,26.715,27.035,27.605,28.02,28.18,28.575,29,29.19,29.285,29.445,30.465,31.415,31.72,31.98,32.06,32.205,32.505,32.8,33.42,34.12,34.51,34.895,35.165,35.355,35.5,35.7,36.06,36.375,36.695,37.1,37.29,37.42,37.84,38.39,38.895,39.395,40.495,41.545,42.805,43.955,44.055,44.845,45.83,46.435,46.805,46.92,47.385,47.965,48.39,50.03,51.795,52.425,52.95,54.08,55.82,56.735,57.07,58.625,60.68,61.905,63.565,139.705,145.48,164.86,184.965,195.01,212.43,230.12,241.605,255.24,271.61,280.355,285.77,289.43,292.54,295.22,303.825,311.125,316.71,322.495,323.54,337.055,350.395,352.015,353.975,357.53,362.185,365.49,369.415,375.325,381.38,385.1,386.835,390.46,395.91,398.465,401.025,404.615,410.28,416.33,426.145,434.545,434.885,441.305,449.55,458.36,465.535,466.975,473.69,479.31,480.83,485.41,491.395,500.55,510.855,516.105,522.9,529.475,531.695,535.695,559.755,584.64,589.195,601.75,619.875,630.555,645.55,674.07,699.975],[11017.217,11058.765,11022.299,10945.371,10850.246,10744.109,10943.429,11053.31,11050.689,10709.883,10847.609,10809.141,10789.476,10570.214,10671.733,10794.593,10843.254,10925.419,10800.318,10711.93,10711.93,10756.479,10847.698,10920.777,10972.64,11008.189,10893.413,10783.905,10695.692,10747.067,10824.101,10895.692,10948.871,10946.257,10932.914,10856.191,10920.69,10972.863,10987.054,10908.267,10897.315,10954.143,10999.046,10955.566,10917.484,10780.551,10760.973,10671.934,10686.626,10627,10723.703,10810.034,10293.287,10283.308,10116.036,10253.339,10351.15,10476.037,10424.388,10515.133,10454.605,10577.343,10646.286,10728.771,10836.615,10922.341,11006.577,11054.941,10968.957,10876.118,10760.458,10640.939,10538.985,10412.234,10281.365,10146.214,10006.59,9862.283,9713.063,9725.736,9662.958,9503.429,9362,9190.808,9013.01,8828.25,8636.138,8490.17,9139.143,8948.752,8773.924,9793.458,9827.111,9661.336,9934.575,9958.19,9796.828,9623.9,9590.131,9951.482,10146.906,10295.276,10487.714,10399.124,10416.717,10280.717,10460.131,10563.875,10597.29,10475.75,10532.853,10576.021,10658.071,10793.603,10915.228,10927.455,10895.81,10844.08,10791.598,10679.105,10681.556,10847.231,10919.479,10949.768,10988.073,11006.598,11030.536,10984.55,11018.485,10850.73,10934.698,10989.318,10988.246,11034.121,11058.567,11018.765]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Xj<\/th>\n      <th>cutpoint<\/th>\n      <th>SSR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"autoWidth":true,"columnDefs":[{"className":"dt-right","targets":[1,2]}],"order":[],"orderClasses":false,"lengthMenu":[6,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-</div><div class="column" style="width:40%;">
-<ul>
-<li class="fragment">The split that resulted in lowest RSS out of all these possible splits is splitting on <code>WatrCont</code> &lt; 323.54, which is what we saw in the tree!</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="details-cont." class="slide level2">
-<h2>Details (cont.)</h2>
-<ul>
-<li class="fragment"><p>Then, repeat the process of looking for the best predictor and best cut-point in order to split the data further so as to minimize RSS within each of the resulting regions</p></li>
-<li class="fragment"><p>Instead of splitting entire predictor space, we split one of the two previously identified regions</p></li>
-<li class="fragment"><p>Now we have three regions</p></li>
-<li class="fragment"><p>Again, split one of these further so as to minimize RSS. We continue this process until a stopping criterion is reached</p></li>
-</ul>
-</section>
-<section id="categorical-predictors" class="slide level2">
-<h2>Categorical predictors</h2>
-<ul>
-<li class="fragment"><p>We can also split on qualitative predictors!</p></li>
-<li class="fragment"><p>If <span class="math inline">\(X_{j}\)</span> is categorical variable with categories “1”, “2”, “3”, …, then candidate split regions would be:</p>
-<ul>
-<li class="fragment"><p><span class="math inline">\(S_{l}(j, ``1") = \{X | X_{j} = ``1"\} \qquad \text{ and } \qquad S_{r}(j, ``1") = \{X | X_{j} \neq ``1"\}\)</span></p></li>
-<li class="fragment"><p><span class="math inline">\(S_{l}(j, ``2") = \{X | X_{j} = ``2"\} \qquad \text{ and } \qquad S_{r}(j, ``2") = \{X | X_{j} \neq ``2"\}\)</span></p></li>
-<li class="fragment"><p>…</p></li>
-</ul></li>
-<li class="fragment"><p>Notice that if <span class="math inline">\(X_{j}\)</span> has more than two levels, we would need to choose the level that yields the best split</p></li>
-</ul>
-</section></section>
-<section>
 <section id="pruning" class="title-slide slide level1 center">
 <h1>Pruning</h1>
 <p>This next section is a bit technical, but bear with me!</p>
@@ -596,7 +410,7 @@
 <section id="possible-issue" class="slide level2">
 <h2>Possible issue</h2>
 <ul>
-<li class="fragment"><p>This process may produce good predictions on the training set, but is likely to overfit the data. Why?</p></li>
+<li class="fragment"><p>The process of building regression trees may produce good predictions on the training set, but is likely to overfit the data. Why?</p></li>
 <li class="fragment"><p>A smaller tree with fewer splits/regions might lead to lower variance and better interpretation, at the cost of a little bias</p></li>
 <li class="fragment"><p>One possible fix: build the tree only so long as the decrease in the RSS due to each split exceeds some (high) threshold</p></li>
 <li class="fragment"><p>Will result in smaller trees, but may be short-sighted</p></li>
@@ -692,7 +506,7 @@ Distribution of residuals:
 <li class="fragment"><p>For each <span class="math inline">\(\alpha\)</span>, there is also an associated test error on the held-out validation data (possibly of interest)</p></li>
 </ul></li>
 </ul>
-<div class="cell" data-hash="slides-06-regression-trees_cache/revealjs/mite_cv_8460d8f24f242095d793295b0a38fd52">
+<div class="cell" data-hash="slides-07-regression-trees-02_cache/revealjs/mite_cv_06bb809058744539883147f959f55005">
 
 </div>
 </section>
@@ -702,7 +516,7 @@ Distribution of residuals:
 <div class="column" style="width:60%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="slides-06-regression-trees_files/figure-revealjs/unnamed-chunk-10-1.png" width="768"></p>
+<p><img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-2-1.png" width="768"></p>
 </div>
 </div>
 <ul>
@@ -717,12 +531,119 @@ Distribution of residuals:
 </div>
 </section></section>
 <section>
+<section id="pruning-in-r" class="title-slide slide level1 center">
+<h1>Pruning in R</h1>
+
+</section>
+<section id="create-large-tree" class="slide level2 scrollable">
+<h2>Create large tree</h2>
+<p>Fit a large regression tree for <code>abundance</code> using all the predictors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>tree_mites <span class="ot">&lt;-</span> <span class="fu">tree</span>(abundance <span class="sc">~</span> ., <span class="at">data =</span> mite_dat)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">summary</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Regression tree:
+tree(formula = abundance ~ ., data = mite_dat)
+Variables actually used in tree construction:
+[1] "Topo"     "SubsDens" "WatrCont" "Shrub"   
+Number of terminal nodes:  8 
+Residual mean deviance:  61.75 = 3828 / 62 
+Distribution of residuals:
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-23.0000  -3.5750  -0.8571   0.0000   1.9570  26.8800 </code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="how-to-prune-in-r" class="slide level2">
+<h2>How to prune in R</h2>
+<ul>
+<li class="fragment"><p>Maybe we think this tree is too complex and might want to prune it to improve results</p></li>
+<li class="fragment"><p>We can use <code>cv.tree()</code> to perform k-fold cross-validation in order to determine the optimal level of tree complexity</p>
+<ul>
+<li class="fragment">This function uses cost-complexity pruning, and defaults to k=10 for the k-fold CV</li>
+</ul></li>
+</ul>
+</section>
+<section id="cv.tree" class="slide level2">
+<h2>cv.tree()</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>) <span class="co"># why am I setting a seed?</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>cv_mites <span class="ot">&lt;-</span> <span class="fu">cv.tree</span>(tree_mites, <span class="at">K =</span> <span class="dv">5</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>cv_mites</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>$size
+[1] 8 7 6 5 4 3 2 1
+
+$dev
+[1] 10790.748 10335.579 10419.939 10273.679  9604.771 12336.495 13379.901
+[8] 12952.863
+
+$k
+[1]      -Inf  112.9333  183.6132  350.1047  516.8012 1561.6009 1673.4848
+[8] 2832.2128
+
+$method
+[1] "deviance"
+
+attr(,"class")
+[1] "prune"         "tree.sequence"</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><code>size</code>: number of terminal nodes of each tree considered</li>
+<li class="fragment"><code>dev</code>: corresponding deviance of each tree</li>
+<li class="fragment"><code>k</code>: value of the cost-complexity parameter used (<span class="math inline">\(\alpha\)</span> in our notation)</li>
+<li class="fragment">We want tree with lowest <code>dev</code>iance. Which candidate tree should we use?</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="choosing-pruned-tree" class="slide level2">
+<h2>Choosing pruned tree</h2>
+
+<img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"><ul>
+<li class="fragment">Based on output, the tree with 4 terminal nodes seems to be best.</li>
+</ul>
+</section>
+<section id="prune.tree" class="slide level2">
+<h2>prune.tree()</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>min_size <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>prune_mites <span class="ot">&lt;-</span> <span class="fu">prune.tree</span>(tree_mites, <span class="at">best =</span> min_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Results in a much simpler tree which we could then use for predictions!</li>
+</ul>
+</section></section>
+<section>
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
 
 </section>
-<section id="trees-vs-linear-moedels" class="slide level2 scrollable">
-<h2>Trees vs linear moedels</h2>
+<section id="trees-vs-linear-models" class="slide level2 scrollable">
+<h2>Trees vs linear models</h2>
 <p>Trees vs.&nbsp;linear models: which is better? Depends on the true relationships between the response and the predictors</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
