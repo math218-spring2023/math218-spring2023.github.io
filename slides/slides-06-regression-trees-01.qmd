@@ -14,10 +14,14 @@ format:
 editor: visual
 editor_options: 
   chunk_output_type: console
-draft: true
+draft: false
 ---
 
 # Housekeeping
+
+-   Lab 03 due Thursday 11:59pm to Canvas
+
+-   No class this Friday!
 
 ```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = F, warning = F, messabundance = F)
@@ -345,4 +349,3 @@ data.frame(SubsDens_ssr) %>%
 -   Notice that if $X_{j}$ has more than two levels, we would need to choose the level that yields the best split
 
 # Live code
-

@@ -480,7 +480,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 02/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 02/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 02/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n02/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 02/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?\n\n\n\n\nR 02/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 02/24\nLinear regression (cont.)\nLab day\n\nLab 02: Moneyball\n03/02 at 11:59pm\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 02/28\nKNN regression\nSlides: KNN regression\nKNN pseudocode\n03/02 in class\n\n\nR 03/02\nKNN regression: implementation\nLive code: Writing functions\nKNN group pseudocode (steps 1-2)\n03/03 in class\n\n\nF 03/03\nKNN: implementation\n\nKNN group implementation (step 3)\n03/06 11:59pm\n\n\n\n\n\nWEEK 4\n\n\n\n\n\nT 03/07\nKNN regression (pt. 2)\nSlides\nLive code: encoding\nKNN regression: categorical features\n03/09 11:59pm\n\n\nR 03/09\nValidation\nSlides\nLive code: LOOCV\n\n\n\n\nF 3/10\nLab 03: Validation\nLive code: lists\nLab 03: ski resorts\n03/16 11:59pm\n\n\n\n\n\nWEEK 5\n\n\n\n\n\nT 03/14\nRegression trees (part 1)\n\n\n\n\n\nR 03/16\nRegression trees (part 2)\n\n\n\n\n\nF 03/17\nNO CLASS\nWork on Lab 04!\nLab 04\n03/30 11:59pm\n\n\n\n\n\nSPRING BREAK\n\n\n\n\n\n\n\n\nWEEK 6\n\n\n\n\n\nT 03/28\nBootstrap\n\n\n\n\n\nR 03/30\nBootstrap (cont.)\n\n\n\n\n\nF 03/31\nImbalanced data\n\nMidterm: computational assignment\n04/02 11:59pm"
+    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 02/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 02/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 02/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n02/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 02/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?\n\n\n\n\nR 02/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 02/24\nLinear regression (cont.)\nLab day\n\nLab 02: Moneyball\n03/02 at 11:59pm\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 02/28\nKNN regression\nSlides: KNN regression\nKNN pseudocode\n03/02 in class\n\n\nR 03/02\nKNN regression: implementation\nLive code: Writing functions\nKNN group pseudocode (steps 1-2)\n03/03 in class\n\n\nF 03/03\nKNN: implementation\n\nKNN group implementation (step 3)\n03/06 11:59pm\n\n\n\n\n\nWEEK 4\n\n\n\n\n\nT 03/07\nKNN regression (pt. 2)\nSlides\nLive code: encoding\nKNN regression: categorical features\n03/09 11:59pm\n\n\nR 03/09\nValidation\nSlides\nLive code: LOOCV\n\n\n\n\nF 3/10\nLab 03: Validation\nLive code: lists\nLab 03: ski resorts\n03/16 11:59pm\n\n\n\n\n\nWEEK 5\n\n\n\n\n\nT 03/14\nRegression trees (part 1)\nSlides\n\n\n\n\nR 03/16\nRegression trees (part 2)\n\n\n\n\n\nF 03/17\nNO CLASS\nWork on Lab 04!\nLab 04\n03/30 11:59pm\n\n\n\n\n\nSPRING BREAK\n\n\n\n\n\n\n\n\nWEEK 6\n\n\n\n\n\nT 03/28\nBootstrap\n\n\n\n\n\nR 03/30\nBootstrap (cont.)\n\n\n\n\n\nF 03/31\nImbalanced data\n\nMidterm: computational assignment\n04/02 11:59pm"
   },
   {
     "objectID": "live-code/live-code-03.html",
@@ -1573,5 +1573,117 @@
     "title": "Live code:",
     "section": "apply()",
     "text": "apply()\nA useful function is the apply() function, which applies the same function to either ALL the rows or ALL the columns. It takes three arguments: what R object you want to apply the function two, by row (1) or by column (2), and the function itself.\nIn the following code, I am applying the mean function to each column of dat. Notice that I get back a vector of column means!\n\ndat <- data.frame(x = 1:10, y = 11:20)\napply(dat, 2, mean)\n\n   x    y \n 5.5 15.5"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#tree-based-methods-1",
+    "href": "slides/slides-06-regression-trees-01.html#tree-based-methods-1",
+    "title": "Regression Trees",
+    "section": "Tree-based methods",
+    "text": "Tree-based methods\n\nThese methods use a series of if-then rules to divide/segment the predictor space into a number of simple regions\nThe splitting rules can be summarized in a tree, so these approaches are known as decision-tree methods\nCan be simple and useful for interpretation\nDecision trees can be applied to both regression and classification problems\nTypically not competitive with the best supervised learning approaches in terms of prediction accuracy"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#mite-data",
+    "href": "slides/slides-06-regression-trees-01.html#mite-data",
+    "title": "Regression Trees",
+    "section": "Mite data",
+    "text": "Mite data\n\n\nWe will begin by showing the results of a regression tree, then we will discuss how to build one"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#mite-data-regression-tree",
+    "href": "slides/slides-06-regression-trees-01.html#mite-data-regression-tree",
+    "title": "Regression Trees",
+    "section": "Mite data: regression tree",
+    "text": "Mite data: regression tree\n\n\n\n\n\n\n\n\nTop split: observations with WatrCont < 323.54 are assigned to left branch\nObservations with WatrCont \\(\\geq\\) 323.54 are assigned to right branch, and are further subdivided by SubsDens and finer values of WatrCont\nFor a new observation, the predicted abundance of a location with WatrCont < 323.54 is 0.85\nRemarks:\n\nIf condition evaluates to true, we “go left”\nThe splits are always in terms of \\(<\\) for consistency"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#terminology",
+    "href": "slides/slides-06-regression-trees-01.html#terminology",
+    "title": "Regression Trees",
+    "section": "Terminology",
+    "text": "Terminology\n\nInternal nodes: points along the tree where the predictor space is split\n\nSix internal nodes on previous slide\n\nFirst node is often referred to as root node\nTerminal nodes or leaves: regions where there is no further splitting\n\nSeven terminal nodes on previous slide\nThe value in each terminal node is the value we predict for an observation that follows the path in predictor space to that terminal node\nDecision trees are typically drawn upside down (leaves at bottom)\n\nAny subnode of a given node is called a child node, and the given node, in turn, is the child’s parent node."
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#draw-partitions",
+    "href": "slides/slides-06-regression-trees-01.html#draw-partitions",
+    "title": "Regression Trees",
+    "section": "Draw partitions",
+    "text": "Draw partitions"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#interpretation-of-results",
+    "href": "slides/slides-06-regression-trees-01.html#interpretation-of-results",
+    "title": "Regression Trees",
+    "section": "Interpretation of results",
+    "text": "Interpretation of results\n\nExtremely rough interpretation!!\nWatrCont may be most important factor for determining the abundance of mites (among these two predictors)\nEnvironments with low WatrCont tend to have very low abundances, as do environments with high SubsDens\nLikely an oversimplification of the true relationships, but easy to display and interpret"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#building-and-using-regression-tree",
+    "href": "slides/slides-06-regression-trees-01.html#building-and-using-regression-tree",
+    "title": "Regression Trees",
+    "section": "Building and using regression tree",
+    "text": "Building and using regression tree\n\nTraining/fitting model: Divide predictor space (the set of possible values for \\(X_{1}, \\ldots, X_{p}\\)) into \\(M\\) distinct and non-overlapping regions, \\(R_{1}, \\ldots, R_{M}\\)\nPrediction/using model: For every observation that lands in \\(R_{m}\\), we output the same predicted \\(\\hat{y}\\): the mean of the training responses in \\(R_{m}\\): \\[\\hat{y}_{R_{m}} = \\frac{1}{n_{m}} \\sum_{i \\in R_{m}} y_{i}\\]"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#fitting-a-regression-tree",
+    "href": "slides/slides-06-regression-trees-01.html#fitting-a-regression-tree",
+    "title": "Regression Trees",
+    "section": "Fitting a regression tree",
+    "text": "Fitting a regression tree\n\nIn theory, regions \\(R_{1},\\ldots, R_{M}\\) could have any shape. For simplicity, we divde predictor space into high-dimensional rectangles or boxes\nGoal: to train the model, we want to find boxes \\(R_{1},\\ldots, R_{M}\\) that minimize the residual sum of squares (RSS), given by \\[\\sum_{m=1}^{M} \\sum_{i\\in R_{m}} (y_{i} - \\hat{y}_{R_{m}})^2,\\]\nwhere \\(\\hat{y}_{R_{m}}\\) is the predicted/fitted value for \\(y_{i} \\in R_{m}\\) in the training data\nUnfortunately, it is computationally infeasible to consider every possible partition of the feature space into \\(M\\) boxes!"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#fitting-a-regression-tree-cont.",
+    "href": "slides/slides-06-regression-trees-01.html#fitting-a-regression-tree-cont.",
+    "title": "Regression Trees",
+    "section": "Fitting a regression tree (cont.)",
+    "text": "Fitting a regression tree (cont.)\n\nWe take a top-down, greedy approach known as recursive binary splitting\n“Top-down”: we begin at the top of tree where all observations belong to a single region, and then successively partition\n“Greedy”: at each step, the best split is made at that current snap-shot in time, rather than looking ahead and picking a split that would be better in some future step\nNote: at every stage of the tree, all predictors are candidates for the decision split (e.g. in mite data, WatrCont was first split, but showed up later down the tree)\nContinue making splits on the data as we go"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#details",
+    "href": "slides/slides-06-regression-trees-01.html#details",
+    "title": "Regression Trees",
+    "section": "Details",
+    "text": "Details\n\nAt very beginning of model fit, all observations belong in a single region. We must decide the first split/cut-point\nWe select the predictor \\(X_{j}\\) and the cutpoint value \\(c\\) such that splitting the predictor space into the regions \\(\\{X | X_{j} < c\\}\\) and \\(\\{X | X_{j} \\geq c\\}\\) leads to lowest RSS\n\ni.e., for any predictor \\(j\\) and cutpoint \\(c\\), we define the pair\n\\[S_l(j,c) = \\{X | X_{j} < c\\} \\text{ and } S_{r}(j,c) = \\{X | X_{j} \\geq c\\}\\]\n\nWe seek the values of \\((j, c)\\) that minimize \\[\\sum_{i:x_{i}\\in S_l(j,c)} (y_{i} - \\hat{y}_{S_{l}})^2 + \\sum_{i:x_{i}\\in S_r(j,c)} (y_{i} - \\hat{y}_{S_{r}})^2,\\]\nwhere \\(\\hat{y}_{S_{l}}\\) is the average of the training responses in \\(S_l(j,s)\\)"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#what-are-the-cut-points",
+    "href": "slides/slides-06-regression-trees-01.html#what-are-the-cut-points",
+    "title": "Regression Trees",
+    "section": "What are the cut-points?",
+    "text": "What are the cut-points?\nConsider some hypothetical data, where I have a single predictor x and a response variable y:\n\n\n   x y\n1  0 1\n2  3 2\n3  4 3\n4 10 4\n\n\n\nOnly makes sense to split the data based on the observed values of x\n\ni.e. splitting on x < 15 is silly\n\nNotice that choosing a cut-point of \\(c = 1\\) or \\(c= 2\\) leads to same partition of the data, and therefore same RSS\nSo we consider cutpoints as the mean between consecutive values of observed x:\n\nExamine RSS for \\(c = \\{1.5, 3.5, 7\\}\\)"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#return-to-mite-data",
+    "href": "slides/slides-06-regression-trees-01.html#return-to-mite-data",
+    "title": "Regression Trees",
+    "section": "Return to mite data",
+    "text": "Return to mite data\n\n\n\n\n\n\n\n\n\n\n\nAt step one of the tree, all 70 observations are together. Deciding first split means considering all of the following:\nSplitting on SubsDens (\\(j = 1\\)):\n\n\\(S_{l}(1,21.765) = \\{\\mathbf{X} | \\text{SubsDens} < 21.765\\}\\) and \\(S_{r}(1, 21.765) = \\{\\mathbf{X} | \\text{SubsDens} \\geq 21.765 \\}\\)\n\\(S_{l}(1, 22.63) = \\{\\mathbf{X} | \\text{SubsDens} < 22.63\\}\\) and \\(S_{r}(1, 22.63) = \\{\\mathbf{X} | \\text{SubsDens} \\geq 22.63\\}\\)\n…\n\nSplitting on WatrCont (\\(j = 2\\)):\n\n\\(S_{l}(2, 139.705) = \\{\\mathbf{X} | \\text{WatrCont} < 139.705\\}\\) and \\(S_{r}(2, 139.705) = \\{\\mathbf{X} | \\text{SubsDens} \\geq 139.705\\}\\)\n\\(S_{l}(2, 145.48) = \\{\\mathbf{X} | \\text{WatrCont} < 145.48\\}\\) and \\(S_{r}(2, 145.48) = \\{\\mathbf{X} | \\text{SubsDens} \\geq 145.48\\}\\)\n…"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#mini-implementation",
+    "href": "slides/slides-06-regression-trees-01.html#mini-implementation",
+    "title": "Regression Trees",
+    "section": "Mini implementation",
+    "text": "Mini implementation\n\n\n\n\nLet’s compute the RSS for a few of these candidate splits. Live code!\nWhen splitting on SubsDens < 22.63, we get the following RSS:\n\n\n\n\n[1] 11058.76\n\n\n\n\nWhen splitting on WatrCont < 145.48, we get an RSS of:\n\n\n\n\n[1] 10876.12"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#mini-implementation-cont.",
+    "href": "slides/slides-06-regression-trees-01.html#mini-implementation-cont.",
+    "title": "Regression Trees",
+    "section": "Mini implementation (cont.)",
+    "text": "Mini implementation (cont.)\n\n\nDoing this for all possible splits, we get the following SSRs:\n\n\n\n\n\n\n\n\n\n\n\n\nThe split that resulted in lowest RSS out of all these possible splits is splitting on WatrCont < 323.54, which is what we saw in the tree!"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#details-cont.",
+    "href": "slides/slides-06-regression-trees-01.html#details-cont.",
+    "title": "Regression Trees",
+    "section": "Details (cont.)",
+    "text": "Details (cont.)\n\nThen, repeat the process of looking for the best predictor and best cut-point in order to split the data further so as to minimize RSS within each of the resulting regions\nInstead of splitting entire predictor space, we split one of the two previously identified regions\nNow we have three regions\nAgain, split one of these further so as to minimize RSS. We continue this process until a stopping criterion is reached"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#categorical-predictors",
+    "href": "slides/slides-06-regression-trees-01.html#categorical-predictors",
+    "title": "Regression Trees",
+    "section": "Categorical predictors",
+    "text": "Categorical predictors\n\nWe can also split on qualitative predictors!\nIf \\(X_{j}\\) is categorical variable with categories “1”, “2”, “3”, …, then candidate split regions would be:\n\n\\(S_{l}(j, ``1\") = \\{X | X_{j} = ``1\"\\} \\qquad \\text{ and } \\qquad S_{r}(j, ``1\") = \\{X | X_{j} \\neq ``1\"\\}\\)\n\\(S_{l}(j, ``2\") = \\{X | X_{j} = ``2\"\\} \\qquad \\text{ and } \\qquad S_{r}(j, ``2\") = \\{X | X_{j} \\neq ``2\"\\}\\)\n…\n\nNotice that if \\(X_{j}\\) has more than two levels, we would need to choose the level that yields the best split"
   }
 ]
