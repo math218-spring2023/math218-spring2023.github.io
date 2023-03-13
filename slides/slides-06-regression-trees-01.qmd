@@ -67,16 +67,17 @@ ggplot(data = mite_dat)+
 
 -   We will begin by showing the results of a regression tree, then we will discuss how to build one
 
-## Mite data: regression tree {.scrollable}
+## Mite data: regression tree 
 
-::: fragment
-```{r}
+```{r fig.height=7}
 set.seed(1)
 tree1 <- tree(abundance ~ WatrCont + SubsDens, data = mite_dat)
 plot(tree1, col = "blue")
 text(tree1, pretty = 0, cex = 2)
 ```
-:::
+
+
+## Interpretation
 
 -   Top split: observations with `WatrCont` \< 323.54 are assigned to left branch
 

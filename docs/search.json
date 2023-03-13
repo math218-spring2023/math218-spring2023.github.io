@@ -1593,7 +1593,7 @@
     "href": "slides/slides-06-regression-trees-01.html#mite-data-regression-tree",
     "title": "Regression Trees",
     "section": "Mite data: regression tree",
-    "text": "Mite data: regression tree\n\n\n\n\n\n\n\n\nTop split: observations with WatrCont < 323.54 are assigned to left branch\nObservations with WatrCont \\(\\geq\\) 323.54 are assigned to right branch, and are further subdivided by SubsDens and finer values of WatrCont\nFor a new observation, the predicted abundance of a location with WatrCont < 323.54 is 0.85\nRemarks:\n\nIf condition evaluates to true, we “go left”\nThe splits are always in terms of \\(<\\) for consistency"
+    "text": "Mite data: regression tree"
   },
   {
     "objectID": "slides/slides-06-regression-trees-01.html#terminology",
@@ -1685,5 +1685,19 @@
     "title": "Regression Trees",
     "section": "Categorical predictors",
     "text": "Categorical predictors\n\nWe can also split on qualitative predictors!\nIf \\(X_{j}\\) is categorical variable with categories “1”, “2”, “3”, …, then candidate split regions would be:\n\n\\(S_{l}(j, ``1\") = \\{X | X_{j} = ``1\"\\} \\qquad \\text{ and } \\qquad S_{r}(j, ``1\") = \\{X | X_{j} \\neq ``1\"\\}\\)\n\\(S_{l}(j, ``2\") = \\{X | X_{j} = ``2\"\\} \\qquad \\text{ and } \\qquad S_{r}(j, ``2\") = \\{X | X_{j} \\neq ``2\"\\}\\)\n…\n\nNotice that if \\(X_{j}\\) has more than two levels, we would need to choose the level that yields the best split"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#mite-data-regression-tree-scroll",
+    "href": "slides/slides-06-regression-trees-01.html#mite-data-regression-tree-scroll",
+    "title": "Regression Trees",
+    "section": "Mite data: regression tree (scroll)",
+    "text": "Mite data: regression tree (scroll)\n\n\n\n\n\n\n\n\nTop split: observations with WatrCont < 323.54 are assigned to left branch\nObservations with WatrCont \\(\\geq\\) 323.54 are assigned to right branch, and are further subdivided by SubsDens and finer values of WatrCont\nFor a new observation, the predicted abundance of a location with WatrCont < 323.54 is 0.85\nRemarks:\n\nIf condition evaluates to true, we “go left”\nThe splits are always in terms of \\(<\\) for consistency"
+  },
+  {
+    "objectID": "slides/slides-06-regression-trees-01.html#interpretation",
+    "href": "slides/slides-06-regression-trees-01.html#interpretation",
+    "title": "Regression Trees",
+    "section": "Interpretation",
+    "text": "Interpretation\n\nTop split: observations with WatrCont < 323.54 are assigned to left branch\nObservations with WatrCont \\(\\geq\\) 323.54 are assigned to right branch, and are further subdivided by SubsDens and finer values of WatrCont\nFor a new observation, the predicted abundance of a location with WatrCont < 323.54 is 0.85\nRemarks:\n\nIf condition evaluates to true, we “go left”\nThe splits are always in terms of \\(<\\) for consistency"
   }
 ]
