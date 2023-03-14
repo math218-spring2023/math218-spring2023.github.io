@@ -177,11 +177,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#mini-implementation" id="toc-mini-implementation" class="nav-link active" data-scroll-target="#mini-implementation">Mini implementation</a></li>
-  <li><a href="#coding-in-r" id="toc-coding-in-r" class="nav-link" data-scroll-target="#coding-in-r">Coding in R</a>
-  <ul class="collapse">
-  <li><a href="#trees-function" id="toc-trees-function" class="nav-link" data-scroll-target="#trees-function">trees() function</a></li>
-  <li><a href="#plotting-trees" id="toc-plotting-trees" class="nav-link" data-scroll-target="#plotting-trees">Plotting trees</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -244,113 +239,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><em>Make sure you understand what each line of code is doing. If not, please ask!</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>mite_dat<span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">mutate</span>(<span class="at">split =</span> <span class="fu">if_else</span>(SubsDens <span class="sc">&lt;</span> <span class="fl">22.63</span>, <span class="st">"left"</span>, <span class="st">"right"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">group_by</span>(split) <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">mutate</span>(<span class="at">decision =</span> <span class="fu">if_else</span>(SubsDens <span class="sc">&lt;</span> <span class="fl">22.63</span>, <span class="st">"left"</span>, <span class="st">"right"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">group_by</span>(decision) <span class="sc">%&gt;%</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">mutate</span>(<span class="at">y_hat =</span> <span class="fu">mean</span>(abundance)) <span class="sc">%&gt;%</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb2-6"><a href="#cb2-6"></a>  <span class="fu">mutate</span>(<span class="at">sq_resid =</span> (abundance <span class="sc">-</span> y_hat)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">group_by</span>(split) <span class="sc">%&gt;%</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>  <span class="fu">summarise</span>(<span class="at">ssr =</span> <span class="fu">sum</span>(sq_resid)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a>  <span class="fu">pull</span>(ssr) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">group_by</span>(decision) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="fu">summarise</span>(<span class="at">rss =</span> <span class="fu">sum</span>(sq_resid)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="fu">pull</span>(rss) <span class="sc">%&gt;%</span></span>
 <span id="cb2-10"><a href="#cb2-10"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 11058.76</code></pre>
 </div>
 </div>
-</section>
-<section id="coding-in-r" class="level2">
-<h2 class="anchored" data-anchor-id="coding-in-r">Coding in R</h2>
-<section id="trees-function" class="level3">
-<h3 class="anchored" data-anchor-id="trees-function">trees() function</h3>
-<p>Simple regression trees can be implemented in <code>R</code> using the <code>trees</code> library (you may have to install) using the <code>tree()</code> function. The syntax is just as in <code>lm()</code>:</p>
-<div class="callout-warning callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Note: the <code>tree()</code> function we will use requires all categorical variables to be coded as <em>factors</em>. Additionally, no single categorical variable can have more than 32 levels.</p>
-</div>
-</div>
+<p>If instead we considered the candidate split <code>WatrCont &lt; 145.48</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(tree)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>tree_mites <span class="ot">&lt;-</span> <span class="fu">tree</span>(abundance <span class="sc">~</span> WatrCont <span class="sc">+</span> SubsDens <span class="sc">+</span> Topo, </span>
-<span id="cb4-3"><a href="#cb4-3"></a>                   <span class="at">data =</span> mite_dat)</span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">summary</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>mite_dat<span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate</span>(<span class="at">decision =</span> <span class="fu">if_else</span>(WatrCont <span class="sc">&lt;</span> <span class="fl">145.48</span>, <span class="st">"left"</span>, <span class="st">"right"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">group_by</span>(decision) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">mutate</span>(<span class="at">y_hat =</span> <span class="fu">mean</span>(abundance)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">mutate</span>(<span class="at">sq_resid =</span> (abundance <span class="sc">-</span> y_hat)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">group_by</span>(decision) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">summarise</span>(<span class="at">rss =</span> <span class="fu">sum</span>(sq_resid)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">pull</span>(rss) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Regression tree:
-tree(formula = abundance ~ WatrCont + SubsDens + Topo, data = mite_dat)
-Number of terminal nodes:  8 
-Residual mean deviance:  64.95 = 4027 / 62 
-Distribution of residuals:
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
--23.0000  -3.3590  -0.8571   0.0000   2.4890  28.3300 </code></pre>
+<pre><code>[1] 10876.12</code></pre>
 </div>
 </div>
-<p>Above, lines 2-3 fit the regression trees for <code>abundance</code> using the three specified predictores from <code>mite_dat</code> data. Similar to <code>lm()</code>, we can wrap the tree object with <code>summary()</code> to get some more information about the model fit. We see number of terminal notes <span class="math inline">\(|T_{0}|\)</span>, the predictors that were used to build the tree, and residual mean deviance:</p>
-<ul>
-<li><p>If you don’t see list of predictors, then the tree used all of them</p></li>
-<li><p>Residual mean deviance: <span class="math inline">\(\text{RSS}/(n - |T_{0}|)\)</span></p></li>
-</ul>
-<p>Typing the name of the <code>tree</code> object prints the tree in text form:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tree_mites</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>node), split, n, deviance, yval
-      * denotes terminal node
-
- 1) root 70 11060.0 10.4300  
-   2) Topo: Blanket 44  7760.0 15.3200  
-     4) SubsDens &lt; 48.165 33  5734.0 18.8800  
-       8) WatrCont &lt; 308.725 5    33.2  2.6000 *
-       9) WatrCont &gt; 308.725 28  4139.0 21.7900  
-        18) WatrCont &lt; 386.835 5  1250.0 31.0000 *
-        19) WatrCont &gt; 386.835 23  2372.0 19.7800  
-          38) SubsDens &lt; 41.545 17  1074.0 18.4100  
-            76) WatrCont &lt; 466.975 11   308.7 20.5500 *
-            77) WatrCont &gt; 466.975 6   623.5 14.5000 *
-          39) SubsDens &gt; 41.545 6  1175.0 23.6700 *
-     5) SubsDens &gt; 48.165 11   352.5  4.6360 *
-   3) Topo: Hummock 26   467.4  2.1540  
-     6) WatrCont &lt; 457.02 21   120.6  0.8571 *
-     7) WatrCont &gt; 457.02 5   163.2  7.6000 *</code></pre>
-</div>
-</div>
-<p>We can interpret the tree as follows:</p>
-<ul>
-<li><p>The * denotes a terminal node</p></li>
-<li><p><code>split</code>: condition used to branch at the node</p></li>
-<li><p><code>n</code>: the number of observations following the left-side of the branch</p></li>
-<li><p><code>deviance</code>: the deviance associated with that branch</p></li>
-<li><p><code>yval</code>: predicted value at the node</p></li>
-</ul>
-</section>
-<section id="plotting-trees" class="level3">
-<h3 class="anchored" data-anchor-id="plotting-trees">Plotting trees</h3>
-<p>We will use base <code>R</code> plots; I’m sure there are much more beautiful <code>ggplot</code> functions out there, but I’m not in the business of it today! We simply pass the tree object into <code>plot()</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="live-code-regression-trees_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Notice that there is no text! This isn’t helpful. We need to explicitly add the labels using the <code>text()</code> function:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(tree_mites)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">text</span>(tree_mites, <span class="at">pretty =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="live-code-regression-trees_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>The argument <code>pretty = 0</code> instructs <code>R</code> to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c… letter for each category.</p>
+<p>Notice that we get a different candidate RSS!</p>
+<!-- ## Coding in R -->
+<!-- ### trees() function -->
+<!-- Simple regression trees can be implemented in `R` using the `trees` library (you may have to install) using the `tree()` function. The syntax is just as in `lm()`: -->
+<!-- ::: callout-warning -->
+<!-- Note: the `tree()` function we will use requires all categorical variables to be coded as *factors*. Additionally, no single categorical variable can have more than 32 levels. -->
+<!-- ::: -->
+<!-- ```{r} -->
+<!-- library(tree) -->
+<!-- tree_mites <- tree(abundance ~ WatrCont + SubsDens + Topo,  -->
+<!--                    data = mite_dat) -->
+<!-- summary(tree_mites) -->
+<!-- ``` -->
+<!-- Above, lines 2-3 fit the regression trees for `abundance` using the three specified predictores from `mite_dat` data. Similar to `lm()`, we can wrap the tree object with `summary()` to get some more information about the model fit. We see number of terminal notes $|T_{0}|$, the predictors that were used to build the tree, and residual mean deviance: -->
+<!-- -   If you don't see list of predictors, then the tree used all of them -->
+<!-- -   Residual mean deviance: $\text{RSS}/(n - |T_{0}|)$ -->
+<!-- Typing the name of the `tree` object prints the tree in text form: -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- tree_mites -->
+<!-- ``` -->
+<!-- We can interpret the tree as follows: -->
+<!-- -   The \* denotes a terminal node -->
+<!-- -   `split`: condition used to branch at the node -->
+<!-- -   `n`: the number of observations following the left-side of the branch -->
+<!-- -   `deviance`: the deviance associated with that branch -->
+<!-- -   `yval`: predicted value at the node -->
+<!-- ### Plotting trees -->
+<!-- We will use base `R` plots; I'm sure there are much more beautiful `ggplot` functions out there, but I'm not in the business of it today! We simply pass the tree object into `plot()`: -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- plot(tree_mites) -->
+<!-- ``` -->
+<!-- Notice that there is no text! This isn't helpful. We need to explicitly add the labels using the `text()` function: -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- plot(tree_mites) -->
+<!-- text(tree_mites, pretty = 0) -->
+<!-- ``` -->
+<!-- The argument `pretty = 0` instructs `R` to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c... letter for each category. -->
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
