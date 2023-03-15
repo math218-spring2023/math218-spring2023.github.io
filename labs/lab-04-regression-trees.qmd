@@ -13,7 +13,7 @@ execute:
 
 ## Introduction
 
-The purpose of this lab is to gain familiarity and practice with fitting and evaluating regression trees in `R`.
+The purpose of this lab is to gain familiarity and practice with fitting and evaluating regression trees in `R`. Go ahead and clone your new `lab-04-forest-fires` GitHub project. You will work with the .`Rmd` file called `lab-04-forest-fires.Rmd`
 
 ### Data
 
@@ -57,7 +57,7 @@ get_rmse <- function(y_pred, true){
 
 ### Wrangle
 
-Wrangle your data to only retain observations from the months of March, July, August, and September. Also, we will not consider the `fire_id`, day of week, nor geographic location as predictors. Lastly, recall that the `tree()` function requires all categorical variables to be coded as factors.
+Wrangle your data to only retain observations from the months of March, July, August, and September, then remove `month` from the data set. Also, we will not consider the `fire_id`, day of week, nor geographic location as predictors. Lastly, recall that the `tree()` function requires all categorical variables to be coded as factors.
 
 ::: {style="color: maroon"}
 Modify your data to make all the required changes.
@@ -66,42 +66,15 @@ Modify your data to make all the required changes.
 ```{r}
 fire_dat <- fire_dat %>%
   filter(month %in% c("mar","jul","aug", "sep")) %>%
-  select(-c(fire_id, X, Y, day)) %>%
+  select(-c(fire_id, X, Y, day, month)) %>%
   mutate_if(is.character, as.factor)
 ```
 
 ### EDA
 
-Now, a common issue in statistical modeling is *collinearity*. This occurs when there is non independence of predictor variables, usually in a regression-type analysis. It is a common feature of any descriptive ecological data set. While more commonly assessed for quantitative predictors, categorical predictors can also display dependence.
-
-Suppose we have two vectors `x1` and `x2` that represent two different categorical variables. We would like to get the counts of all the possible pairwise combinations of `x1` and `x2`. An easy way to do this is using the `table()` function:
-
-```{r}
-#| echo: true
-#| eval: false
-table(x1, x2)
-```
-
 ::: {style="color: maroon"}
-Using `table()`, obtain the counts of the possible pairwise combinations of `month` and `drought` in your wrangled data frame.
-
-Based on what you see, do you think there is collinearity between the two predictors? Why or why not?
+Visualize and describe the distribution of the burned \`area\`.
 :::
-
-```{r}
-table(fire_dat$month, fire_dat$drought)
-```
-
-When there is high collinearity between predictors, we typically remove one of the predictors from the model.
-
-::: {style="color: maroon"}
-If you determined `month` and `drought` to be collinear, remove one of the predictors from your data set. You must decide which one, and explain why!
-:::
-
-```{r}
-fire_dat <- fire_dat %>%
-  select(-month)
-```
 
 ### Wrangle (again)
 
@@ -115,6 +88,10 @@ Create a new data frame called `fire_dat_log`, where you over-write the `area` v
 fire_dat_log <- fire_dat %>%
   mutate(area = log(area+1))
 ```
+
+::: {style="color: maroon"}
+Using your new `fire_dat_log`, create a summary table where for each level of `drought`, the table displays the mean and standard deviation of the log-burned `area`, and the total number of observations that fall into that level. Based on what you see, do you think `drought` will be an important variable in our regression tree? Why or why not?
+:::
 
 ::: {.callout-caution collapse="true"}
 ## Commit reminder
@@ -154,7 +131,7 @@ tree_fires <- tree(area ~ . , data = train_dat,
 ```
 
 ::: {style="color: maroon"}
-Display a `summary()` of your regression tree. How many leaves are there? Which (if any) of the predictors were *not* used in this regression tree?
+Display a `summary()` of your regression tree. How many leaves are there? Was your intuition correct about whether or not `drought` would be an important predictor for the log burned `` area` ``?
 :::
 
 ```{r}
