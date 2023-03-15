@@ -85,15 +85,12 @@ data.frame(cv_error = cv_mites$dev, size = cv_mites$size) %>%
   theme(panel.grid.minor.x = element_blank())
 ```
 
-
-## Pruning to obtain final tree 
+## Pruning to obtain final tree
 
 We will use `prune.tree()` to prune our original large tree `tree_mites` to the size we found from `cv.tree()`. Results in a much simpler tree which we could then use for predictions!
-
 
 ```{r}
 prune_mites <- prune.tree(tree_mites, best = min_size)
 plot(prune_mites)
 text(prune_mites, pretty = 0)
 ```
-

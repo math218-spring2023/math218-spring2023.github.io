@@ -336,6 +336,12 @@
 <div class="cell">
 
 </div>
+<ul>
+<li class="fragment"><p>Lab 03 due tonight</p></li>
+<li class="fragment"><p>No TA office hours tonight</p></li>
+<li class="fragment"><p>Lab 04 posted later this afternoon or tomorrow (due Friday after break)</p></li>
+<li class="fragment"><p>Enjoy your spring break!</p></li>
+</ul>
 </section>
 
 <section>
@@ -348,8 +354,6 @@
 <ul>
 <li class="fragment"><p>The process of building regression trees may produce good predictions on the training set, but is likely to overfit the data. Why?</p></li>
 <li class="fragment"><p>A smaller tree with fewer splits/regions might lead to lower variance and better interpretation, at the cost of a little bias</p></li>
-<li class="fragment"><p>One possible fix: build the tree only so long as the decrease in the RSS due to each split exceeds some (high) threshold</p></li>
-<li class="fragment"><p>Will result in smaller trees, but may be short-sighted</p></li>
 </ul>
 </section>
 <section id="tree-pruning" class="slide level2">
@@ -371,7 +375,7 @@
 <li class="fragment"><p>What is the resultant tree <span class="math inline">\(T\)</span> when <span class="math inline">\(\alpha = 0\)</span>?</p></li>
 <li class="fragment"><p>What happens as <span class="math inline">\(\alpha\)</span> increases?</p></li>
 </ul></li>
-<li class="fragment"><p>Note: for every value of <span class="math inline">\(\alpha\)</span>, we have a different fitted tree <span class="math inline">\(\rightarrow\)</span> need to choose a best <span class="math inline">\(\alpha\)</span></p></li>
+<li class="fragment"><p>Note: for every value of <span class="math inline">\(\alpha\)</span>, we have a different fitted tree <span class="math inline">\(\rightarrow\)</span> need to choose a <strong>best</strong> <span class="math inline">\(\alpha\)</span></p></li>
 <li class="fragment"><p>Select an optimal <span class="math inline">\(\alpha^{*}\)</span> using cross-validation, then return to full data set and obtain the subtree corresponding to <span class="math inline">\(\alpha^{*}\)</span></p></li>
 </ul>
 </section>
@@ -379,32 +383,32 @@
 <h2>Algorithm for building tree</h2>
 <p>Suppose I just want to build a “best” regression tree to my data, but I’m not interesting in comparing the performance of my regression tree to a different model.</p>
 <ol type="1">
-<li class="fragment"><p>Using recursive binary splitting to grow a large tree on the data, stopping according to a pre-determined stopping rule</p></li>
+<li class="fragment"><p>Using recursive binary splitting to grow a large tree on the data</p></li>
 <li class="fragment"><p>Apply cost complexity pruning to the large tree in order to obtain a sequence of best trees as a function of <span class="math inline">\(\alpha\)</span></p></li>
 <li class="fragment"><p>Use <span class="math inline">\(k\)</span>-fold CV to choose <span class="math inline">\(\alpha\)</span>: divide data into <span class="math inline">\(K\)</span> folds. For each <span class="math inline">\(k = 1,\ldots, K\)</span>:</p>
 <ol type="a">
 <li class="fragment"><p>Repeat Steps 1 and 2 on all but the <span class="math inline">\(k\)</span>-th fold</p></li>
-<li class="fragment"><p>Evaluate mean squared prediction error on the data in held-out <span class="math inline">\(k\)</span>-th fold, as a function of <span class="math inline">\(\alpha\)</span>. Average the result for each <span class="math inline">\(\alpha\)</span></p></li>
+<li class="fragment"><p>Evaluate RMSE on the data in held-out <span class="math inline">\(k\)</span>-th fold, as a function of <span class="math inline">\(\alpha\)</span>. Average the result for each <span class="math inline">\(\alpha\)</span></p></li>
 </ol></li>
-<li class="fragment"><p>Choose <span class="math inline">\(\alpha^{*}\)</span> that minimizes the average error. Return the subtree from Step 2 that corresponds to <span class="math inline">\(\alpha^{*}\)</span> as your “best” tree</p></li>
+<li class="fragment"><p>Choose <span class="math inline">\(\alpha^{*}\)</span> that minimizes the average error. Return/choose the subtree from Step 2 that corresponds to <span class="math inline">\(\alpha^{*}\)</span> as your “best” tree!</p></li>
 </ol>
 </section>
-<section id="algorithm-for-building-tree-comparisons" class="slide level2">
+<section id="algorithm-for-building-tree-comparisons" class="slide level2 scrollable">
 <h2>Algorithm for building tree (comparisons)</h2>
-<p>If instead I also want to <em>compare</em> my “best” regression tree against a different model, I need some train/test data to compare the two models</p>
+<p>If instead I also want to <em>compare</em> my “best” regression tree against a different model, I <strong>also</strong> <strong>need some train/test data</strong> to compare the two models</p>
 <ol start="0" type="1">
-<li class="fragment"><p>Split data into train and validation sets</p></li>
-<li class="fragment"><p>Using recursive binary splitting to grow a large tree on the training data, stopping according to a pre-determined stopping rule</p></li>
+<li class="fragment"><p><strong>Split data into train and validation sets</strong></p></li>
+<li class="fragment"><p>Using recursive binary splitting to grow a large tree on the <strong>training</strong> data</p></li>
 <li class="fragment"><p>Apply cost complexity pruning to the large tree in order to obtain a sequence of best trees as a function of <span class="math inline">\(\alpha\)</span></p></li>
-<li class="fragment"><p>Use <span class="math inline">\(k\)</span>-fold CV to choose <span class="math inline">\(\alpha\)</span>: divide training data into <span class="math inline">\(K\)</span> folds. For each <span class="math inline">\(k = 1,\ldots, K\)</span>:</p>
+<li class="fragment"><p>Use <span class="math inline">\(k\)</span>-fold CV to choose <span class="math inline">\(\alpha\)</span>: divide <strong>training</strong> data into <span class="math inline">\(K\)</span> folds. For each <span class="math inline">\(k = 1,\ldots, K\)</span>:</p>
 <ol type="a">
 <li class="fragment"><p>Repeat Steps 1 and 2 on all but the <span class="math inline">\(k\)</span>-th fold</p></li>
-<li class="fragment"><p>Evaluate mean squared prediction error on the data in held-out <span class="math inline">\(k\)</span>-th fold, as a function of <span class="math inline">\(\alpha\)</span>. Average the result for each <span class="math inline">\(\alpha\)</span></p></li>
+<li class="fragment"><p>Evaluate RMSE on the data in held-out <span class="math inline">\(k\)</span>-th fold, as a function of <span class="math inline">\(\alpha\)</span>. Average the result for each <span class="math inline">\(\alpha\)</span></p></li>
 </ol></li>
-<li class="fragment"><p>Choose <span class="math inline">\(\alpha^{*}\)</span> that minimizes the average error. Return the subtree from Step 2 that corresponds to <span class="math inline">\(\alpha^{*}\)</span> as “best” tree, and use that tree for predictions on test data.</p></li>
+<li class="fragment"><p>Choose <span class="math inline">\(\alpha^{*}\)</span> that minimizes the average error. Return the subtree from Step 2 that corresponds to <span class="math inline">\(\alpha^{*}\)</span> as “best” tree, and use that tree for predictions on the <strong>test data.</strong></p></li>
 </ol>
 <ul>
-<li class="fragment">Caution! Note that we have two froms of validation/testing going on here!</li>
+<li class="fragment">Caution! Note that we have two forms of validation/testing going on here!</li>
 </ul>
 </section>
 <section id="mite-data-entire-process" class="slide level2">
@@ -422,12 +426,12 @@ Regression tree:
 tree(formula = abundance ~ ., data = train_dat, control = tree.control(nobs = length(train_ids), 
     mindev = 0))
 Variables actually used in tree construction:
-[1] "Topo"     "SubsDens" "Shrub"    "WatrCont"
-Number of terminal nodes:  9 
-Residual mean deviance:  52.66 = 2475 / 47 
+[1] "WatrCont" "SubsDens" "Topo"     "Shrub"   
+Number of terminal nodes:  10 
+Residual mean deviance:  68.25 = 3140 / 46 
 Distribution of residuals:
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
--14.800  -3.450  -0.300   0.000   3.483  24.440 </code></pre>
+-15.000  -3.893  -0.600   0.000   2.000  28.000 </code></pre>
 </div>
 </div>
 </div>
@@ -441,8 +445,9 @@ Distribution of residuals:
 <li class="fragment"><p>For each <span class="math inline">\(\alpha\)</span>, there is an associated CV-error estimate when fitting on the training data (this is the one I care about for choosing one tree)</p></li>
 <li class="fragment"><p>For each <span class="math inline">\(\alpha\)</span>, there is also an associated test error on the held-out validation data (possibly of interest)</p></li>
 </ul></li>
+<li class="fragment"><p>Note: <code>R</code> can perform step 2 and the k-fold CV component of step 3 using the <code>cv.tree()</code> function, but we as the modeler ultimately need to select the <span class="math inline">\(\alpha^*\)</span> (i.e.&nbsp;best tree)</p></li>
 </ul>
-<div class="cell" data-hash="slides-07-regression-trees-02_cache/revealjs/mite_cv_06bb809058744539883147f959f55005">
+<div class="cell" data-hash="slides-07-regression-trees-02_cache/revealjs/mite_cv_6d68046e79b17829114d51c636605065">
 
 </div>
 </section>
@@ -461,7 +466,7 @@ Distribution of residuals:
 </div><div class="column" style="width:40%;">
 <ul>
 <li class="fragment"><p>Note: while the CV error is computed as a function of <span class="math inline">\(\alpha\)</span>, we often display as a function of <span class="math inline">\(|T|\)</span>, the number of leaves</p></li>
-<li class="fragment"><p>Note: our best regression tree actually performs worse on the test data (green) compared to a tree with 3 leaves. Oh well!</p></li>
+<li class="fragment"><p>Note: our best regression tree actually performs worse on the test data (green) compared to a tree with 4 leaves. Oh well!</p></li>
 </ul>
 </div>
 </div>
