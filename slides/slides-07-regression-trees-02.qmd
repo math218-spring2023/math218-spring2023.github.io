@@ -117,17 +117,21 @@ If instead I also want to *compare* my "best" regression tree against a differen
 
 -   Caution! Note that we have two forms of validation/testing going on here!
 
-## Mite data: entire process
+## Mite data: entire process {.scrollable}
 
--   Let's suppose I want to obtain the best regression tree for this mite data, and I want to use the tree to compare to other models
+Let's suppose I want to obtain the best regression tree for this mite data, and I want to use the tree to compare to other models
 
--   Step 0: split data into 80/20 train and validation set
+0.   split data into 80/20 train and validation set
+1.  Use all predictors to build the large tree on the train set
+2.  Perform minimal cost-complexity pruning, to get a sequence of possible/candidate best trees as a function of $\alpha$
+3.  Perform 5-fold CV on the training data
+4.  Select $\alpha^*$
+    -   For each $\alpha$, there is an associated CV-error estimate when fitting on the training data (this is the one I care about for choosing one tree). I will choose $\alpha$ with smallest CV RMSE.
+5.  Prune back the tree from Step 1 according to $\alpha^*$, and use it to predict for test data
 
--   Step 1: use all predictors to build the large tree on the train set
-
-::: fragment
-```{r}
-set.seed(12)
+```{r mite_cv, cache = T}
+# CV for different alpha levels 
+set.seed(1)
 n <- nrow(mite_dat)
 train_ids <- sample(1:n, 0.8*n)
 train_dat <- mite_dat[train_ids,]
@@ -135,24 +139,6 @@ test_dat <- mite_dat[-train_ids,]
 # grow large tree on train data
 tree_train <- tree(abundance ~ ., train_dat,
                    control=tree.control(nobs = length(train_ids), mindev = 0))
-summary(tree_train)
-```
-:::
-
-## Mite data: entire process (cont.)
-
--   Step 2: Perform minimal cost-complexity pruning, to get a sequence of possible/candidate best trees as a function of $\alpha$
-
--   Step 3: Select $\alpha^*$ (i.e. best tree) using 5-fold CV on the training data
-
-    -   For each $\alpha$, there is an associated CV-error estimate when fitting on the training data (this is the one I care about for choosing one tree)
-
-    -   For each $\alpha$, there is also an associated test error on the held-out validation data (possibly of interest)
-
--   Note: `R` can perform step 2 and the k-fold CV component of step 3 using the `cv.tree()` function, but we as the modeler ultimately need to select the $\alpha^*$ (i.e. best tree)
-
-```{r mite_cv, cache = T}
-# CV for different alpha levels 
 K<- 5 
 cv_tree <- cv.tree(tree_train, K = K)
 ids <- split(1:length(train_ids), ceiling(seq_along(1:length(train_ids))/(length(train_ids)/K))) 
@@ -211,39 +197,41 @@ gg_color_hue <- function(n) {
   hues = seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100)[1:n]
 }
-data.frame(size = M, test = test_mse, train = train_mse, cv = cv_mse) %>%
+data.frame(size = M, #test = test_mse,
+           train = train_mse, cv = cv_mse) %>%
  pivot_longer(cols = -1, names_to = "type") %>%
  ggplot(., aes(x = size, y =sqrt(value), col = type))+
- geom_point(size=3) + 
+ geom_point(size=4) + 
  geom_line()+
  scale_x_continuous(breaks = seq(1,max(M), 1))+
  labs(x = "Tree size", y = "RMSE")+
  theme(text = element_text(size = 20))+
-  geom_point(data.frame(x = c(min_size_cv, min_size_test),
-                        y = c(sqrt(min(cv_mse)), sqrt(min(test_mse))),
-                        type = c("cv", "test")), 
+  # geom_point(data.frame(x = c(min_size_cv, min_size_test),
+  #                       y = c(sqrt(min(cv_mse)), sqrt(min(test_mse))),
+  #                       type = c("cv", "test")), 
+    geom_point(data.frame(x = c(min_size_cv),
+                        y = c(sqrt(min(cv_mse))),
+                        type = c("cv")), 
              mapping = aes(x= x, y =y,col = type),
-             shape = 10, size = 7)+
+             shape = 10, size = 8)+
     guides(color = guide_legend(
     override.aes=list(shape = 16)))+
   ggtitle("RMSEs for trees fit to mite data")
 
 
 ```
-
--   k-fold CV with k = 5. Best CV RMSE (red) at `r min_size_cv` leaves , so this would be our "best" tree
 :::
 
 ::: {.column width="40%"}
--   Note: while the CV error is computed as a function of $\alpha$, we often display as a function of $|T|$, the number of leaves
+-   k-fold CV with k = 5. Best CV RMSE (red) at `r min_size_cv` leaves , so this would be our "best" tree
 
--   Note: our best regression tree actually performs worse on the test data (green) compared to a tree with `r  min_size_test` leaves. Oh well!
+-   Note: while the CV error is computed as a function of $\alpha$, we often display as a function of $|T|$, the number of leaves
 :::
 :::
 
 # Live code
 
-Pruning in R
+Pruning in R: thankfully much of this is automated!
 
 # Summary
 

@@ -411,69 +411,44 @@
 <li class="fragment">Caution! Note that we have two forms of validation/testing going on here!</li>
 </ul>
 </section>
-<section id="mite-data-entire-process" class="slide level2">
+<section id="mite-data-entire-process" class="slide level2 scrollable">
 <h2>Mite data: entire process</h2>
+<p>Let’s suppose I want to obtain the best regression tree for this mite data, and I want to use the tree to compare to other models</p>
+<ol start="0" type="1">
+<li class="fragment">split data into 80/20 train and validation set</li>
+<li class="fragment">Use all predictors to build the large tree on the train set</li>
+<li class="fragment">Perform minimal cost-complexity pruning, to get a sequence of possible/candidate best trees as a function of <span class="math inline">\(\alpha\)</span></li>
+<li class="fragment">Perform 5-fold CV on the training data</li>
+<li class="fragment">Select <span class="math inline">\(\alpha^*\)</span>
 <ul>
-<li class="fragment"><p>Let’s suppose I want to obtain the best regression tree for this mite data, and I want to use the tree to compare to other models</p></li>
-<li class="fragment"><p>Step 0: split data into 80/20 train and validation set</p></li>
-<li class="fragment"><p>Step 1: use all predictors to build the large tree on the train set</p></li>
-</ul>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Regression tree:
-tree(formula = abundance ~ ., data = train_dat, control = tree.control(nobs = length(train_ids), 
-    mindev = 0))
-Variables actually used in tree construction:
-[1] "WatrCont" "SubsDens" "Topo"     "Shrub"   
-Number of terminal nodes:  10 
-Residual mean deviance:  68.25 = 3140 / 46 
-Distribution of residuals:
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
--15.000  -3.893  -0.600   0.000   2.000  28.000 </code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="mite-data-entire-process-cont." class="slide level2">
-<h2>Mite data: entire process (cont.)</h2>
-<ul>
-<li class="fragment"><p>Step 2: Perform minimal cost-complexity pruning, to get a sequence of possible/candidate best trees as a function of <span class="math inline">\(\alpha\)</span></p></li>
-<li class="fragment"><p>Step 3: Select <span class="math inline">\(\alpha^*\)</span> (i.e.&nbsp;best tree) using 5-fold CV on the training data</p>
-<ul>
-<li class="fragment"><p>For each <span class="math inline">\(\alpha\)</span>, there is an associated CV-error estimate when fitting on the training data (this is the one I care about for choosing one tree)</p></li>
-<li class="fragment"><p>For each <span class="math inline">\(\alpha\)</span>, there is also an associated test error on the held-out validation data (possibly of interest)</p></li>
+<li class="fragment">For each <span class="math inline">\(\alpha\)</span>, there is an associated CV-error estimate when fitting on the training data (this is the one I care about for choosing one tree). I will choose <span class="math inline">\(\alpha\)</span> with smallest CV RMSE.</li>
 </ul></li>
-<li class="fragment"><p>Note: <code>R</code> can perform step 2 and the k-fold CV component of step 3 using the <code>cv.tree()</code> function, but we as the modeler ultimately need to select the <span class="math inline">\(\alpha^*\)</span> (i.e.&nbsp;best tree)</p></li>
-</ul>
-<div class="cell" data-hash="slides-07-regression-trees-02_cache/revealjs/mite_cv_6d68046e79b17829114d51c636605065">
+<li class="fragment">Prune back the tree from Step 1 according to <span class="math inline">\(\alpha^*\)</span>, and use it to predict for test data</li>
+</ol>
+<div class="cell" data-hash="slides-07-regression-trees-02_cache/revealjs/mite_cv_e89ec59d6d9cb08b8c4591eef3678621">
 
 </div>
 </section>
-<section id="mite-data-entire-process-cont.-1" class="slide level2">
+<section id="mite-data-entire-process-cont." class="slide level2">
 <h2>Mite data: entire process (cont.)</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-2-1.png" width="768"></p>
+<p><img data-src="slides-07-regression-trees-02_files/figure-revealjs/unnamed-chunk-1-1.png" width="768"></p>
 </div>
 </div>
-<ul>
-<li class="fragment">k-fold CV with k = 5. Best CV RMSE (red) at 4 leaves , so this would be our “best” tree</li>
-</ul>
 </div><div class="column" style="width:40%;">
 <ul>
+<li class="fragment"><p>k-fold CV with k = 5. Best CV RMSE (red) at 3 leaves , so this would be our “best” tree</p></li>
 <li class="fragment"><p>Note: while the CV error is computed as a function of <span class="math inline">\(\alpha\)</span>, we often display as a function of <span class="math inline">\(|T|\)</span>, the number of leaves</p></li>
-<li class="fragment"><p>Note: our best regression tree actually performs worse on the test data (green) compared to a tree with 4 leaves. Oh well!</p></li>
 </ul>
 </div>
 </div>
 </section></section>
 <section id="live-code" class="title-slide slide level1 center">
 <h1>Live code</h1>
-<p>Pruning in R</p>
+<p>Pruning in R: thankfully much of this is automated!</p>
 </section>
 
 <section>

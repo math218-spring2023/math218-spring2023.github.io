@@ -30,7 +30,7 @@ We will use a few more functions from the `tree` package to prune a large tree a
 
 First, we will grow a large regression tree for `abundance` using all the predictors. *Note*: by default, the `tree()` function will grow a large tree, but will not perfectly fit the training data. It defaults to growing a tree that has *at least* five observations in each child node.
 
-If we want to explicitly tell `tree()` to grow a larger tree, we can specify the optional argument called `control`. We set `nobs = n` (i.e. the number of training observations), and another optional control argument such as `mindev`, `minsize`, or `mincut`. `mindev = 0` . See the help file for `tree.control` for more details.
+If we want to explicitly tell `tree()` to grow a larger tree, we can specify the optional argument called `control`. We set `nobs = n` (i.e. the number of training observations), and another optional control argument such as `mindev`, `minsize`, or `mincut`. See the help file for `tree.control` for more details.
 
 Here, we will specify `minsize = 2`, which means that the smallest allowed node size is 2. If you view the text version of the tree, you'll see we have many leaves where only one training observation follows a given path.
 
