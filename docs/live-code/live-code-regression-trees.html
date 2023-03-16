@@ -356,25 +356,33 @@ Distribution of residuals:
 <h3 class="anchored" data-anchor-id="plotting-trees">Plotting trees</h3>
 <p>We will use base <code>R</code> plots; I’m sure there are much more beautiful <code>ggplot</code> functions out there, but I’m not in the business of it today! We simply pass the tree object into <code>plot()</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">plot</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">plot</span>(tree_mites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="live-code-regression-trees_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Notice that there is no text! This isn’t helpful. We need to explicitly add the labels using the <code>text()</code> function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">plot</span>(tree_mites)</span>
-<span id="cb11-4"><a href="#cb11-4"></a></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">text</span>(tree_mites, <span class="at">pretty =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">plot</span>(tree_mites)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">text</span>(tree_mites, <span class="at">pretty =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="live-code-regression-trees_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The argument <code>pretty = 0</code> instructs <code>R</code> to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c… letter for each category.</p>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Danger
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you get an error when trying to use <code>text()</code>, it’s because <code>text()</code> doesn’t like it when your plot shows up inline. This shouldn’t be an issue when you knit. If you want to see your tree without knitting, go to the gear symbol at the top of the Rmarkdwon document, hit the down arrow, then hit “Chunk output in Console”. You’ll be prompted if you want to remove the current output (yes or not are both fine!) Then try running the code again.</p>
+</div>
+</div>
 
 
 </section>

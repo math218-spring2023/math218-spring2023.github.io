@@ -68,6 +68,7 @@ We want tree with lowest `dev`iance. Which candidate tree should we use?
 
 ```{r}
 best_id <- which.min(cv_mites$dev)
+best_id
 min_size <- cv_mites$size[best_id]
 min_size
 ```

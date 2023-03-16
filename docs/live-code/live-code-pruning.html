@@ -299,8 +299,12 @@ attr(,"class")
 <p>We want tree with lowest <code>dev</code>iance. Which candidate tree should we use?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>best_id <span class="ot">&lt;-</span> <span class="fu">which.min</span>(cv_mites<span class="sc">$</span>dev)</span>
-<span id="cb6-2"><a href="#cb6-2"></a>min_size <span class="ot">&lt;-</span> cv_mites<span class="sc">$</span>size[best_id]</span>
-<span id="cb6-3"><a href="#cb6-3"></a>min_size</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a>best_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>min_size <span class="ot">&lt;-</span> cv_mites<span class="sc">$</span>size[best_id]</span>
+<span id="cb8-2"><a href="#cb8-2"></a>min_size</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
@@ -317,9 +321,9 @@ attr(,"class")
 <h2 class="anchored" data-anchor-id="pruning-to-obtain-final-tree">Pruning to obtain final tree</h2>
 <p>We will use <code>prune.tree()</code> to prune our original large tree <code>tree_mites</code> to the size we found from <code>cv.tree()</code>. Results in a much simpler tree which we could then use for predictions!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>prune_mites <span class="ot">&lt;-</span> <span class="fu">prune.tree</span>(tree_mites, <span class="at">best =</span> min_size)</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">plot</span>(prune_mites)</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">text</span>(prune_mites, <span class="at">pretty =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>prune_mites <span class="ot">&lt;-</span> <span class="fu">prune.tree</span>(tree_mites, <span class="at">best =</span> min_size)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">plot</span>(prune_mites)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">text</span>(prune_mites, <span class="at">pretty =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="live-code-pruning_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>

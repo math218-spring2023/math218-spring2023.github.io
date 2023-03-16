@@ -127,23 +127,21 @@ We can interpret the tree as follows:
 We will use base `R` plots; I'm sure there are much more beautiful `ggplot` functions out there, but I'm not in the business of it today! We simply pass the tree object into `plot()`:
 
 ```{r}
-
 #| echo: true
-
 plot(tree_mites)
-
 ```
 
 Notice that there is no text! This isn't helpful. We need to explicitly add the labels using the `text()` function:
 
 ```{r}
-
 #| echo: true
-
 plot(tree_mites)
-
 text(tree_mites, pretty = 0)
 
 ```
 
 The argument `pretty = 0` instructs `R` to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c... letter for each category.
+
+::: {.callout-caution}
+If you get an error when trying to use `text()`, it's because `text()` doesn't like it when your plot shows up inline. This shouldn't be an issue when you knit. If you want to see your tree without knitting, go to the gear symbol at the top of the Rmarkdwon document, hit the down arrow, then hit "Chunk output in Console". You'll be prompted if you want to remove the current output (yes or not are both fine!) Then try running the code again.
+:::
