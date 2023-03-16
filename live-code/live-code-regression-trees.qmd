@@ -55,7 +55,6 @@ mite_dat%>%
 
 If instead we considered the candidate split `WatrCont < 145.48`:
 
-
 ```{r}
 mite_dat%>%
   mutate(decision = if_else(WatrCont < 145.48, "left", "right")) %>%
@@ -71,63 +70,80 @@ mite_dat%>%
 
 Notice that we get a different candidate RSS!
 
-<!-- ## Coding in R -->
+## Coding in R
 
-<!-- ### trees() function -->
+### trees() function
 
-<!-- Simple regression trees can be implemented in `R` using the `trees` library (you may have to install) using the `tree()` function. The syntax is just as in `lm()`: -->
+Simple regression trees can be implemented in `R` using the `trees` library (you may have to install) using the `tree()` function. The syntax is just as in `lm()`:
 
-<!-- ::: callout-warning -->
-<!-- Note: the `tree()` function we will use requires all categorical variables to be coded as *factors*. Additionally, no single categorical variable can have more than 32 levels. -->
-<!-- ::: -->
+::: callout-warning
 
-<!-- ```{r} -->
-<!-- library(tree) -->
-<!-- tree_mites <- tree(abundance ~ WatrCont + SubsDens + Topo,  -->
-<!--                    data = mite_dat) -->
-<!-- summary(tree_mites) -->
-<!-- ``` -->
+Note: the `tree()` function we will use requires all categorical variables to be coded as *factors*. Additionally, no single categorical variable can have more than 32 levels.
 
-<!-- Above, lines 2-3 fit the regression trees for `abundance` using the three specified predictores from `mite_dat` data. Similar to `lm()`, we can wrap the tree object with `summary()` to get some more information about the model fit. We see number of terminal notes $|T_{0}|$, the predictors that were used to build the tree, and residual mean deviance: -->
+:::
 
-<!-- -   If you don't see list of predictors, then the tree used all of them -->
+```{r}
 
-<!-- -   Residual mean deviance: $\text{RSS}/(n - |T_{0}|)$ -->
+library(tree)
 
-<!-- Typing the name of the `tree` object prints the tree in text form: -->
+tree_mites <- tree(abundance ~ WatrCont + SubsDens + Topo,
 
-<!-- ```{r} -->
-<!-- #| echo: true -->
-<!-- tree_mites -->
-<!-- ``` -->
+                   data = mite_dat)
 
-<!-- We can interpret the tree as follows: -->
+summary(tree_mites)
 
-<!-- -   The \* denotes a terminal node -->
+```
 
-<!-- -   `split`: condition used to branch at the node -->
+Above, lines 2-3 fit the regression trees for `abundance` using the three specified predictors from `mite_dat` data. Similar to `lm()`, we can wrap the tree object with `summary()` to get some more information about the model fit. We see number of terminal notes $|T_{0}|$, the predictors that were used to build the tree, and residual mean deviance:
 
-<!-- -   `n`: the number of observations following the left-side of the branch -->
+-   If you don't see list of predictors, then the tree used all of them
 
-<!-- -   `deviance`: the deviance associated with that branch -->
+-   Residual mean deviance: $\text{RSS}/(n - |T_{0}|)$
 
-<!-- -   `yval`: predicted value at the node -->
+Typing the name of the `tree` object prints the tree in text form:
 
-<!-- ### Plotting trees -->
+```{r}
 
-<!-- We will use base `R` plots; I'm sure there are much more beautiful `ggplot` functions out there, but I'm not in the business of it today! We simply pass the tree object into `plot()`: -->
+#| echo: true
 
-<!-- ```{r} -->
-<!-- #| echo: true -->
-<!-- plot(tree_mites) -->
-<!-- ``` -->
+tree_mites
 
-<!-- Notice that there is no text! This isn't helpful. We need to explicitly add the labels using the `text()` function: -->
+```
 
-<!-- ```{r} -->
-<!-- #| echo: true -->
-<!-- plot(tree_mites) -->
-<!-- text(tree_mites, pretty = 0) -->
-<!-- ``` -->
+We can interpret the tree as follows:
 
-<!-- The argument `pretty = 0` instructs `R` to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c... letter for each category. -->
+-   The \* denotes a terminal node
+
+-   `split`: condition used to branch at the node
+
+-   `n`: the number of observations following the left-side of the branch
+
+-   `deviance`: the deviance associated with that branch
+
+-   `yval`: predicted value at the node
+
+### Plotting trees
+
+We will use base `R` plots; I'm sure there are much more beautiful `ggplot` functions out there, but I'm not in the business of it today! We simply pass the tree object into `plot()`:
+
+```{r}
+
+#| echo: true
+
+plot(tree_mites)
+
+```
+
+Notice that there is no text! This isn't helpful. We need to explicitly add the labels using the `text()` function:
+
+```{r}
+
+#| echo: true
+
+plot(tree_mites)
+
+text(tree_mites, pretty = 0)
+
+```
+
+The argument `pretty = 0` instructs `R` to include the category names for any qualitative predictors, rather than simply displaying a generic a, b, c... letter for each category.
