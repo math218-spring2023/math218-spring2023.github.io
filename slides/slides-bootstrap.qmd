@@ -53,7 +53,6 @@ mite_dat <- mite.env %>%
 
 -   These slides will focus on the**bootstrap**
 
-
 # The Bootstrap
 
 ## The Bootstrap
@@ -129,6 +128,8 @@ ggplot(data.frame(mu = mu_ests), aes(x = mu)) +
 -   Approximate 95% confidence interval for the mean are the 5% and 95% quantiles of the `r B` mean estimates: (`r quantile(mu_ests, c(0.025))`, `r quantile(mu_ests, c(0.975))`)
 
     -   Called a *bootstrap percentile* confidence interval
+
+-   2/3
 
 ## Bootstrap: pros and cons
 

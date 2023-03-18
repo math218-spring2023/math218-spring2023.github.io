@@ -3,7 +3,7 @@ title: "Lab 04: Regression trees"
 description: "Forest fires"
 editor: visual
 callout-appearance: default
-draft: true
+draft: false
 editor_options: 
   chunk_output_type: console
 execute: 
@@ -131,7 +131,7 @@ tree_fires <- tree(area ~ . , data = train_dat,
 ```
 
 ::: {style="color: maroon"}
-Display a `summary()` of your regression tree. How many leaves are there? Was your intuition correct about whether or not `drought` would be an important predictor for the log burned `` area` ``?
+Display a `summary()` of your regression tree. How many leaves are there? Was your intuition correct about whether or not `drought` would be an important predictor for the log burned `area`?
 :::
 
 ```{r}
