@@ -25,7 +25,7 @@
     "href": "assignments.html",
     "title": "Assignments",
     "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nConditions and for loops\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nEncoding categorical variables\n\n\n\nMar 7, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLOOCV\n\n\n\nMar 9, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nListw\n\n\n\nMar 10, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nRegression trees (part 1)\n\n\n\nMar 14, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nConditions and for loops\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nEncoding categorical variables\n\n\n\nMar 7, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLOOCV\n\n\n\nMar 9, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLists\n\n\n\nMar 10, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nRegression trees (part 1)\n\n\n\nMar 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nRegression trees (pruning)\n\n\n\nMar 16, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments.html#labs",
@@ -1755,5 +1755,33 @@
     "title": "Lab 04: Regression trees",
     "section": "Submission",
     "text": "Submission\nWhen you’re finished, knit to PDF one last time and upload the PDF to Canvas. Commit and push your code back to GitHub one last time."
+  },
+  {
+    "objectID": "live-code/live-code-pruning.html",
+    "href": "live-code/live-code-pruning.html",
+    "title": "Live code:",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(vegan)\ndata(mite)\ndata(mite.env)\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)"
+  },
+  {
+    "objectID": "live-code/live-code-pruning.html#pruning-in-r",
+    "href": "live-code/live-code-pruning.html#pruning-in-r",
+    "title": "Live code:",
+    "section": "Pruning in R",
+    "text": "Pruning in R\nWe will use a few more functions from the tree package to prune a large tree and obtain a “best” subtree via cost-complexity pruning and k-fold CV.\n\nGrow large tree\nFirst, we will grow a large regression tree for abundance using all the predictors. Note: by default, the tree() function will grow a large tree, but will not perfectly fit the training data. It defaults to growing a tree that has at least five observations in each child node.\nIf we want to explicitly tell tree() to grow a larger tree, we can specify the optional argument called control. We set nobs = n (i.e. the number of training observations), and another optional control argument such as mindev, minsize, or mincut. See the help file for tree.control for more details.\nHere, we will specify minsize = 2, which means that the smallest allowed node size is 2. If you view the text version of the tree, you’ll see we have many leaves where only one training observation follows a given path.\n\nlibrary(tree)\nn <- nrow(mite_dat)\ntree_mites <- tree(abundance ~ ., data = mite_dat,\n                   control=tree.control(nobs = n, minsize = 2))\nsummary(tree_mites)\n\n\nRegression tree:\ntree(formula = abundance ~ ., data = mite_dat, control = tree.control(nobs = n, \n    minsize = 2))\nVariables actually used in tree construction:\n[1] \"Topo\"      \"SubsDens\"  \"WatrCont\"  \"Substrate\"\nNumber of terminal nodes:  12 \nResidual mean deviance:  20.38 = 1182 / 58 \nDistribution of residuals:\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n-13.210  -1.600  -1.167   0.000   1.692  10.790"
+  },
+  {
+    "objectID": "live-code/live-code-pruning.html#prune-the-large-tree",
+    "href": "live-code/live-code-pruning.html#prune-the-large-tree",
+    "title": "Live code:",
+    "section": "Prune the large tree",
+    "text": "Prune the large tree\nMaybe we think this tree_mites is too complex and might want to prune it to improve results. First we need to consider a bunch of candidate subtrees, then ultimately choose one single “best” tree.\n\nCost-complexity pruning with k-fold CV\nWe can use cv.tree() to perform k-fold cross-validation in order to determine the optimal level of tree complexity. This function performs cost-complexity pruning on the passed-in tree for various values of \\(\\alpha\\). It defaults to k=10 for the k-fold CV. See the help file for more details.\nComprehension question check: why am I setting a seed?\n\nset.seed(3) \ncv_mites <- cv.tree(tree_mites, K = 5)\ncv_mites\n\n$size\n [1] 12 11 10  9  8  7  5  4  3  2  1\n\n$dev\n [1] 10790.748 10419.939 10419.939 10394.639 10394.639 10273.679  9930.036\n [8] 12384.231 12336.495 13379.901 12952.863\n\n$k\n [1]      -Inf  196.4455  200.1603  220.5000  264.5000  304.0513  706.3217\n [8] 1211.2527 1561.6009 1673.4848 2832.2128\n\n$method\n[1] \"deviance\"\n\nattr(,\"class\")\n[1] \"prune\"         \"tree.sequence\"\n\n\nThe returned output contains the cross-validated results from each sub-tree:\n\nsize: number of terminal nodes of each tree considered\ndev: corresponding deviance of each tree\nk: value of the cost-complexity parameter used (\\(\\alpha\\) in our notation)\n\nWe want tree with lowest deviance. Which candidate tree should we use?\n\nbest_id <- which.min(cv_mites$dev)\nbest_id\n\n[1] 7\n\nmin_size <- cv_mites$size[best_id]\nmin_size\n\n[1] 5\n\n\nSometimes, it’s nice to plot the CV test error as a function of \\(\\alpha\\) (k) or the size of each subtree:"
+  },
+  {
+    "objectID": "live-code/live-code-pruning.html#pruning-to-obtain-final-tree",
+    "href": "live-code/live-code-pruning.html#pruning-to-obtain-final-tree",
+    "title": "Live code:",
+    "section": "Pruning to obtain final tree",
+    "text": "Pruning to obtain final tree\nWe will use prune.tree() to prune our original large tree tree_mites to the size we found from cv.tree(). Results in a much simpler tree which we could then use for predictions!\n\nprune_mites <- prune.tree(tree_mites, best = min_size)\nplot(prune_mites)\ntext(prune_mites, pretty = 0)"
   }
 ]
