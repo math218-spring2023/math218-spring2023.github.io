@@ -19,6 +19,12 @@ listing:
     date-format: medium
     fields: [title, date, description]
     sort: "date asc"
+  - id: project
+    contents: "project/*.qmd"
+    type: grid
+    date-format: medium
+    fields: [title, date, description]
+    sort: "date asc"
 ---
 
 ## Live coding
@@ -34,4 +40,9 @@ listing:
 ## Implementations
 
 ::: {#implementations}
+:::
+
+## Project
+
+::: {#project}
 :::

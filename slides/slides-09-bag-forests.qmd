@@ -1,0 +1,423 @@
+---
+title: "Bagging and Random Forests"
+date: "March 30, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/forests.png"
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: false
+---
+
+# Housekeeping
+
+::: footer
+[Duke forest](https://en.wikipedia.org/wiki/Duke_Forest)
+:::
+
+```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, message = F)
+
+library(tidyverse)
+library(broom)
+library(ggfortify)
+library(ISLR)
+library(vegan)
+library(tree)
+library(randomForest)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+
+```
+
+## Tree-based methods: Part 2
+
+-   Recall the disadvantages of decision trees
+
+    -   Lower levels of predictive accuracy compared to some other approaches
+
+    -   Can be non-robust (small changes in training data can result in a drastically different tree)
+
+-   We will now see that *aggregating* many trees can improve predictive performance!
+
+# Bagging
+
+## Bagging
+
+-   The decision trees described previously suffer from *high variance*, whereas linear regression tends to have low variance (when $n >> p$)
+
+-   An **ensemble method** is a method that combines many simple "building block" models in order to obtain a single final model
+
+-   **Bootstrap aggregation** or **bagging** is a general-purpose procedure for reducing the variance of a statistical-learning method
+
+    -   Given a set of $n$ independent observations $Z_{1}, \ldots, Z_{n}$, each with variance $\sigma^2$, then $\text{Var}(\bar{Z}) = \sigma^2/n$ (i.e. averaging a set of observations reduces variance)
+
+-   However, we typically don't have access to multiple training sets
+
+## Bagging (in general)
+
+-   Instead, we can **bootstrap** by taking *repeated samples* from the single training set
+
+-   **Bagging**:
+
+    1.  Generate $B$ (e.g. $B = 100$) different bootstrapped training datasets
+    2.  Train our model on the $b$-th bootstrapped training set in order to get $\hat{f}^{(b)}(x)$ for $b = 1,\ldots, B$
+    3.  Average all the predictions to obtain the final "bagged model"
+
+    ::: fragment
+    $$\hat{f}_{\text{bag}}(x) = \frac{1}{B} \sum_{b=1}^{B} \hat{f}^{(b)}(x)$$
+    :::
+
+## Bagging for decision trees
+
+-   To apply bagging to regression trees:
+
+    -   Construct $B$ regression trees using $B$ different bootstrapped training sets.
+
+    -   From each tree $\hat{f}^{(b)}(x)$, we can obtain a prediction for a test observation $x_{0}$: $\hat{y}_{0}^{(b)}$
+
+        -   For the same test point, will end up with $B$ predictions: $\hat{y}_{0}^{(1)}, \hat{y}_{0}^{(2)}, \ldots, \hat{y}_{0}^{(B)}$
+
+    -   Average the predictions to produce a final single prediction: $\hat{y}_{0} = \frac{1}{B} \sum_{b=1}^{B}\hat{y}_{0}^{(b)}$
+
+-   Details
+
+    -   Each of the $B$ trees are grown deep, and are not pruned. Why?
+
+    -   The only parameter we set when bagging decision trees is the number of trees $B$ to include
+
+## Out-of-bag error estimation
+
+-   Estimating test error of bagged model is quite easy without performing CV
+
+-   On average, each one of the $B$ trees is fit using about 2/3 of the observations. Remaining 1/3 are called **out-of-bag** (OOB) observations
+
+-   Can predict the response for $i$-th observation using each of the trees in which that observation was OOB
+
+    -   Yields about $B/3$ observations for observation $i$
+
+-   ::: {style="color: maroon"}
+    Discuss: Why is the resulting OOB error a valid estimate of the test error for the bagged model?
+    :::
+
+-   When $B$ sufficiently large, OOB error is virtually equivalent to LOOCV
+
+## Mite data
+
+::: columns
+::: {.column width="50%"}
+I fit bagged regression trees for $B = 2, 3, \ldots, 200$ bootstrapped sets using
+
+1.  *All* the data, and obtained an estimate of test RMSE using the OOB samples
+
+2.  A *training set of 2/3* of the original observations, and obtained an estimate of the test RMSE using the held-out validation set
+:::
+
+::: {.column width="50%"}
+::: fragment
+```{r rf-bag, cache = T}
+set.seed(32)
+n <- nrow(mite_dat)
+train <- sample(1:n, n*(2/3))
+n_trees <- seq(2,200,1)
+y_all <- mite_dat$abundance
+y_train <- mite_dat$abundance[train]
+y_test <- mite_dat$abundance[-train]
+oob_err_bag <- test_err_bag <- train_err_bag <- train_err_rf <- oob_err_rf <- test_err_rf <- rep(NA, length(n_trees))
+for(i in 1:length(n_trees)){
+  # bag when m = p
+  bag <- randomForest(abundance ~., data = mite_dat, subset = train,
+                             mtry = ncol(mite_dat) - 1, ntree = n_trees[i], importance= T)
+  bag_all <- randomForest(abundance ~., data = mite_dat,
+                          mtry = ncol(mite_dat) - 1, ntree = n_trees[i], importance= T)
+  # random forest when m \neq p
+  rf <- randomForest(abundance ~., data = mite_dat, subset = train,
+                             mtry = 2, ntree = n_trees[i], importance= T)
+  rf_all <- randomForest(abundance ~., data = mite_dat, 
+                             mtry = 2, ntree = n_trees[i], importance= T)
+  oob_err_bag[i] <- sqrt(mean((na.omit(bag_all$predicted - y_all))^2))
+  test_err_bag[i] <- sqrt(mean((predict(bag, mite_dat[-train,]) - y_test)^2))
+  train_err_bag[i] <- sqrt(mean((predict(bag, mite_dat[train,]) - y_train)^2))
+  
+  oob_err_rf[i] <- sqrt(mean((na.omit(rf_all$predicted - y_all))^2))
+  test_err_rf[i] <- sqrt(mean((predict(rf, mite_dat[-train,]) - y_test)^2))
+  train_err_rf[i] <- sqrt(mean((predict(rf, mite_dat[train,]) - y_train)^2))
+
+}
+
+
+single_tree <- tree(abundance ~. ,data = mite_dat, subset = train)
+dt_err <- sqrt(mean((predict(single_tree, mite_dat[-train,]) - y_test)^2))
+```
+
+```{r fig.width = 8, fig.height=8}
+bag_rf_df <-  data.frame(B = n_trees, OOB_bag = oob_err_bag, 
+                         Validation_bag = test_err_bag, Train_bag = train_err_bag,
+                         OOB_rf = oob_err_rf, Validation_rf = test_err_rf,
+                         Train_rf = train_err_rf)
+bag_rf_df %>%
+  dplyr::select(1:3) %>%
+  pivot_longer(-B, names_to = "type", values_to = "Error")%>%
+  ggplot(.,aes(x = B, y = Error, col = type))+
+  # geom_point() + 
+  geom_line() +
+  labs(x = "Number of trees (B)", y = "RMSE") +
+  theme(text =element_text(size = 25),
+        legend.position = "bottom")+
+  geom_hline(yintercept = dt_err, linetype = "dashed") +
+  scale_color_manual(values = c("blue", "orange"))  +
+  ggtitle("Bagged regression trees test error",
+          subtitle = "Dashed line: single regression tree")
+
+```
+:::
+:::
+:::
+
+## Variable importance measures
+
+::: columns
+::: {.column width="50%"}
+-   Bagging can result in difficulty in interpretation: it's no longer clear which predictors are most important to the procedure
+
+-   But one main attraction of decision trees is their interpretability!
+
+-   Can obtain an overall summary of importance of each predictor using the residual sum of square (RSS):
+
+    -   For bagged regression trees, record the total amount that RSS decreases due to splits over a given predictor, averaged over $B$
+:::
+
+::: {.column width="50%"}
+::: fragment
+```{r importance, fig.width=8, fig.height=6}
+importance_df <- data.frame(predictors = rownames(importance(bag_all)),
+           mean_decrease= importance(bag_all)[,2]) %>%
+  arrange(mean_decrease) %>%
+  mutate(order = row_number())
+importance_df %>%
+  mutate(order = as.factor(order)) %>%
+  ggplot(., aes(x  = order, y = mean_decrease))+
+  geom_point(size = 3) +
+  scale_x_discrete(labels = importance_df$predictors)+
+  labs(y = "Mean decrease in RSS", x = "")+
+  coord_flip()  +
+  theme(text = element_text(size = 25)) +
+  ggtitle("Variable importance plot")
+
+```
+:::
+
+-   `WatrCont` is the most important variable. This should make sense!
+:::
+:::
+
+# Random Forests
+
+## Random forests
+
+-   **Random forests** provide improvement over bagged trees by providing a small tweak that *decorrelates* the trees
+
+-   Like bagging, we build $B$ decision trees using $B$ different bootstrapped training samples
+
+-   The only difference is in how each tree $\hat{f}^{(b)}(x)$ is constructed
+
+- Prediction in random forests proceeds the same as in bagged trees
+
+## Construction
+
+-   *Each time* a split is considered, a *random sample* of $m$ predictors is chosen as split candidates from the full set of $p$ predictors. 
+
+- The node will split on one of these $m$ predictors
+
+    -   At every split, we choose a new sample of $m$ predictors
+
+    -   Typically choose $m \approx \sqrt{p}$
+
+## Example construction
+
+For the mite data, we have $p = 5$ predictors:
+
+```{r}
+colnames(mite_dat)
+```
+
+-   Suppose we fit a random forest using $B$ regression trees fit on $B$ different bootstrapped sets.
+
+-   For each regression tree, we first obtain a bootstrap sample of the original data
+
+-   Then we build a regression tree where:
+
+    -   For node 1, we only consider a random sample of $m \approx \sqrt{5} \approx 2$ predictors:
+
+        ```{r}
+        #| echo: false
+        set.seed(1)
+        p <- ncol(mite_dat) - 1
+        (pool <- sample(colnames(mite_dat)[1:p], 2))
+
+        ```
+
+        -   Thus, node 1 will either split on `r pool[1]` or `r pool[2]`
+
+    -   For node 2, we consider a different random sample of $m = 2$ predictors:
+
+        ```{r}
+        #| echo: false
+        (pool <- sample(colnames(mite_dat)[1:p], 2))
+        ```
+
+    -   Etc.
+
+## Random forests (cont.)
+
+-   At each split, algorithm is *not allowed* to consider a majority of the available predictors
+
+    -   Intuition for why?
+
+-   Bagged trees may be highly correlated, and averaging correlated quantities does not reduce variance as much as average uncorrelated
+
+    -   Small $m$ is typically helpful when we have a large number of correlated predictors
+
+-   ::: {style="color: maroon"}
+    Discuss: what is the resulting model when $m = p$?
+    :::
+
+## Mite data
+
+::: columns
+::: {.column width="50%"}
+-   For $B = 2, 3, \ldots, 200$ tree, I fit a random forest with $m = 2$ candidate predictors at each split using
+
+    1.  *All* the data, and obtained an estimate of test RMSE using the OOB samples
+
+    2.  A *training set of 2/3* of the original observations (the same as in bagging), and obtained an estimate of the test RMSE using the held-out validation set
+:::
+
+::: {.column width="50%"}
+::: fragment
+```{r fig.width = 8, fig.height=8}
+bag_rf_df %>%
+  select(c(1,5, 6)) %>%
+  pivot_longer(-B, names_to = "type", values_to = "Error")%>%
+  ggplot(.,aes(x = B, y = Error, col = type))+
+  # geom_point() + 
+  geom_line() +
+  labs(x = "Number of trees (B)", y = "RMSE") +
+  ggtitle("Random forest test error",
+          subtitle = "Dashed line: single regression tree")+
+  theme(text =element_text(size = 25),
+        legend.position = "bottom")+
+  geom_hline(yintercept = dt_err, linetype = "dashed") +
+    scale_color_manual(values = c("pink" ,  "purple")) 
+
+```
+:::
+:::
+:::
+
+## Variable importance
+
+-   As with bagged regression trees, can obtain variable importance measure of each predictor in random forests using RSS:
+
+::: fragment
+```{r importance2, fig.width=6, fig.height=4}
+importance_df <- data.frame(predictors = rownames(importance(rf_all)),
+           mean_decrease= importance(rf_all)[,2]) %>%
+  arrange(mean_decrease) %>%
+  mutate(order = row_number())
+importance_df %>%
+  mutate(order = as.factor(order)) %>%
+  ggplot(., aes(x  = order, y = mean_decrease))+
+  geom_point(size = 3) +
+  scale_x_discrete(labels = importance_df$predictors)+
+  labs(y = "Mean decrease in RSS", x = "")+
+  coord_flip()  +
+  theme(text = element_text(size = 16)) +
+  ggtitle("Variable importance plot")
+
+```
+:::
+
+-   `WatrCont` is still the most important variable
+
+## Random forests vs bagging: prediction
+
+Comparing estimated test error when fitting bagged regression trees vs random forests to mite data:
+
+```{r}
+bag_rf_df %>%
+  select(-Train_bag, -Train_rf) %>%
+  pivot_longer(-B, names_to = "type", values_to = "Error")%>%
+  ggplot(.,aes(x = B, y = Error, col = type))+
+  geom_line() +
+  labs(x = "Number of trees (B)", y = "RMSE") +
+  theme(text =element_text(size = 20),
+        legend.position = "bottom")+
+  geom_hline(yintercept = dt_err, linetype = "dashed") +
+    scale_color_manual(values = c("blue", "pink" , "orange", "purple")) +
+  ggtitle("Bagging vs random forest: test errors") 
+```
+
+## Random forests vs bagging: inference
+
+Comparing variable importance from the two models:
+
+::: columns
+::: {.column width="50%"}
+```{r fig.width=8, fig.height=6}
+importance_df <- data.frame(predictors = rownames(importance(bag_all)),
+           mean_decrease= importance(bag_all)[,2]) %>%
+  arrange(mean_decrease) %>%
+  mutate(order = row_number())
+importance_df %>%
+  mutate(order = as.factor(order)) %>%
+  ggplot(., aes(x  = order, y = mean_decrease))+
+  geom_point(size = 3) +
+  scale_x_discrete(labels = importance_df$predictors)+
+  labs(y = "Mean decrease in RSS", x = "")+
+  coord_flip()  +
+  theme(text = element_text(size = 25)) +
+  ggtitle("Bagging")
+
+```
+:::
+
+::: {.column width="50%"}
+```{r fig.width=8, fig.height=6}
+importance_df <- data.frame(predictors = rownames(importance(rf_all)),
+           mean_decrease= importance(rf_all)[,2]) %>%
+  arrange(mean_decrease) %>%
+  mutate(order = row_number())
+importance_df %>%
+  mutate(order = as.factor(order)) %>%
+  ggplot(., aes(x  = order, y = mean_decrease))+
+  geom_point(size = 3) +
+  scale_x_discrete(labels = importance_df$predictors)+
+  labs(y = "Mean decrease in RSS", x = "")+
+  coord_flip()  +
+  theme(text = element_text(size = 25)) +
+  ggtitle("Random forest")
+
+```
+:::
+:::
+
+-   Notice the swap in order of `Shrub` and `Substrate`
+
+## Summary
+
+-   Bagging and random forests are methods for improving predictive accuracy of regression trees
+
+-   Considered "ensemble" methods
+
+-   Random forests (and another method called boosting) are among state-of-the-art for supervised learning, but are less interpretable

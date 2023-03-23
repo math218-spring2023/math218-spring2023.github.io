@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Description">
+
+<title>Math 218 - Spring 2023 - Final project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Math 218 - Spring 2023</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../schedule.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assignments.html">
+ <span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/math218-spring2023"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#important-dates-and-links" id="toc-important-dates-and-links" class="nav-link active" data-scroll-target="#important-dates-and-links">Important dates and links</a>
+  <ul class="collapse">
+  <li><a href="#dates" id="toc-dates" class="nav-link" data-scroll-target="#dates">Dates</a></li>
+  <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a></li>
+  </ul></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#brief-project-logistics" id="toc-brief-project-logistics" class="nav-link" data-scroll-target="#brief-project-logistics">Brief project logistics</a></li>
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources">Data sources</a></li>
+  <li><a href="#project-components" id="toc-project-components" class="nav-link" data-scroll-target="#project-components">Project components</a>
+  <ul class="collapse">
+  <li><a href="#proposal" id="toc-proposal" class="nav-link" data-scroll-target="#proposal">Proposal</a></li>
+  <li><a href="#plan-of-analysis" id="toc-plan-of-analysis" class="nav-link" data-scroll-target="#plan-of-analysis">Plan of analysis</a></li>
+  <li><a href="#written-report" id="toc-written-report" class="nav-link" data-scroll-target="#written-report">Written report</a></li>
+  <li><a href="#repository" id="toc-repository" class="nav-link" data-scroll-target="#repository">Repository</a></li>
+  <li><a href="#slides" id="toc-slides" class="nav-link" data-scroll-target="#slides">Slides</a></li>
+  <li><a href="#presentation" id="toc-presentation" class="nav-link" data-scroll-target="#presentation">Presentation</a></li>
+  <li><a href="#participation" id="toc-participation" class="nav-link" data-scroll-target="#participation">Participation</a></li>
+  </ul></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading">Grading</a></li>
+  <li><a href="#late-work-policy" id="toc-late-work-policy" class="nav-link" data-scroll-target="#late-work-policy">Late work policy</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Final project</h1>
+</div>
+
+<div>
+  <div class="description">
+    Description
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="important-dates-and-links" class="level1">
+<h1>Important dates and links</h1>
+<section id="dates" class="level3">
+<h3 class="anchored" data-anchor-id="dates">Dates</h3>
+<ul>
+<li><p>Partner choices (selected or random) emailed by Saturday, April 8 at 11:59pm</p></li>
+<li><p>Project proposals due Sunday, April 16 at 11:59pm</p></li>
+<li><p>Project plans due Sunday, April 23 at 11:59pm</p></li>
+<li><p>Report, slides, and repository due Thursday, May 11 at 11:59pm`</p></li>
+<li><p>Presentations will occur on Friday, May 12 during class</p></li>
+</ul>
+</section>
+<section id="links" class="level3">
+<h3 class="anchored" data-anchor-id="links">Links</h3>
+<ul>
+<li><p>Feel free to sign up for 15-minute meetings via <a href="https://calendly.com/beckytang/meet-with-becky">Calendly</a></p></li>
+<li><p>Project presentation order: TBD</p></li>
+<li><p>Examples of previous projects: coming soon</p></li>
+</ul>
+</section>
+</section>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p><strong>In essence</strong>: Pick a dataset and do statistical learning things with it. That is your final project.</p>
+<p>The final project for this class will consist of analysis on a dataset of your own choosing. You can choose the data based on your interests or based on work in other courses or research projects. The goal of this project is for you to demonstrate proficiency in the techniques we have covered in this class (and beyond, if you like) and apply them to a dataset in a meaningful way.</p>
+<p>This project will be completed in groups of 4. The partners may be self-selected or randomly assigned. If you would like to choose your groups, one of you should e-mail me and CC your groups members on the e-mail by Saturday, April 8 at 11:59pm. If you want a randomly assigned group, you must e-mail me by Saturday, April 8 at 11:59pm saying so. I will let you know by midnight the next day who your random partner is.</p>
+<p>Your project may be a supervised and/or unsupervised analysis. Whichever you choose, your project must consist of one of the following:</p>
+<ul>
+<li><p>An analysis that uses at least two different statistical learning models you learned this semester AND an appropriate method of comparing their performances. This is quite open-ended!</p></li>
+<li><p>An analysis that uses a method that you taught yourself or learned in a different class/setting. If you’d like, you may compare this method to another we learned in class, but that is not necessary.</p></li>
+</ul>
+</section>
+<section id="brief-project-logistics" class="level1">
+<h1>Brief project logistics</h1>
+<p>The five deliverables for the final project are:</p>
+<ul>
+<li>A written proposal detailing the data you chose, along with some EDA and at least one question you are interested in answering, and the methods you plan to use to answer these questions</li>
+<li>A written plan of analysis that briefly describes exactly how you will implement the methods to answer the question(s) of interest</li>
+<li>A written, reproducible report detailing your analysis</li>
+<li>A GitHub repository corresponding to your report</li>
+<li>A brief set of slides that correspond to your intended oral presentation (5 minutes)</li>
+</ul>
+<p><strong>No late projects are accepted.</strong></p>
+<p>The grade breakdown is as follows:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Total</th>
+<th>135 pts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Proposal</strong></td>
+<td>15 pts</td>
+</tr>
+<tr class="even">
+<td><strong>Plan of analysis</strong></td>
+<td>15 pts</td>
+</tr>
+<tr class="odd">
+<td><strong>Written report</strong></td>
+<td>60 pts</td>
+</tr>
+<tr class="even">
+<td><strong>Slides</strong></td>
+<td>15 pts</td>
+</tr>
+<tr class="odd">
+<td><strong>Repository</strong></td>
+<td>5 pts</td>
+</tr>
+<tr class="even">
+<td><strong>Presentation</strong></td>
+<td>15 pts</td>
+</tr>
+<tr class="odd">
+<td><strong>Participation</strong></td>
+<td>10 pts</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data-sources" class="level1">
+<h1>Data sources</h1>
+<p>In order for you to have the greatest chance of success with this project it is important that you choose a reasonable dataset. This means that the data should be readily accessible and large enough that multiple relationships can be explored. As such, your dataset must have at least 100 observations and at least 10 variables. Generally, more observations and/or more variables will lead to a more interesting analysis. The dataset’s variables should include categorical variables, discrete numerical variables, and continuous numerical variables (exceptions can be made but you must speak with me first). If you’d like, you may join multiple datasets together.</p>
+<p>All analyses must be done in RStudio, and your final written report and analysis <strong>must be reproducible</strong>. This means that you must create an R Markdown document attached to a GitHub repository that will create your written report exactly upon knitting.</p>
+<p>If you are using a dataset that comes in a format that we haven’t encountered in class (for instance, a <code>.DAT</code> file), make sure that you are able to load it into RStudio as this can be tricky depending on the source. If you are having trouble, ask for help before it is too late.</p>
+<p><strong>Reusing datasets from class:</strong> Do not reuse datasets used in examples / lab in the class.</p>
+<p>Some resources that may be helpful:</p>
+<ul>
+<li><a href="https://rfun.library.duke.edu/blog/data-sources-for-regression-analysis/">R Data Sources for Regression Analysis</a></li>
+<li><a href="https://www.kaggle.com/datasets">kaggle</a></li>
+<li><a href="https://data.fivethirtyeight.com/">FiveThirtyEight data</a></li>
+<li><a href="https://github.com/rfordatascience/tidytuesday">TidyTuesday</a></li>
+</ul>
+<p>Additions:</p>
+<ul>
+<li><a href="https://www.who.int/gho/database/en/">World Health Organization</a></li>
+<li><a href="https://data.nber.org/data/">The National Bureau of Economic Research</a></li>
+<li><a href="https://data.imf.org/?sk=388DFA60-1D26-4ADE-B505-A05A558D9A42&amp;sId=1479329328660">International Monetary Fund</a></li>
+<li><a href="http://gss.norc.org/">General Social Survey</a></li>
+<li><a href="http://data.un.org/">United Nations Data</a></li>
+<li><a href="https://unstats.un.org/home/">United Nations Statistics Division</a></li>
+<li><a href="https://data.gov.uk/">U.K. Data</a></li>
+<li><a href="https://www.data.gov/">U.S. Data</a></li>
+<li><a href="https://www.census.gov/data.html">U.S. Census Data</a></li>
+<li><a href="https://ec.europa.eu/eurostat/">European Statistics</a></li>
+<li><a href="https://www.statcan.gc.ca/eng/start">Statistics Canada</a></li>
+<li><a href="https://www.pewresearch.org/download-datasets/">Pew Research</a></li>
+<li><a href="https://data.unicef.org/">UNICEF</a></li>
+<li><a href="https://www.cdc.gov/datastatistics/index.html">CDC</a></li>
+<li><a href="https://datacatalog.worldbank.org/">World Bank</a></li>
+<li><a href="https://electionstudies.org//">Election Studies</a></li>
+</ul>
+</section>
+<section id="project-components" class="level1">
+<h1>Project components</h1>
+<section id="proposal" class="level2">
+<h2 class="anchored" data-anchor-id="proposal">Proposal</h2>
+<p>Due: Sunday, April 16 at 11:59pm</p>
+<p>Your proposal must be done using R Markdown. You should describe the dataset that you would like to use, and define the variables in the dataset that you intend to explore. You must include some EDA (ex. univariate or bivariate plots, tables of summary statistics, etc), and you must also list at least two questions that you are interested in answering using the data.</p>
+<p>You should clearly indicate if you intend to pursue a method that you teach yourself.</p>
+<p>You should clearly indicate if your questions supervised or unsupervised learning tasks.</p>
+<p>There is no page limit or requirement. For submission, submit the .pdf document to Canvas. The main purpose of this component of the project is to help you get started, and so Professor Tang can give feedback/suggestions about the data and questions of interest.</p>
+</section>
+<section id="plan-of-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="plan-of-analysis">Plan of analysis</h2>
+<p>Due: Sunday, April 23 at 11:59pm</p>
+<p>Your plan of analysis must be done using R Markdown. Based on the feedback from your proposal, the written plan of analysis should contain:</p>
+<ul>
+<li><p>Your updated research question(s). Please be as clear as possible; do not be overly verbose.</p></li>
+<li><p>For each research question: the methods/models you plan to use to answer. The methods <em>must</em> be appropriate for the given research question. I encourage you to briefly justify why each method you choose is suitable for the question.</p></li>
+<li><p>Describe how exactly you plan to implement the methods you selected to answer your research question(s). This may include discussion of necessary data cleaning and preparation, which <code>R</code> packages you intend to use, how you plan on validating/comparing models, etc.</p></li>
+</ul>
+<p>If you chose to pursue a method that we did not cover in class, you must clearly describe the method in your plan.</p>
+<p>The main purpose of this component is so Professor Tang can make sure that you are well-prepared to complete the project.</p>
+</section>
+<section id="written-report" class="level2">
+<h2 class="anchored" data-anchor-id="written-report">Written report</h2>
+<p>Due: Thursday, May 11 at 11:59pm</p>
+<p>Your written report must be done using R Markdown. You must contribute to the GitHub repository with regular meaningful commits/pushes. Before you finalize your write up, make sure the printing of code chunks is turned off with the option <code>echo = FALSE</code>.</p>
+<p>Your final report must match your GitHub repository <em>exactly</em>. The mandatory components of the report are as follows, but feel free to expand with additional sections as necessary. There is no page limit or requirement – however, you must comprehensively address all aspects below. Please be judicious in what you decide to include in your final write-up. For submission, submit the .pdf document to Canvas.</p>
+<p>The written report is worth 60 points, broken down as</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Total</th>
+<th>60 pts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Introduction/data</strong></td>
+<td>10 pts</td>
+</tr>
+<tr class="even">
+<td><strong>EDA</strong></td>
+<td>5 pts</td>
+</tr>
+<tr class="odd">
+<td><strong>Methodology</strong></td>
+<td>15 pts</td>
+</tr>
+<tr class="even">
+<td><strong>Results</strong></td>
+<td>20 pts</td>
+</tr>
+<tr class="odd">
+<td><strong>Discussion</strong></td>
+<td>10 pts</td>
+</tr>
+</tbody>
+</table>
+<section id="introduction-and-data" class="level4">
+<h4 class="anchored" data-anchor-id="introduction-and-data">Introduction and data</h4>
+<p>The introduction should introduce your general research question(s) and your data (where it came from, how it was collected, what are the cases, what are the variables, etc.). It should be clear from the Introduction if you are planning on pursuing a supervised and/or unsupervised analysis. If you are planning on using supervised methods, you should clearly indicate what variable is your response variable of interest.</p>
+</section>
+<section id="eda" class="level4">
+<h4 class="anchored" data-anchor-id="eda">EDA</h4>
+<p>The methodology section should include the variables used to address your research question, as well as any useful visualizations or summary statistics. <em>Please be judicious in this section. Usually one strong visualization is better than five that are not useful.</em></p>
+</section>
+<section id="methodology" class="level4">
+<h4 class="anchored" data-anchor-id="methodology">Methodology</h4>
+<p>In this section, you should introduce, briefly describe, and justify the statistical learning methods that you used to answer your research question(s).</p>
+</section>
+<section id="results" class="level4">
+<h4 class="anchored" data-anchor-id="results">Results</h4>
+<p>Showcase how you arrived at answers to your question using any techniques we have learned in this class (and some beyond, if you’re feeling adventurous). Provide the main results from your analysis. The goal is not to do an exhaustive data analysis (i.e., do not calculate every statistic and procedure you have learned for every variable), but rather let me know that you are proficient at asking meaningful questions and answering them with results of data analysis, that you are proficient in using R, and that you are proficient at interpreting and presenting the results. Focus on they key results that are related to answering your research questions.</p>
+</section>
+<section id="discussion" class="level4">
+<h4 class="anchored" data-anchor-id="discussion">Discussion</h4>
+<p>This section is a conclusion and discussion. This will require a summary of what you have learned about your research question along with statistical arguments supporting your conclusions. Also, critique your own methods and provide suggestions for improving your analysis. Issues pertaining to the reliability and validity of your data and appropriateness of the statistical analysis should also be discussed here. A paragraph on what you would do differently if you were able to start over with the project or what you would do next if you were going to continue work on the project should also be included.</p>
+<p><em>Revision opportunity</em>: after your presentation, you have the opportunity to take feedback from Professor Tang and your peers to revise the written report. If you would like to revise the report, you have within five days of receiving the initial feedback to re-submit the report. This is not a guarantee of an improved grade. I will speak more about the revision process later in the semester.</p>
+</section>
+</section>
+<section id="repository" class="level2">
+<h2 class="anchored" data-anchor-id="repository">Repository</h2>
+<p>Due: Thursday, May 11 at 11:59pm</p>
+<p>In addition to your Gradescope submissions, I will be checking your GitHub repository. This repository should include:</p>
+<ul>
+<li>Two separate RMarkdown files (formatted to clearly present all of your code and results) that will output: (1) the proposal and (2) final write-up</li>
+<li>Meaningful README file on the GitHub repository that contains a <em>codebook</em> for relevant variables</li>
+<li>Dataset(s) (in csv or RData format, in a <code>/data</code> folder)</li>
+<li>Presentation (if using Keynote/PowerPoint/Google Slides, export to PDF and add it to your GitHub repo.)</li>
+</ul>
+<p>Style and format does count for this assignment, so please take the time to make sure everything looks good and your data and code are properly formatted.</p>
+</section>
+<section id="slides" class="level2">
+<h2 class="anchored" data-anchor-id="slides">Slides</h2>
+<p>Due: Thursday, May 11 at 11:59pm</p>
+<p>In addition to the write-up, you must also create presentation slides that summarize and showcase your project. Introduce your research question and dataset, showcase your EDA visualizations, and provide some conclusions. These slides should serve as a brief visual accompaniment to your write-up and will be graded for content and quality. They can also be used for your Presentation. For submission, convert these slides to a .pdf document to be uploaded to Canvas.</p>
+</section>
+<section id="presentation" class="level2">
+<h2 class="anchored" data-anchor-id="presentation">Presentation</h2>
+<p>Due: Friday, May 12 during class</p>
+<p>On the last day of class everyone will present their projects. There will be a five-minute time limit for each presentation followed by two minutes for questions, for a total of seven-minutes per presentation. You may, and should, use the slides as detailed in the previous section during your presentation.</p>
+</section>
+<section id="participation" class="level2">
+<h2 class="anchored" data-anchor-id="participation">Participation</h2>
+<p>You are expected to attend both days of presentations, and be actively engaged by asking questions and providing feedback.</p>
+<p>Everyone will also provide feedback and assess their partner’s contributions. Please complete the evaluation form on the <strong>Participation^</strong> assignment in Canvas by TBD.</p>
+</section>
+</section>
+<section id="tips" class="level1">
+<h1>Tips</h1>
+<ul>
+<li><p>Ask questions if any of the expectations are unclear.</p></li>
+<li><p><em>Code</em>: In your write up your code should be hidden (<code>echo = FALSE</code>) so that your document is neat and easy to read. However your document should include all your code such that if I re-knit your Rmd file I should be able to obtain the results you presented. <strong>Exception:</strong> If you want to highlight something specific about a piece of code, you’re welcome to show that portion.</p></li>
+</ul>
+</section>
+<section id="grading" class="level1">
+<h1>Grading</h1>
+<p>Grading of the project will take into account the following:</p>
+<ul>
+<li>Content - What is the quality of research and/or policy question and relevancy of data to those questions?</li>
+<li>Correctness - Are the statistical plearning rocedures carried out and explained correctly?</li>
+<li>Writing and Presentation - What is the quality of the statistical presentation, writing, and explanations?</li>
+<li>Creativity and Critical Thought - Is the project carefully thought out? Are the limitations carefully considered? Does it appear that time and effort went into the planning and implementation of the project?</li>
+</ul>
+<p>A general breakdown of scoring is as follows:</p>
+<ul>
+<li><em>90%-100%</em>: Outstanding effort. Student understands how to apply all statistical concepts, can put the results into a cogent argument, can identify weaknesses in the argument, and can clearly communicate the results to others.</li>
+<li><em>80%-89%</em>: Good effort. Student understands most of the concepts, puts together an adequate argument, identifies some weaknesses of their argument, and communicates most results clearly to others.</li>
+<li><em>70%-79%</em>: Passing effort. Student has misunderstanding of concepts in several areas, has some trouble putting results together in a cogent argument, and communication of results is sometimes unclear.</li>
+<li><em>60%-69%</em>: Struggling effort. Student is making some effort, but has misunderstanding of many concepts and is unable to put together a cogent argument. Communication of results is unclear.</li>
+<li><em>Below 60%</em>: Student is not making a sufficient effort.</li>
+</ul>
+</section>
+<section id="late-work-policy" class="level1">
+<h1>Late work policy</h1>
+<p><strong>There is no late work accepted on this project.</strong> Be sure to turn in your work early to avoid any technological mishaps.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
