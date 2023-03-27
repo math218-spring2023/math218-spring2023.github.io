@@ -3,7 +3,7 @@ title: "Final project"
 description: "Description"
 editor: visual
 callout-appearance: default
-draft: true
+draft: false
 editor_options: 
   chunk_output_type: console
 execute: 
@@ -12,8 +12,8 @@ execute:
 
 ```{r}
 partner <- "Saturday, April 8 at 11:59pm"
-proposal <- "Sunday, April 16 at 11:59pm"
-plan <- "Sunday, April 23 at 11:59pm"
+proposal <- "Sunday, April 23 at 11:59pm"
+plan <- "Sunday, April 30 at 11:59pm"
 repo <- "Thursday, May 11 at 11:59pm"
 presentation <- "Friday, May 12 during class"
 participation <- "TBD"
@@ -21,121 +21,107 @@ participation <- "TBD"
 
 # Important dates and links
 
-
 ### Dates
 
-- Partner choices (selected or random) emailed by `r partner`
+-   Partner choices (selected or random) emailed by `r partner`
 
-- Project proposals due `r proposal`
+-   Project proposals due `r proposal`
 
-- Project plans due `r plan`
+-   Project plans due `r plan`
 
-- Report, slides, and repository due `r repo``
+-   Report, slides, and repository due `r repo`
 
-- Presentations will occur on `r presentation`
+-   Presentations will occur on `r presentation`
 
 ### Links
 
-- Feel free to sign up for 15-minute meetings via [Calendly](https://calendly.com/beckytang/meet-with-becky)
+-   Feel free to sign up for 15-minute meetings via [Calendly](https://calendly.com/beckytang/meet-with-becky)
 
-- Project presentation order: TBD
+-   Project presentation order: TBD
 
-- Examples of previous projects: coming soon
+-   Examples of previous projects: coming soon
 
 # Introduction
 
-**In essence**: Pick a dataset and do statistical learning things with it. That is your 
-final project.
+**In essence**: Pick a dataset and do statistical learning things with it. That is your final project.
 
-The final project for this class will consist of analysis on a dataset of your 
-own choosing. You can choose the data based on your interests or based on work in other
-courses or research projects. The goal of this project is for you to demonstrate 
-proficiency in the techniques we have covered in this class (and beyond, if you 
-like) and apply them to a dataset in a meaningful way.
+The final project for this class will consist of analysis on a dataset of your own choosing. You can choose the data based on your interests or based on work in other courses or research projects. The goal of this project is for you to demonstrate proficiency in the techniques we have covered in this class (and beyond, if you like) and apply them to a dataset in a meaningful way.
 
-This project will be completed in groups of 4. The partners may be self-selected or randomly assigned. If you would like to choose your groups, one of you should e-mail me and CC your groups members on the e-mail by `r partner`. If you want a randomly assigned group, you must e-mail me by  `r partner` saying so. I will let you know by midnight the next day who your random partner is. 
+**This project will be completed in groups of four**. The partners may be self-selected or randomly assigned. By `r partner`, you must do one of the following and e-mail Prof. Tang accordingly:
 
-Your project may be a supervised and/or unsupervised analysis. Whichever you choose, your project must consist of one of the following:
+1.  Choose your own group of four. If so, one member of your group should e-mail Prof. Tang listing who is in your group, and cc your group members on the e-mail.
 
-  - An analysis that uses at least two different statistical learning models you learned this semester AND an appropriate method of comparing their performances. This is quite open-ended! 
-  
-  - An analysis that uses a method that you taught yourself or learned in a different class/setting. If you'd like, you may compare this method to another we learned in class, but that is not necessary. 
-  
+2.  Choosing one other person you would like to be in your group. If so, one of you should e-mail Prof. Tang saying that you have chosen a partner, and cc the other person on the e-mail. I will randomly pair you up with another pair of individuals.
+
+3.  Choosing to be randomly assigned a group. If so, e-mail Prof. Tang saying you would like to be randomly assigned to a group.
+
+If you choose (2) or (3), I will let you know by midnight the next day who your group is.
+
+Your project may be a supervised and/or unsupervised analysis. Whichever you choose, your project **must consist of one of the following**:
+
+-   An analysis that uses at least two different statistical learning models you learned this semester AND an appropriate method of comparing their performances. This is quite open-ended!
+
+-   An analysis that uses a method that you taught yourself or learned in a different class/setting. If you'd like, you may compare this method to another we learned in class, but that is not necessary.
 
 # Brief project logistics
 
 The five deliverables for the final project are:
 
-- A written proposal detailing the data you chose, along with some EDA and at least one question you are interested in answering, and the methods you plan to use to answer these questions
-- A written plan of analysis that briefly describes exactly how you will implement the methods to answer the question(s) of interest
-- A written, reproducible report detailing your analysis
-- A GitHub repository corresponding to your report
-- A brief set of slides that correspond to your intended oral presentation (5 minutes)
+-   A written proposal detailing the data you chose, along with some EDA and at least one question you are interested in answering, and the methods you plan to use to answer these questions
+-   A written plan of analysis that briefly describes exactly how you will implement the methods to answer the question(s) of interest
+-   A written, reproducible report detailing your analysis
+-   A GitHub repository corresponding to your report
+-   A brief set of slides that correspond to your intended oral presentation (5 minutes)
 
 **No late projects are accepted.**
 
 The grade breakdown is as follows:
 
-Total                                                   | 135 pts
---------------------------------------------------------|--------
-**Proposal**                                            | 15 pts
-**Plan of analysis**                                    | 15 pts
-**Written report**                                      | 60 pts
-**Slides**                                              | 15 pts
-**Repository**                                          | 5 pts
-**Presentation**                                        | 15 pts
-**Participation**                                       | 10 pts
-
+| Total                | 135 pts |
+|----------------------|---------|
+| **Proposal**         | 15 pts  |
+| **Plan of analysis** | 15 pts  |
+| **Written report**   | 60 pts  |
+| **Slides**           | 15 pts  |
+| **Repository**       | 5 pts   |
+| **Presentation**     | 15 pts  |
+| **Participation**    | 10 pts  |
 
 # Data sources
 
-In order for you to have the greatest chance of success with this project it is 
-important that you choose a reasonable dataset. This means that the data should 
-be readily accessible and large enough that multiple relationships can be 
-explored. As such, your dataset must have at least 100 observations and at least 10 variables. Generally,
-more observations and/or more variables will lead to a more interesting analysis.
-The dataset’s variables should include categorical variables, discrete numerical 
-variables, and continuous numerical variables  (exceptions can be made but you must speak with me first). If you'd like, you may join multiple datasets together.
+In order for you to have the greatest chance of success with this project it is important that you choose a reasonable dataset. This means that the data should be readily accessible and large enough that multiple relationships can be explored. As such, your dataset must have at least 100 observations and at least 10 variables. Generally, more observations and/or more variables will lead to a more interesting analysis. The dataset's variables should include categorical variables, discrete numerical variables, and continuous numerical variables (exceptions can be made but you must speak with me first). If you'd like, you may join multiple datasets together.
 
-All analyses must be done in RStudio, and your final written report and 
-analysis **must be reproducible**. This means that you must create an R Markdown
-document attached to a GitHub repository that will create your written report
-exactly upon knitting.
+All analyses must be done in RStudio, and your final written report and analysis **must be reproducible**. This means that you must create an R Markdown document attached to a GitHub repository that will create your written report exactly upon knitting.
 
-If you are using a dataset that comes in a 
-format that we haven't encountered in class (for instance, a `.DAT` file), make 
-sure that you are able to load it into RStudio as this can be tricky depending 
-on the source. If you are having trouble, ask for help before it is too late.
+If you are using a dataset that comes in a format that we haven't encountered in class (for instance, a `.DAT` file), make sure that you are able to load it into RStudio as this can be tricky depending on the source. If you are having trouble, ask for help before it is too late.
 
-**Reusing datasets from class:** Do not reuse datasets used in examples / lab
-in the class. 
+**Reusing datasets from class:** Do not reuse datasets used in examples / lab in the class.
 
 Some resources that may be helpful:
 
-- [R Data Sources for Regression Analysis](https://rfun.library.duke.edu/blog/data-sources-for-regression-analysis/)
-- [kaggle](https://www.kaggle.com/datasets)
-- [FiveThirtyEight data](https://data.fivethirtyeight.com/)
-- [TidyTuesday](https://github.com/rfordatascience/tidytuesday)
-
+-   [R Data Sources for Regression Analysis](https://rfun.library.duke.edu/blog/data-sources-for-regression-analysis/)
+-   [kaggle](https://www.kaggle.com/datasets)
+-   [FiveThirtyEight data](https://data.fivethirtyeight.com/)
+-   [TidyTuesday](https://github.com/rfordatascience/tidytuesday)
 
 Additions:
 
-- [World Health Organization](https://www.who.int/gho/database/en/)
-- [The National Bureau of Economic Research](https://data.nber.org/data/)
-- [International Monetary Fund](https://data.imf.org/?sk=388DFA60-1D26-4ADE-B505-A05A558D9A42&sId=1479329328660)
-- [General Social Survey](http://gss.norc.org/)
-- [United Nations Data](http://data.un.org/)
-- [United Nations Statistics Division](https://unstats.un.org/home/)
-- [U.K. Data](https://data.gov.uk/)
-- [U.S. Data](https://www.data.gov/)
-- [U.S. Census Data](https://www.census.gov/data.html)
-- [European Statistics](https://ec.europa.eu/eurostat/)
-- [Statistics Canada](https://www.statcan.gc.ca/eng/start)
-- [Pew Research](https://www.pewresearch.org/download-datasets/)
-- [UNICEF](https://data.unicef.org/)
-- [CDC](https://www.cdc.gov/datastatistics/index.html)
-- [World Bank](https://datacatalog.worldbank.org/)
-- [Election Studies](https://electionstudies.org//)
+-   [World Health Organization](https://www.who.int/gho/database/en/)
+-   [The National Bureau of Economic Research](https://data.nber.org/data/)
+-   [International Monetary Fund](https://data.imf.org/?sk=388DFA60-1D26-4ADE-B505-A05A558D9A42&sId=1479329328660)
+-   [General Social Survey](http://gss.norc.org/)
+-   [United Nations Data](http://data.un.org/)
+-   [United Nations Statistics Division](https://unstats.un.org/home/)
+-   [U.K. Data](https://data.gov.uk/)
+-   [U.S. Data](https://www.data.gov/)
+-   [U.S. Census Data](https://www.census.gov/data.html)
+-   [European Statistics](https://ec.europa.eu/eurostat/)
+-   [Statistics Canada](https://www.statcan.gc.ca/eng/start)
+-   [Pew Research](https://www.pewresearch.org/download-datasets/)
+-   [UNICEF](https://data.unicef.org/)
+-   [CDC](https://www.cdc.gov/datastatistics/index.html)
+-   [World Bank](https://datacatalog.worldbank.org/)
+-   [Election Studies](https://electionstudies.org//)
 
 # Project components
 
@@ -143,104 +129,67 @@ Additions:
 
 Due: `r proposal`
 
-Your proposal must be done using R Markdown. You should describe the dataset that
-you would like to use, and define the variables in the dataset that you intend to 
-explore. You must include some EDA (ex. univariate or bivariate plots,
-tables of summary statistics, etc), and you must also list at least two questions that you are interested in answering using the data.
+Your proposal must be done using R Markdown. You should describe the dataset that you would like to use, and define the variables in the dataset that you intend to explore. You must include some EDA (ex. univariate or bivariate plots, tables of summary statistics, etc), and you must also list at least two questions that you are interested in answering using the data.
 
-You should clearly indicate if you intend to pursue a method that you teach yourself. 
+You should clearly indicate if you intend to pursue a method that you teach yourself.
 
 You should clearly indicate if your questions supervised or unsupervised learning tasks.
 
-There is no page limit or requirement. For submission, submit the .pdf document
-to Canvas. The main purpose of this component of the project is to help you get started, and so Professor Tang can give feedback/suggestions about the data and questions of interest.
+There is no page limit or requirement. For submission, submit the .pdf document to Canvas. The main purpose of this component of the project is to help you get started, and so Professor Tang can give feedback/suggestions about the data and questions of interest.
 
-## Plan of analysis 
+## Plan of analysis
 
 Due: `r plan`
 
 Your plan of analysis must be done using R Markdown. Based on the feedback from your proposal, the written plan of analysis should contain:
 
-  - Your updated research question(s). Please be as clear as possible; do not be overly verbose. 
-  
-  - For each research question: the methods/models you plan to use to answer. The methods *must* be appropriate for the given research question. I encourage you to briefly justify why each method you choose is suitable for the question. 
-  
-  - Describe how exactly you plan to implement the methods you selected to answer your research question(s). This may include discussion of necessary data cleaning and preparation, which `R` packages you intend to use, how you plan on validating/comparing models, etc. 
+-   Your updated research question(s). Please be as clear as possible; do not be overly verbose.
+
+-   For each research question: the methods/models you plan to use to answer. The methods *must* be appropriate for the given research question. I encourage you to briefly justify why each method you choose is suitable for the question.
+
+-   Describe how exactly you plan to implement the methods you selected to answer your research question(s). This may include discussion of necessary data cleaning and preparation, which `R` packages you intend to use, how you plan on validating/comparing models, etc.
 
 If you chose to pursue a method that we did not cover in class, you must clearly describe the method in your plan.
 
-The main purpose of this component is so Professor Tang can make sure that you are well-prepared to complete the project. 
+The main purpose of this component is so Professor Tang can make sure that you are well-prepared to complete the project.
 
 ## Written report
 
 Due: `r repo`
 
-Your written report must be done using R Markdown. You must 
-contribute to the GitHub repository with regular meaningful commits/pushes. 
-Before you finalize your write up, make sure the printing of code chunks is 
-turned off with the option `echo = FALSE`. 
+Your written report must be done using R Markdown. You must contribute to the GitHub repository with regular meaningful commits/pushes. Before you finalize your write up, make sure the printing of code chunks is turned off with the option `echo = FALSE`.
 
-Your final report must match your GitHub repository *exactly*. The mandatory
-components of the report are as follows, but feel free to expand with additional
-sections as necessary. There is no page limit or requirement -- however, you
-must comprehensively address all aspects below. Please be judicious in what you
-decide to include in your final write-up. For submission, submit the .pdf document
-to Canvas.
+Your final report must match your GitHub repository *exactly*. The mandatory components of the report are as follows, but feel free to expand with additional sections as necessary. There is no page limit or requirement -- however, you must comprehensively address all aspects below. Please be judicious in what you decide to include in your final write-up. For submission, submit the .pdf document to Canvas.
 
 The written report is worth 60 points, broken down as
 
-Total                                                   | 60 pts
---------------------------------------------------------|--------
-**Introduction/data**                                   | 10 pts
-**EDA**                                                 | 5 pts
-**Methodology**                                         | 15 pts
-**Results**                                             | 20 pts
-**Discussion**                                          | 10 pts
+| Total                 | 60 pts |
+|-----------------------|--------|
+| **Introduction/data** | 10 pts |
+| **EDA**               | 5 pts  |
+| **Methodology**       | 15 pts |
+| **Results**           | 20 pts |
+| **Discussion**        | 10 pts |
 
 #### Introduction and data
 
-The introduction should introduce your general research question(s) and your data 
-(where it came from, how it was collected, what are the cases, what are the 
-variables, etc.). It should be clear from the Introduction if you are planning on 
-pursuing a supervised and/or unsupervised analysis.
-If you are planning on using supervised methods, you should 
-clearly indicate what variable is your response variable of interest.
+The introduction should introduce your general research question(s) and your data (where it came from, how it was collected, what are the cases, what are the variables, etc.). It should be clear from the Introduction if you are planning on pursuing a supervised and/or unsupervised analysis. If you are planning on using supervised methods, you should clearly indicate what variable is your response variable of interest.
 
 #### EDA
 
-The methodology section should include the variables used to address your 
-research question, as well as any useful visualizations or summary statistics. *Please be judicious in this section. Usually one strong visualization is better than five that are not useful.*
+The methodology section should include the variables used to address your research question, as well as any useful visualizations or summary statistics. *Please be judicious in this section. Usually one strong visualization is better than five that are not useful.*
 
-#### Methodology 
+#### Methodology
 
-In this section, you should introduce, briefly describe, and justify the 
-statistical learning methods that you used to answer your research question(s). 
+In this section, you should introduce, briefly describe, and justify the statistical learning methods that you used to answer your research question(s).
 
-#### Results 
+#### Results
 
-Showcase how you arrived at answers to 
-your question using any techniques we have learned in this class (and some 
-beyond, if you're feeling adventurous). Provide the main results from your
-analysis. The goal is not to do an exhaustive 
-data analysis (i.e., do not calculate every statistic and procedure you have 
-learned for every variable), but rather let me know that you are proficient at 
-asking meaningful questions and answering them with results of data analysis, 
-that you are proficient in using R, and that you are proficient at interpreting 
-and presenting the results. Focus on they key results that are related
-to answering your 
-research questions. 
+Showcase how you arrived at answers to your question using any techniques we have learned in this class (and some beyond, if you're feeling adventurous). Provide the main results from your analysis. The goal is not to do an exhaustive data analysis (i.e., do not calculate every statistic and procedure you have learned for every variable), but rather let me know that you are proficient at asking meaningful questions and answering them with results of data analysis, that you are proficient in using R, and that you are proficient at interpreting and presenting the results. Focus on they key results that are related to answering your research questions.
 
 #### Discussion
 
-This section is a conclusion and discussion. This will require a 
-summary of what you have learned about your research question along with 
-statistical arguments supporting your conclusions. Also, critique your own 
-methods and provide suggestions for improving your analysis. Issues pertaining 
-to the reliability and validity of your data and appropriateness of the 
-statistical analysis should also be discussed here. A paragraph on what you 
-would do differently if you were able to start over with the project or what you 
-would do next if you were going to continue work on the project should also be 
-included.
+This section is a conclusion and discussion. This will require a summary of what you have learned about your research question along with statistical arguments supporting your conclusions. Also, critique your own methods and provide suggestions for improving your analysis. Issues pertaining to the reliability and validity of your data and appropriateness of the statistical analysis should also be discussed here. A paragraph on what you would do differently if you were able to start over with the project or what you would do next if you were going to continue work on the project should also be included.
 
 *Revision opportunity*: after your presentation, you have the opportunity to take feedback from Professor Tang and your peers to revise the written report. If you would like to revise the report, you have within five days of receiving the initial feedback to re-submit the report. This is not a guarantee of an improved grade. I will speak more about the revision process later in the semester.
 
@@ -248,30 +197,20 @@ included.
 
 Due: `r repo`
 
-In addition to your Gradescope submissions, I will be checking your GitHub 
-repository. This repository should include:
+In addition to your Gradescope submissions, I will be checking your GitHub repository. This repository should include:
 
-- Two separate RMarkdown files (formatted to clearly present all of your code and results)
-that will output: (1) the proposal and (2) final write-up 
-- Meaningful README file on the GitHub repository that contains a *codebook*
-for relevant variables
-- Dataset(s) (in csv or RData format, in a `/data` folder)
-- Presentation (if using Keynote/PowerPoint/Google Slides, export to PDF and add
-it to your GitHub repo.)
+-   Two separate RMarkdown files (formatted to clearly present all of your code and results) that will output: (1) the proposal and (2) final write-up
+-   Meaningful README file on the GitHub repository that contains a *codebook* for relevant variables
+-   Dataset(s) (in csv or RData format, in a `/data` folder)
+-   Presentation (if using Keynote/PowerPoint/Google Slides, export to PDF and add it to your GitHub repo.)
 
-Style and format does count for this assignment, so please take the time to make 
-sure everything looks good and your data and code are properly formatted.
+Style and format does count for this assignment, so please take the time to make sure everything looks good and your data and code are properly formatted.
 
 ## Slides
 
 Due: `r repo`
 
-In addition to the write-up, you must also create presentation
-slides that summarize and showcase your project. Introduce your research question 
-and dataset, showcase your EDA visualizations, and provide some conclusions. These slides
-should serve as a brief visual accompaniment to your write-up and will be graded 
-for content and quality. They can also be used for your Presentation. For submission, convert these slides to a .pdf document to be uploaded to Canvas.
-
+In addition to the write-up, you must also create presentation slides that summarize and showcase your project. Introduce your research question and dataset, showcase your EDA visualizations, and provide some conclusions. These slides should serve as a brief visual accompaniment to your write-up and will be graded for content and quality. They can also be used for your Presentation. For submission, convert these slides to a .pdf document to be uploaded to Canvas.
 
 ## Presentation
 
@@ -281,54 +220,33 @@ On the last day of class everyone will present their projects. There will be a f
 
 ## Participation
 
-You are expected to attend both days of presentations, and be actively engaged by
-asking questions and providing feedback.
+You are expected to attend both days of presentations, and be actively engaged by asking questions and providing feedback.
 
-Everyone will also provide feedback and assess their partner's contributions. Please complete the evaluation form on the **Participation^** assignment in Canvas by `r participation`.
+Everyone will also provide feedback and assess their partner's contributions. Please complete the evaluation form on the **Participation\^** assignment in Canvas by `r participation`.
 
 # Tips
 
-- Ask questions if any of the expectations are 
-unclear.
+-   Ask questions if any of the expectations are unclear.
 
-- *Code*: In your write up your code should be hidden (`echo = FALSE`) so that 
-your document is neat and easy to read. However your document should include 
-all your code such that if I re-knit your Rmd file I should be able to obtain 
-the results you presented. **Exception:** If you want to highlight something 
-specific about a piece of code, you're welcome to show that portion. 
-
+-   *Code*: In your write up your code should be hidden (`echo = FALSE`) so that your document is neat and easy to read. However your document should include all your code such that if I re-knit your Rmd file I should be able to obtain the results you presented. **Exception:** If you want to highlight something specific about a piece of code, you're welcome to show that portion.
 
 # Grading
 
 Grading of the project will take into account the following:
 
-- Content - What is the quality of research and/or policy question and relevancy 
-of data to those questions?
-- Correctness - Are the statistical plearning rocedures carried out and explained correctly?
-- Writing and Presentation - What is the quality of the statistical presentation, 
-writing, and explanations?
-- Creativity and Critical Thought - Is the project carefully thought out? Are the 
-limitations carefully considered? Does it appear that time and effort went into 
-the planning and implementation of the project?
+-   Content - What is the quality of research and/or policy question and relevancy of data to those questions?
+-   Correctness - Are the statistical plearning rocedures carried out and explained correctly?
+-   Writing and Presentation - What is the quality of the statistical presentation, writing, and explanations?
+-   Creativity and Critical Thought - Is the project carefully thought out? Are the limitations carefully considered? Does it appear that time and effort went into the planning and implementation of the project?
 
 A general breakdown of scoring is as follows:
 
-- *90%-100%*: Outstanding effort. Student understands how to apply all statistical 
-concepts, can put the results into a cogent argument, can identify weaknesses in 
-the argument, and can clearly communicate the results to others.
-- *80%-89%*: Good effort. Student understands most of the concepts, puts together 
-an adequate argument, identifies some weaknesses of their argument, and communicates 
-most results clearly to others.
-- *70%-79%*: Passing effort. Student has misunderstanding of concepts in several 
-areas, has some trouble putting results together in a cogent argument, and communication 
-of results is sometimes unclear.
-- *60%-69%*: Struggling effort. Student is making some effort, but has misunderstanding 
-of many concepts and is unable to put together a cogent argument. Communication 
-of results is unclear.
-- *Below 60%*: Student is not making a sufficient effort.
-
+-   *90%-100%*: Outstanding effort. Student understands how to apply all statistical concepts, can put the results into a cogent argument, can identify weaknesses in the argument, and can clearly communicate the results to others.
+-   *80%-89%*: Good effort. Student understands most of the concepts, puts together an adequate argument, identifies some weaknesses of their argument, and communicates most results clearly to others.
+-   *70%-79%*: Passing effort. Student has misunderstanding of concepts in several areas, has some trouble putting results together in a cogent argument, and communication of results is sometimes unclear.
+-   *60%-69%*: Struggling effort. Student is making some effort, but has misunderstanding of many concepts and is unable to put together a cogent argument. Communication of results is unclear.
+-   *Below 60%*: Student is not making a sufficient effort.
 
 # Late work policy
 
-**There is no late work accepted on this project.** Be sure to turn in your 
-work early to avoid any technological mishaps.
+**There is no late work accepted on this project.** Be sure to turn in your work early to avoid any technological mishaps.

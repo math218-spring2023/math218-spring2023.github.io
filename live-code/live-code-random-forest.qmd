@@ -1,0 +1,44 @@
+---
+title: "Live code:"
+date: "March 31, 2023"
+description: "Random Forests"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan)
+library(randomForest)
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+## Introduction
+
+As we will see in the slides, bagged trees and random forests are very similar and can be fit using the same function: `randomForest()`. The difference lies in the specification of the `mtry` argument, as we will see below.
+
+## Random Forests
+
+The syntax for random forests is almost identical to that of bagging regression trees. Unlike bagging, we need to specify two parameters for random forests:
+
+1.  The number of bootstrap samples $B$ to obtain (as in bagging)
+2.  The number of predictors we should consider at each split (i.e. the `mtry` argument)
+
+In the following code, I fit `B = 10` regression trees, and specify `mtry = 2`.
+
+```{r}
+set.seed(1)
+rf_mod <- randomForest(abundance ~ . , data = mite_dat,
+                    ntree = 10, 
+                    mtry = 2)
+```
+
+Everything else is exactly the same as in bagged regression trees!

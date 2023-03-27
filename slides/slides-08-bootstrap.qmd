@@ -1,0 +1,208 @@
+---
+title: "Bootstrap"
+date: "March 28, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/mms.png"
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: false
+---
+
+# Housekeeping
+
+-   Lab 04: Forest Fires due to Canvas this Thursday 11:59pm
+
+-   Take-home midterm assigned this Friday (will introduce it today)
+
+```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, message = F)
+
+library(tidyverse)
+library(broom)
+library(ggfortify)
+library(ISLR)
+library(vegan)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+
+```
+
+::: footer
+<https://en.wikipedia.org/wiki/M%26M%27s>
+:::
+
+## Resampling
+
+-   Economically use a collected dataset by repeatedly drawing samples from the same training dataset and fitting a model of interest on each sample
+
+    -   Obtain additional information about the fitted model
+
+-   Two methods: cross-validation and the bootstrap
+
+-   These slides will focus on the **bootstrap**
+
+# The Bootstrap
+
+## The Bootstrap
+
+-   The **bootstrap** is a flexible and powerful statistical tool that can be used to quantify the uncertainty associated with a given estimator or statistical learning method
+
+-   Example: can be used to estimate the standard errors of the $\beta$ coefficients in linear regression
+
+-   One goal of statistics: learn about a population.
+
+    -   Usually, population is not available, so must make inference from sample data
+
+-   Bootstrapping operates by *resampling* this sample data to create many simulated samples
+
+## The Bootstrap (cont.)
+
+-   Bootstrapping resamples the original dataset **with replacement**
+
+-   If the original dataset has $n$ observations, then each bootstrap/resampled dataset also has $n$ observations
+
+    -   Each observation has equal probability of being included in the resampled dataset
+    -   Can select an observation more than once for a resampled dataset
+
+## Example: M&Ms
+
+-   Suppose I want to know the true proportion of plain M&M candies that are colored red
+
+-   My sample is a bag of M&Ms that I purchased at a gas station, which contains 56 pieces with the following distribution:
+
+::: fragment
+```{r echo = F}
+set.seed(1)
+n <- 56
+mm_props <- c(0.125, 0.25, 0.125, 0.125, 0.25, 0.125)
+cols <- c("red", "orange", "yellow", "green", "blue", "brown")
+cols <- factor(cols, levels = cols)
+obs <- sample(x = cols, size = n, replace = T, prob = mm_props)
+obs
+table(obs)
+```
+:::
+
+-   Good first guess for the true proportion of red candies?
+
+    -   `r sum(obs == "red")`/`r n` = `r round(sum(obs == "red")/n, 3)`
+
+-   How would we go about creating a range of plausible estimates? We could bootstrap!
+
+## Example: M&Ms (cont.)
+
+-   To obtain a single bootstrap sample, we repeatedly pull out an M&M, note its color, and return it to the bag until we have pulled out a total of $n = 56$ candies
+
+-   We typically repeat this process many times, to simulate taking multiple observations from the population
+
+## Step-through code
+
+-   Create my first bootstrap sample:
+
+::: fragment
+```{r echo = T}
+n <- length(obs)
+samp1 <- sample(x = obs, size = n, replace = T)
+samp1
+```
+:::
+
+::: fragment
+```{r echo = T}
+table(samp1)
+```
+:::
+
+-   Obtain our first estimate for $p_{red}$, the true proportion of red-colors M&Ms: $\hat{p}^{(1)}_{red} = `r round(mean(samp1 == "red"), 3)`$
+
+## Example (cont.) {.scrollable}
+
+-   Take second sample:
+
+::: fragment
+```{r echo = T}
+samp2 <- sample(x = obs, size = n, replace = T)
+table(samp2)
+```
+:::
+
+-   $\hat{p}^{(2)}_{red} = `r round(mean(samp2 == "red"), 3)`$
+
+-   Repeat this process thousands of times!
+
+-   ...
+
+```{r echo = F}
+B <- 1000
+samps <- t(replicate(B,  sample(x = obs, size = n, replace = T)))
+p_ests <- rowMeans(samps == "red")
+```
+
+-   After `r B` bootstrap samples, we end up with `r B` estimates for $p_{red}$
+
+-   Average over all estimates is $\hat{p} _{red}= `r round(mean(p_ests), 3)`$
+
+::: stack
+::: fragment
+```{r fig.align="center", fig.height=4, fig.width=6}
+ggplot(data.frame(p_red = p_ests), aes(x = p_red)) +
+  geom_histogram(bins = 10) +
+  geom_vline(xintercept = mean(p_ests), col = "red")+
+  theme(text =element_text(size = 20))
+```
+:::
+
+-   Approximate 95% confidence interval for the proportion are the 5% and 95% quantiles of the `r B` mean estimates: (`r round(quantile(p_ests, c(0.025)), 3)`, `r round(quantile(p_ests, c(0.975)), 3)`)
+
+::: fragment
+```{r fig.align="center", fig.height=4, fig.width=6}
+ggplot(data.frame(p_red = p_ests), aes(x = p_red)) +
+  geom_histogram(bins = 10) +
+  geom_vline(xintercept = mean(p_ests), col = "red") +
+  geom_vline(xintercept = quantile(p_ests, 0.025), col = "orange", linetype = "dashed")+
+  geom_vline(xintercept = quantile(p_ests, 0.975), col = "orange", linetype = "dashed") +
+  theme(text =element_text(size = 20))
+```
+:::
+:::
+
+## Comprehension checks
+
+Suppose my original sample has the following $n = 5$ observations: (1, 0, -2, 0.5, 4).
+
+Which of the following are possible bootstrap samples we could obtain from the original sample?
+
+1.  (0, 0, 0, 0, 0)
+
+2.  (1, -2, -2, 3, 4)
+
+3.  (1, 0, -2, 0.5, 4)
+
+4.  (4, -2, 0)
+
+## Bootstrap: pros and cons
+
+-   Real world vs bootstrap world
+
+-   Pros:
+
+    -   No assumptions about distribution of your data
+    -   Very general method that allows estimating sampling distribution of almost any statistic!
+    -   Cost-effective
+
+-   Cons:
+
+    -   In more complex scenarios, figuring out appropriate way to bootstrap may require thought
+    -   Can fail in some situations
+    -   Relies quite heavily on the original sample

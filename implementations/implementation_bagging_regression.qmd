@@ -1,0 +1,55 @@
+---
+title: "Bagging"
+date: "March 28, 2023"
+editor: visual
+categories: "Implementations"
+description: "Regression trees"
+draft: true
+---
+
+::: {style="color: maroon"}
+Note: this implementation is not graded.
+:::
+
+## Introduction
+
+Suppose we want to fit a bagged regression tree model using `B = 10` trees. We will first implement the models by hand before learning how to use functions from the `randomForest` library.
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan)
+library(tree)
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+n <- nrow(mite_dat)
+```
+
+## Implement bagging: validation set
+
+In this section, you will see that you are provided an 80/20 split of the data. Implement a bagged regression tree model where the trees are fit on the train data, and you obtain predictions for the remaining, held-out 20% test data. Assume that we want to predict `abundance` using all the remaining variables as predictors.
+
+Remember, we are bagging `B = 10` trees.
+
+```{r test-train}
+set.seed(18) 
+train_ids <- sample(1:n, 0.8*n)
+n_train <- length(train_ids)
+n_test <- n - n_train
+```
+
+```{r bagging-validation}
+# code here
+```
+
+## Implement bagging: OOB
+
+Rather than splitting the data into a train/test set, here we will leverage the out-of-bag (OOB) observations. Implement a bagged regression tree model where the OOB observations are used to estimate the test error.
+
+*Hint*: remember that different observations will be excluded from each bootstrap sample. So you have to be clever about how you keep track of the predictions (and how many times an observation is OOB).
+
+```{r oob}
+# code here
+
+```

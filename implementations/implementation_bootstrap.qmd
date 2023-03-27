@@ -57,7 +57,7 @@ data.frame(n = n_vec) %>%
 
 We will now investigate numerically the probability that a bootstrap sample of size $n = 100$ contains the $j$-th observation.
 
-You will obtain a total of $B = 10000$ bootstrap samples. For each bootstrap sample $b$, you should record a:
+You will obtain a total of $B = 10000$ bootstrap samples. For each bootstrap sample, you should record a:
 
 -   1 if the fourth observation (i.e. $j = 4$) is *not* contained in the bootstrap sample
 
@@ -66,5 +66,5 @@ You will obtain a total of $B = 10000$ bootstrap samples. For each bootstrap sam
 *Note*: the actual data does not matter in this simulation. We only care about *which* observations are selected, not the values of the observations themselves.
 
 ::: {style="color: maroon"}
-Then, take the mean of your $B$ results. How does your empirical probability (i.e. simulated result) compared to the theory above?
+Then, take the mean of your $B$ results (which results in a proportion). How does your empirical probability (i.e. simulated proportion) compared to the theory above?
 :::

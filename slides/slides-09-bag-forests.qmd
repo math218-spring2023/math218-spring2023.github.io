@@ -96,9 +96,19 @@ mite_dat <- mite.env %>%
 
     -   The only parameter we set when bagging decision trees is the number of trees $B$ to include
 
+## Implementation
+
+-   Suppose we want to fit a bagged regression tree model to predict `abundance` in the mite data
+
+-   Fit data on 80% train, predict on 20% test
+
+-   Discuss: how would you fit a bagged regression tree model to obtain predictions for the test set using functions/methods you already know?
+
+
+
 ## Out-of-bag error estimation
 
--   Estimating test error of bagged model is quite easy without performing CV
+-   Estimating test error of a bagged model is quite easy without performing CV
 
 -   On average, each one of the $B$ trees is fit using about 2/3 of the observations. Remaining 1/3 are called **out-of-bag** (OOB) observations
 
@@ -111,6 +121,15 @@ mite_dat <- mite.env %>%
     :::
 
 -   When $B$ sufficiently large, OOB error is virtually equivalent to LOOCV
+
+-   ::: {style="color: maroon"}
+    Discuss and implement: how would you fit a bagged regression tree model where you use OOB observations to estimate test error?
+    :::
+
+
+## Live code!
+
+Fitting bagged decision trees using the `randomForest` package
 
 ## Mite data
 
@@ -192,9 +211,9 @@ bag_rf_df %>%
 
 -   But one main attraction of decision trees is their interpretability!
 
--   Can obtain an overall summary of importance of each predictor using the residual sum of square (RSS):
+-   Can obtain an overall summary of importance of each predictor using the residual error:
 
-    -   For bagged regression trees, record the total amount that RSS decreases due to splits over a given predictor, averaged over $B$
+    -   For bagged regression trees, record the total amount that MSE decreases due to splits over a given predictor, averaged over $B$ (higher explanatory power $\rightarrow$ larger decrease in MSE $\rightarrow$ more important)
 :::
 
 ::: {.column width="50%"}
@@ -218,6 +237,10 @@ importance_df %>%
 :::
 
 -   `WatrCont` is the most important variable. This should make sense!
+
+-   ::: {style="color: maroon"}
+    Live code!
+    :::
 :::
 :::
 
@@ -231,17 +254,17 @@ importance_df %>%
 
 -   The only difference is in how each tree $\hat{f}^{(b)}(x)$ is constructed
 
-- Prediction in random forests proceeds the same as in bagged trees
+-   Prediction in random forests proceeds the same as in bagged trees
 
 ## Construction
 
--   *Each time* a split is considered, a *random sample* of $m$ predictors is chosen as split candidates from the full set of $p$ predictors. 
+-   *Each time* a split is considered, a *random sample* of $m$ predictors is chosen as split candidates from the full set of $p$ predictors.
 
-- The node will split on one of these $m$ predictors
+-   The node will split on one of these $m$ predictors
 
     -   At every split, we choose a new sample of $m$ predictors
 
-    -   Typically choose $m \approx \sqrt{p}$
+    -   Typically choose $m \approx p/3$
 
 ## Example construction
 
@@ -257,7 +280,7 @@ colnames(mite_dat)
 
 -   Then we build a regression tree where:
 
-    -   For node 1, we only consider a random sample of $m \approx \sqrt{5} \approx 2$ predictors:
+    -   For node 1, we only consider a random sample of $m \approx 5/3 \approx 2$ predictors:
 
         ```{r}
         #| echo: false
@@ -290,6 +313,10 @@ colnames(mite_dat)
 
 -   ::: {style="color: maroon"}
     Discuss: what is the resulting model when $m = p$?
+    :::
+
+-   ::: {style="color: maroon"}
+    Live code!
     :::
 
 ## Mite data
