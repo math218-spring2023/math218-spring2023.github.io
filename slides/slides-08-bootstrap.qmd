@@ -19,6 +19,8 @@ draft: false
 
 -   Lab 04: Forest Fires due to Canvas this Thursday 11:59pm
 
+-   Lab 03 should be graded by end of today!
+
 -   Take-home midterm assigned this Friday (will introduce it today)
 
 ```{r packabundances, echo=FALSE, message=FALSE, warning=FALSE}
