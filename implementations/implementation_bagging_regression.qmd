@@ -34,6 +34,16 @@ Implement a bagged regression tree model where the trees are fit on the train da
 
 Remember, we are bagging `B = 10` trees.
 
+::: {style="color: maroon"}
+Discuss with someone next to you before coding:
+:::
+
+-   Will you need to iterate multiple times? If so, how many times? What steps need to take place at every iteration?
+
+-   What are you ultimately trying to obtain/output?
+
+-   What information will you need keep track off? Will you need to create some vectors?
+
 ```{r test-train}
 set.seed(18) 
 train_ids <- sample(1:n, 0.8*n)
@@ -50,6 +60,12 @@ n_test <- n - n_train
 Rather than splitting the data into a train/test set, here we will leverage the out-of-bag (OOB) observations. Implement a bagged regression tree model where the OOB observations are used to estimate the test error.
 
 *Hint*: remember that different observations will be excluded from each bootstrap sample. So you have to be clever about how you keep track of the predictions (and how many times an observation is OOB).
+
+::: {style="color: maroon"}
+Discuss with someone next to you before coding:
+:::
+
+-   What will be different about OOB predictions compared to a bagged tree where we explicitly define a test/train split? What will be the same?
 
 ```{r oob}
 # code here

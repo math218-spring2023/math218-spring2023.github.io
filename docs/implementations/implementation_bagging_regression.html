@@ -237,6 +237,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this section, you will see that you are provided an 80/20 split of the data.</p>
 <p>Implement a bagged regression tree model where the trees are fit on the train data, and you obtain predictions for the remaining 20% test data. Assume that we want to predict <code>abundance</code> using all the remaining variables as predictors.</p>
 <p>Remember, we are bagging <code>B = 10</code> trees.</p>
+<div style="color: maroon">
+<p>Discuss with someone next to you before coding:</p>
+</div>
+<ul>
+<li><p>Will you need to iterate multiple times? If so, how many times? What steps need to take place at every iteration?</p></li>
+<li><p>What are you ultimately trying to obtain/output?</p></li>
+<li><p>What information will you need keep track off? Will you need to create some vectors?</p></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">18</span>) </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>train_ids <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="fl">0.8</span><span class="sc">*</span>n)</span>
@@ -251,6 +259,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="implement-bagging-oob">Implement bagging: OOB</h2>
 <p>Rather than splitting the data into a train/test set, here we will leverage the out-of-bag (OOB) observations. Implement a bagged regression tree model where the OOB observations are used to estimate the test error.</p>
 <p><em>Hint</em>: remember that different observations will be excluded from each bootstrap sample. So you have to be clever about how you keep track of the predictions (and how many times an observation is OOB).</p>
+<div style="color: maroon">
+<p>Discuss with someone next to you before coding:</p>
+</div>
+<ul>
+<li>What will be different about OOB predictions compared to a bagged tree where we explicitly define a test/train split? What will be the same?</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

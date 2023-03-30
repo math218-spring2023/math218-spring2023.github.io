@@ -2223,14 +2223,14 @@
     "href": "implementations/implementation_bagging_regression.html#implement-bagging-validation-set",
     "title": "Bagging",
     "section": "Implement bagging: validation set",
-    "text": "Implement bagging: validation set\nIn this section, you will see that you are provided an 80/20 split of the data.\nImplement a bagged regression tree model where the trees are fit on the train data, and you obtain predictions for the remaining 20% test data. Assume that we want to predict abundance using all the remaining variables as predictors.\nRemember, we are bagging B = 10 trees.\n\nset.seed(18) \ntrain_ids <- sample(1:n, 0.8*n)\nn_train <- length(train_ids)\nn_test <- n - n_train\n\n\n# code here"
+    "text": "Implement bagging: validation set\nIn this section, you will see that you are provided an 80/20 split of the data.\nImplement a bagged regression tree model where the trees are fit on the train data, and you obtain predictions for the remaining 20% test data. Assume that we want to predict abundance using all the remaining variables as predictors.\nRemember, we are bagging B = 10 trees.\n\nDiscuss with someone next to you before coding:\n\n\nWill you need to iterate multiple times? If so, how many times? What steps need to take place at every iteration?\nWhat are you ultimately trying to obtain/output?\nWhat information will you need keep track off? Will you need to create some vectors?\n\n\nset.seed(18) \ntrain_ids <- sample(1:n, 0.8*n)\nn_train <- length(train_ids)\nn_test <- n - n_train\n\n\n# code here"
   },
   {
     "objectID": "implementations/implementation_bagging_regression.html#implement-bagging-oob",
     "href": "implementations/implementation_bagging_regression.html#implement-bagging-oob",
     "title": "Bagging",
     "section": "Implement bagging: OOB",
-    "text": "Implement bagging: OOB\nRather than splitting the data into a train/test set, here we will leverage the out-of-bag (OOB) observations. Implement a bagged regression tree model where the OOB observations are used to estimate the test error.\nHint: remember that different observations will be excluded from each bootstrap sample. So you have to be clever about how you keep track of the predictions (and how many times an observation is OOB).\n\n# code here"
+    "text": "Implement bagging: OOB\nRather than splitting the data into a train/test set, here we will leverage the out-of-bag (OOB) observations. Implement a bagged regression tree model where the OOB observations are used to estimate the test error.\nHint: remember that different observations will be excluded from each bootstrap sample. So you have to be clever about how you keep track of the predictions (and how many times an observation is OOB).\n\nDiscuss with someone next to you before coding:\n\n\nWhat will be different about OOB predictions compared to a bagged tree where we explicitly define a test/train split? What will be the same?\n\n\n# code here"
   },
   {
     "objectID": "implementations/implementation_bootstrap.html",
