@@ -2077,5 +2077,117 @@
     "title": "Final project",
     "section": "Participation",
     "text": "Participation\nYou are expected to attend both days of presentations, and be actively engaged by asking questions and providing feedback.\nEveryone will also provide feedback and assess their partner’s contributions. Please complete the evaluation form on the Participation^ assignment in Canvas by TBD."
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#classification",
+    "href": "slides/slides-10-logistic.html#classification",
+    "title": "Classification & Logistic Regression",
+    "section": "Classification",
+    "text": "Classification\n\nUp until now, we have focused on quantitative responses \\(y_{i}\\)\nWhat happens when \\(y_{i}\\) is qualitative? Examples include:\n\nMedical diagnosis: \\(\\mathcal{C} = \\{\\text{yes}, \\text{no}\\}\\)\nEducation level: \\(\\mathcal{C} = \\{\\text{high school}, \\text{college}, \\text{graduate}\\}\\)\n\nEach category in \\(\\mathcal{C}\\) is also known as a label\nIn this setting, we want our model to be a classifier, i.e. given predictors \\(X\\), predict a label from the pool of all possible categories \\(\\mathcal{C}\\)"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#classification-1",
+    "href": "slides/slides-10-logistic.html#classification-1",
+    "title": "Classification & Logistic Regression",
+    "section": "Classification",
+    "text": "Classification\n\nModel: \\(y_{i} = f(x_{i}) + \\epsilon_{i}\\)\nWe will still have to estimate \\(f\\) with a \\(\\hat{f}\\)\n\\(\\hat{y}_{i}\\) is the predicted class label for observation \\(i\\) using estimate \\(\\hat{f}\\)\nHow to assess model accuracy? Error is more intuitive in classification: we make an error if we predict the incorrect label, and no error otherwise"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#classification-error",
+    "href": "slides/slides-10-logistic.html#classification-error",
+    "title": "Classification & Logistic Regression",
+    "section": "Classification error",
+    "text": "Classification error\n\nThis can be represented using an indicator variable or function. \\(\\mathbf{I}(y_{i} = \\hat{y}_{i})\\): \\[\\mathbf{1}(y_{i} = \\hat{y}_{i}) = \\begin{cases} 1 & \\text{ if } y_{i} = \\hat{y}_{i}\\\\ 0 & \\text{ if } y_{i} \\neq \\hat{y}_{i} \\end{cases}\\]\nWe typically have more than one observation \\(\\Rightarrow\\) calculate the classification error rate, which is the proportion of mistakes we make in predicted labels: \\[\\frac{1}{n} \\sum_{i=1}^{n} \\mathbf{1}(y_{i} \\neq \\hat{y}_{i})\\]\n\nSmaller error prefered"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#conditional-class-probabilities",
+    "href": "slides/slides-10-logistic.html#conditional-class-probabilities",
+    "title": "Classification & Logistic Regression",
+    "section": "Conditional class probabilities",
+    "text": "Conditional class probabilities\n\nHow do we choose which label to predict for a given observation?\nAssume we have a total of \\(J\\) possible labels in \\(\\mathcal{C}\\)\nFor a given observation \\(i\\), can calculate the following probability for each possible label \\(j\\): \\[p_{ij}(x_{i}) = \\text{Pr}(y_{i} = j | X = x_{i})\\]\n\n“Probability that observation \\(i\\) has label \\(j\\), given the predictors \\(x_{i}\\)”\n\nThese probabilities are called conditional class probabilities at \\(x_{i}\\)"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#bayes-optimal-classifier-1",
+    "href": "slides/slides-10-logistic.html#bayes-optimal-classifier-1",
+    "title": "Classification & Logistic Regression",
+    "section": "Bayes optimal classifier",
+    "text": "Bayes optimal classifier\n\nThe Bayes optimal classifier will assign/predict the label which has the largest conditional class probability\n\nIt can be shown that the test error rate \\(\\frac{1}{n_{test}} \\sum_{i=1}^{n_{test}} \\mathbf{1}(y_{i} \\neq \\hat{y}_{i})\\) is minimized when using the Bayes optimal classifier\n\nFor example, consider a binary response with levels “yes” and “no”\nFor observation \\(i\\), if \\(Pr(y_{i} = \\text{yes} | X = x_{i}) > 0.5\\), then predict \\(\\hat{y}_{i} =\\) “yes”\nThe \\(x_{i}\\) where \\(Pr(y_{i} = \\text{yes} | X = x_{i}) = Pr(y_{i} = \\text{no} | X = x_{i})= 0.5\\) is called the Bayes decision boundary"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#example",
+    "href": "slides/slides-10-logistic.html#example",
+    "title": "Classification & Logistic Regression",
+    "section": "Example",
+    "text": "Example\nThe following plot shows simulated binary data plotted in 2D predictor space, where color corresponds to label. Large dots denote the observations, black line is Bayes decision boundary."
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#need-for-models",
+    "href": "slides/slides-10-logistic.html#need-for-models",
+    "title": "Classification & Logistic Regression",
+    "section": "Need for models",
+    "text": "Need for models\n\nBayes classifier is “gold standard”\nIn practice, we cannot compute \\(p_{ij}(x_{i}) = \\textbf{Pr}(y_{i} = j | X = x_{i})\\) because we do know these true probabilities (i.e. we don’t know the true conditional distribution of \\(y\\) given \\(x\\))\nInstead, we need to estimate the \\(p_{ij}(x_{i})\\)\nDifferent statistical learning models define different methods to estimate these \\(p_{ij}(x_{i})\\)!\nOnce we have an estimate of these conditional class probabilities, the “way” of classifying is the same no matter the model:\n\nFor observation \\(i\\), predict label \\(j^*\\) if \\(p_{ij^*}(x_{i}) = \\max_{j}\\{p_{ij}(x_{i})\\}\\)"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#logistic-regression-1",
+    "href": "slides/slides-10-logistic.html#logistic-regression-1",
+    "title": "Classification & Logistic Regression",
+    "section": "Logistic regression",
+    "text": "Logistic regression\nThe observed zero abundances in the mite data were difficult to work with. I consider transform the abundance to a binary response present as follows:\n\nmite_dat_cat <- mite.env %>%\n  add_column(abundance = mite$LRUG) %>%\n  mutate(present = ifelse(abundance > 0, 1, 0)) %>%\n  select(-abundance)"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#logistic-regression-2",
+    "href": "slides/slides-10-logistic.html#logistic-regression-2",
+    "title": "Classification & Logistic Regression",
+    "section": "Logistic regression",
+    "text": "Logistic regression\nFitting a logistic regression:"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#logistic-regression-3",
+    "href": "slides/slides-10-logistic.html#logistic-regression-3",
+    "title": "Classification & Logistic Regression",
+    "section": "Logistic regression",
+    "text": "Logistic regression\n\nAssume first that we have a single predictor \\(X\\)\nLet \\(p({x}) = \\text{Pr}(Y = 1 | {X} = {x})\\)\n\nFor binary response \\((J = 2)\\), we shorthand the conditional class probability to always be in terms of a “success” class\n\nNeed to somehow restrict \\(0 \\leq p(x) \\leq 1\\)\nLogistic regression uses logistic function: \\[p({x}) = \\frac{e^{\\beta_{0} + \\beta_{1}x}}{1 + e^{\\beta_{0} + \\beta_{1}x}}\\]"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#odds-and-log-odds",
+    "href": "slides/slides-10-logistic.html#odds-and-log-odds",
+    "title": "Classification & Logistic Regression",
+    "section": "Odds and Log-odds",
+    "text": "Odds and Log-odds\n\nRearranging this equation yields the odds: \\[ \\frac{\\text{Pr(success)}}{\\text{Pr(failure)}} = \\frac{p(x)}{1 - p(x)} = e^{\\beta_{0} + \\beta_{1}x}\\]\nFurthermore, we can obtain the log-odds: \\[\\log\\left(\\frac{p(x)}{1 - p(x)}\\right) = \\log(e^{\\beta_{0} + \\beta_{1}x})  = \\beta_{0} + \\beta_{1}x\\]\n\nWhen using \\(\\log()\\), we refer to natural logarithm function \\(\\ln()\\)"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#example-1",
+    "href": "slides/slides-10-logistic.html#example-1",
+    "title": "Classification & Logistic Regression",
+    "section": "Example",
+    "text": "Example\n\nFor the mite data, let “success” be when present = 1; i.e. \\(p(x) = \\text{Pr}(\\text{present} = 1 | X = x)\\)\nI fit the following logistic regression model: \\[\\log\\left(\\frac{p(x)}{1-p(x)}\\right) = e^{\\beta_{0} + \\beta_{1} \\text{WatrCont}}\\]\n\n\n\nlogistic_mod <- glm(present ~ WatrCont, data = mite_dat_cat, \n                    family = \"binomial\")"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#remarks",
+    "href": "slides/slides-10-logistic.html#remarks",
+    "title": "Classification & Logistic Regression",
+    "section": "Remarks",
+    "text": "Remarks\n\nEasily extends to \\(p\\) predictor case: let \\(\\mathbf{x} = (x_{1}, x_{2}, \\ldots, x_{p})\\). Then \\[p(\\mathbf{x}) = \\frac{e^{\\beta_{0} + \\beta_{1}x_{1} + \\ldots \\beta_{p} x_{p}}}{1 + e^{\\beta_{0} + \\beta_{1}x_{1} + \\ldots \\beta_{p}x_{p}}}\\]\nWhy called logistic “regression” if used for classification task?\n\nThe log-odds is a real-valued quantity that is modeled as a linear function of \\(X\\)"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#obtaining-probability",
+    "href": "slides/slides-10-logistic.html#obtaining-probability",
+    "title": "Classification & Logistic Regression",
+    "section": "Obtaining probability",
+    "text": "Obtaining probability\n\nWe can interpret the coefficients, but remember the original goal: predict a label (success/failure) for an observation based on its predictors\nThat is, we want \\(p(x)\\), not \\(\\log\\left(\\frac{p(x)}{1-p(x)}\\right)\\)\nWe might ask: what is the estimated probability of presence of mites for a location where WatrCont = 350?\n\n\n\n\n\n\\[\n\\begin{align*}\n&\\hat{p}(x) = \\frac{e^{\\hat{\\beta}_{0} + \\hat{\\beta}_{1}x}}{1 + e^{\\hat{\\beta}_{0} + \\hat{\\beta}_{1}x}} \\\\\n&\\hat{p}(x = 350) = \\frac{e^{-2.4815 + 0.0087 \\times 350}}{1+e^{-2.4815 + 0.0087 \\times 350}} = 0.637262\n\\end{align*}\n\\]\n\n\nDiscuss: based on this model, would you classify an observation with WatrCont = 350 to have mites or not?"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#example-cont.",
+    "href": "slides/slides-10-logistic.html#example-cont.",
+    "title": "Classification & Logistic Regression",
+    "section": "Example (cont.)",
+    "text": "Example (cont.)\n\n\n\n\nCall:\nglm(formula = present ~ WatrCont, family = \"binomial\", data = mite_dat_cat)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3429  -0.9402   0.4965   0.7911   1.7595  \n\nCoefficients:\n             Estimate Std. Error z value Pr(>|z|)   \n(Intercept) -2.481539   1.011855  -2.452  0.01419 * \nWatrCont     0.008743   0.002695   3.244  0.00118 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 85.521  on 69  degrees of freedom\nResidual deviance: 70.796  on 68  degrees of freedom\nAIC: 74.796\n\nNumber of Fisher Scoring iterations: 5\n\n\n\n\nDiscuss:\n\nWhat is the interpretation of \\(\\hat{\\beta}\\_{1} =\\) 0.0087?\nIs increasing WatrCont associated with an increasing or decreasing probability of the presence of these mites?"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#interpretation-of-coefficients",
+    "href": "slides/slides-10-logistic.html#interpretation-of-coefficients",
+    "title": "Classification & Logistic Regression",
+    "section": "Interpretation of coefficients",
+    "text": "Interpretation of coefficients\n\\[\\log\\left(\\frac{p(x)}{1 - p(x)}\\right) = \\log(e^{\\beta_{0} + \\beta_{1}x})  = \\beta_{0} + \\beta_{1}x\\]\n\nInterpretation of \\(\\beta_{1}\\): for every one-unit increase in \\(x\\), we expect an average change of \\(\\beta_{1}\\) in the log-odds (or average multiple of \\(e^{\\beta_{1}}\\) in the odds)\n\n\\(\\beta_{1}\\) does not correspond to the change in \\(p(x)\\) associated with one-unit increase in \\(X\\) (i.e., not a linear relationship between \\(x\\) and \\(p(x)\\))\nIf \\(\\beta_{1} > 0\\), then increasing \\(X\\) is associated with increasing \\(p(X)\\)"
   }
 ]

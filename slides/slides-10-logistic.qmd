@@ -1,0 +1,286 @@
+---
+title: "Classification & Logistic Regression"
+date: "March 30, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/forests.png"
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: false
+---
+
+# Housekeeping
+
+```{r message = F}
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+```
+
+# Categorical responses
+
+## Classification
+
+-   Up until now, we have focused on quantitative responses $y_{i}$
+
+-   What happens when $y_{i}$ is qualitative? Examples include:
+
+    -   Medical diagnosis: $\mathcal{C} = \{\text{yes}, \text{no}\}$
+
+    -   Education level: $\mathcal{C} = \{\text{high school}, \text{college}, \text{graduate}\}$
+
+-   Each category in $\mathcal{C}$ is also known as a **label**
+
+-   In this setting, we want our model to be a **classifier**, i.e. given predictors $X$, predict a label from the pool of all possible categories $\mathcal{C}$
+
+## Classification
+
+-   Model: $y_{i} = f(x_{i}) + \epsilon_{i}$
+
+-   We will still have to estimate $f$ with a $\hat{f}$
+
+-   $\hat{y}_{i}$ is the predicted class label for observation $i$ using estimate $\hat{f}$
+
+-   How to assess model accuracy? Error is more intuitive in classification: we make an error if we predict the incorrect label, and no error otherwise
+
+## Classification error
+
+-   This can be represented using an *indicator* variable or function. $\mathbf{I}(y_{i} = \hat{y}_{i})$: $$\mathbf{1}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 & \text{ if } y_{i} = \hat{y}_{i}\\ 0 & \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}$$
+
+-   We typically have more than one observation $\Rightarrow$ calculate the **classification error rate**, which is the proportion of mistakes we make in predicted labels: $$\frac{1}{n} \sum_{i=1}^{n} \mathbf{1}(y_{i} \neq \hat{y}_{i})$$
+
+    -   Smaller error prefered
+
+## Conditional class probabilities
+
+-   How do we choose which label to predict for a given observation?
+
+-   Assume we have a total of $J$ possible labels in $\mathcal{C}$
+
+-   For a given observation $i$, can calculate the following probability for each possible label $j$: $$p_{ij}(x_{i}) = \text{Pr}(y_{i} = j | X = x_{i})$$
+
+    -   "Probability that observation $i$ has label $j$, given the predictors $x_{i}$"
+
+-   These probabilities are called **conditional class probabilities** at $x_{i}$
+
+# Bayes optimal classifier
+
+## Bayes optimal classifier
+
+-   The **Bayes optimal** classifier will assign/predict the label which has the largest conditional class probability
+
+    -   It can be shown that the *test* error rate $\frac{1}{n_{test}} \sum_{i=1}^{n_{test}} \mathbf{1}(y_{i} \neq \hat{y}_{i})$ is minimized when using the Bayes optimal classifier
+
+-   For example, consider a binary response with levels "yes" and "no"
+
+-   For observation $i$, if $Pr(y_{i} = \text{yes} | X = x_{i}) > 0.5$, then predict $\hat{y}_{i} =$ "yes"
+
+-   The $x_{i}$ where $Pr(y_{i} = \text{yes} | X = x_{i}) = Pr(y_{i} = \text{no} | X = x_{i})= 0.5$ is called the *Bayes decision boundary*
+
+## Example
+
+The following plot shows simulated binary data plotted in 2D predictor space, where color corresponds to label. Large dots denote the observations, black line is Bayes decision boundary.
+
+```{r fig.align = "center", fig.height=7.5, fig.width=7.5}
+set.seed(1)
+n <- 100
+lb <- -2; ub = 2
+x <- cbind(truncnorm::rtruncnorm(n, a = lb, b = ub), runif(n, lb, ub))
+beta <- c(1, 0.5)
+
+true_probs <- pnorm(x%*%beta - 0.5*x[,2]^2)
+labels <- purrr::rbernoulli(n, true_probs)*1
+
+
+points_df <- data.frame(x) %>%
+         mutate(class = factor(labels))
+
+
+x_grid <- expand.grid(x = seq(lb,ub,0.1), y = seq(lb, ub, 0.1))
+probs <- pnorm(as.matrix(x_grid)%*% beta - 0.5*x_grid[,2]^2)
+
+plot_df_bayes <- data.frame(probs, X1=x_grid[,1], X2 = x_grid[,2]) %>%
+  mutate(class = case_when(probs <= 0.50 ~ 0,
+                           probs > 0.5 ~ 1)) %>%
+  mutate(class = factor(class))
+
+
+
+ggplot() +
+  geom_point(data = points_df, aes(x = X1, y = X2, col = class), size = 3) +
+  geom_point(data = plot_df_bayes, aes(x = X1, y = X2, col = class), size = 0.1)+
+  geom_contour(data = plot_df_bayes, aes(x = X1, y=X2, z = as.numeric(class == 0)),
+               breaks = 0.1,
+               col = "black")+
+  theme_bw()+
+  guides(col = "none")+
+  theme(text = element_text(size = 16))
+
+
+
+```
+
+## Need for models
+
+-   Bayes classifier is "gold standard"
+
+-   In practice, we cannot compute $p_{ij}(x_{i}) = \textbf{Pr}(y_{i} = j | X = x_{i})$ because we do know these true probabilities (i.e. we don't know the true conditional distribution of $y$ given $x$)
+
+-   Instead, we need to estimate the $p_{ij}(x_{i})$
+
+-   Different statistical learning models define different methods to estimate these $p_{ij}(x_{i})$!
+
+-   Once we have an estimate of these conditional class probabilities, the "way" of classifying is the same no matter the model:
+
+    -   For observation $i$, predict label $j^*$ if $p_{ij^*}(x_{i}) = \max_{j}\{p_{ij}(x_{i})\}$
+
+# Logistic regression
+
+Focus on binary response!
+
+## Logistic regression  {.scrollable}
+
+The observed zero abundances in the mite data were difficult to work with. I consider transform the `abundance` to a binary response `present` as follows:
+
+```{r}
+#| echo: true
+#| code-line-numbers: "3"
+mite_dat_cat <- mite.env %>%
+  add_column(abundance = mite$LRUG) %>%
+  mutate(present = ifelse(abundance > 0, 1, 0)) %>%
+  select(-abundance)
+```
+
+```{r}
+ggplot(mite_dat_cat %>%
+         mutate(present = factor(present)) %>%
+         pivot_longer(cols = 1:2, names_to = "var"), aes(x = present, y = value)) +
+  geom_boxplot() +
+  facet_wrap(~var, scales = "free")+
+  theme(text = element_text(size = 15))
+
+ggplot(mite_dat_cat %>%
+         mutate(present = factor(present)), aes(x = Topo, fill = present)) +
+  geom_bar(position = "fill") +
+  theme(text = element_text(size = 15))
+```
+
+## Logistic regression
+
+Fitting a *logistic* regression:
+
+```{r fig.align = "center", fig.width=8, fig.height=5}
+mite_log <- glm(present ~ Topo + WatrCont, data = mite_dat_cat,
+                family = "binomial")
+
+x <- min(mite_dat_cat$WatrCont):max(mite_dat_cat$WatrCont)
+XB <- cbind(1,1, x) %*% coefficients(mite_log)
+preds <- exp(XB)/(1 + exp(XB))
+
+ggplot(data = mite_dat_cat, aes(x = WatrCont, y = present)) + 
+  geom_point()+
+  geom_path(data = data.frame(x = x, y = preds), mapping= aes(x =x, y = y),
+              col = "blue") +
+  ggtitle("Observed presence vs. WatrCont", subtitle = "Estimated regression line for Hummock")+
+  theme(text = element_text(size = 20))
+```
+
+## Logistic regression
+
+-   Assume first that we have a single predictor $X$
+
+-   Let $p({x}) = \text{Pr}(Y = 1 | {X} = {x})$
+
+    -   For binary response $(J = 2)$, we shorthand the conditional class probability to always be in terms of a "success" class
+
+-   Need to somehow restrict $0 \leq p(x) \leq 1$
+
+-   **Logistic** regression uses *logistic* function: $$p({x}) = \frac{e^{\beta_{0} + \beta_{1}x}}{1 + e^{\beta_{0} + \beta_{1}x}}$$
+
+## Odds and Log-odds
+
+-   Rearranging this equation yields the **odds**: $$ \frac{\text{Pr(success)}}{\text{Pr(failure)}} = \frac{p(x)}{1 - p(x)} = e^{\beta_{0} + \beta_{1}x}$$ 
+
+- Furthermore, we can obtain the **log-odds**: $$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \beta_{0} + \beta_{1}x$$ 
+
+  - When using $\log()$, we refer to *natural logarithm function* $\ln()$
+
+## Interpretation of coefficients
+
+$$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \beta_{0} + \beta_{1}x$$ 
+
+- Interpretation of $\beta_{1}$: for every one-unit increase in $x$, we expect an average change of $\beta_{1}$ in the log-odds (or average multiple of $e^{\beta_{1}}$ in the odds)
+
+  -   $\beta_{1}$ does *not* correspond to the change in $p(x)$ associated with one-unit increase in $X$ (i.e., not a linear relationship between $x$ and $p(x)$)
+
+  -   If $\beta_{1} > 0$, then increasing $X$ is associated with increasing $p(X)$
+
+## Example
+
+-   For the mite data, let "success" be when `present = 1`; i.e. $p(x) = \text{Pr}(\text{present} = 1 | X = x)$
+
+-   I fit the following logistic regression model: $$\log\left(\frac{p(x)}{1-p(x)}\right) = e^{\beta_{0} + \beta_{1} \text{WatrCont}}$$
+
+::: fragment
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: "1|2"
+logistic_mod <- glm(present ~ WatrCont, data = mite_dat_cat, 
+                    family = "binomial")
+```
+:::
+
+## Example (cont.)
+
+::: fragment
+```{r}
+logistic_mod <- glm(present ~ WatrCont, data = mite_dat_cat, 
+                    family = "binomial")
+summary(logistic_mod)
+```
+:::
+
+-   Discuss:
+
+    -   What is the interpretation of $\hat{\beta}\_{1} =$ `r round(coef(logistic_mod)[2], 4)`?
+
+    -   Is increasing `WatrCont` associated with an increasing or decreasing probability of the presence of these mites?
+
+## Remarks
+
+-   Easily extends to $p$ predictor case: let $\mathbf{x} = (x_{1}, x_{2}, \ldots, x_{p})$. Then $$p(\mathbf{x}) = \frac{e^{\beta_{0} + \beta_{1}x_{1} + \ldots \beta_{p} x_{p}}}{1 + e^{\beta_{0} + \beta_{1}x_{1} + \ldots \beta_{p}x_{p}}}$$
+
+-   Why called logistic "regression" if used for classification task?
+
+    -   The log-odds is a real-valued quantity that is modeled as a linear function of $X$
+
+## Obtaining probability
+
+-   We can interpret the coefficients, but remember the original goal: predict a label (success/failure) for an observation based on its predictors
+
+-   That is, we want $p(x)$, not $\log\left(\frac{p(x)}{1-p(x)}\right)$
+
+-   We might ask: what is the estimated probability of presence of mites for a location where `WatrCont = 350`?
+
+```{r echo = F}
+mite_coeff <- round(coef(logistic_mod), 4)
+```
+
+::: fragment
+$$
+\begin{align*}
+&\hat{p}(x) = \frac{e^{\hat{\beta}_{0} + \hat{\beta}_{1}x}}{1 + e^{\hat{\beta}_{0} + \hat{\beta}_{1}x}} \\
+&\hat{p}(x = 350) = \frac{e^{`r mite_coeff[1]` + `r mite_coeff[2]` \times 350}}{1+e^{`r mite_coeff[1]` + `r mite_coeff[2]` \times 350}} = `r exp(mite_coeff[1] +  mite_coeff[2]*350)/(1+exp(mite_coeff[1] +  mite_coeff[2]*350))`
+\end{align*}
+$$
+:::
+
+-   Discuss: based on this model, would you classify an observation with `WatrCont = 350` to have mites or not?

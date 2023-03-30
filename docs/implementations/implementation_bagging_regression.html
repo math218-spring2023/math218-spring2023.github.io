@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-03-28">
+<meta name="dcterms.date" content="2023-03-30">
 <meta name="description" content="Regression trees">
 
 <title>Math 218 - Spring 2023 - Bagging</title>
@@ -205,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 28, 2023</p>
+      <p class="date">March 30, 2023</p>
     </div>
   </div>
   
@@ -234,7 +234,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="implement-bagging-validation-set" class="level2">
 <h2 class="anchored" data-anchor-id="implement-bagging-validation-set">Implement bagging: validation set</h2>
-<p>In this section, you will see that you are provided an 80/20 split of the data. Implement a bagged regression tree model where the trees are fit on the train data, and you obtain predictions for the remaining, held-out 20% test data. Assume that we want to predict <code>abundance</code> using all the remaining variables as predictors.</p>
+<p>In this section, you will see that you are provided an 80/20 split of the data.</p>
+<p>Implement a bagged regression tree model where the trees are fit on the train data, and you obtain predictions for the remaining 20% test data. Assume that we want to predict <code>abundance</code> using all the remaining variables as predictors.</p>
 <p>Remember, we are bagging <code>B = 10</code> trees.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">18</span>) </span>

@@ -17,6 +17,10 @@ draft: false
 
 # Housekeeping
 
+-   3/30: Lab 04 due midnight tonight!
+
+-   Sign-up for oral midterm component
+
 ::: footer
 [Duke forest](https://en.wikipedia.org/wiki/Duke_Forest)
 :::
@@ -104,8 +108,6 @@ mite_dat <- mite.env %>%
 
 -   Discuss: how would you fit a bagged regression tree model to obtain predictions for the test set using functions/methods you already know?
 
-
-
 ## Out-of-bag error estimation
 
 -   Estimating test error of a bagged model is quite easy without performing CV
@@ -125,7 +127,6 @@ mite_dat <- mite.env %>%
 -   ::: {style="color: maroon"}
     Discuss and implement: how would you fit a bagged regression tree model where you use OOB observations to estimate test error?
     :::
-
 
 ## Live code!
 
