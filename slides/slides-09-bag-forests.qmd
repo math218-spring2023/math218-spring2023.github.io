@@ -17,7 +17,7 @@ draft: false
 
 # Housekeeping
 
--   3/30: Lab 04 due midnight tonight!
+-   3/30: Lab 04 due midnight tonight! Unfortunately, Doug cannot have office hours tonight.
 
 -   Sign-up for oral midterm component
 
@@ -70,7 +70,7 @@ mite_dat <- mite.env %>%
 
 ## Bagging (in general)
 
--   Instead, we can **bootstrap** by taking *repeated samples* from the single training set
+-   Instead, we can **bootstrap** by taking *repeated samples* from a single training set
 
 -   **Bagging**:
 

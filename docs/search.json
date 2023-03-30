@@ -39,7 +39,7 @@
     "href": "assignments.html#implementations",
     "title": "Assignments",
     "section": "Implementations",
-    "text": "Implementations\n\n\n\n\n\n\n\nKNN regression\n\n\nPart 1\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\n\n\n\nKNN regression\n\n\nPart 2\n\n\n\nMar 7, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Implementations\n\n\n\n\n\n\n\nKNN regression\n\n\nPart 1\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\n\n\n\nKNN regression\n\n\nPart 2\n\n\n\nMar 7, 2023\n\n\n\n\n\n\n\n\n\n\n\nBootstrap\n\n\nProbability of inclusion\n\n\n\nMar 28, 2023\n\n\n\n\n\n\n\n\n\n\n\nBagging\n\n\nRegression trees\n\n\n\nMar 30, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -480,7 +480,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 02/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 02/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 02/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n02/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 02/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?\n\n\n\n\nR 02/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 02/24\nLinear regression (cont.)\nLab day\n\nLab 02: Moneyball\n03/02 at 11:59pm\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 02/28\nKNN regression\nSlides: KNN regression\nKNN pseudocode\n03/02 in class\n\n\nR 03/02\nKNN regression: implementation\nLive code: Writing functions\nKNN group pseudocode (steps 1-2)\n03/03 in class\n\n\nF 03/03\nKNN: implementation\n\nKNN group implementation (step 3)\n03/06 11:59pm\n\n\n\n\n\nWEEK 4\n\n\n\n\n\nT 03/07\nKNN regression (pt. 2)\nSlides\nLive code: encoding\nKNN regression: categorical features\n03/09 11:59pm\n\n\nR 03/09\nValidation\nSlides\nLive code: LOOCV\n\n\n\n\nF 3/10\nLab 03: Validation\nLive code: lists\nLab 03: ski resorts\n03/16 11:59pm\n\n\n\n\n\nWEEK 5\n\n\n\n\n\nT 03/14\nRegression trees (part 1)\nSlides\nLive code: binary recursive split\n\n\n\n\nR 03/16\nRegression trees (part 2)\nSlides\nLive code: pruning\n\n\n\n\nF 03/17\nNO CLASS\nWork on Lab 04!\nLab 04: forest fires\n03/30 11:59pm\n\n\n\n\n\nSPRING BREAK\n\n\n\n\n\n\n\n\nWEEK 6\n\n\n\n\n\nT 03/28\nIntroduce midterm\nBootstrap\nSlides\nBootstrap implementation\n03/29 11:59pm\n\n\nR 03/30\nProject introduction\nBagging\nProject description\nSlides\nBagging implementation\nUngraded\n\n\nF 03/31\nBagging (cont.) + Random forests\nSlides\nMidterm: computational assignment\n04/02 11:59pm\n\n\n\n\n\nWEEK 7\n\n\n\n\n\nT 04/04\nBayes classifier + Logistic regression\n\n\n\n\n\nR 04/06\nKNN classification\n\n\n\n\n\nF 04/07\nLab or implementation\n\n\n04/13 11:59pm\n\n\nSa 04/08\nProject\nLast day to pick group\n\n\n\n\n\n\n\nWEEK 8\n\n\n\n\n\nT 04/11\nImbalanced data + Validation\n\n\n\n\n\nR 04/13\nProject\n\nProject proposal\n04/23 11:59pm\n\n\nF 04/14\nNO CLASS\nSpring symposium\n\n\n\n\n\n\n\nWEEK 9\n\n\n\n\n\nT 04/18\nClassification trees\n\n\n\n\n\nR 04/20\nClassification tree (cont.)\n\n\n\n\n\nF 04/21\nLab\n\n\n04/27 11:59pm\n\n\nSu 04/23\nProject\n\nProposal due\nTonight 11:59pm\n\n\n\n\n\nWEEK 10\n\n\n\n\n\nT 04/25\nProject\n\nProject plan\n04/30 at 11:59pm\n\n\nR 04/27\nNaive bayes?\n\n\n\n\n\nF 04/28\nImplementation\n\n\n\n\n\nSu 04/30\n\n\nPlans due\nTonight 11:59pm\n\n\n\n\n\nWEEK 11\n\n\n\n\n\nT 05/02\nProject\n\n\n\n\n\nR 05/04\nK-means clustering\n\n\n\n\n\nF 05/05\nK-means clustering\nImplementation\n\n\n\n\n\n\n\nWEEK 12\n\n\n\n\n\nT 05/09\nProject\n\n\n\n\n\nR 05/11\nProject\n\nReport + Repo + Slides\nTonight 11:59pm\n\n\nF 05/12\n\n\nProject presentations!"
+    "text": "Unless otherwise stated, please submit assignments as a PDF to Canvas.\nNote: course schedule is subject to change.\n\n\n\n\nDate\nDescription\nClass materials\nAssignments\nDue date\n\n\n\n\n\n\n\nWEEK 1\n\n\n\n\n\nT 02/14\nWelcome!\nClass introduction, intro to base R\n\n\n\n\nR 02/16\nWhat is statistical learning?\nWhat is statistical learning?\n\n\n\n\nF 02/17\nLab day\nMore R coding, GitHub Desktop installation\nLab 01: Roulette\n02/23 at 11:59pm\n\n\n\n\n\nWEEK 2\n\n\n\n\n\nT 02/21\nWhat is statistical learning? (cont.)\nWhat is statistical learning?\n\n\n\n\nR 02/23\nLinear regression\nSlides: Linear regression\nLive code\n\n\n\n\nF 02/24\nLinear regression (cont.)\nLab day\n\nLab 02: Moneyball\n03/02 at 11:59pm\n\n\n\n\n\nWEEK 3\n\n\n\n\n\nT 02/28\nKNN regression\nSlides: KNN regression\nKNN pseudocode\n03/02 in class\n\n\nR 03/02\nKNN regression: implementation\nLive code: Writing functions\nKNN group pseudocode (steps 1-2)\n03/03 in class\n\n\nF 03/03\nKNN: implementation\n\nKNN group implementation (step 3)\n03/06 11:59pm\n\n\n\n\n\nWEEK 4\n\n\n\n\n\nT 03/07\nKNN regression (pt. 2)\nSlides\nLive code: encoding\nKNN regression: categorical features\n03/09 11:59pm\n\n\nR 03/09\nValidation\nSlides\nLive code: LOOCV\n\n\n\n\nF 3/10\nLab 03: Validation\nLive code: lists\nLab 03: ski resorts\n03/16 11:59pm\n\n\n\n\n\nWEEK 5\n\n\n\n\n\nT 03/14\nRegression trees (part 1)\nSlides\nLive code: binary recursive split\n\n\n\n\nR 03/16\nRegression trees (part 2)\nSlides\nLive code: pruning\n\n\n\n\nF 03/17\nNO CLASS\nWork on Lab 04!\nLab 04: forest fires\n03/30 11:59pm\n\n\n\n\n\nSPRING BREAK\n\n\n\n\n\n\n\n\nWEEK 6\n\n\n\n\n\nT 03/28\nIntroduce midterm\nBootstrap\nSlides\nBootstrap implementation\n03/29 11:59pm\n\n\nR 03/30\nProject introduction\nBagging\nProject description\nSlides\nBagging implementation\nUngraded\n\n\nF 03/31\nBagging (cont.) + Random forests\nSlides\nMidterm: computational assignment\n04/02 11:59pm\n\n\n\n\n\nWEEK 7\n\n\n\n\n\nT 04/04\nBayes classifier + Logistic regression\n\n\n\n\n\nR 04/06\nModel Assessment + KNN classification\n\n\n\n\n\nF 04/07\nLab or implementation\n\n\n04/13 11:59pm\n\n\nSa 04/08\nProject\nLast day to pick group\n\n\n\n\n\n\n\nWEEK 8\n\n\n\n\n\nT 04/11\nImbalanced data + Validation\n\n\n\n\n\nR 04/13\nProject\n\nProject proposal\n04/23 11:59pm\n\n\nF 04/14\nNO CLASS\nSpring symposium\n\n\n\n\n\n\n\nWEEK 9\n\n\n\n\n\nT 04/18\nClassification trees\n\n\n\n\n\nR 04/20\nClassification tree (cont.)\n\n\n\n\n\nF 04/21\nLab\n\n\n04/27 11:59pm\n\n\nSu 04/23\nProject\n\nProposal due\nTonight 11:59pm\n\n\n\n\n\nWEEK 10\n\n\n\n\n\nT 04/25\nProject\n\nProject plan\n04/30 at 11:59pm\n\n\nR 04/27\nNaive bayes?\n\n\n\n\n\nF 04/28\nImplementation\n\n\n\n\n\nSu 04/30\n\n\nPlans due\nTonight 11:59pm\n\n\n\n\n\nWEEK 11\n\n\n\n\n\nT 05/02\nProject\n\n\n\n\n\nR 05/04\nK-means clustering\n\n\n\n\n\nF 05/05\nK-means clustering\nImplementation\n\n\n\n\n\n\n\nWEEK 12\n\n\n\n\n\nT 05/09\nProject\n\n\n\n\n\nR 05/11\nProject\n\nReport + Repo + Slides\nTonight 11:59pm\n\n\nF 05/12\n\n\nProject presentations!"
   },
   {
     "objectID": "live-code/live-code-03.html",
@@ -1803,7 +1803,7 @@
     "href": "slides/slides-09-bag-forests.html#bagging-in-general",
     "title": "Bagging and Random Forests",
     "section": "Bagging (in general)",
-    "text": "Bagging (in general)\n\nInstead, we can bootstrap by taking repeated samples from the single training set\nBagging:\n\nGenerate \\(B\\) (e.g. \\(B = 100\\)) different bootstrapped training datasets\nTrain our model on the \\(b\\)-th bootstrapped training set in order to get \\(\\hat{f}^{(b)}(x)\\) for \\(b = 1,\\ldots, B\\)\nAverage all the predictions to obtain the final “bagged model”\n\n\n\\[\\hat{f}_{\\text{bag}}(x) = \\frac{1}{B} \\sum_{b=1}^{B} \\hat{f}^{(b)}(x)\\]"
+    "text": "Bagging (in general)\n\nInstead, we can bootstrap by taking repeated samples from a single training set\nBagging:\n\nGenerate \\(B\\) (e.g. \\(B = 100\\)) different bootstrapped training datasets\nTrain our model on the \\(b\\)-th bootstrapped training set in order to get \\(\\hat{f}^{(b)}(x)\\) for \\(b = 1,\\ldots, B\\)\nAverage all the predictions to obtain the final “bagged model”\n\n\n\\[\\hat{f}_{\\text{bag}}(x) = \\frac{1}{B} \\sum_{b=1}^{B} \\hat{f}^{(b)}(x)\\]"
   },
   {
     "objectID": "slides/slides-09-bag-forests.html#bagging-for-decision-trees",
@@ -1817,7 +1817,7 @@
     "href": "slides/slides-09-bag-forests.html#out-of-bag-error-estimation",
     "title": "Bagging and Random Forests",
     "section": "Out-of-bag error estimation",
-    "text": "Out-of-bag error estimation\n\nEstimating test error of bagged model is quite easy without performing CV\nOn average, each one of the \\(B\\) trees is fit using about 2/3 of the observations. Remaining 1/3 are called out-of-bag (OOB) observations\nCan predict the response for \\(i\\)-th observation using each of the trees in which that observation was OOB\n\nYields about \\(B/3\\) observations for observation \\(i\\)\n\n\nDiscuss: Why is the resulting OOB error a valid estimate of the test error for the bagged model?\n\nWhen \\(B\\) sufficiently large, OOB error is virtually equivalent to LOOCV"
+    "text": "Out-of-bag error estimation\n\nEstimating test error of a bagged model is quite easy without performing CV\nOn average, each one of the \\(B\\) trees is fit using about 2/3 of the observations. Remaining 1/3 are called out-of-bag (OOB) observations\nCan predict the response for \\(i\\)-th observation using each of the trees in which that observation was OOB\n\nYields about \\(B/3\\) observations for observation \\(i\\)\n\n\nDiscuss: Why is the resulting OOB error a valid estimate of the test error for the bagged model?\n\nWhen \\(B\\) sufficiently large, OOB error is virtually equivalent to LOOCV\n\nDiscuss and implement: how would you fit a bagged regression tree model where you use OOB observations to estimate test error?"
   },
   {
     "objectID": "slides/slides-09-bag-forests.html#mite-data",
@@ -1831,7 +1831,7 @@
     "href": "slides/slides-09-bag-forests.html#variable-importance-measures",
     "title": "Bagging and Random Forests",
     "section": "Variable importance measures",
-    "text": "Variable importance measures\n\n\n\nBagging can result in difficulty in interpretation: it’s no longer clear which predictors are most important to the procedure\nBut one main attraction of decision trees is their interpretability!\nCan obtain an overall summary of importance of each predictor using the residual sum of square (RSS):\n\nFor bagged regression trees, record the total amount that RSS decreases due to splits over a given predictor, averaged over \\(B\\)\n\n\n\n\n\n\n\n\n\n\n\nWatrCont is the most important variable. This should make sense!"
+    "text": "Variable importance measures\n\n\n\nBagging can result in difficulty in interpretation: it’s no longer clear which predictors are most important to the procedure\nBut one main attraction of decision trees is their interpretability!\nCan obtain an overall summary of importance of each predictor using the residual error:\n\nFor bagged regression trees, record the total amount that MSE decreases due to splits over a given predictor, averaged over \\(B\\) (higher explanatory power \\(\\rightarrow\\) larger decrease in MSE \\(\\rightarrow\\) more important)\n\n\n\n\n\n\n\n\n\n\n\nWatrCont is the most important variable. This should make sense!\n\nLive code!"
   },
   {
     "objectID": "slides/slides-09-bag-forests.html#random-forests-1",
@@ -1852,7 +1852,7 @@
     "href": "slides/slides-09-bag-forests.html#random-forests-cont.",
     "title": "Bagging and Random Forests",
     "section": "Random forests (cont.)",
-    "text": "Random forests (cont.)\n\nAt each split, algorithm is not allowed to consider a majority of the available predictors\n\nIntuition for why?\n\nBagged trees may be highly correlated, and averaging correlated quantities does not reduce variance as much as average uncorrelated\n\nSmall \\(m\\) is typically helpful when we have a large number of correlated predictors\n\n\nDiscuss: what is the resulting model when \\(m = p\\)?"
+    "text": "Random forests (cont.)\n\nAt each split, algorithm is not allowed to consider a majority of the available predictors\n\nIntuition for why?\n\nBagged trees may be highly correlated, and averaging correlated quantities does not reduce variance as much as average uncorrelated\n\nSmall \\(m\\) is typically helpful when we have a large number of correlated predictors\n\n\nDiscuss: what is the resulting model when \\(m = p\\)?\n\n\nLive code!"
   },
   {
     "objectID": "slides/slides-09-bag-forests.html#mite-data-1",
@@ -1908,14 +1908,14 @@
     "href": "slides/slides-09-bag-forests.html#construction",
     "title": "Bagging and Random Forests",
     "section": "Construction",
-    "text": "Construction\n\nEach time a split is considered, a random sample of \\(m\\) predictors is chosen as split candidates from the full set of \\(p\\) predictors.\nThe node will split on one of these \\(m\\) predictors\n\nAt every split, we choose a new sample of \\(m\\) predictors\nTypically choose \\(m \\approx \\sqrt{p}\\)"
+    "text": "Construction\n\nEach time a split is considered, a random sample of \\(m\\) predictors is chosen as split candidates from the full set of \\(p\\) predictors.\nThe node will split on one of these \\(m\\) predictors\n\nAt every split, we choose a new sample of \\(m\\) predictors\nTypically choose \\(m \\approx p/3\\)"
   },
   {
     "objectID": "slides/slides-09-bag-forests.html#example-construction",
     "href": "slides/slides-09-bag-forests.html#example-construction",
     "title": "Bagging and Random Forests",
     "section": "Example construction",
-    "text": "Example construction\nFor the mite data, we have \\(p = 5\\) predictors:\n\n\n[1] \"SubsDens\"  \"WatrCont\"  \"Substrate\" \"Shrub\"     \"Topo\"      \"abundance\"\n\n\n\nSuppose we fit a random forest using \\(B\\) regression trees fit on \\(B\\) different bootstrapped sets.\nFor each regression tree, we first obtain a bootstrap sample of the original data\nThen we build a regression tree where:\n\nFor node 1, we only consider a random sample of \\(m \\approx \\sqrt{5} \\approx 2\\) predictors:\n\n\n[1] \"SubsDens\" \"Shrub\"   \n\n\n\nThus, node 1 will either split on SubsDens or Shrub\n\nFor node 2, we consider a different random sample of \\(m = 2\\) predictors:\n\n\n[1] \"SubsDens\" \"WatrCont\"\n\n\nEtc."
+    "text": "Example construction\nFor the mite data, we have \\(p = 5\\) predictors:\n\n\n[1] \"SubsDens\"  \"WatrCont\"  \"Substrate\" \"Shrub\"     \"Topo\"      \"abundance\"\n\n\n\nSuppose we fit a random forest using \\(B\\) regression trees fit on \\(B\\) different bootstrapped sets.\nFor each regression tree, we first obtain a bootstrap sample of the original data\nThen we build a regression tree where:\n\nFor node 1, we only consider a random sample of \\(m \\approx 5/3 \\approx 2\\) predictors:\n\n\n[1] \"SubsDens\" \"Shrub\"   \n\n\n\nThus, node 1 will either split on SubsDens or Shrub\n\nFor node 2, we consider a different random sample of \\(m = 2\\) predictors:\n\n\n[1] \"SubsDens\" \"WatrCont\"\n\n\nEtc."
   },
   {
     "objectID": "assignments.html#project",
@@ -2189,5 +2189,82 @@
     "title": "Classification & Logistic Regression",
     "section": "Interpretation of coefficients",
     "text": "Interpretation of coefficients\n\\[\\log\\left(\\frac{p(x)}{1 - p(x)}\\right) = \\log(e^{\\beta_{0} + \\beta_{1}x})  = \\beta_{0} + \\beta_{1}x\\]\n\nInterpretation of \\(\\beta_{1}\\): for every one-unit increase in \\(x\\), we expect an average change of \\(\\beta_{1}\\) in the log-odds (or average multiple of \\(e^{\\beta_{1}}\\) in the odds)\n\n\\(\\beta_{1}\\) does not correspond to the change in \\(p(x)\\) associated with one-unit increase in \\(X\\) (i.e., not a linear relationship between \\(x\\) and \\(p(x)\\))\nIf \\(\\beta_{1} > 0\\), then increasing \\(X\\) is associated with increasing \\(p(X)\\)"
+  },
+  {
+    "objectID": "slides/slides-09-bag-forests.html#implementation",
+    "href": "slides/slides-09-bag-forests.html#implementation",
+    "title": "Bagging and Random Forests",
+    "section": "Implementation",
+    "text": "Implementation\n\nSuppose we want to fit a bagged regression tree model to predict abundance in the mite data\nFit data on 80% train, predict on 20% test\nDiscuss: how would you fit a bagged regression tree model to obtain predictions for the test set using functions/methods you already know?"
+  },
+  {
+    "objectID": "slides/slides-09-bag-forests.html#live-code",
+    "href": "slides/slides-09-bag-forests.html#live-code",
+    "title": "Bagging and Random Forests",
+    "section": "Live code!",
+    "text": "Live code!\nFitting bagged decision trees using the randomForest package"
+  },
+  {
+    "objectID": "implementations/implementation_bagging_regression.html",
+    "href": "implementations/implementation_bagging_regression.html",
+    "title": "Bagging",
+    "section": "",
+    "text": "Note: this implementation is not graded."
+  },
+  {
+    "objectID": "implementations/implementation_bagging_regression.html#introduction",
+    "href": "implementations/implementation_bagging_regression.html#introduction",
+    "title": "Bagging",
+    "section": "Introduction",
+    "text": "Introduction\nSuppose we want to fit a bagged regression tree model using B = 10 trees. We will first implement the models by hand before learning how to use functions from the randomForest library.\n\nlibrary(tidyverse)\nlibrary(vegan)\nlibrary(tree)\ndata(mite)\ndata(mite.env)\nmite_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG)\nn <- nrow(mite_dat)"
+  },
+  {
+    "objectID": "implementations/implementation_bagging_regression.html#implement-bagging-validation-set",
+    "href": "implementations/implementation_bagging_regression.html#implement-bagging-validation-set",
+    "title": "Bagging",
+    "section": "Implement bagging: validation set",
+    "text": "Implement bagging: validation set\nIn this section, you will see that you are provided an 80/20 split of the data.\nImplement a bagged regression tree model where the trees are fit on the train data, and you obtain predictions for the remaining 20% test data. Assume that we want to predict abundance using all the remaining variables as predictors.\nRemember, we are bagging B = 10 trees.\n\nset.seed(18) \ntrain_ids <- sample(1:n, 0.8*n)\nn_train <- length(train_ids)\nn_test <- n - n_train\n\n\n# code here"
+  },
+  {
+    "objectID": "implementations/implementation_bagging_regression.html#implement-bagging-oob",
+    "href": "implementations/implementation_bagging_regression.html#implement-bagging-oob",
+    "title": "Bagging",
+    "section": "Implement bagging: OOB",
+    "text": "Implement bagging: OOB\nRather than splitting the data into a train/test set, here we will leverage the out-of-bag (OOB) observations. Implement a bagged regression tree model where the OOB observations are used to estimate the test error.\nHint: remember that different observations will be excluded from each bootstrap sample. So you have to be clever about how you keep track of the predictions (and how many times an observation is OOB).\n\n# code here"
+  },
+  {
+    "objectID": "implementations/implementation_bootstrap.html",
+    "href": "implementations/implementation_bootstrap.html",
+    "title": "Bootstrap",
+    "section": "",
+    "text": "This is a grouped assignment! Please clone your individual bootstrap_implementation GitHub repo, and work in the .Rmd file contained within it. Then, once your finished, one member of your group should upload your final implementation to Canvas."
+  },
+  {
+    "objectID": "implementations/implementation_bootstrap.html#introduction",
+    "href": "implementations/implementation_bootstrap.html#introduction",
+    "title": "Bootstrap",
+    "section": "Introduction",
+    "text": "Introduction\nWe will now derive the probability that a given observation is part of a bootstrap sample. Suppose that our original sample contains \\(n\\) observations, and wish to obtain a bootstrap sample. Remember that in bootstrap sampling we repeatedly sample/draw with replacement from the original sample until we have a bootstrap sample of size \\(n\\). As a result, each draw is assumed independent of the next.\nNote: if two events \\(A\\) and \\(B\\) are independent of each other, then the probability of both events happening is the product of their individual probabilities occurring:\n\\[\\text{Pr}(A \\text{ and } B) = \\text{Pr}(A) \\times \\text{Pr}(B)\\]"
+  },
+  {
+    "objectID": "implementations/implementation_bootstrap.html#part-1-theory",
+    "href": "implementations/implementation_bootstrap.html#part-1-theory",
+    "title": "Bootstrap",
+    "section": "Part 1: “Theory”",
+    "text": "Part 1: “Theory”\nSuppose we wish to obtain our first bootstrap sample (which will ultimately be of size \\(n\\)). Answer the following questions using text (no code necessary, unless using R as a calculator).\n\nWhat is the probability that the first bootstrap observation in this sample is not the \\(j\\)-th observation from the original sample? Justify your answer.\nWhat is the probability that the second bootstrap observation is not the \\(j\\)-th observation from the original sample?\nArgue that the probability that the \\(j\\)-th observation is not in the bootstrap sample is \\((1-1/n)^{n}\\).\nWhen \\(n = 5\\), what is the probability that the \\(j\\)-th observation is in the bootstrap sample?\nWhen \\(n = 100\\), what is the probability that the \\(j\\)-th observation is in the bootstrap sample? Comment on how this relates to the probability you found when \\(n = 5\\).\nWhen \\(n = 1000\\), what is the probability that the \\(j\\)-th observation is in the bootstrap sample? Comment on how this relates to the probability you found when \\(n = 100\\).\nThe following plot displays, for each integer value of \\(n\\) from 1 to 1000, the probability that the \\(j\\)-th observation is not included in the bootstrap sample. The orange dashed line is at \\(y= e^{-1} = 1/e\\), and the blue dashed line is at \\(y = 1/3\\). Note that the x-axis is on the log scale.\n\nComment on what you observe."
+  },
+  {
+    "objectID": "implementations/implementation_bootstrap.html#part-2-simulation",
+    "href": "implementations/implementation_bootstrap.html#part-2-simulation",
+    "title": "Bootstrap",
+    "section": "Part 2: Simulation",
+    "text": "Part 2: Simulation\nWe will now investigate numerically the probability that a bootstrap sample of size \\(n = 100\\) contains the \\(j\\)-th observation.\nYou will obtain a total of \\(B = 10000\\) bootstrap samples. For each bootstrap sample, you should record a:\n\n1 if the fourth observation (i.e. \\(j = 4\\)) is not contained in the bootstrap sample\n0 if the fourth observation is contained in the bootstrap sample\n\nNote: the actual data does not matter in this simulation. We only care about which observations are selected, not the values of the observations themselves.\n\nThen, take the mean of your \\(B\\) results (which results in a proportion). How does your empirical probability (i.e. simulated proportion) compared to the theory above?"
+  },
+  {
+    "objectID": "implementations/implementation_bootstrap.html#submission",
+    "href": "implementations/implementation_bootstrap.html#submission",
+    "title": "Bootstrap",
+    "section": "Submission",
+    "text": "Submission\nWhen finished, make sure to knit + commit + push. One member of your group should upload your final implementation to Canvas. Be sure to include everyone’s names somewhere on the document."
   }
 ]

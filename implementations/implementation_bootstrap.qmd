@@ -3,7 +3,8 @@ title: "Bootstrap"
 date: "March 28, 2023"
 editor: visual
 categories: "Implementations"
-draft: true
+description: "Probability of inclusion"
+draft: false
 ---
 
 This is a grouped assignment! Please clone your individual `bootstrap_implementation` GitHub repo, and work in the `.Rmd` file contained within it. Then, once your finished, *one* member of your group should upload your final implementation to Canvas.
