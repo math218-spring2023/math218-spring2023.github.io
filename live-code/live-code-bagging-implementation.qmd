@@ -1,0 +1,88 @@
+---
+title: "Live code:"
+date: "March 30, 2023"
+description: "Bagging implementation"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: false
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan)
+library(tree)
+data(mite)
+data(mite.env)
+mite_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG)
+```
+
+```{r}
+n <- nrow(mite_dat)
+set.seed(18) 
+train_ids <- sample(1:n, 0.8*n)
+n_train <- length(train_ids)
+n_test <- n - n_train
+
+train_dat <- mite_dat[train_ids,]
+test_dat <- mite_dat[-train_ids,]
+B <- 10
+```
+
+The two following options differ only in how I keep track of my predictions. I will set some seeds to see if we indeed get the same predictions:
+
+## Option 1: 
+
+Here, I create a vector `pred_sums` that is in essence, a vector of cumulative sums of predictions.
+
+```{r}
+set.seed(1)
+pred_sums <- rep(0, n_test)
+
+for (b in 1:B){
+  # obtain bootstrap sample
+  boot_ids <- sample(1:n_train, n_train, replace = TRUE)
+  boot_samp <- train_dat[boot_ids,]
+  
+  # fit tree to bootstrap sample
+  boot_tree <- tree(abundance ~ . , data = boot_samp)
+  
+  # obtain predictions for test set
+  predictions <- predict(boot_tree, newdata = test_dat)
+  
+  # store predictions for test set
+  pred_sums <- pred_sums +  predictions
+}
+pred_sums/B
+```
+
+## Option 2:
+
+Here, I create a `B x n_test` matrix that will hold each prediction:
+
+```{r}
+set.seed(1)
+pred_mat <- matrix(0, nrow = B, ncol = n_test)
+
+for (b in 1:B){
+  # obtain bootstrap sample
+  boot_ids <- sample(1:n_train, n_train, replace = TRUE)
+  boot_samp <- train_dat[boot_ids,]
+  
+  # fit tree to bootstrap sample
+  boot_tree <- tree(abundance ~ . , data = boot_samp)
+  
+  # obtain predictions for test set
+  predictions <- predict(boot_tree, newdata = test_dat)
+  
+  # store predictions for test set
+  pred_mat[b,] <- predictions
+}
+
+apply(pred_mat, 2, mean)
+# this function does the same: colMeans(pred_mat)
+```

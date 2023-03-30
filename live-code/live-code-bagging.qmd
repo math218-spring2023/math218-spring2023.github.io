@@ -1,6 +1,6 @@
 ---
 title: "Live code:"
-date: "March 30, 2023"
+date: "March 31, 2023"
 description: "Bagging trees"
 editor: visual
 categories: "Live code"
@@ -91,3 +91,21 @@ We can use the `varImpPlot()` function to visualize the importance:
 ```{r}
 varImpPlot(bag_all)
 ```
+
+## Random Forests
+
+The syntax for random forests is almost identical to that of bagging regression trees. Unlike bagging, we need to specify two parameters for random forests:
+
+1.  The number of bootstrap samples $B$ to obtain (as in bagging)
+2.  The number of predictors we should consider at each split (i.e. the `mtry` argument)
+
+In the following code, I fit `B = 10` regression trees, and specify `mtry = 2`.
+
+```{r}
+set.seed(1)
+rf_mod <- randomForest(abundance ~ . , data = mite_dat,
+                    ntree = 10, 
+                    mtry = 2)
+```
+
+Everything else is exactly the same as in bagged regression trees!
