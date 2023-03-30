@@ -14,6 +14,7 @@ execute:
 partner <- "Saturday, April 8 at 11:59pm"
 proposal <- "Sunday, April 23 at 11:59pm"
 plan <- "Sunday, April 30 at 11:59pm"
+draft <- "Sunday, May 07 at 11:59pm"
 repo <- "Thursday, May 11 at 11:59pm"
 presentation <- "Friday, May 12 during class"
 participation <- "TBD"
@@ -28,6 +29,8 @@ participation <- "TBD"
 -   Project proposals due `r proposal`
 
 -   Project plans due `r plan`
+
+-   Draft for peer review due `r draft`
 
 -   Report, slides, and repository due `r repo`
 
@@ -65,10 +68,11 @@ Your project may be a supervised and/or unsupervised analysis. Whichever you cho
 
 # Brief project logistics
 
-The five deliverables for the final project are:
+The six deliverables for the final project are:
 
 -   A written proposal detailing the data you chose, along with some EDA and at least one question you are interested in answering, and the methods you plan to use to answer these questions
 -   A written plan of analysis that briefly describes exactly how you will implement the methods to answer the question(s) of interest
+-   A rough draft for peer review
 -   A written, reproducible report detailing your analysis
 -   A GitHub repository corresponding to your report
 -   A brief set of slides that correspond to your intended oral presentation (5 minutes)
@@ -77,15 +81,16 @@ The five deliverables for the final project are:
 
 The grade breakdown is as follows:
 
-| Total                | 135 pts |
-|----------------------|---------|
-| **Proposal**         | 15 pts  |
-| **Plan of analysis** | 15 pts  |
-| **Written report**   | 60 pts  |
-| **Slides**           | 15 pts  |
-| **Repository**       | 5 pts   |
-| **Presentation**     | 15 pts  |
-| **Participation**    | 10 pts  |
+| Total                   | 150 pts |
+|-------------------------|---------|
+| **Proposal**            | 15 pts  |
+| **Plan of analysis**    | 15 pts  |
+| **Draft + Peer Review** | 15 pts  |
+| **Written report**      | 60 pts  |
+| **Slides**              | 15 pts  |
+| **Repository**          | 5 pts   |
+| **Presentation**        | 15 pts  |
+| **Participation**       | 10 pts  |
 
 # Data sources
 
@@ -153,6 +158,12 @@ If you chose to pursue a method that we did not cover in class, you must clearly
 
 The main purpose of this component is so Professor Tang can make sure that you are well-prepared to complete the project.
 
+## Draft
+
+Due: `r draft`
+
+Your group should submit a draft of your written report (see below) to Canvas for peer review by another group. This draft does not need to be complete, but I am expecting, at a minimum, a draft of the Introduction and EDA sections. This is a great opportunity for you to obtain feedback from other students to see if a new reader understands the motivation of your project and the data you are working with.
+
 ## Written report
 
 Due: `r repo`
@@ -197,7 +208,7 @@ This section is a conclusion and discussion. This will require a summary of what
 
 Due: `r repo`
 
-In addition to your Gradescope submissions, I will be checking your GitHub repository. This repository should include:
+In addition to your Canvas submissions, I will be checking your GitHub repository. This repository should include:
 
 -   Two separate RMarkdown files (formatted to clearly present all of your code and results) that will output: (1) the proposal and (2) final write-up
 -   Meaningful README file on the GitHub repository that contains a *codebook* for relevant variables
@@ -216,11 +227,11 @@ In addition to the write-up, you must also create presentation slides that summa
 
 Due: `r presentation`
 
-On the last day of class everyone will present their projects. There will be a five-minute time limit for each presentation followed by two minutes for questions, for a total of seven-minutes per presentation. You may, and should, use the slides as detailed in the previous section during your presentation.
+On the last day of class everyone will present their projects. There will be a five-minute (tentative) time limit for each presentation followed by two minutes for questions, for a total of seven-minutes per presentation. You may, and should, use the slides as detailed in the previous section during your presentation.
 
 ## Participation
 
-You are expected to attend both days of presentations, and be actively engaged by asking questions and providing feedback.
+You are expected to attend all days of presentations, and be actively engaged by asking questions and providing feedback.
 
 Everyone will also provide feedback and assess their partner's contributions. Please complete the evaluation form on the **Participation\^** assignment in Canvas by `r participation`.
 
@@ -235,7 +246,7 @@ Everyone will also provide feedback and assess their partner's contributions. Pl
 Grading of the project will take into account the following:
 
 -   Content - What is the quality of research and/or policy question and relevancy of data to those questions?
--   Correctness - Are the statistical plearning rocedures carried out and explained correctly?
+-   Correctness - Are the statistical learning procedures carried out and explained correctly?
 -   Writing and Presentation - What is the quality of the statistical presentation, writing, and explanations?
 -   Creativity and Critical Thought - Is the project carefully thought out? Are the limitations carefully considered? Does it appear that time and effort went into the planning and implementation of the project?
 
