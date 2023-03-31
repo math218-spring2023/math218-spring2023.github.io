@@ -1,0 +1,54 @@
+---
+title: "Live code:"
+date: "April 6, 2023"
+description: "Classication model assessment"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+presence_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG) %>%
+  mutate(present = ifelse(abundance > 0, 1, 0)) %>%
+  select(-abundance)
+```
+
+## Confusion matrix
+
+In the following code, I fit a model on some train data, and obtain predicted probabilities and classification of if a mite is `present`:
+
+```{r}
+set.seed(1)
+n <- nrow(presence_dat)
+test_ids <- sample(1:n, 0.2*n)
+train_dat <- presence_dat[-test_ids,]
+test_dat <- presence_dat[test_ids,]
+presence_mod <- glm(present ~ WatrCont + Topo, data = train_dat,
+                    family = "binomial")
+# obtain predictions
+threshold <- 0.5
+pred_probs <- predict(presence_mod, newdata = test_dat, type = "response")
+pred_class <- as.numeric(pred_probs >= threshold)
+```
+
+We can obtain a confusion matrix using the `table()` function:
+
+```{r}
+table(preds = pred_class, true = test_dat$present)
+library(pROC)
+presence_roc <- roc(response = test_dat$present, predictor= pred_class, plot = T)
+presence_roc$auc
+plot.roc(presence_roc)
+plot.roc(presence_roc, legacy.axes = T,
+         print.auc = T,
+         max.auc.polygon=TRUE)
+```

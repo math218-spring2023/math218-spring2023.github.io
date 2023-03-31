@@ -147,26 +147,26 @@ Focus on binary response!
 
 ## Logistic regression {.scrollable}
 
-The observed zero abundances in the mite data were difficult to work with. I consider transform the `abundance` to a binary response `present` as follows:
+The observed zero abundances in the mite data were difficult to work with. I consider transforming the `abundance` to a binary response `present` as follows:
 
 ```{r}
 #| echo: true
 #| code-line-numbers: "3"
-mite_dat_cat <- mite.env %>%
+presence_dat <- mite.env %>%
   add_column(abundance = mite$LRUG) %>%
   mutate(present = ifelse(abundance > 0, 1, 0)) %>%
   select(-abundance)
 ```
 
 ```{r}
-ggplot(mite_dat_cat %>%
+ggplot(presence_dat %>%
          mutate(present = factor(present)) %>%
          pivot_longer(cols = 1:2, names_to = "var"), aes(x = present, y = value)) +
   geom_boxplot() +
   facet_wrap(~var, scales = "free")+
   theme(text = element_text(size = 15))
 
-ggplot(mite_dat_cat %>%
+ggplot(presence_dat %>%
          mutate(present = factor(present)), aes(x = Topo, fill = present)) +
   geom_bar(position = "fill") +
   theme(text = element_text(size = 15))
@@ -177,14 +177,14 @@ ggplot(mite_dat_cat %>%
 Fitting a *logistic* regression:
 
 ```{r fig.align = "center", fig.width=8, fig.height=5}
-mite_log <- glm(present ~ Topo + WatrCont, data = mite_dat_cat,
+mite_log <- glm(present ~ Topo + WatrCont, data = presence_dat,
                 family = "binomial")
 
-x <- min(mite_dat_cat$WatrCont):max(mite_dat_cat$WatrCont)
+x <- min(presence_dat$WatrCont):max(presence_dat$WatrCont)
 XB <- cbind(1,1, x) %*% coefficients(mite_log)
 preds <- exp(XB)/(1 + exp(XB))
 
-ggplot(data = mite_dat_cat, aes(x = WatrCont, y = present)) + 
+ggplot(data = presence_dat, aes(x = WatrCont, y = present)) + 
   geom_point()+
   geom_path(data = data.frame(x = x, y = preds), mapping= aes(x =x, y = y),
               col = "blue") +
@@ -233,7 +233,7 @@ $$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \
 #| eval: false
 #| echo: true
 #| code-line-numbers: "1|2"
-logistic_mod <- glm(present ~ WatrCont, data = mite_dat_cat, 
+logistic_mod <- glm(present ~ WatrCont, data = presence_dat, 
                     family = "binomial")
 ```
 :::
@@ -242,7 +242,7 @@ logistic_mod <- glm(present ~ WatrCont, data = mite_dat_cat,
 
 ::: fragment
 ```{r}
-logistic_mod <- glm(present ~ WatrCont, data = mite_dat_cat, 
+logistic_mod <- glm(present ~ WatrCont, data = presence_dat, 
                     family = "binomial")
 summary(logistic_mod)
 ```

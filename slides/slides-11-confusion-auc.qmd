@@ -14,7 +14,7 @@ library(tidyverse)
 library(vegan)
 data(mite)
 data(mite.env)
-mite_dat_cat <- mite.env %>%
+presence_dat <- mite.env %>%
   add_column(abundance = mite$LRUG) %>%
   mutate(present = ifelse(abundance > 0, 1, 0)) %>%
   select(-abundance)
@@ -56,13 +56,13 @@ data.frame( pred = pred, true = true) %>%
 I fit a logistic regression to predict heart `present` using predictors `Topo` and `WatrCont`, and obtained the following confusion matrix of the train data:
 
 ```{r}
-mite_log <- glm(present ~ Topo + WatrCont, data = mite_dat_cat,
+mite_log <- glm(present ~ Topo + WatrCont, data = presence_dat,
                 family = "binomial")
 
 mite_preds <- predict(mite_log, type = "response")
-mite_df <- data.frame(true = mite_dat_cat$present, prob = mite_preds) %>%
+mite_df <- data.frame(true = presence_dat$present, prob = mite_preds) %>%
   mutate(pred = ifelse(prob > 0.5, 1, 0))
-n <- nrow(mite_dat_cat); n0 <- sum(mite_dat_cat$present==0); n1 <- n - n0
+n <- nrow(presence_dat); n0 <- sum(presence_dat$present==0); n1 <- n - n0
 
 mite_df%>%
   dplyr::select(pred, true) %>%

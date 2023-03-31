@@ -1,0 +1,107 @@
+---
+title: "Live code:"
+date: "April 4, 2023"
+description: "Logistic regression"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+presence_dat <- mite.env %>%
+  add_column(abundance = mite$LRUG) %>%
+  mutate(present = ifelse(abundance > 0, 1, 0)) %>%
+  select(-abundance)
+```
+
+## Running logistic regression
+
+To run a logistic regression model in `R`, we will use the `glm()` function, which will take similar inputs to `lm()`. Besides the different function name, we need to specify we would like to run a logistic regression model as opposed to a different kind of `g`eneralized linear model. This is achieved by setting the `family` argument equal to "binomial":
+
+```{r}
+test_ids <- 1:3
+presence_mod <- glm(present ~ WatrCont + Topo, data = presence_dat[-test_ids,],
+                    family = "binomial")
+```
+
+Then, we can use the `summary()` function and `predict()` function as usual:
+
+```{r}
+summary(presence_mod)
+```
+
+::: {.callout-warning}
+For logistic regression using `glm()`, your response variable must be encoded as either:
+
+-   A numeric 0 or 1, where 1 represents the success class
+
+-   A factor variable with two levels, where the base level is the 0 class
+
+You will get a strange error if your response variable is categorical!
+:::
+
+## Predictions
+
+### Log-odds and probabilities 
+
+```{r}
+predict(presence_mod, newdata = presence_dat[test_ids,])
+```
+
+Notice that this prediction doesn't seem the most intuitive. We are interested in the probability of the mite being `present`, but the prediction here is negative! This is because the default option from `predict()` for logistic regression is to return the predicted *log-odds* of the success outcome, as that is the response for the regression, i.e. $\log\left(\frac{p(x)}{1-p(x)}\right) = \beta_{0} + \beta_{1}\text{WatrCont} + \beta_{2} \text{Topo}$.
+
+If we want the predictions on the probability scale, we need specify an additional argument in `predict()`:
+
+```{r}
+predict(presence_mod, newdata = presence_dat[test_ids,], type = "response")
+```
+
+As a sanity check, we can confirm this matches the predicted log-odds based on the model:
+
+```{r}
+pred_prob <- predict(presence_mod, newdata = presence_dat[test_ids,], type = "response")
+log(pred_prob / (1-pred_prob))
+```
+
+### Success/failure 
+
+If we want to explicitly predict a class, we need to choose a threshold value and classify a test observation as a "success" or "failure" depending on the threshold the predicted probability of success:
+
+```{r}
+n_test <- length(test_ids)
+threshold <- 0.5
+pred_class <- rep(NA, n_test)
+for(i in 1:n_test){
+  if(pred_prob[i] >= threshold){
+    pred_class[i] <- 1
+  }
+  else{
+   pred_class[i] <- 0
+  }
+}
+pred_class
+```
+
+This `for()` loop seems like too much code for such a simple idea! Let's try taking advantage of vectors and booleans. Note that in `R`, the boolean `TRUE` is encoded as a numeric 1, and `FALSE` as a 0:
+
+```{r}
+pred_prob >= threshold
+pred_class <- as.numeric(pred_prob >= threshold)
+pred_class
+```
+
+What is our misclassification error rate here?
+
+```{r}
+true_class <- presence_dat$present[test_ids]
+true_class
+mean(true_class == pred_class)
+```
