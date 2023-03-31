@@ -2132,7 +2132,7 @@
     "href": "slides/slides-10-logistic.html#logistic-regression-1",
     "title": "Classification & Logistic Regression",
     "section": "Logistic regression",
-    "text": "Logistic regression\nThe observed zero abundances in the mite data were difficult to work with. I consider transform the abundance to a binary response present as follows:\n\nmite_dat_cat <- mite.env %>%\n  add_column(abundance = mite$LRUG) %>%\n  mutate(present = ifelse(abundance > 0, 1, 0)) %>%\n  select(-abundance)"
+    "text": "Logistic regression\nThe observed zero abundances in the mite data were difficult to work with. I consider transforming the abundance to a binary response present as follows:\n\npresence_dat <- mite.env %>%\n  add_column(abundance = mite$LRUG) %>%\n  mutate(present = ifelse(abundance > 0, 1, 0)) %>%\n  select(-abundance)"
   },
   {
     "objectID": "slides/slides-10-logistic.html#logistic-regression-2",
@@ -2160,7 +2160,7 @@
     "href": "slides/slides-10-logistic.html#example-1",
     "title": "Classification & Logistic Regression",
     "section": "Example",
-    "text": "Example\n\nFor the mite data, let “success” be when present = 1; i.e. \\(p(x) = \\text{Pr}(\\text{present} = 1 | X = x)\\)\nI fit the following logistic regression model: \\[\\log\\left(\\frac{p(x)}{1-p(x)}\\right) = e^{\\beta_{0} + \\beta_{1} \\text{WatrCont}}\\]\n\n\n\nlogistic_mod <- glm(present ~ WatrCont, data = mite_dat_cat, \n                    family = \"binomial\")"
+    "text": "Example\n\nFor the mite data, let “success” be when present = 1; i.e. \\(p(x) = \\text{Pr}(\\text{present} = 1 | X = x)\\)\nI fit the following logistic regression model: \\[\\log\\left(\\frac{p(x)}{1-p(x)}\\right) = e^{\\beta_{0} + \\beta_{1} \\text{WatrCont}}\\]\n\n\n\nlogistic_mod <- glm(present ~ WatrCont, data = presence_dat, \n                    family = \"binomial\")"
   },
   {
     "objectID": "slides/slides-10-logistic.html#remarks",
@@ -2181,7 +2181,7 @@
     "href": "slides/slides-10-logistic.html#example-cont.",
     "title": "Classification & Logistic Regression",
     "section": "Example (cont.)",
-    "text": "Example (cont.)\n\n\n\n\nCall:\nglm(formula = present ~ WatrCont, family = \"binomial\", data = mite_dat_cat)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3429  -0.9402   0.4965   0.7911   1.7595  \n\nCoefficients:\n             Estimate Std. Error z value Pr(>|z|)   \n(Intercept) -2.481539   1.011855  -2.452  0.01419 * \nWatrCont     0.008743   0.002695   3.244  0.00118 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 85.521  on 69  degrees of freedom\nResidual deviance: 70.796  on 68  degrees of freedom\nAIC: 74.796\n\nNumber of Fisher Scoring iterations: 5\n\n\n\n\nDiscuss:\n\nWhat is the interpretation of \\(\\hat{\\beta}\\_{1} =\\) 0.0087?\nIs increasing WatrCont associated with an increasing or decreasing probability of the presence of these mites?"
+    "text": "Example (cont.)\n\n\n\n\nCall:\nglm(formula = present ~ WatrCont, family = \"binomial\", data = presence_dat)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3429  -0.9402   0.4965   0.7911   1.7595  \n\nCoefficients:\n             Estimate Std. Error z value Pr(>|z|)   \n(Intercept) -2.481539   1.011855  -2.452  0.01419 * \nWatrCont     0.008743   0.002695   3.244  0.00118 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 85.521  on 69  degrees of freedom\nResidual deviance: 70.796  on 68  degrees of freedom\nAIC: 74.796\n\nNumber of Fisher Scoring iterations: 5\n\n\n\n\nDiscuss:\n\nWhat is the interpretation of \\(\\hat{\\beta}\\_{1} =\\) 0.0087?\nIs increasing WatrCont associated with an increasing or decreasing probability of the presence of these mites?"
   },
   {
     "objectID": "slides/slides-10-logistic.html#interpretation-of-coefficients",
@@ -2427,5 +2427,12 @@
     "title": "Model Assessment and KNN Classification",
     "section": "KNN classification: different K",
     "text": "KNN classification: different K\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat class would you predict for the test point when \\(K = 9\\)?\nWhat class would you predict for the test point when \\(K = 5\\)?"
+  },
+  {
+    "objectID": "slides/slides-11-confusion-auc.html#handling-ties",
+    "href": "slides/slides-11-confusion-auc.html#handling-ties",
+    "title": "Model Assessment and KNN Classification",
+    "section": "Handling ties",
+    "text": "Handling ties\n\nAn issue we may encounter in KNN classification is ties\n\nIt is possible that no single class is a majority!\n\nDiscuss: how would you handle ties in the neighbor set?"
   }
 ]

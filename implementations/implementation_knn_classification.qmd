@@ -1,0 +1,105 @@
+---
+title: "KNN classification"
+date: "April 6, 2023"
+editor: visual
+categories: "Implementations"
+description: "Part 1"
+draft: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction
+
+```{r message = F, echo = F}
+library(tidyverse)
+source("../math218_fns.R")
+
+.knn_class <- function(K, train_x, train_y, test_x){
+  n_test <- nrow(test_x)
+  levs <- levels(train_y)
+  if(length(n_test) == 0){
+    n_test <- 1
+  }
+  y_pred <- rep(NA, n_test)
+  for(i in 1:n_test){
+    # get distances
+    d_vec <- .dist(test_x[i,], train_x)
+    
+    # get neighbors
+    nb_ids <- .get_nbs(K, d_vec)
+    
+    label_df <- data.frame(label = train_y[nb_ids]) %>%
+      group_by(label) %>% 
+      summarise(n = n()) %>%
+      mutate(prop = n / sum(n)) # not necessary, but maybe useful
+    
+    max_label <- which(label_df$n == max(label_df$n))
+    if(length(max_label) == 1){
+      y_pred[i] <- label_df$label[max_label]
+    } else{
+      rand_id <- sample(max_label, 1)
+      y_pred[i] <- label_df$label[rand_id]
+    }
+  }
+  return(levs[y_pred])
+}
+
+
+```
+
+You and your group will implement KNN classification. You should feel free to copy whatever code is relevant from your KNN regression implementation.
+
+## Discuss
+
+With your group, discuss which parts of the KNN regression code you will need to modify and how in order to implement classification. Once you feel ready, clone the GitHub project called `knn_classification` and work in the file `knn_classification_implementation.Rmd`.
+
+### Implement
+
+::: {style="color: maroon"}
+Your final implementation must be a function called `.knn_class()` (note the period) that takes in the "minimal amount" of inputs and returns a vector of the predicted labels for the test data. You may assume that the response variable is of type `factor`.
+:::
+
+Your code must be as reproducible as possible, and should accommodate *ties* when predicting a label by randomly choosing one of the tied labels!
+
+### Deliverable
+
+Once you've finished your implementation, check it by seeing if you get the same predicted labels as I do below using the following train/test sets from the `palmerpenguins` data:
+
+```{r echo = T}
+library(palmerpenguins)
+penguins2 <- penguins %>%
+  filter(year == 2009) %>%
+  select(species, bill_depth_mm, flipper_length_mm) %>%
+  na.omit() 
+set.seed(2)
+K <- 4
+n <- nrow(penguins2)
+train_ids <- sample(1:n, n*0.8)
+train_dat <- penguins2[train_ids,]
+test_dat <- penguins2[-train_ids,]
+train_x <- train_dat %>%
+  select(-species)
+test_x <-  test_dat %>%
+  select(-species)
+train_y <- train_dat$species
+test_y <- test_dat$species
+```
+
+```{r echo = F}
+pred_y <- .knn_class(K, train_x, train_y, test_x)
+```
+
+```{r echo = T}
+pred_y
+```
+
+Then, re-create the following table and obtain (by hand is fine) the misclassification error:
+
+```{r echo = F}
+table(preds = pred_y, true = test_y)
+```
+
+# Submission
+
+Once you've finished, push your changes to GitHub. Upload a PDF of your implementation and your confirmatory "code check" to Canvas.

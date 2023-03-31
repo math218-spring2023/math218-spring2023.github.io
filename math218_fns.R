@@ -18,3 +18,20 @@ circleFun <- function(center = c(0,0),diameter = 1, npoints = 100){
   yy <- center[2] + r * sin(tt)
   return(data.frame(x = xx, y = yy))
 }
+
+my_scale <- function(df, mean_vec, sd_vec){
+  ret <- df
+  for(i in 1:ncol(df)){
+    ret[,i] <- (df[,i] - mean_vec[i])/sd_vec[i]
+  }
+  return(ret)
+}
+
+.get_nbs <- function(K, d_vec){
+  nb_ids <- data.frame(d = d_vec) %>%
+    mutate(id = row_number()) %>%
+    arrange(d) %>%
+    slice(1:K) %>%
+    pull(id)
+  return(nb_ids)
+}

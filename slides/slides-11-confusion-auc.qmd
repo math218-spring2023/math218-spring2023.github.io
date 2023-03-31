@@ -381,8 +381,8 @@ p_zoom
 
 ## Handling ties
 
-- An issue we may encounter in KNN classification is ties
+-   An issue we may encounter in KNN classification is ties
 
-  - It is possible that no single class is a majority!
-  
-- Discuss: how would you handle ties in the neighbor set?
+    -   It is possible that no single class is a majority!
+
+-   Discuss: how would you handle ties in the neighbor set?
