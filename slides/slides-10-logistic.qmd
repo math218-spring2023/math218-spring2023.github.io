@@ -145,7 +145,7 @@ ggplot() +
 
 Focus on binary response!
 
-## Logistic regression  {.scrollable}
+## Logistic regression {.scrollable}
 
 The observed zero abundances in the mite data were difficult to work with. I consider transform the `abundance` to a binary response `present` as follows:
 
@@ -206,21 +206,21 @@ ggplot(data = mite_dat_cat, aes(x = WatrCont, y = present)) +
 
 ## Odds and Log-odds
 
--   Rearranging this equation yields the **odds**: $$ \frac{\text{Pr(success)}}{\text{Pr(failure)}} = \frac{p(x)}{1 - p(x)} = e^{\beta_{0} + \beta_{1}x}$$ 
+-   Rearranging this equation yields the **odds**: $$ \frac{\text{Pr(success)}}{\text{Pr(failure)}} = \frac{p(x)}{1 - p(x)} = e^{\beta_{0} + \beta_{1}x}$$
 
-- Furthermore, we can obtain the **log-odds**: $$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \beta_{0} + \beta_{1}x$$ 
+-   Furthermore, we can obtain the **log-odds**: $$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \beta_{0} + \beta_{1}x$$
 
-  - When using $\log()$, we refer to *natural logarithm function* $\ln()$
+    -   When using $\log()$, we refer to *natural logarithm function* $\ln()$
 
 ## Interpretation of coefficients
 
-$$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \beta_{0} + \beta_{1}x$$ 
+$$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \beta_{0} + \beta_{1}x$$
 
-- Interpretation of $\beta_{1}$: for every one-unit increase in $x$, we expect an average change of $\beta_{1}$ in the log-odds (or average multiple of $e^{\beta_{1}}$ in the odds)
+-   Interpretation of $\beta_{1}$: for every one-unit increase in $x$, we expect an average change of $\beta_{1}$ in the log-odds (or average multiple of $e^{\beta_{1}}$ in the odds)
 
-  -   $\beta_{1}$ does *not* correspond to the change in $p(x)$ associated with one-unit increase in $X$ (i.e., not a linear relationship between $x$ and $p(x)$)
+    -   $\beta_{1}$ does *not* correspond to the change in $p(x)$ associated with one-unit increase in $X$ (i.e., not a linear relationship between $x$ and $p(x)$)
 
-  -   If $\beta_{1} > 0$, then increasing $X$ is associated with increasing $p(X)$
+    -   If $\beta_{1} > 0$, then increasing $X$ is associated with increasing $p(X)$
 
 ## Example
 

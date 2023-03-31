@@ -6,27 +6,41 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Housekeeping
+
+```{r}
+#| message: false
+library(tidyverse)
+library(vegan)
+data(mite)
+data(mite.env)
+mite_dat_cat <- mite.env %>%
+  add_column(abundance = mite$LRUG) %>%
+  mutate(present = ifelse(abundance > 0, 1, 0)) %>%
+  select(-abundance)
+```
+
 # Model assessment
 
 ## Model assessment in classification
 
-- In the case of binary response, it is common to create a **confusion matrix**, from which we can obtain the misclassification rate and other rates of interest
+-   In the case of binary response, it is common to create a **confusion matrix**, from which we can obtain the misclassification rate and other rates of interest
 
 ```{r fig.align = "center", fig.width=6, fig.height=6}
 knitr::include_graphics("figs/confusion_matrix.png")
 ```
 
-- `FP` = "false positive", `FN` = "false negative", `TP` = "true positive, `TN` = "true negative
+-   `FP` = "false positive", `FN` = "false negative", `TP` = "true positive, `TN` ="true negative
 
-  - "Success" class is the same as "positive"
-  
-- Can calculate the overall **error/misclassification rate**: the proportion of observations that we misclassified
+    -   "Success" class is the same as "positive"
 
-  - Misclassification rate = $\frac{\text{FP} + \text{FN}}{\text{TP} + \text{FP} + \text{FN} + \text{TN}} = \frac{\text{FP} + \text{FN}}{n}$
+-   Can calculate the overall **error/misclassification rate**: the proportion of observations that we misclassified
+
+    -   Misclassification rate = $\frac{\text{FP} + \text{FN}}{\text{TP} + \text{FP} + \text{FN} + \text{TN}} = \frac{\text{FP} + \text{FN}}{n}$
 
 ## Example
 
-- 10 observations, with true class and predicted class
+-   10 observations, with true class and predicted class
 
 ```{r}
 true <- c(0, 1, 1, 0, 1, 1, 0, 0, 1, 1)
@@ -35,7 +49,7 @@ data.frame( pred = pred, true = true) %>%
   knitr::kable()
 ```
 
-- Make a confusion matrix!
+-   Make a confusion matrix!
 
 ## Mite data
 
@@ -60,24 +74,24 @@ fpr <- round(mite_df %>% filter(true == 0, pred==1) %>% nrow() / n0 , 3)
 fnr <- round(mite_df %>% filter(true == 1, pred==0) %>% nrow() / n1 , 3)
 ```
 
-- What is the misclassification rate?
+-   What is the misclassification rate?
 
-  - Misclassification rate: (`r mite_df %>% filter(true == 1, pred==0) %>% nrow()` + `r mite_df %>% filter(true == 0, pred==1) %>% nrow()`)/`r n` = `r round((mite_df %>% filter(true == 1, pred==0) %>% nrow() + mite_df %>% filter(true == 0, pred==1) %>% nrow())/ n,3)`
-  
+    -   Misclassification rate: (`r mite_df %>% filter(true == 1, pred==0) %>% nrow()` + `r mite_df %>% filter(true == 0, pred==1) %>% nrow()`)/`r n` = `r round((mite_df %>% filter(true == 1, pred==0) %>% nrow() + mite_df %>% filter(true == 0, pred==1) %>% nrow())/ n,3)`
+
 ## Types of errors
 
-- **False positive rate** (FPR): fraction of negative observations incorrectly classified as positive
-  
-  - Number of failures/negatives in data = $\text{FP} + \text{TN}$
+-   **False positive rate** (FPR): fraction of negative observations incorrectly classified as positive
 
-  - $\text{FPR} = \frac{\text{FP}}{\text{FP} + \text{TN}}$
+    -   Number of failures/negatives in data = $\text{FP} + \text{TN}$
 
-- **False negative rate** (FNR): fraction of positive observations incorrectly classified as negative example 
+    -   $\text{FPR} = \frac{\text{FP}}{\text{FP} + \text{TN}}$
 
-  - Number of success/positives in data = $\text{FN} + \text{TP}$
+-   **False negative rate** (FNR): fraction of positive observations incorrectly classified as negative example
 
-  -  $\text{FNR} = \frac{\text{FN}}{\text{FN} + \text{TP}}$
-  
+    -   Number of success/positives in data = $\text{FN} + \text{TP}$
+
+    -   $\text{FNR} = \frac{\text{FN}}{\text{FN} + \text{TP}}$
+
 ## Mite data errors
 
 ```{r}
@@ -88,22 +102,21 @@ mite_df%>%
   kableExtra::add_header_above(header = c("Pred" =1, "True" = 2)) 
 ```
 
-- What is the FNR? What is the FPR?
+-   What is the FNR? What is the FPR?
 
-  - FNR: `r mite_df %>% filter(true == 1, pred==0) %>% nrow()`/`r n1` = `r fpr`
+    -   FNR: `r mite_df %>% filter(true == 1, pred==0) %>% nrow()`/`r n1` = `r fpr`
 
-
-  - FPR: `r mite_df %>% filter(true == 0, pred==1) %>% nrow()`/`r n0` = `r fnr` 
+    -   FPR: `r mite_df %>% filter(true == 0, pred==1) %>% nrow()`/`r n0` = `r fnr`
 
 ## Threshold
 
-- Is a false positive or a false negative worse? Depends on the context!
+-   Is a false positive or a false negative worse? Depends on the context!
 
-- The previous confusion matrix was produced by classifying an observation as present if $\hat{p}(x)=\widehat{\text{Pr}}(\text{present = 1} | \text{Topo, WatrCont}) \geq 0.5$
+-   The previous confusion matrix was produced by classifying an observation as present if $\hat{p}(x)=\widehat{\text{Pr}}(\text{present = 1} | \text{Topo, WatrCont}) \geq 0.5$
 
-  - Here, 0.5 is the *threshold* for assigning an observation to the "present" class
-  
-  - Can change threshold to any value in $[0,1]$, which will affect error rates
+    -   Here, 0.5 is the *threshold* for assigning an observation to the "present" class
+
+    -   Can change threshold to any value in $[0,1]$, which will affect error rates
 
 ## Varying threshold
 
@@ -138,22 +151,21 @@ as.data.frame(err_mat) %>%
   theme(legend.title = element_blank(), text = element_text(size = 20))
 ```
 
-- Overall error rate minimized at threshold near 0.50
+-   Overall error rate minimized at threshold near 0.50
 
-- How to decide a threshold rate? Is there a way to obtain a "threshold-free" version of model performance?
+-   How to decide a threshold rate? Is there a way to obtain a "threshold-free" version of model performance?
 
 ## ROC Curve
 
-- The **ROC curve** is a measure of performance for binary classification at various thresholds
+-   The **ROC curve** is a measure of performance for binary classification at various thresholds
 
-  - ROC is a probability curve, and the **Area under the curve (AUC)** tells us how good the model is at distinguishing between/separating the two classes
-  
-- The ROC curve simultaneously plots the true positive rate TPR on the y-axis against the false positive rate FPR on the x-axis
+    -   ROC is a probability curve, and the **Area under the curve (AUC)** tells us how good the model is at distinguishing between/separating the two classes
 
+-   The ROC curve simultaneously plots the true positive rate TPR on the y-axis against the false positive rate FPR on the x-axis
 
-- An excellent model has AUC near 1 (i.e. near perfect separability), whereas a terrible model has AUC near 0 (always predicts the wrong class)
+-   An excellent model has AUC near 1 (i.e. near perfect separability), whereas a terrible model has AUC near 0 (always predicts the wrong class)
 
-  - When AUC = 0.5, the model has no ability to separate classes
+    -   When AUC = 0.5, the model has no ability to separate classes
 
 ```{r fig.align="center", fig.height=4, fig.width=4}
 library(pROC)
@@ -164,4 +176,3 @@ ggroc(mite_roc, legacy.axes = T)+
   geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
   labs(x = "FPR (1 - specificity)", y = "TPR (sensitivity)")
 ```
-  

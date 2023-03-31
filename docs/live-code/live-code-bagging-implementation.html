@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-03-30">
-<meta name="description" content="Bagging implementation">
+<meta name="dcterms.date" content="2023-03-31">
+<meta name="description" content="Bagging implementations">
 
 <title>Math 218 - Spring 2023 - Live code:</title>
 <style>
@@ -175,8 +175,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#option-1" id="toc-option-1" class="nav-link active" data-scroll-target="#option-1">Option 1:</a></li>
+  <li><a href="#testtrain-set-approach-for-test-error" id="toc-testtrain-set-approach-for-test-error" class="nav-link active" data-scroll-target="#testtrain-set-approach-for-test-error">Test/train set approach for test error</a>
+  <ul class="collapse">
+  <li><a href="#option-1" id="toc-option-1" class="nav-link" data-scroll-target="#option-1">Option 1:</a></li>
   <li><a href="#option-2" id="toc-option-2" class="nav-link" data-scroll-target="#option-2">Option 2:</a></li>
+  </ul></li>
+  <li><a href="#oob-approach-to-for-test-error" id="toc-oob-approach-to-for-test-error" class="nav-link" data-scroll-target="#oob-approach-to-for-test-error">OOB approach to for test error</a></li>
   </ul>
 </nav>
     </div>
@@ -193,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div>
   <div class="description">
-    Bagging implementation
+    Bagging implementations
   </div>
 </div>
 
@@ -204,7 +208,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 30, 2023</p>
+      <p class="date">March 31, 2023</p>
     </div>
   </div>
   
@@ -223,6 +227,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-6"><a href="#cb1-6"></a>mite_dat <span class="ot">&lt;-</span> mite.env <span class="sc">%&gt;%</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a>  <span class="fu">add_column</span>(<span class="at">abundance =</span> mite<span class="sc">$</span>LRUG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="testtrain-set-approach-for-test-error" class="level2">
+<h2 class="anchored" data-anchor-id="testtrain-set-approach-for-test-error">Test/train set approach for test error</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(mite_dat)</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="fu">set.seed</span>(<span class="dv">18</span>) </span>
@@ -235,8 +241,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-9"><a href="#cb2-9"></a>B <span class="ot">&lt;-</span> <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The two following options differ only in how I keep track of my predictions. I will set some seeds to see if we indeed get the same predictions:</p>
-<section id="option-1" class="level2">
-<h2 class="anchored" data-anchor-id="option-1">Option 1:</h2>
+<section id="option-1" class="level3">
+<h3 class="anchored" data-anchor-id="option-1">Option 1:</h3>
 <p>Here, I create a vector <code>pred_sums</code> that is in essence, a vector of cumulative sums of predictions.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
@@ -265,8 +271,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="option-2" class="level2">
-<h2 class="anchored" data-anchor-id="option-2">Option 2:</h2>
+<section id="option-2" class="level3">
+<h3 class="anchored" data-anchor-id="option-2">Option 2:</h3>
 <p>Here, I create a <code>B x n_test</code> matrix that will hold each prediction:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
@@ -294,6 +300,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [13]  8.7849145 12.8079772</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># this function does the same: colMeans(pred_mat)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="oob-approach-to-for-test-error" class="level2">
+<h2 class="anchored" data-anchor-id="oob-approach-to-for-test-error">OOB approach to for test error</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>B <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>pred_sum <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb8-4"><a href="#cb8-4"></a>n_oob <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,n)</span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="cf">for</span> (b <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>B){</span>
+<span id="cb8-6"><a href="#cb8-6"></a>  boot_ids <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, n, <span class="at">replace =</span> T)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  oob_ids <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">:</span>n)[<span class="sc">-</span><span class="fu">unique</span>(boot_ids)]</span>
+<span id="cb8-8"><a href="#cb8-8"></a>  </span>
+<span id="cb8-9"><a href="#cb8-9"></a>  tree <span class="ot">&lt;-</span> <span class="fu">tree</span>(abundance <span class="sc">~</span> ., <span class="at">data =</span> mite_dat[boot_ids,])</span>
+<span id="cb8-10"><a href="#cb8-10"></a>  pred_sum[oob_ids] <span class="ot">&lt;-</span>  pred_sum[oob_ids] <span class="sc">+</span> <span class="fu">predict</span>(tree, <span class="at">newdata =</span> mite_dat[oob_ids,])</span>
+<span id="cb8-11"><a href="#cb8-11"></a>  n_oob[oob_ids] <span class="ot">&lt;-</span> n_oob[oob_ids] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>  </span>
+<span id="cb8-13"><a href="#cb8-13"></a>}</span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a>pred_sum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]   7.183861   3.448718  16.514286  10.061905   2.909420   3.336120
+ [7]  27.066026   6.227226   7.176942   4.099206  14.439985  20.536264
+[13]   4.401139  14.272283  29.132601  10.387198   5.800528   6.690494
+[19]  92.931735   4.783861   3.901139   4.150000  15.628571   6.005617
+[25]   3.313043  29.230159   5.773318  19.901810   7.956410  89.646886
+[31]  29.593407  14.483333  58.656410  16.960317  54.034091  54.856410
+[37]  79.111722  57.837662   1.888889  50.145299  45.600000  46.754579
+[43]  26.825397  26.909091  79.837662 120.722436  26.599076  41.107692
+[49] 151.181818  83.603996  57.186039  55.200000 170.867244  71.357143
+[55]  65.155556  66.600000  26.361905  47.000000  28.799603  48.935165
+[61]  85.018182  66.714286 132.310490  67.510490  15.285714  50.018182
+[67]  24.301587  97.774451  45.155311  20.731502</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>n_oob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 3 2 2 3 3 3 4 5 5 4 5 3 4 4 4 6 5 6 5 4 4 3 4 5 2 5 5 3 3 5 2 4 4 3 2 4 5 5
+[39] 1 3 2 3 4 2 6 6 6 2 4 4 4 4 6 5 3 3 6 3 5 3 4 3 7 4 1 3 6 5 5 3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>oob_preds <span class="ot">&lt;-</span> pred_sum<span class="sc">/</span>n_oob</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((oob_preds <span class="sc">-</span> mite_dat<span class="sc">$</span>abundance)<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11.03221</code></pre>
+</div>
 </div>
 
 
