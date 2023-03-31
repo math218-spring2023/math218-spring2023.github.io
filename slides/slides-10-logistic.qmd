@@ -54,7 +54,7 @@ data(mite.env)
 
 -   This can be represented using an *indicator* variable or function. $\mathbf{I}(y_{i} = \hat{y}_{i})$: $$\mathbf{1}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 & \text{ if } y_{i} = \hat{y}_{i}\\ 0 & \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}$$
 
--   We typically have more than one observation $\Rightarrow$ calculate the **classification error rate**, which is the proportion of mistakes we make in predicted labels: $$\frac{1}{n} \sum_{i=1}^{n} \mathbf{1}(y_{i} \neq \hat{y}_{i})$$
+-   We typically have more than one observation $\Rightarrow$ calculate the **classification error rate** or **misclassification rate**, which is the proportion of mistakes we make in predicted labels: $$\frac{1}{n} \sum_{i=1}^{n} \mathbf{1}(y_{i} \neq \hat{y}_{i})$$
 
     -   Smaller error prefered
 

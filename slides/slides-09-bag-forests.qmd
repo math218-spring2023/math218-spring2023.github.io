@@ -19,7 +19,11 @@ draft: false
 
 -   3/30: Lab 04 due midnight tonight! Unfortunately, Doug cannot have office hours tonight.
 
--   Sign-up for oral midterm component
+-   3/31: midterm released after class! PDF (or html) to submitted to Canvas and code pushed to GitHub by Sunday 11:59pm
+
+    -   *E-mail* me with clarifying questions
+
+-   Sign-up for oral midterm component today!
 
 ::: footer
 [Duke forest](https://en.wikipedia.org/wiki/Duke_Forest)
