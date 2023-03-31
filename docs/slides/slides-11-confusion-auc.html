@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.313">
 
-  <title>Math 218 - Spring 2023 - Untitled</title>
+  <title>Math 218 - Spring 2023 - Model Assessment and KNN Classification</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,12 +325,13 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Untitled</h1>
+<section id="title-slide" data-background-image="figs/title/forests.png" data-background-opacity="0.3" class="quarto-title-block center">
+  <h1 class="title">Model Assessment and KNN Classification</h1>
 
 <div class="quarto-title-authors">
 </div>
 
+  <p class="date">3/30/23</p>
 </section>
 <section id="housekeeping" class="title-slide slide level1 center">
 <h1>Housekeeping</h1>
@@ -347,24 +348,24 @@
 <section id="model-assessment-in-classification" class="slide level2">
 <h2>Model assessment in classification</h2>
 <ul>
-<li>In the case of binary response, it is common to create a <strong>confusion matrix</strong>, from which we can obtain the misclassification rate and other rates of interest</li>
+<li class="fragment">In the case of binary response, it is common to create a <strong>confusion matrix</strong>, from which we can obtain the misclassification rate and other rates of interest</li>
 </ul>
 
 <img data-src="figs/confusion_matrix.png" width="178" class="r-stretch quarto-figure-center"><ul>
-<li><p><code>FP</code> = “false positive”, <code>FN</code> = “false negative”, <code>TP</code> = “true positive, <code>TN</code> =”true negative</p>
+<li class="fragment"><p><code>FP</code> = “false positive”, <code>FN</code> = “false negative”, <code>TP</code> = “true positive, <code>TN</code> =”true negative</p>
 <ul>
-<li>“Success” class is the same as “positive”</li>
+<li class="fragment">“Success” class is the same as “positive”</li>
 </ul></li>
-<li><p>Can calculate the overall <strong>error/misclassification rate</strong>: the proportion of observations that we misclassified</p>
+<li class="fragment"><p>Can calculate the overall <strong>error/misclassification rate</strong>: the proportion of observations that we misclassified</p>
 <ul>
-<li>Misclassification rate = <span class="math inline">\(\frac{\text{FP} + \text{FN}}{\text{TP} + \text{FP} + \text{FN} + \text{TN}} = \frac{\text{FP} + \text{FN}}{n}\)</span></li>
+<li class="fragment">Misclassification rate = <span class="math inline">\(\frac{\text{FP} + \text{FN}}{\text{TP} + \text{FP} + \text{FN} + \text{TN}} = \frac{\text{FP} + \text{FN}}{n}\)</span></li>
 </ul></li>
 </ul>
 </section>
 <section id="example" class="slide level2">
 <h2>Example</h2>
 <ul>
-<li>10 observations, with true class and predicted class</li>
+<li class="fragment">10 observations, with true class and predicted class</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
@@ -421,7 +422,7 @@
 </div>
 </div>
 <ul>
-<li>Make a confusion matrix!</li>
+<li class="fragment">Make a confusion matrix!</li>
 </ul>
 </section>
 <section id="mite-data" class="slide level2">
@@ -459,24 +460,24 @@
 </div>
 </div>
 <ul>
-<li><p>What is the misclassification rate?</p>
+<li class="fragment"><p>What is the misclassification rate?</p>
 <ul>
-<li>Misclassification rate: (5 + 5)/70 = 0.143</li>
+<li class="fragment">Misclassification rate: (5 + 5)/70 = 0.143</li>
 </ul></li>
 </ul>
 </section>
 <section id="types-of-errors" class="slide level2">
 <h2>Types of errors</h2>
 <ul>
-<li><p><strong>False positive rate</strong> (FPR): fraction of negative observations incorrectly classified as positive</p>
+<li class="fragment"><p><strong>False positive rate</strong> (FPR): fraction of negative observations incorrectly classified as positive</p>
 <ul>
-<li><p>Number of failures/negatives in data = <span class="math inline">\(\text{FP} + \text{TN}\)</span></p></li>
-<li><p><span class="math inline">\(\text{FPR} = \frac{\text{FP}}{\text{FP} + \text{TN}}\)</span></p></li>
+<li class="fragment"><p>Number of failures/negatives in data = <span class="math inline">\(\text{FP} + \text{TN}\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(\text{FPR} = \frac{\text{FP}}{\text{FP} + \text{TN}}\)</span></p></li>
 </ul></li>
-<li><p><strong>False negative rate</strong> (FNR): fraction of positive observations incorrectly classified as negative example</p>
+<li class="fragment"><p><strong>False negative rate</strong> (FNR): fraction of positive observations incorrectly classified as negative example</p>
 <ul>
-<li><p>Number of success/positives in data = <span class="math inline">\(\text{FN} + \text{TP}\)</span></p></li>
-<li><p><span class="math inline">\(\text{FNR} = \frac{\text{FN}}{\text{FN} + \text{TP}}\)</span></p></li>
+<li class="fragment"><p>Number of success/positives in data = <span class="math inline">\(\text{FN} + \text{TP}\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(\text{FNR} = \frac{\text{FN}}{\text{FN} + \text{TP}}\)</span></p></li>
 </ul></li>
 </ul>
 </section>
@@ -514,21 +515,21 @@
 </div>
 </div>
 <ul>
-<li><p>What is the FNR? What is the FPR?</p>
+<li class="fragment"><p>What is the FNR? What is the FPR?</p>
 <ul>
-<li><p>FNR: 5/49 = 0.238</p></li>
-<li><p>FPR: 5/21 = 0.102</p></li>
+<li class="fragment"><p>FNR: 5/49 = 0.238</p></li>
+<li class="fragment"><p>FPR: 5/21 = 0.102</p></li>
 </ul></li>
 </ul>
 </section>
 <section id="threshold" class="slide level2">
 <h2>Threshold</h2>
 <ul>
-<li><p>Is a false positive or a false negative worse? Depends on the context!</p></li>
-<li><p>The previous confusion matrix was produced by classifying an observation as present if <span class="math inline">\(\hat{p}(x)=\widehat{\text{Pr}}(\text{present = 1} | \text{Topo, WatrCont}) \geq 0.5\)</span></p>
+<li class="fragment"><p>Is a false positive or a false negative worse? Depends on the context!</p></li>
+<li class="fragment"><p>The previous confusion matrix was produced by classifying an observation as present if <span class="math inline">\(\hat{p}(x)=\widehat{\text{Pr}}(\text{present = 1} | \text{Topo, WatrCont}) \geq 0.5\)</span></p>
 <ul>
-<li><p>Here, 0.5 is the <em>threshold</em> for assigning an observation to the “present” class</p></li>
-<li><p>Can change threshold to any value in <span class="math inline">\([0,1]\)</span>, which will affect error rates</p></li>
+<li class="fragment"><p>Here, 0.5 is the <em>threshold</em> for assigning an observation to the “present” class</p></li>
+<li class="fragment"><p>Can change threshold to any value in <span class="math inline">\([0,1]\)</span>, which will affect error rates</p></li>
 </ul></li>
 </ul>
 </section>
@@ -536,26 +537,128 @@
 <h2>Varying threshold</h2>
 
 <img data-src="slides-11-confusion-auc_files/figure-revealjs/lda_threshold-1.png" width="768" class="r-stretch quarto-figure-center"><ul>
-<li><p>Overall error rate minimized at threshold near 0.50</p></li>
-<li><p>How to decide a threshold rate? Is there a way to obtain a “threshold-free” version of model performance?</p></li>
+<li class="fragment"><p>Overall error rate minimized at threshold near 0.50</p></li>
+<li class="fragment"><p>How to decide a threshold rate? Is there a way to obtain a “threshold-free” version of model performance?</p></li>
 </ul>
 </section>
 <section id="roc-curve" class="slide level2">
 <h2>ROC Curve</h2>
 <ul>
-<li><p>The <strong>ROC curve</strong> is a measure of performance for binary classification at various thresholds</p>
+<li class="fragment"><p>The <strong>ROC curve</strong> is a measure of performance for binary classification at various thresholds</p>
 <ul>
-<li>ROC is a probability curve, and the <strong>Area under the curve (AUC)</strong> tells us how good the model is at distinguishing between/separating the two classes</li>
+<li class="fragment">ROC is a probability curve, and the <strong>Area under the curve (AUC)</strong> tells us how good the model is at distinguishing between/separating the two classes</li>
 </ul></li>
-<li><p>The ROC curve simultaneously plots the true positive rate TPR on the y-axis against the false positive rate FPR on the x-axis</p></li>
-<li><p>An excellent model has AUC near 1 (i.e.&nbsp;near perfect separability), whereas a terrible model has AUC near 0 (always predicts the wrong class)</p>
+<li class="fragment"><p>The ROC curve simultaneously plots the true positive rate TPR on the y-axis against the false positive rate FPR on the x-axis</p></li>
+<li class="fragment"><p>An excellent model has AUC near 1 (i.e.&nbsp;near perfect separability), whereas a terrible model has AUC near 0 (always predicts the wrong class)</p>
 <ul>
-<li>When AUC = 0.5, the model has no ability to separate classes</li>
+<li class="fragment">When AUC = 0.5, the model has no ability to separate classes</li>
 </ul></li>
 </ul>
 
+<img data-src="slides-11-confusion-auc_files/figure-revealjs/unnamed-chunk-6-1.png" width="384" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="knn-classification" class="title-slide slide level1 center">
+<h1>KNN Classification</h1>
 
-<img data-src="slides-11-confusion-auc_files/figure-revealjs/unnamed-chunk-6-1.png" width="384" class="r-stretch quarto-figure-center"><div class="footer footer-default">
+</section>
+<section id="knn-classification-1" class="slide level2">
+<h2>KNN Classification</h2>
+<ul>
+<li class="fragment"><p>While logistic regression is nice (and still frequently used), the basic model only accommodates binary responses. What if we have a response with more than two classes?</p></li>
+<li class="fragment"><p>We will now see how we can use KNN for classification</p>
+<ul>
+<li class="fragment"><em>Side note</em>: when people refer to KNN, they almost always refer to KNN for classification tasks</li>
+</ul></li>
+<li class="fragment"><p>Finding the neighbor sets proceeds exactly the same as in KNN regression! The difference lies in how we predict <span class="math inline">\(\hat{y}\)</span></p></li>
+</ul>
+</section>
+<section id="example-mite-data" class="slide level2 scrollable">
+<h2>Example: mite data</h2>
+<ul>
+<li class="fragment"><p>This is a similar plot to that from KNN regression slides, where now points (plotted in standardized predictor space) are colored by <code>present</code> status instead of <code>abundance</code>.</p></li>
+<li class="fragment"><p>Two test points, which we’d like to classify using KNN with <span class="math inline">\(K = 3\)</span></p></li>
+</ul>
+<div class="cell">
+
+</div>
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-11-confusion-auc_files/figure-revealjs/unnamed-chunk-8-1.png" width="672"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-11-confusion-auc_files/figure-revealjs/unnamed-chunk-9-1.png" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-would-we-classify" class="slide level2">
+<h2>How would we classify?</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-11-confusion-auc_files/figure-revealjs/unnamed-chunk-10-1.png" width="672"></p>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div style="color: maroon">
+<p>Discuss: which class labels would you predict for test points 1 and 2, and why?</p>
+</div>
+<ul>
+<li class="fragment">Estimated conditional class probabilities <span class="math inline">\(\hat{p}_{ij}(\mathbf{x}_{i})\)</span> are obtained via simple “majority vote”:
+<ul>
+<li class="fragment"><span class="math inline">\(\hat{p}_{1, \text{present}}(\mathbf{x}_{1}) = \frac{3}{3} = 1\)</span> and <span class="math inline">\(\hat{p}_{1, \text{absent}}(\mathbf{x}_{1}) = \frac{0}{3} = 0\)</span></li>
+<li class="fragment"><span class="math inline">\(\hat{p}_{2, \text{present}}(\mathbf{x}_{2}) = \frac{1}{3}\)</span> and <span class="math inline">\(\hat{p}_{2, \text{absent}}(\mathbf{x}_{2}) = \frac{2}{3}\)</span></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="beyond-two-classes" class="slide level2">
+<h2>Beyond two classes</h2>
+<ul>
+<li class="fragment"><p>KNN classification is easily extended to more than two classes!</p></li>
+<li class="fragment"><p>We still follow the majority vote approach: simply predict the class that has the highest representation in the neighbor set</p></li>
+<li class="fragment"><p><a href="https://allisonhorst.github.io/palmerpenguins/"><code>palmerPenguins</code></a> data: size measurements for adult foraging Adélie, Chinstrap, and Gentoo penguins</p></li>
+<li class="fragment"><p>We will classify penguin species by size measurements!</p></li>
+</ul>
+</section>
+<section id="knn-classification-different-k" class="slide level2">
+<h2>KNN classification: different K</h2>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-11-confusion-auc_files/figure-revealjs/unnamed-chunk-13-1.png" width="672"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-11-confusion-auc_files/figure-revealjs/unnamed-chunk-14-1.png" width="672"></p>
+</div>
+</div>
+<ul>
+<li class="fragment">What class would you predict for the test point when <span class="math inline">\(K = 9\)</span>?</li>
+<li class="fragment">What class would you predict for the test point when <span class="math inline">\(K = 5\)</span>?</li>
+</ul>
+</div>
+</div>
+
+<div class="footer footer-default">
 
 </div>
 </section></section>

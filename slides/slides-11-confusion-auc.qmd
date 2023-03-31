@@ -1,9 +1,18 @@
 ---
-title: "Untitled"
-format: revealjs
+title: "Model Assessment and KNN Classification"
+date: "March 30, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/forests.png"
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
 editor: visual
 editor_options: 
   chunk_output_type: console
+draft: false
 ---
 
 # Housekeeping
@@ -18,6 +27,9 @@ presence_dat <- mite.env %>%
   add_column(abundance = mite$LRUG) %>%
   mutate(present = ifelse(abundance > 0, 1, 0)) %>%
   select(-abundance)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+
 ```
 
 # Model assessment
@@ -176,3 +188,201 @@ ggroc(mite_roc, legacy.axes = T)+
   geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
   labs(x = "FPR (1 - specificity)", y = "TPR (sensitivity)")
 ```
+
+# KNN Classification
+
+## KNN Classification
+
+-   While logistic regression is nice (and still frequently used), the basic model only accommodates binary responses. What if we have a response with more than two classes?
+
+-   We will now see how we can use KNN for classification
+
+    -   *Side note*: when people refer to KNN, they almost always refer to KNN for classification tasks
+
+-   Finding the neighbor sets proceeds exactly the same as in KNN regression! The difference lies in how we predict $\hat{y}$
+
+## Example: mite data {.scrollable}
+
+-   This is a similar plot to that from KNN regression slides, where now points (plotted in standardized predictor space) are colored by `present` status instead of `abundance`.
+
+-   Two test points, which we'd like to classify using KNN with $K = 3$
+
+```{r}
+set.seed(6)
+n <- nrow(presence_dat)
+test_ids <- sample(1:n, 2)
+presence_dat <- presence_dat %>%
+  mutate(present = factor(present))
+train_x <- presence_dat[-test_ids, c("SubsDens", "WatrCont")]
+train_y <-  presence_dat$present[-test_ids]
+test_x <- presence_dat[test_ids,  c("SubsDens", "WatrCont")]
+test_y <-  presence_dat$present[test_ids]
+K <- 3
+
+my_scale <- function(df, mean_vec, sd_vec){
+  ret <- df
+  for(i in 1:ncol(df)){
+    ret[,i] <- (df[,i] - mean_vec[i])/sd_vec[i]
+  }
+  return(ret)
+}
+train_means <- colMeans(train_x)
+train_sds <- apply(train_x, 2, sd)
+train_x_scaled <- my_scale(train_x, train_means, train_sds)
+test_x_scaled <-  my_scale(test_x, train_means, train_sds)
+
+train_dat <- data.frame(train_x_scaled) %>%
+  mutate(present = train_y ) 
+test_dat <-  data.frame(test_x_scaled) %>%
+  mutate(present = test_y ) 
+
+nbs_ls <- list()
+for(i in 1:nrow(test_dat)){
+  nbs_ls[[i]] <- data.frame(d = .dist(test_x_scaled[i,], train_x_scaled)) %>%
+    mutate(id = row_number()) %>%
+    arrange(d) %>%
+    slice(1:K) 
+}
+```
+
+::: r-stack
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+p3 <- ggplot()+
+  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = present), size = 3) +
+  scale_color_viridis_d( ) +
+  plot_theme+
+  theme(legend.position = "bottom") +
+  ggtitle("Scaled train data")
+p3
+```
+:::
+
+::: fragment
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+p3 + 
+  geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt), size = 4)+
+  labs(subtitle = "and test points")
+```
+:::
+:::
+
+## How would we classify?
+
+::: columns
+::: {.column width="60%"}
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+p3 + 
+  geom_text(data = test_dat %>%
+               mutate(test_pt = row_number()), 
+                      mapping = aes(x = SubsDens, y = WatrCont,label = test_pt))+
+  geom_path(data = circleFun(center = as.numeric(test_dat[1,1:2]),
+                             diameter = nbs_ls[[1]][K,1]*2-0.05),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  geom_path(data = circleFun(center = as.numeric(test_dat[2,1:2]),
+                             diameter = nbs_ls[[2]][K,1]*2-0.05),
+            mapping = aes(x = x, y = y), linetype = "dashed") +
+  labs(subtitle= "with neighbor sets for test points")
+```
+:::
+
+::: {.column width="40%"}
+::: {style="color: maroon"}
+Discuss: which class labels would you predict for test points 1 and 2, and why?
+:::
+
+-   Estimated conditional class probabilities $\hat{p}_{ij}(\mathbf{x}_{i})$ are obtained via simple "majority vote":
+    -   $\hat{p}_{1, \text{present}}(\mathbf{x}_{1}) = \frac{3}{3} = 1$ and $\hat{p}_{1, \text{absent}}(\mathbf{x}_{1}) = \frac{0}{3} = 0$
+    -   $\hat{p}_{2, \text{present}}(\mathbf{x}_{2}) = \frac{1}{3}$ and $\hat{p}_{2, \text{absent}}(\mathbf{x}_{2}) = \frac{2}{3}$
+:::
+:::
+
+## Beyond two classes
+
+-   KNN classification is easily extended to more than two classes!
+
+-   We still follow the majority vote approach: simply predict the class that has the highest representation in the neighbor set
+
+-   [`palmerPenguins`](https://allisonhorst.github.io/palmerpenguins/) data: size measurements for adult foraging Adélie, Chinstrap, and Gentoo penguins
+
+-   We will classify penguin species by size measurements!
+
+## KNN classification: different K
+
+```{r}
+library(palmerpenguins)
+penguins_clean <- penguins %>%
+  select(-island, -year) %>%
+  na.omit() %>%
+  mutate_if(is.numeric, scale)
+
+```
+
+```{r}
+test_df <- data.frame(bill_length_mm = 0, bill_depth_mm = 0.3)
+
+p_penguin <- ggplot() +
+  geom_point(penguins_clean, mapping = aes(x = bill_length_mm, y = bill_depth_mm, col = species), size = 2.5) +
+  geom_point(data = test_df, mapping = aes(x = bill_length_mm, y = bill_depth_mm), pch = 4, size = 4) +
+  geom_path(data = circleFun(center = as.numeric(test_df[1,1:2]),
+                             diameter = 0.5),
+            mapping = aes(x = x, y = y), linetype = "dashed")+
+   geom_path(data = circleFun(center = as.numeric(test_df[1,1:2]),
+                             diameter = 0.78),
+            mapping = aes(x = x, y = y), linetype = "dashed", col = "purple")+
+  ggtitle("Neighbor sets for test observation",
+          "K = 5 (black) and K = 9 (purple)") +
+  plot_theme
+
+p_zoom <- ggplot() +
+  geom_point(penguins_clean, mapping = aes(x = bill_length_mm, y = bill_depth_mm, col = species), size = 2.5) +
+  geom_point(data = test_df, mapping = aes(x = bill_length_mm, y = bill_depth_mm), pch = 4, size = 4) +
+  geom_path(data = circleFun(center = as.numeric(test_df[1,1:2]),
+                             diameter = 0.5),
+            mapping = aes(x = x, y = y), linetype = "dashed")+
+   geom_path(data = circleFun(center = as.numeric(test_df[1,1:2]),
+                             diameter = 0.78),
+            mapping = aes(x = x, y = y), linetype = "dashed", col = "purple") +
+  xlim(c(-0.4, 0.4)) +
+  ylim(c(-0.1, 0.7)) +
+  ggtitle("Neighbor sets for test observation (zoomed)",
+          "K = 5 (black) and K = 9 (purple)") +
+  plot_theme
+```
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| fig-width: 7
+#| fig-height: 6
+p_penguin
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 7
+#| fig-height: 6
+p_zoom
+```
+
+-   What class would you predict for the test point when $K = 9$?
+-   What class would you predict for the test point when $K = 5$?
+:::
+:::
+
+## Handling ties
+
+- An issue we may encounter in KNN classification is ties
+
+  - It is possible that no single class is a majority!
+  
+- Discuss: how would you handle ties in the neighbor set?
