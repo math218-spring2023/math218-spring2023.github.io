@@ -234,7 +234,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div style="color: maroon">
 <p>Your final implementation must be a function called <code>.knn_class()</code> (note the period) that takes in the “minimal amount” of inputs and returns a vector of the predicted labels for the test data. You may assume that the response variable is of type <code>factor</code>.</p>
 </div>
-<p>Your code must be as reproducible as possible, and should be able to accommodate <em>ties</em> when predicting a label!</p>
+<p>Your code must be as reproducible as possible, and should accommodate <em>ties</em> when predicting a label by randomly choosing one of the tied labels!</p>
 </section>
 <section id="deliverable" class="level3">
 <h3 class="anchored" data-anchor-id="deliverable">Deliverable</h3>
@@ -270,7 +270,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [19] "Gentoo"    "Adelie"    "Chinstrap" "Adelie"    "Adelie"    "Adelie"   </code></pre>
 </div>
 </div>
-<p>Then, re-create the following table and obtain (by hand is fine) the misclassification error:</p>
+<p>Then, re-create the following table and obtain (by hand is fine) the misclassification test error:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>           true
