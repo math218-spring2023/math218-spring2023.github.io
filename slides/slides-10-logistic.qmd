@@ -262,7 +262,7 @@ summary(logistic_mod)
 
 ## Remarks
 
--   Easily extends to $p$ predictor case: let $\mathbf{x} = (x_{1}, x_{2}, \ldots, x_{p})$. Then $$p(\mathbf{x}) = \frac{e^{\beta_{0} + \beta_{1}x_{1} + \ldots \beta_{p} x_{p}}}{1 + e^{\beta_{0} + \beta_{1}x_{1} + \ldots \beta_{p}x_{p}}}$$
+-   Easily extends to $p$ predictor case: let $\mathbf{x} = (x_{1}, x_{2}, \ldots, x_{p})$. Then $$\log\left(\frac{p(\mathbf{x})}{1-p(\mathbf{x})}\right) =\beta_{0} + \beta_{1}x_{1} + \ldots \beta_{p} x_{p}$$
 
 -   Why called logistic "regression" if used for classification task?
 

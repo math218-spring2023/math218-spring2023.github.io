@@ -2167,7 +2167,7 @@
     "href": "slides/slides-10-logistic.html#remarks",
     "title": "Classification & Logistic Regression",
     "section": "Remarks",
-    "text": "Remarks\n\nEasily extends to \\(p\\) predictor case: let \\(\\mathbf{x} = (x_{1}, x_{2}, \\ldots, x_{p})\\). Then \\[p(\\mathbf{x}) = \\frac{e^{\\beta_{0} + \\beta_{1}x_{1} + \\ldots \\beta_{p} x_{p}}}{1 + e^{\\beta_{0} + \\beta_{1}x_{1} + \\ldots \\beta_{p}x_{p}}}\\]\nWhy called logistic “regression” if used for classification task?\n\nThe log-odds is a real-valued quantity that is modeled as a linear function of \\(X\\)"
+    "text": "Remarks\n\nEasily extends to \\(p\\) predictor case: let \\(\\mathbf{x} = (x_{1}, x_{2}, \\ldots, x_{p})\\). Then \\[\\log\\left(\\frac{p(\\mathbf{x})}{1-p(\\mathbf{x})}\\right) =\\beta_{0} + \\beta_{1}x_{1} + \\ldots \\beta_{p} x_{p}\\]\nWhy called logistic “regression” if used for classification task?\n\nThe log-odds is a real-valued quantity that is modeled as a linear function of \\(X\\)"
   },
   {
     "objectID": "slides/slides-10-logistic.html#obtaining-probability",

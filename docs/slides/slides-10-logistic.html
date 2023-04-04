@@ -609,7 +609,7 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <section id="remarks" class="slide level2">
 <h2>Remarks</h2>
 <ul>
-<li class="fragment"><p>Easily extends to <span class="math inline">\(p\)</span> predictor case: let <span class="math inline">\(\mathbf{x} = (x_{1}, x_{2}, \ldots, x_{p})\)</span>. Then <span class="math display">\[p(\mathbf{x}) = \frac{e^{\beta_{0} + \beta_{1}x_{1} + \ldots \beta_{p} x_{p}}}{1 + e^{\beta_{0} + \beta_{1}x_{1} + \ldots \beta_{p}x_{p}}}\]</span></p></li>
+<li class="fragment"><p>Easily extends to <span class="math inline">\(p\)</span> predictor case: let <span class="math inline">\(\mathbf{x} = (x_{1}, x_{2}, \ldots, x_{p})\)</span>. Then <span class="math display">\[\log\left(\frac{p(\mathbf{x})}{1-p(\mathbf{x})}\right) =\beta_{0} + \beta_{1}x_{1} + \ldots \beta_{p} x_{p}\]</span></p></li>
 <li class="fragment"><p>Why called logistic “regression” if used for classification task?</p>
 <ul>
 <li class="fragment">The log-odds is a real-valued quantity that is modeled as a linear function of <span class="math inline">\(X\)</span></li>
