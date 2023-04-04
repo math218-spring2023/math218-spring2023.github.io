@@ -232,7 +232,7 @@ $$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \
 
 -   For the mite data, let "success" be when `present = 1`; i.e. $p(x) = \text{Pr}(\text{present} = 1 | X = x)$
 
--   I fit the following logistic regression model: $$\log\left(\frac{p(x)}{1-p(x)}\right) = e^{\beta_{0} + \beta_{1} \text{WatrCont}}$$
+-   I fit the following logistic regression model: $$\log\left(\frac{p(x)}{1-p(x)}\right) = \beta_{0} + \beta_{1} \text{WatrCont}$$
 
 ::: fragment
 ```{r}
@@ -292,3 +292,4 @@ $$
 :::
 
 -   Discuss: based on this model, would you classify an observation with `WatrCont = 350` to have mites or not?
+-   Live code!

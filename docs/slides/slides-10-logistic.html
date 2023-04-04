@@ -559,7 +559,7 @@
 <h2>Example</h2>
 <ul>
 <li class="fragment"><p>For the mite data, let “success” be when <code>present = 1</code>; i.e.&nbsp;<span class="math inline">\(p(x) = \text{Pr}(\text{present} = 1 | X = x)\)</span></p></li>
-<li class="fragment"><p>I fit the following logistic regression model: <span class="math display">\[\log\left(\frac{p(x)}{1-p(x)}\right) = e^{\beta_{0} + \beta_{1} \text{WatrCont}}\]</span></p></li>
+<li class="fragment"><p>I fit the following logistic regression model: <span class="math display">\[\log\left(\frac{p(x)}{1-p(x)}\right) = \beta_{0} + \beta_{1} \text{WatrCont}\]</span></p></li>
 </ul>
 <div class="fragment">
 <div class="cell">
@@ -639,6 +639,7 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 <ul>
 <li class="fragment">Discuss: based on this model, would you classify an observation with <code>WatrCont = 350</code> to have mites or not?</li>
+<li class="fragment">Live code!</li>
 </ul>
 
 <div class="footer footer-default">

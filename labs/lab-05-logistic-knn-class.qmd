@@ -3,7 +3,7 @@ title: "Lab 05: Logistic Regression + KNN Classification"
 description: "Rain in WaggaWagga"
 editor: visual
 callout-appearance: default
-draft: false
+draft: true
 editor_options: 
   chunk_output_type: console
 execute: 
