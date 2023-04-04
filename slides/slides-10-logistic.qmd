@@ -1,8 +1,8 @@
 ---
 title: "Classification & Logistic Regression"
-date: "March 30, 2023"
+date: "April 4, 2023"
 title-slide-attributes:
-    data-background-image: "figs/title/forests.png"
+    data-background-image: "figs/title/gold.png"
     data-background-opacity: "0.3"
 format: 
   revealjs:
@@ -16,6 +16,12 @@ draft: false
 ---
 
 # Housekeeping
+
+-   How was the midterm??
+
+    -   Grades should be uploaded by end of week!
+
+-   Please e-mail me about project partners by this Saturday!
 
 ```{r message = F}
 library(tidyverse)
@@ -52,11 +58,11 @@ data(mite.env)
 
 ## Classification error
 
--   This can be represented using an *indicator* variable or function. $\mathbf{I}(y_{i} = \hat{y}_{i})$: $$\mathbf{1}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 & \text{ if } y_{i} = \hat{y}_{i}\\ 0 & \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}$$
+-   This can be represented using an *indicator* variable or function $\mathbf{1}(y_{i} = \hat{y}_{i})$: $$\mathbf{1}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 & \text{ if } y_{i} = \hat{y}_{i}\\ 0 & \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}$$
 
 -   We typically have more than one observation $\Rightarrow$ calculate the **classification error rate** or **misclassification rate**, which is the proportion of mistakes we make in predicted labels: $$\frac{1}{n} \sum_{i=1}^{n} \mathbf{1}(y_{i} \neq \hat{y}_{i})$$
 
-    -   Smaller error prefered
+    -   Smaller error preferred
 
 ## Conditional class probabilities
 
@@ -80,9 +86,9 @@ data(mite.env)
 
 -   For example, consider a binary response with levels "yes" and "no"
 
--   For observation $i$, if $Pr(y_{i} = \text{yes} | X = x_{i}) > 0.5$, then predict $\hat{y}_{i} =$ "yes"
+    -   For observation $i$, if $Pr(y_{i} = \text{yes} | X = x_{i}) > 0.5$, then predict $\hat{y}_{i} =$ "yes"
 
--   The $x_{i}$ where $Pr(y_{i} = \text{yes} | X = x_{i}) = Pr(y_{i} = \text{no} | X = x_{i})= 0.5$ is called the *Bayes decision boundary*
+    -   The $x_{i}$ where $Pr(y_{i} = \text{yes} | X = x_{i}) = Pr(y_{i} = \text{no} | X = x_{i})= 0.5$ is called the *Bayes decision boundary*
 
 ## Example
 
@@ -131,7 +137,7 @@ ggplot() +
 
 -   Bayes classifier is "gold standard"
 
--   In practice, we cannot compute $p_{ij}(x_{i}) = \textbf{Pr}(y_{i} = j | X = x_{i})$ because we do know these true probabilities (i.e. we don't know the true conditional distribution of $y$ given $x$)
+-   In practice, we cannot compute $p_{ij}(x_{i}) = \textbf{Pr}(y_{i} = j | X = x_{i})$ because we do not know these true probabilities (i.e. we don't know the true conditional distribution of $y$ given $x$)
 
 -   Instead, we need to estimate the $p_{ij}(x_{i})$
 
@@ -192,7 +198,7 @@ ggplot(data = presence_dat, aes(x = WatrCont, y = present)) +
   theme(text = element_text(size = 20))
 ```
 
-## Logistic regression
+## Logistic regression model
 
 -   Assume first that we have a single predictor $X$
 
@@ -220,7 +226,7 @@ $$\log\left(\frac{p(x)}{1 - p(x)}\right) = \log(e^{\beta_{0} + \beta_{1}x})  = \
 
     -   $\beta_{1}$ does *not* correspond to the change in $p(x)$ associated with one-unit increase in $X$ (i.e., not a linear relationship between $x$ and $p(x)$)
 
-    -   If $\beta_{1} > 0$, then increasing $X$ is associated with increasing $p(X)$
+    -   If $\beta_{1} > 0$, then increasing $x$ is associated with increasing $p(x)$
 
 ## Example
 
@@ -250,7 +256,7 @@ summary(logistic_mod)
 
 -   Discuss:
 
-    -   What is the interpretation of $\hat{\beta}\_{1} =$ `r round(coef(logistic_mod)[2], 4)`?
+    -   What is the interpretation of $\hat{\beta}_{1} =$ `r round(coef(logistic_mod)[2], 4)`?
 
     -   Is increasing `WatrCont` associated with an increasing or decreasing probability of the presence of these mites?
 
@@ -267,6 +273,8 @@ summary(logistic_mod)
 -   We can interpret the coefficients, but remember the original goal: predict a label (success/failure) for an observation based on its predictors
 
 -   That is, we want $p(x)$, not $\log\left(\frac{p(x)}{1-p(x)}\right)$
+
+    -   Let's simply re-arrange the log-odds formula!
 
 -   We might ask: what is the estimated probability of presence of mites for a location where `WatrCont = 350`?
 

@@ -386,16 +386,23 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="figs/title/forests.png" data-background-opacity="0.3" class="quarto-title-block center">
+<section id="title-slide" data-background-image="figs/title/gold.png" data-background-opacity="0.3" class="quarto-title-block center">
   <h1 class="title">Classification &amp; Logistic Regression</h1>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">3/30/23</p>
+  <p class="date">4/4/23</p>
 </section>
 <section id="housekeeping" class="title-slide slide level1 center">
 <h1>Housekeeping</h1>
+<ul>
+<li class="fragment"><p>How was the midterm??</p>
+<ul>
+<li class="fragment">Grades should be uploaded by end of week!</li>
+</ul></li>
+<li class="fragment"><p>Please e-mail me about project partners by this Saturday!</p></li>
+</ul>
 <div class="cell">
 
 </div>
@@ -431,10 +438,10 @@
 <section id="classification-error" class="slide level2">
 <h2>Classification error</h2>
 <ul>
-<li class="fragment"><p>This can be represented using an <em>indicator</em> variable or function. <span class="math inline">\(\mathbf{I}(y_{i} = \hat{y}_{i})\)</span>: <span class="math display">\[\mathbf{1}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 &amp; \text{ if } y_{i} = \hat{y}_{i}\\ 0 &amp; \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}\]</span></p></li>
+<li class="fragment"><p>This can be represented using an <em>indicator</em> variable or function <span class="math inline">\(\mathbf{1}(y_{i} = \hat{y}_{i})\)</span>: <span class="math display">\[\mathbf{1}(y_{i} = \hat{y}_{i}) = \begin{cases} 1 &amp; \text{ if } y_{i} = \hat{y}_{i}\\ 0 &amp; \text{ if } y_{i} \neq \hat{y}_{i} \end{cases}\]</span></p></li>
 <li class="fragment"><p>We typically have more than one observation <span class="math inline">\(\Rightarrow\)</span> calculate the <strong>classification error rate</strong> or <strong>misclassification rate</strong>, which is the proportion of mistakes we make in predicted labels: <span class="math display">\[\frac{1}{n} \sum_{i=1}^{n} \mathbf{1}(y_{i} \neq \hat{y}_{i})\]</span></p>
 <ul>
-<li class="fragment">Smaller error prefered</li>
+<li class="fragment">Smaller error preferred</li>
 </ul></li>
 </ul>
 </section>
@@ -462,9 +469,11 @@
 <ul>
 <li class="fragment">It can be shown that the <em>test</em> error rate <span class="math inline">\(\frac{1}{n_{test}} \sum_{i=1}^{n_{test}} \mathbf{1}(y_{i} \neq \hat{y}_{i})\)</span> is minimized when using the Bayes optimal classifier</li>
 </ul></li>
-<li class="fragment"><p>For example, consider a binary response with levels “yes” and “no”</p></li>
+<li class="fragment"><p>For example, consider a binary response with levels “yes” and “no”</p>
+<ul>
 <li class="fragment"><p>For observation <span class="math inline">\(i\)</span>, if <span class="math inline">\(Pr(y_{i} = \text{yes} | X = x_{i}) &gt; 0.5\)</span>, then predict <span class="math inline">\(\hat{y}_{i} =\)</span> “yes”</p></li>
 <li class="fragment"><p>The <span class="math inline">\(x_{i}\)</span> where <span class="math inline">\(Pr(y_{i} = \text{yes} | X = x_{i}) = Pr(y_{i} = \text{no} | X = x_{i})= 0.5\)</span> is called the <em>Bayes decision boundary</em></p></li>
+</ul></li>
 </ul>
 </section>
 <section id="example" class="slide level2">
@@ -476,7 +485,7 @@
 <h2>Need for models</h2>
 <ul>
 <li class="fragment"><p>Bayes classifier is “gold standard”</p></li>
-<li class="fragment"><p>In practice, we cannot compute <span class="math inline">\(p_{ij}(x_{i}) = \textbf{Pr}(y_{i} = j | X = x_{i})\)</span> because we do know these true probabilities (i.e.&nbsp;we don’t know the true conditional distribution of <span class="math inline">\(y\)</span> given <span class="math inline">\(x\)</span>)</p></li>
+<li class="fragment"><p>In practice, we cannot compute <span class="math inline">\(p_{ij}(x_{i}) = \textbf{Pr}(y_{i} = j | X = x_{i})\)</span> because we do not know these true probabilities (i.e.&nbsp;we don’t know the true conditional distribution of <span class="math inline">\(y\)</span> given <span class="math inline">\(x\)</span>)</p></li>
 <li class="fragment"><p>Instead, we need to estimate the <span class="math inline">\(p_{ij}(x_{i})\)</span></p></li>
 <li class="fragment"><p>Different statistical learning models define different methods to estimate these <span class="math inline">\(p_{ij}(x_{i})\)</span>!</p></li>
 <li class="fragment"><p>Once we have an estimate of these conditional class probabilities, the “way” of classifying is the same no matter the model:</p>
@@ -513,8 +522,8 @@
 <p>Fitting a <em>logistic</em> regression:</p>
 
 <img data-src="slides-10-logistic_files/figure-revealjs/unnamed-chunk-5-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="logistic-regression-3" class="slide level2">
-<h2>Logistic regression</h2>
+<section id="logistic-regression-model" class="slide level2">
+<h2>Logistic regression model</h2>
 <ul>
 <li class="fragment"><p>Assume first that we have a single predictor <span class="math inline">\(X\)</span></p></li>
 <li class="fragment"><p>Let <span class="math inline">\(p({x}) = \text{Pr}(Y = 1 | {X} = {x})\)</span></p>
@@ -542,7 +551,7 @@
 <li class="fragment"><p>Interpretation of <span class="math inline">\(\beta_{1}\)</span>: for every one-unit increase in <span class="math inline">\(x\)</span>, we expect an average change of <span class="math inline">\(\beta_{1}\)</span> in the log-odds (or average multiple of <span class="math inline">\(e^{\beta_{1}}\)</span> in the odds)</p>
 <ul>
 <li class="fragment"><p><span class="math inline">\(\beta_{1}\)</span> does <em>not</em> correspond to the change in <span class="math inline">\(p(x)\)</span> associated with one-unit increase in <span class="math inline">\(X\)</span> (i.e., not a linear relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(p(x)\)</span>)</p></li>
-<li class="fragment"><p>If <span class="math inline">\(\beta_{1} &gt; 0\)</span>, then increasing <span class="math inline">\(X\)</span> is associated with increasing <span class="math inline">\(p(X)\)</span></p></li>
+<li class="fragment"><p>If <span class="math inline">\(\beta_{1} &gt; 0\)</span>, then increasing <span class="math inline">\(x\)</span> is associated with increasing <span class="math inline">\(p(x)\)</span></p></li>
 </ul></li>
 </ul>
 </section>
@@ -592,7 +601,7 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <ul>
 <li class="fragment"><p>Discuss:</p>
 <ul>
-<li class="fragment"><p>What is the interpretation of <span class="math inline">\(\hat{\beta}\_{1} =\)</span> 0.0087?</p></li>
+<li class="fragment"><p>What is the interpretation of <span class="math inline">\(\hat{\beta}_{1} =\)</span> 0.0087?</p></li>
 <li class="fragment"><p>Is increasing <code>WatrCont</code> associated with an increasing or decreasing probability of the presence of these mites?</p></li>
 </ul></li>
 </ul>
@@ -611,7 +620,10 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <h2>Obtaining probability</h2>
 <ul>
 <li class="fragment"><p>We can interpret the coefficients, but remember the original goal: predict a label (success/failure) for an observation based on its predictors</p></li>
-<li class="fragment"><p>That is, we want <span class="math inline">\(p(x)\)</span>, not <span class="math inline">\(\log\left(\frac{p(x)}{1-p(x)}\right)\)</span></p></li>
+<li class="fragment"><p>That is, we want <span class="math inline">\(p(x)\)</span>, not <span class="math inline">\(\log\left(\frac{p(x)}{1-p(x)}\right)\)</span></p>
+<ul>
+<li class="fragment">Let’s simply re-arrange the log-odds formula!</li>
+</ul></li>
 <li class="fragment"><p>We might ask: what is the estimated probability of presence of mites for a location where <code>WatrCont = 350</code>?</p></li>
 </ul>
 <div class="cell">

@@ -38,7 +38,7 @@ Then, we can use the `summary()` function and `predict()` function as usual:
 summary(presence_mod)
 ```
 
-::: {.callout-warning}
+::: callout-warning
 For logistic regression using `glm()`, your response variable must be encoded as either:
 
 -   A numeric 0 or 1, where 1 represents the success class
@@ -50,7 +50,7 @@ You will get a strange error if your response variable is categorical!
 
 ## Predictions
 
-### Log-odds and probabilities 
+### Log-odds and probabilities
 
 ```{r}
 predict(presence_mod, newdata = presence_dat[test_ids,])
@@ -71,7 +71,7 @@ pred_prob <- predict(presence_mod, newdata = presence_dat[test_ids,], type = "re
 log(pred_prob / (1-pred_prob))
 ```
 
-### Success/failure 
+### Success/failure
 
 If we want to explicitly predict a class, we need to choose a threshold value and classify a test observation as a "success" or "failure" depending on the threshold the predicted probability of success:
 

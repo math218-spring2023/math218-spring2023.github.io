@@ -94,7 +94,7 @@ pred_y <- .knn_class(K, train_x, train_y, test_x)
 pred_y
 ```
 
-Then, re-create the following table and obtain (by hand is fine) the misclassification error:
+Then, re-create the following table and obtain (by hand is fine) the misclassification test error:
 
 ```{r echo = F}
 table(preds = pred_y, true = test_y)

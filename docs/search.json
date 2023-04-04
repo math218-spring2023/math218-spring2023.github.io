@@ -2097,7 +2097,7 @@
     "href": "slides/slides-10-logistic.html#classification-error",
     "title": "Classification & Logistic Regression",
     "section": "Classification error",
-    "text": "Classification error\n\nThis can be represented using an indicator variable or function. \\(\\mathbf{I}(y_{i} = \\hat{y}_{i})\\): \\[\\mathbf{1}(y_{i} = \\hat{y}_{i}) = \\begin{cases} 1 & \\text{ if } y_{i} = \\hat{y}_{i}\\\\ 0 & \\text{ if } y_{i} \\neq \\hat{y}_{i} \\end{cases}\\]\nWe typically have more than one observation \\(\\Rightarrow\\) calculate the classification error rate or misclassification rate, which is the proportion of mistakes we make in predicted labels: \\[\\frac{1}{n} \\sum_{i=1}^{n} \\mathbf{1}(y_{i} \\neq \\hat{y}_{i})\\]\n\nSmaller error prefered"
+    "text": "Classification error\n\nThis can be represented using an indicator variable or function \\(\\mathbf{1}(y_{i} = \\hat{y}_{i})\\): \\[\\mathbf{1}(y_{i} = \\hat{y}_{i}) = \\begin{cases} 1 & \\text{ if } y_{i} = \\hat{y}_{i}\\\\ 0 & \\text{ if } y_{i} \\neq \\hat{y}_{i} \\end{cases}\\]\nWe typically have more than one observation \\(\\Rightarrow\\) calculate the classification error rate or misclassification rate, which is the proportion of mistakes we make in predicted labels: \\[\\frac{1}{n} \\sum_{i=1}^{n} \\mathbf{1}(y_{i} \\neq \\hat{y}_{i})\\]\n\nSmaller error preferred"
   },
   {
     "objectID": "slides/slides-10-logistic.html#conditional-class-probabilities",
@@ -2111,7 +2111,7 @@
     "href": "slides/slides-10-logistic.html#bayes-optimal-classifier-1",
     "title": "Classification & Logistic Regression",
     "section": "Bayes optimal classifier",
-    "text": "Bayes optimal classifier\n\nThe Bayes optimal classifier will assign/predict the label which has the largest conditional class probability\n\nIt can be shown that the test error rate \\(\\frac{1}{n_{test}} \\sum_{i=1}^{n_{test}} \\mathbf{1}(y_{i} \\neq \\hat{y}_{i})\\) is minimized when using the Bayes optimal classifier\n\nFor example, consider a binary response with levels “yes” and “no”\nFor observation \\(i\\), if \\(Pr(y_{i} = \\text{yes} | X = x_{i}) > 0.5\\), then predict \\(\\hat{y}_{i} =\\) “yes”\nThe \\(x_{i}\\) where \\(Pr(y_{i} = \\text{yes} | X = x_{i}) = Pr(y_{i} = \\text{no} | X = x_{i})= 0.5\\) is called the Bayes decision boundary"
+    "text": "Bayes optimal classifier\n\nThe Bayes optimal classifier will assign/predict the label which has the largest conditional class probability\n\nIt can be shown that the test error rate \\(\\frac{1}{n_{test}} \\sum_{i=1}^{n_{test}} \\mathbf{1}(y_{i} \\neq \\hat{y}_{i})\\) is minimized when using the Bayes optimal classifier\n\nFor example, consider a binary response with levels “yes” and “no”\n\nFor observation \\(i\\), if \\(Pr(y_{i} = \\text{yes} | X = x_{i}) > 0.5\\), then predict \\(\\hat{y}_{i} =\\) “yes”\nThe \\(x_{i}\\) where \\(Pr(y_{i} = \\text{yes} | X = x_{i}) = Pr(y_{i} = \\text{no} | X = x_{i})= 0.5\\) is called the Bayes decision boundary"
   },
   {
     "objectID": "slides/slides-10-logistic.html#example",
@@ -2125,7 +2125,7 @@
     "href": "slides/slides-10-logistic.html#need-for-models",
     "title": "Classification & Logistic Regression",
     "section": "Need for models",
-    "text": "Need for models\n\nBayes classifier is “gold standard”\nIn practice, we cannot compute \\(p_{ij}(x_{i}) = \\textbf{Pr}(y_{i} = j | X = x_{i})\\) because we do know these true probabilities (i.e. we don’t know the true conditional distribution of \\(y\\) given \\(x\\))\nInstead, we need to estimate the \\(p_{ij}(x_{i})\\)\nDifferent statistical learning models define different methods to estimate these \\(p_{ij}(x_{i})\\)!\nOnce we have an estimate of these conditional class probabilities, the “way” of classifying is the same no matter the model:\n\nFor observation \\(i\\), predict label \\(j^*\\) if \\(p_{ij^*}(x_{i}) = \\max_{j}\\{p_{ij}(x_{i})\\}\\)"
+    "text": "Need for models\n\nBayes classifier is “gold standard”\nIn practice, we cannot compute \\(p_{ij}(x_{i}) = \\textbf{Pr}(y_{i} = j | X = x_{i})\\) because we do not know these true probabilities (i.e. we don’t know the true conditional distribution of \\(y\\) given \\(x\\))\nInstead, we need to estimate the \\(p_{ij}(x_{i})\\)\nDifferent statistical learning models define different methods to estimate these \\(p_{ij}(x_{i})\\)!\nOnce we have an estimate of these conditional class probabilities, the “way” of classifying is the same no matter the model:\n\nFor observation \\(i\\), predict label \\(j^*\\) if \\(p_{ij^*}(x_{i}) = \\max_{j}\\{p_{ij}(x_{i})\\}\\)"
   },
   {
     "objectID": "slides/slides-10-logistic.html#logistic-regression-1",
@@ -2174,21 +2174,21 @@
     "href": "slides/slides-10-logistic.html#obtaining-probability",
     "title": "Classification & Logistic Regression",
     "section": "Obtaining probability",
-    "text": "Obtaining probability\n\nWe can interpret the coefficients, but remember the original goal: predict a label (success/failure) for an observation based on its predictors\nThat is, we want \\(p(x)\\), not \\(\\log\\left(\\frac{p(x)}{1-p(x)}\\right)\\)\nWe might ask: what is the estimated probability of presence of mites for a location where WatrCont = 350?\n\n\n\n\n\n\\[\n\\begin{align*}\n&\\hat{p}(x) = \\frac{e^{\\hat{\\beta}_{0} + \\hat{\\beta}_{1}x}}{1 + e^{\\hat{\\beta}_{0} + \\hat{\\beta}_{1}x}} \\\\\n&\\hat{p}(x = 350) = \\frac{e^{-2.4815 + 0.0087 \\times 350}}{1+e^{-2.4815 + 0.0087 \\times 350}} = 0.637262\n\\end{align*}\n\\]\n\n\nDiscuss: based on this model, would you classify an observation with WatrCont = 350 to have mites or not?"
+    "text": "Obtaining probability\n\nWe can interpret the coefficients, but remember the original goal: predict a label (success/failure) for an observation based on its predictors\nThat is, we want \\(p(x)\\), not \\(\\log\\left(\\frac{p(x)}{1-p(x)}\\right)\\)\n\nLet’s simply re-arrange the log-odds formula!\n\nWe might ask: what is the estimated probability of presence of mites for a location where WatrCont = 350?\n\n\n\n\n\n\\[\n\\begin{align*}\n&\\hat{p}(x) = \\frac{e^{\\hat{\\beta}_{0} + \\hat{\\beta}_{1}x}}{1 + e^{\\hat{\\beta}_{0} + \\hat{\\beta}_{1}x}} \\\\\n&\\hat{p}(x = 350) = \\frac{e^{-2.4815 + 0.0087 \\times 350}}{1+e^{-2.4815 + 0.0087 \\times 350}} = 0.637262\n\\end{align*}\n\\]\n\n\nDiscuss: based on this model, would you classify an observation with WatrCont = 350 to have mites or not?"
   },
   {
     "objectID": "slides/slides-10-logistic.html#example-cont.",
     "href": "slides/slides-10-logistic.html#example-cont.",
     "title": "Classification & Logistic Regression",
     "section": "Example (cont.)",
-    "text": "Example (cont.)\n\n\n\n\nCall:\nglm(formula = present ~ WatrCont, family = \"binomial\", data = presence_dat)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3429  -0.9402   0.4965   0.7911   1.7595  \n\nCoefficients:\n             Estimate Std. Error z value Pr(>|z|)   \n(Intercept) -2.481539   1.011855  -2.452  0.01419 * \nWatrCont     0.008743   0.002695   3.244  0.00118 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 85.521  on 69  degrees of freedom\nResidual deviance: 70.796  on 68  degrees of freedom\nAIC: 74.796\n\nNumber of Fisher Scoring iterations: 5\n\n\n\n\nDiscuss:\n\nWhat is the interpretation of \\(\\hat{\\beta}\\_{1} =\\) 0.0087?\nIs increasing WatrCont associated with an increasing or decreasing probability of the presence of these mites?"
+    "text": "Example (cont.)\n\n\n\n\nCall:\nglm(formula = present ~ WatrCont, family = \"binomial\", data = presence_dat)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3429  -0.9402   0.4965   0.7911   1.7595  \n\nCoefficients:\n             Estimate Std. Error z value Pr(>|z|)   \n(Intercept) -2.481539   1.011855  -2.452  0.01419 * \nWatrCont     0.008743   0.002695   3.244  0.00118 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 85.521  on 69  degrees of freedom\nResidual deviance: 70.796  on 68  degrees of freedom\nAIC: 74.796\n\nNumber of Fisher Scoring iterations: 5\n\n\n\n\nDiscuss:\n\nWhat is the interpretation of \\(\\hat{\\beta}_{1} =\\) 0.0087?\nIs increasing WatrCont associated with an increasing or decreasing probability of the presence of these mites?"
   },
   {
     "objectID": "slides/slides-10-logistic.html#interpretation-of-coefficients",
     "href": "slides/slides-10-logistic.html#interpretation-of-coefficients",
     "title": "Classification & Logistic Regression",
     "section": "Interpretation of coefficients",
-    "text": "Interpretation of coefficients\n\\[\\log\\left(\\frac{p(x)}{1 - p(x)}\\right) = \\log(e^{\\beta_{0} + \\beta_{1}x})  = \\beta_{0} + \\beta_{1}x\\]\n\nInterpretation of \\(\\beta_{1}\\): for every one-unit increase in \\(x\\), we expect an average change of \\(\\beta_{1}\\) in the log-odds (or average multiple of \\(e^{\\beta_{1}}\\) in the odds)\n\n\\(\\beta_{1}\\) does not correspond to the change in \\(p(x)\\) associated with one-unit increase in \\(X\\) (i.e., not a linear relationship between \\(x\\) and \\(p(x)\\))\nIf \\(\\beta_{1} > 0\\), then increasing \\(X\\) is associated with increasing \\(p(X)\\)"
+    "text": "Interpretation of coefficients\n\\[\\log\\left(\\frac{p(x)}{1 - p(x)}\\right) = \\log(e^{\\beta_{0} + \\beta_{1}x})  = \\beta_{0} + \\beta_{1}x\\]\n\nInterpretation of \\(\\beta_{1}\\): for every one-unit increase in \\(x\\), we expect an average change of \\(\\beta_{1}\\) in the log-odds (or average multiple of \\(e^{\\beta_{1}}\\) in the odds)\n\n\\(\\beta_{1}\\) does not correspond to the change in \\(p(x)\\) associated with one-unit increase in \\(X\\) (i.e., not a linear relationship between \\(x\\) and \\(p(x)\\))\nIf \\(\\beta_{1} > 0\\), then increasing \\(x\\) is associated with increasing \\(p(x)\\)"
   },
   {
     "objectID": "slides/slides-09-bag-forests.html#implementation",
@@ -2434,5 +2434,12 @@
     "title": "Model Assessment and KNN Classification",
     "section": "Handling ties",
     "text": "Handling ties\n\nAn issue we may encounter in KNN classification is ties\n\nIt is possible that no single class is a majority!\n\nDiscuss: how would you handle ties in the neighbor set?"
+  },
+  {
+    "objectID": "slides/slides-10-logistic.html#logistic-regression-model",
+    "href": "slides/slides-10-logistic.html#logistic-regression-model",
+    "title": "Classification & Logistic Regression",
+    "section": "Logistic regression model",
+    "text": "Logistic regression model\n\nAssume first that we have a single predictor \\(X\\)\nLet \\(p({x}) = \\text{Pr}(Y = 1 | {X} = {x})\\)\n\nFor binary response \\((J = 2)\\), we shorthand the conditional class probability to always be in terms of a “success” class\n\nNeed to somehow restrict \\(0 \\leq p(x) \\leq 1\\)\nLogistic regression uses logistic function: \\[p({x}) = \\frac{e^{\\beta_{0} + \\beta_{1}x}}{1 + e^{\\beta_{0} + \\beta_{1}x}}\\]"
   }
 ]

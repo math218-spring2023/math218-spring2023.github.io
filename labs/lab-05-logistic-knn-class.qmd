@@ -1,0 +1,154 @@
+---
+title: "Lab 05: Logistic Regression + KNN Classification"
+description: "Rain in WaggaWagga"
+editor: visual
+callout-appearance: default
+draft: false
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: false
+  eval: false
+---
+
+```{r}
+seed <- 41
+set.seed(seed)
+K <- 10
+sub_dat <- weatherAUS %>% 
+  filter(Location == "WaggaWagga") %>%
+  na.omit() %>%
+  select(-Rainfall) %>%
+  filter(wday(Date) == 5) 
+  # group_by(RainTomorrow) %>%
+  # count()  
+
+sub_dat2 <- sub_dat %>%
+  select("Evaporation", "Sunshine",  "WindSpeed3pm", "Humidity3pm",
+         "Pressure3pm", "Cloud3pm", "Temp3pm",  "RainTomorrow") %>%
+  mutate(RainTomorrow = factor(RainTomorrow, levels = c("No", "Yes")))
+
+n <- nrow(sub_dat2)
+train_ids <- sample(1:n, 0.8*n)
+train_dat <- sub_dat2[train_ids,]
+test_dat <- sub_dat2[-train_ids,]
+mod <- glm(RainTomorrow ~. ,data= train_dat, family = "binomial")
+summary(mod)
+log_preds <- c("No", "Yes")[1+1*(predict(mod, newdata = test_dat, type = "response") >= 0.5)]
+table(log_preds, test_dat$RainTomorrow)
+
+
+train_x <- train_dat %>%
+  select(-RainTomorrow) 
+mean_vec <- colMeans(train_x); sd_vec <- apply(train_x, 2, sd)
+train_x_std <- my_scale(train_x, mean_vec, sd_vec)
+test_x <- test_dat %>%
+  select(-RainTomorrow) 
+test_x_std <- my_scale(test_x, mean_vec, sd_vec)
+
+knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
+table(knn_preds, test_dat$RainTomorrow)
+
+knn_preds_std <- knn(train_x_std,test_x_std,  train_dat$RainTomorrow, K)
+table(knn_preds_std, test_dat$RainTomorrow)
+```
+
+```{r}
+set.seed(seed)
+# k-fold CV
+n_folds <- 10
+fold_size <- n / n_folds
+rand_ids <- sample(1:n)
+fold_ids <- list()
+for(i in 1:n_folds){
+  fold_ids[[i]] <- rand_ids[1:fold_size]
+  rand_ids <- rand_ids[-(1:fold_size)]
+}
+
+misclass_matrix <-  fnr_matrix <- matrix(NA, nrow = n_folds, ncol = 3)
+for(i in 1:n_folds){
+  err_vec <- fnr_vec <- rep(NA, 3)
+  test_ids <- fold_ids[[i]]
+  train_dat <- sub_dat2[-test_ids,]
+  test_dat <- sub_dat2[test_ids,]
+  mod <- glm(RainTomorrow ~ . , data= train_dat, family = "binomial")
+  log_preds <- c("No", "Yes")[1+1*(predict(mod, newdata = test_dat, type = "response") >= 0.5)]
+  err_vec[1] <- mean(log_preds != test_dat$RainTomorrow)
+  fnr_vec[1] <- mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  train_x <- train_dat %>%
+    select(-RainTomorrow) 
+  mean_vec <- colMeans(train_x); sd_vec <- apply(train_x, 2, sd)
+  train_x_std <- my_scale(train_x, mean_vec, sd_vec)
+  test_x <- test_dat %>%
+    select(-RainTomorrow) 
+  test_x_std <- my_scale(test_x, mean_vec, sd_vec)
+  
+  knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
+  err_vec[2] <- mean(knn_preds != test_dat$RainTomorrow)
+  fnr_vec[2] <- mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  
+  knn_preds_std <- knn(train_x_std,test_x_std,  train_dat$RainTomorrow, K)
+  err_vec[3] <- mean(knn_preds_std != test_dat$RainTomorrow)
+  fnr_vec[3] <- mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  misclass_matrix[i, ] <- err_vec
+  fnr_matrix[i,] <- fnr_vec
+}
+colMeans(misclass_matrix)
+colMeans(fnr_matrix)
+```
+
+```{r}
+# stratified k-fold CV
+set.seed(seed)
+success_ids <- which(sub_dat2$RainTomorrow == "Yes")
+failure_ids <- (1:n)[-success_ids]
+
+success_fold_size <- ceiling(length(success_ids) / n_folds)
+failure_fold_size <- ceiling(length(failure_ids) / n_folds)
+rand_success_ids <- sample(success_ids)
+rand_failure_ids <-  sample(failure_ids)
+fold_ids <- list()
+for(i in 1:n_folds){
+  to_add <- c()
+  if(length(rand_failure_ids) < failure_fold_size |length(rand_success_ids) < success_fold_size ){
+      fold_ids[[i]] <- c(rand_success_ids, rand_failure_ids)
+  }  else{
+      fold_ids[[i]] <- c(rand_success_ids[1:success_fold_size], 
+                         rand_failure_ids[1:failure_fold_size])
+  }
+  rand_success_ids <- rand_success_ids[-(1:success_fold_size)]
+  rand_failure_ids <- rand_failure_ids[-(1:failure_fold_size)]
+}
+
+misclass_matrix_strat <- fnr_matrix_strat <- matrix(NA, nrow = n_folds, ncol = 3)
+for(i in 1:n_folds){
+  err_vec <- fnr_vec <-  rep(NA, 3)
+  test_ids <- fold_ids[[i]]
+  train_dat <- sub_dat2[-test_ids,]
+  test_dat <- sub_dat2[test_ids,]
+  mod <- glm(RainTomorrow ~ . , data= train_dat, family = "binomial")
+  log_preds <- c("No", "Yes")[1+1*(predict(mod, newdata = test_dat, type = "response") >= 0.5)]
+  err_vec[1] <- mean(log_preds != test_dat$RainTomorrow)
+  
+  fnr_vec[1] <- mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+
+  train_x <- train_dat %>%
+    select(-RainTomorrow) 
+  mean_vec <- colMeans(train_x); sd_vec <- apply(train_x, 2, sd)
+  train_x_std <- my_scale(train_x, mean_vec, sd_vec)
+  test_x <- test_dat %>%
+    select(-RainTomorrow) 
+  test_x_std <- my_scale(test_x, mean_vec, sd_vec)
+  
+  knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
+  err_vec[2] <- mean(knn_preds != test_dat$RainTomorrow)
+  fnr_vec[2] <- mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  knn_preds_std <- knn(train_x_std,test_x_std,  train_dat$RainTomorrow, K)
+  err_vec[3] <- mean(knn_preds_std != test_dat$RainTomorrow)
+  fnr_vec[3] <-mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  misclass_matrix_strat[i, ] <- err_vec
+  fnr_matrix_strat[i,] <- fnr_vec
+}
+colMeans(misclass_matrix_strat)
+colMeans(fnr_matrix_strat)
+```
