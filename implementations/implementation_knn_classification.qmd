@@ -48,7 +48,9 @@ source("../math218_fns.R")
 
 ```
 
-You and your group will implement KNN classification. You should feel free to copy whatever code is relevant from your KNN regression implementation.
+You and your (optional) group will implement KNN classification. You should feel free to copy whatever code is relevant from your KNN regression implementation.
+
+This implementation is group optional! I do encourage you to work together!
 
 ## Discuss
 
@@ -64,7 +66,7 @@ Your code must be as reproducible as possible, and should accommodate *ties* whe
 
 ### Deliverable
 
-Once you've finished your implementation, check it by seeing if you get the same predicted labels as I do below using the following train/test sets from the `palmerpenguins` data:
+Once you've finished your implementation, check it by seeing if you get the same predicted labels as I do below using the following seed. choice of `K`, and train/test sets from the `palmerpenguins` data:
 
 ```{r echo = T}
 library(palmerpenguins)
@@ -94,7 +96,7 @@ pred_y <- .knn_class(K, train_x, train_y, test_x)
 pred_y
 ```
 
-Then, re-create the following table and obtain (by hand is fine) the misclassification test error:
+Then, re-create the following table and use code to obtain and report the misclassification test error:
 
 ```{r echo = F}
 table(preds = pred_y, true = test_y)
@@ -103,3 +105,7 @@ table(preds = pred_y, true = test_y)
 # Submission
 
 Once you've finished, push your changes to GitHub. Upload a PDF of your implementation and your confirmatory "code check" to Canvas.
+
+::: callout-note
+Important! I am not self-selecting the groups for you. If you worked in a group and would like to submit a single file, please put everyone's name on the document and make sure that each person self-selects into a group in Canvas.
+:::

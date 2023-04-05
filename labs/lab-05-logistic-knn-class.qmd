@@ -36,7 +36,8 @@ mod <- glm(RainTomorrow ~. ,data= train_dat, family = "binomial")
 summary(mod)
 log_preds <- c("No", "Yes")[1+1*(predict(mod, newdata = test_dat, type = "response") >= 0.5)]
 table(log_preds, test_dat$RainTomorrow)
-
+mean(log_preds != test_dat$RainTomorrow)
+mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
 
 train_x <- train_dat %>%
   select(-RainTomorrow) 
@@ -48,12 +49,16 @@ test_x_std <- my_scale(test_x, mean_vec, sd_vec)
 
 knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
 table(knn_preds, test_dat$RainTomorrow)
+mean(knn_preds != test_dat$RainTomorrow)
+mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
 
 knn_preds_std <- knn(train_x_std,test_x_std,  train_dat$RainTomorrow, K)
 table(knn_preds_std, test_dat$RainTomorrow)
+mean(knn_preds_std != test_dat$RainTomorrow)
+mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
 ```
 
-```{r}
+```{r eval = F, echo = F}
 set.seed(seed)
 # k-fold CV
 n_folds <- 10

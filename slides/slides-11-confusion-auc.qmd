@@ -1,8 +1,8 @@
 ---
 title: "Model Assessment and KNN Classification"
-date: "March 30, 2023"
+date: "April 6, 2023"
 title-slide-attributes:
-    data-background-image: "figs/title/forests.png"
+    data-background-image: "figs/title/palmer_penguins.png"
     data-background-opacity: "0.3"
 format: 
   revealjs:
@@ -16,6 +16,14 @@ draft: false
 ---
 
 # Housekeeping
+
+-   We will have an implementation assignment this week (most likely begin in class tomorrow)
+
+- Still need to hear about project partners! 
+
+::: footer
+[PalmerPenguins](https://allisonhorst.github.io/palmerpenguins/articles/intro.html)
+:::
 
 ```{r}
 #| message: false
@@ -38,13 +46,15 @@ plot_theme <- theme(text = element_text(size = 16))
 
 -   In the case of binary response, it is common to create a **confusion matrix**, from which we can obtain the misclassification rate and other rates of interest
 
-```{r fig.align = "center", fig.width=6, fig.height=6}
+::: fragment
+```{r fig.align = "center", fig.width=7, fig.height=7}
 knitr::include_graphics("figs/confusion_matrix.png")
 ```
+:::
 
 -   `FP` = "false positive", `FN` = "false negative", `TP` = "true positive, `TN` ="true negative
 
-    -   "Success" class is the same as "positive"
+    -   "Success" class is the same as "positive" is the same as "1"
 
 -   Can calculate the overall **error/misclassification rate**: the proportion of observations that we misclassified
 
@@ -52,43 +62,31 @@ knitr::include_graphics("figs/confusion_matrix.png")
 
 ## Example
 
--   10 observations, with true class and predicted class
-
+::: columns
+::: {.column width="50%"}
 ```{r}
 true <- c(0, 1, 1, 0, 1, 1, 0, 0, 1, 1)
 pred <- c(0, 1, 0, 1, 1, 1, 0, 0, 1, 0)
 data.frame( pred = pred, true = true) %>%
   knitr::kable()
 ```
+:::
+
+::: {.column width="50%"}
+-   10 observations, with true class and predicted class
 
 -   Make a confusion matrix!
 
-## Mite data
-
-I fit a logistic regression to predict heart `present` using predictors `Topo` and `WatrCont`, and obtained the following confusion matrix of the train data:
-
+::: fragment
 ```{r}
-mite_log <- glm(present ~ Topo + WatrCont, data = presence_dat,
-                family = "binomial")
-
-mite_preds <- predict(mite_log, type = "response")
-mite_df <- data.frame(true = presence_dat$present, prob = mite_preds) %>%
-  mutate(pred = ifelse(prob > 0.5, 1, 0))
-n <- nrow(presence_dat); n0 <- sum(presence_dat$present==0); n1 <- n - n0
-
-mite_df%>%
-  dplyr::select(pred, true) %>%
+data.frame( pred = pred, true = true) %>%
   table() %>%
   knitr::kable() %>%
   kableExtra::add_header_above(header = c("Pred" =1, "True" = 2)) 
-
-fpr <- round(mite_df %>% filter(true == 0, pred==1) %>% nrow() / n0 , 3)
-fnr <- round(mite_df %>% filter(true == 1, pred==0) %>% nrow() / n1 , 3)
 ```
-
--   What is the misclassification rate?
-
-    -   Misclassification rate: (`r mite_df %>% filter(true == 1, pred==0) %>% nrow()` + `r mite_df %>% filter(true == 0, pred==1) %>% nrow()`)/`r n` = `r round((mite_df %>% filter(true == 1, pred==0) %>% nrow() + mite_df %>% filter(true == 0, pred==1) %>% nrow())/ n,3)`
+:::
+:::
+:::
 
 ## Types of errors
 
@@ -106,6 +104,22 @@ fnr <- round(mite_df %>% filter(true == 1, pred==0) %>% nrow() / n1 , 3)
 
 ## Mite data errors
 
+I fit a logistic regression to predict heart `present` using predictors `Topo` and `WatrCont`, and obtained the following confusion matrix of the train data:
+
+```{r echo = T}
+mite_log <- glm(present ~ Topo + WatrCont, data = presence_dat,family = "binomial")
+```
+
+```{r}
+mite_preds <- predict(mite_log, type = "response")
+mite_df <- data.frame(true = presence_dat$present, prob = mite_preds) %>%
+  mutate(pred = ifelse(prob > 0.5, 1, 0))
+n <- nrow(presence_dat); n0 <- sum(presence_dat$present==0); n1 <- n - n0
+
+fpr <- round(mite_df %>% filter(true == 0, pred==1) %>% nrow() / n0 , 3)
+fnr <- round(mite_df %>% filter(true == 1, pred==0) %>% nrow() / n1 , 3)
+```
+
 ```{r}
 mite_df%>%
   dplyr::select(pred, true) %>%
@@ -113,6 +127,10 @@ mite_df%>%
   knitr::kable() %>%
   kableExtra::add_header_above(header = c("Pred" =1, "True" = 2)) 
 ```
+
+-   What is the misclassification rate?
+
+    -   Misclassification rate: (`r mite_df %>% filter(true == 1, pred==0) %>% nrow()` + `r mite_df %>% filter(true == 0, pred==1) %>% nrow()`)/`r n` = `r round((mite_df %>% filter(true == 1, pred==0) %>% nrow() + mite_df %>% filter(true == 0, pred==1) %>% nrow())/ n,3)`
 
 -   What is the FNR? What is the FPR?
 
@@ -128,7 +146,7 @@ mite_df%>%
 
     -   Here, 0.5 is the *threshold* for assigning an observation to the "present" class
 
-    -   Can change threshold to any value in $[0,1]$, which will affect error rates
+    -   Can change threshold to any value in $[0,1]$, which will affect resulting error rates
 
 ## Varying threshold
 
@@ -179,7 +197,11 @@ as.data.frame(err_mat) %>%
 
     -   When AUC = 0.5, the model has no ability to separate classes
 
-```{r fig.align="center", fig.height=4, fig.width=4}
+## ROC Curve (cont.)
+
+ROC and AUC for the training data:
+
+```{r fig.align="center", fig.height=7, fig.width=7}
 library(pROC)
 mite_roc <- roc(response = mite_df$true, predictor= as.numeric(mite_df$pred)-1, plot = F)
 auc <- round(mite_roc$auc, 3)
@@ -189,6 +211,8 @@ ggroc(mite_roc, legacy.axes = T)+
   labs(x = "FPR (1 - specificity)", y = "TPR (sensitivity)")
 ```
 
+-   How do you think we did?
+
 # KNN Classification
 
 ## KNN Classification
@@ -197,7 +221,7 @@ ggroc(mite_roc, legacy.axes = T)+
 
 -   We will now see how we can use KNN for classification
 
-    -   *Side note*: when people refer to KNN, they almost always refer to KNN for classification tasks
+    -   *Side note*: when people refer to KNN, they almost always refer to KNN classification
 
 -   Finding the neighbor sets proceeds exactly the same as in KNN regression! The difference lies in how we predict $\hat{y}$
 
@@ -251,7 +275,7 @@ for(i in 1:nrow(test_dat)){
 #| fig-width: 7
 #| fig-height: 7
 p3 <- ggplot()+
-  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, col = present), size = 3) +
+  geom_point(data = train_dat, aes(x = SubsDens, y = WatrCont, fill = present), col = "black", size = 3, pch = 21) +
   scale_color_viridis_d( ) +
   plot_theme+
   theme(legend.position = "bottom") +
@@ -339,12 +363,13 @@ p_penguin <- ggplot() +
                              diameter = 0.78),
             mapping = aes(x = x, y = y), linetype = "dashed", col = "purple")+
   ggtitle("Neighbor sets for test observation",
-          "K = 5 (black) and K = 9 (purple)") +
-  plot_theme
+          "K = 9 (purple) and K = 5 (black)") +
+  plot_theme+
+  theme(legend.position = "bottom")
 
 p_zoom <- ggplot() +
-  geom_point(penguins_clean, mapping = aes(x = bill_length_mm, y = bill_depth_mm, col = species), size = 2.5) +
-  geom_point(data = test_df, mapping = aes(x = bill_length_mm, y = bill_depth_mm), pch = 4, size = 4) +
+  geom_point(penguins_clean, mapping = aes(x = bill_length_mm, y = bill_depth_mm,fill = species), col = "black", pch = 21, size = 6) +
+  geom_point(data = test_df, mapping = aes(x = bill_length_mm, y = bill_depth_mm), pch = 4, size = 5) +
   geom_path(data = circleFun(center = as.numeric(test_df[1,1:2]),
                              diameter = 0.5),
             mapping = aes(x = x, y = y), linetype = "dashed")+
@@ -354,15 +379,16 @@ p_zoom <- ggplot() +
   xlim(c(-0.4, 0.4)) +
   ylim(c(-0.1, 0.7)) +
   ggtitle("Neighbor sets for test observation (zoomed)",
-          "K = 5 (black) and K = 9 (purple)") +
-  plot_theme
+          "K = 9 (purple) and K = 5 (black)") +
+  plot_theme +
+  theme(legend.position = "bottom")
 ```
 
 ::: columns
 ::: {.column width="50%"}
 ```{r}
 #| fig-width: 7
-#| fig-height: 6
+#| fig-height: 7
 p_penguin
 ```
 :::
@@ -370,19 +396,21 @@ p_penguin
 ::: {.column width="50%"}
 ```{r}
 #| fig-width: 7
-#| fig-height: 6
+#| fig-height: 7
 p_zoom
 ```
+:::
+:::
 
 -   What class would you predict for the test point when $K = 9$?
 -   What class would you predict for the test point when $K = 5$?
-:::
-:::
 
 ## Handling ties
 
--   An issue we may encounter in KNN classification is ties
+-   An issue we may encounter in KNN classification is a *tie*
 
     -   It is possible that no single class is a majority!
 
--   Discuss: how would you handle ties in the neighbor set?
+-   ::: {style="color: maroon"}
+    Discuss: how would you handle ties in the neighbor set?
+    :::
