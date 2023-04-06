@@ -42,15 +42,15 @@ plot_theme <- theme(text = element_text(size = 16))
 
 # Model assessment
 
-## Model assessment in classification
+## Model assessment in classification  {.scrollable}
 
--   In the case of binary response, it is common to create a **confusion matrix**, from which we can obtain the misclassification rate and other rates of interest
+In the case of binary response, it is common to create a **confusion matrix**, from which we can obtain the misclassification rate and other rates of interest
 
-::: fragment
-```{r fig.align = "center", fig.width=7, fig.height=7}
+```{r fig.align = "center", fig.width=4, fig.height=4}
 knitr::include_graphics("figs/confusion_matrix.png")
 ```
-:::
+
+
 
 -   `FP` = "false positive", `FN` = "false negative", `TP` = "true positive, `TN` ="true negative
 
