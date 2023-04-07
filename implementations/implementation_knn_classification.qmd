@@ -59,14 +59,12 @@ With your group, discuss which parts of the KNN regression code you will need to
 ### Implement
 
 ::: {style="color: maroon"}
-Your final implementation must be a function called `.knn_class()` (note the period) that takes in the "minimal amount" of inputs and returns a vector of the predicted labels for the test data. You may assume that the response variable is of type `factor`.
+Your final implementation must be a function called `.knn_class()` (note the period) that takes in the "minimal amount" of inputs and returns a vector of the predicted labels for the test data. You may assume that the response variable is of type `factor`. Your code must be as reproducible as possible, and should accommodate *ties* when predicting a label by randomly choosing one of the tied labels!
 :::
-
-Your code must be as reproducible as possible, and should accommodate *ties* when predicting a label by randomly choosing one of the tied labels!
 
 ### Deliverable
 
-Once you've finished your implementation, check it by seeing if you get the same predicted labels as I do below using the following seed. choice of `K`, and train/test sets from the `palmerpenguins` data:
+Once you've finished your implementation, check it by seeing if you get the same predicted labels as I do below using the following seed, choice of `K`, and train/test sets from the `palmerpenguins` data:
 
 ```{r echo = T}
 library(palmerpenguins)
@@ -80,15 +78,15 @@ n <- nrow(penguins2)
 train_ids <- sample(1:n, n*0.8)
 train_dat <- penguins2[train_ids,]
 test_dat <- penguins2[-train_ids,]
+```
+
+```{r echo = F}
 train_x <- train_dat %>%
   select(-species)
 test_x <-  test_dat %>%
   select(-species)
 train_y <- train_dat$species
 test_y <- test_dat$species
-```
-
-```{r echo = F}
 pred_y <- .knn_class(K, train_x, train_y, test_x)
 ```
 

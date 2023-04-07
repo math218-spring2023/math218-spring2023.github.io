@@ -42,7 +42,11 @@ participation <- "TBD"
 
 -   Project presentation order: TBD
 
--   Examples of previous projects: coming soon
+-   Examples of previous projects:
+
+    -   [Glass classification](examples/gauss-seidel.pdf)
+
+    -   More forthcoming
 
 # Introduction
 

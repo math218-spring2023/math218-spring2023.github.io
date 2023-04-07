@@ -8,36 +8,114 @@ editor_options:
   chunk_output_type: console
 execute: 
   echo: false
-  eval: false
+  eval: true
 ---
 
+```{r packages,message = F}
+library(tidyverse)
+library(class)
+source("../math218_fns.R")
+
+```
+
+## Introduction
+
+We will try to predict if it rained the next day in Wagga Wagga, Australia given certain environmental and climate conditions the previous day. Our data, obtained from [Kaggle](https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package), consist of measurements of these variables on Fridays from 2009-2016.
+
+The variables are as follows:
+
+-   `Evaporation`: The so-called Class A pan evaporation (mm) in the 24 hours to 9am
+-   `Sunshine`: The number of hours of bright sunshine in the day
+-   `WindSpeed3pm`: Wind speed (km/hr) averaged over 10 minutes prior to 3pm
+-   `Humidity3pm`: Humidity (percent) at 3pm
+-   `Pressure3pm`: Atmospheric pressure (hpa) reduced to mean sea level at 3pm
+-   `Cloud3pm`: Fraction of sky obscured by cloud (in "oktas": eighths) at 3pm
+-   `Temp3pm`: Temperature (degrees C) at 3pm
+-   `RainTomorrow`: "yes" or "no" for whether it rained the next day
+
+## Data
+
+First, load in your data located in the `weatherWaggaWagga.csv` file. We will consider `RainTomorrow = "yes"` to be the success class. Pick one quantitative and create side-by-side boxplots that display the distribution of that variable for each level of `RainTomorrow`. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.
+
+```{r fig.width=4, fig.height=4}
+sub_dat2 <- read.csv("~/Desktop/weatherWaggaWagga.csv")
+sub_dat2 <- sub_dat2 %>%
+  mutate(RainTomorrow = factor(RainTomorrow, levels = c("No", "Yes")))
+sub_dat2 %>%
+  ggplot(., aes(x = RainTomorrow, y = Pressure3pm)) +
+  geom_boxplot()
+sub_dat2 %>%
+  count(RainTomorrow)
+```
+
+## Part 1: validation set approach
+
+We will compare the performance of logistic regression with that of KNN classification using a validation set approach.
+
+### Test/train split
+
+First split your data into an 80% train and 20% test set using a seed of 41.
+
 ```{r}
+n <- nrow(sub_dat2)
 seed <- 41
 set.seed(seed)
-K <- 10
-sub_dat <- weatherAUS %>% 
-  filter(Location == "WaggaWagga") %>%
-  na.omit() %>%
-  select(-Rainfall) %>%
-  filter(wday(Date) == 5) 
-  # group_by(RainTomorrow) %>%
-  # count()  
-
-sub_dat2 <- sub_dat %>%
-  select("Evaporation", "Sunshine",  "WindSpeed3pm", "Humidity3pm",
-         "Pressure3pm", "Cloud3pm", "Temp3pm",  "RainTomorrow") %>%
-  mutate(RainTomorrow = factor(RainTomorrow, levels = c("No", "Yes")))
-
-n <- nrow(sub_dat2)
 train_ids <- sample(1:n, 0.8*n)
 train_dat <- sub_dat2[train_ids,]
 test_dat <- sub_dat2[-train_ids,]
+
+# sub_dat <- weatherAUS %>% 
+#   filter(Location == "WaggaWagga") %>%
+#   na.omit() %>%
+#   select(-Rainfall) %>%
+#   filter(wday(Date) == 5) 
+#   
+
+# sub_dat2 <- sub_dat %>%
+#   select("Evaporation", "Sunshine",  "WindSpeed3pm", "Humidity3pm",
+#          "Pressure3pm", "Cloud3pm", "Temp3pm",  "RainTomorrow") %>%
+
+```
+
+### Logistic regression
+
+#### Fit the model
+
+Fit a logistic regression to the training data for `RainTomorrow` using all the remaining variables in the dataset. Display a summary of the model, and interpret the coefficient for the variable you chose to visualize in the EDA section. How, if at all, is the probability of it raining tomorrow in Wagga Wagga associated with that predictor?
+
+::: callout-note
+Hypothesis tests of the form $H_{0}: \ \beta_{j} =0$ vs $H_{a}: \ \beta_{j} \neq 0$ can be formulated for the coefficients in logistic regression just as they are in linear regression!
+:::
+
+```{r}
 mod <- glm(RainTomorrow ~. ,data= train_dat, family = "binomial")
 summary(mod)
+```
+
+#### Predict
+
+Now, obtain predicted *labels* for the test data using a threshold probability of 0.5. Importantly, because the data are in `"yes"/"no"` and not 1/0, your predictions should also be in terms of `"yes"/"no"`.
+
+Then create a confusion matrix for the test set using the `table()` function. Using code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data. This can be achieved using either tidyverse or base `R`.
+
+Comment on which is larger: your FPR or your FNR. Do these values make sense to you given the data?
+
+```{r}
 log_preds <- c("No", "Yes")[1+1*(predict(mod, newdata = test_dat, type = "response") >= 0.5)]
 table(log_preds, test_dat$RainTomorrow)
 mean(log_preds != test_dat$RainTomorrow)
 mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
+```
+
+### KNN Classification
+
+Now we will fit a KNN model to predict `RainTomorrow` using `K = 10` neighbors. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the `knn()` function from the `class` library.
+
+Under this model, create a confusion matrix for the test set. Using code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data. How do your rates compare to those obtained under the logistic regression model?
+
+```{r}
+K <- 10
 
 train_x <- train_dat %>%
   select(-RainTomorrow) 
@@ -46,64 +124,34 @@ train_x_std <- my_scale(train_x, mean_vec, sd_vec)
 test_x <- test_dat %>%
   select(-RainTomorrow) 
 test_x_std <- my_scale(test_x, mean_vec, sd_vec)
-
-knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
-table(knn_preds, test_dat$RainTomorrow)
-mean(knn_preds != test_dat$RainTomorrow)
-mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+# 
+# knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
+# table(knn_preds, test_dat$RainTomorrow)
+# mean(knn_preds != test_dat$RainTomorrow)
+# mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
 
 knn_preds_std <- knn(train_x_std,test_x_std,  train_dat$RainTomorrow, K)
 table(knn_preds_std, test_dat$RainTomorrow)
 mean(knn_preds_std != test_dat$RainTomorrow)
 mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
+
 ```
 
-```{r eval = F, echo = F}
-set.seed(seed)
-# k-fold CV
-n_folds <- 10
-fold_size <- n / n_folds
-rand_ids <- sample(1:n)
-fold_ids <- list()
-for(i in 1:n_folds){
-  fold_ids[[i]] <- rand_ids[1:fold_size]
-  rand_ids <- rand_ids[-(1:fold_size)]
-}
+## Part 2: stratified k-fold CV
 
-misclass_matrix <-  fnr_matrix <- matrix(NA, nrow = n_folds, ncol = 3)
-for(i in 1:n_folds){
-  err_vec <- fnr_vec <- rep(NA, 3)
-  test_ids <- fold_ids[[i]]
-  train_dat <- sub_dat2[-test_ids,]
-  test_dat <- sub_dat2[test_ids,]
-  mod <- glm(RainTomorrow ~ . , data= train_dat, family = "binomial")
-  log_preds <- c("No", "Yes")[1+1*(predict(mod, newdata = test_dat, type = "response") >= 0.5)]
-  err_vec[1] <- mean(log_preds != test_dat$RainTomorrow)
-  fnr_vec[1] <- mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
-  train_x <- train_dat %>%
-    select(-RainTomorrow) 
-  mean_vec <- colMeans(train_x); sd_vec <- apply(train_x, 2, sd)
-  train_x_std <- my_scale(train_x, mean_vec, sd_vec)
-  test_x <- test_dat %>%
-    select(-RainTomorrow) 
-  test_x_std <- my_scale(test_x, mean_vec, sd_vec)
-  
-  knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
-  err_vec[2] <- mean(knn_preds != test_dat$RainTomorrow)
-  fnr_vec[2] <- mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
-  
-  knn_preds_std <- knn(train_x_std,test_x_std,  train_dat$RainTomorrow, K)
-  err_vec[3] <- mean(knn_preds_std != test_dat$RainTomorrow)
-  fnr_vec[3] <- mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
-  misclass_matrix[i, ] <- err_vec
-  fnr_matrix[i,] <- fnr_vec
-}
-colMeans(misclass_matrix)
-colMeans(fnr_matrix)
-```
+At this point, we know that k-fold CV is a better approach to estimating the test error compared to a validation set approach. Because we have relatively few observations with responses falling into one of the classes, we will implement *stratified* k-fold CV.
+
+### Create folds
+
+Here, create your folds for stratified k-fold CV using 10 folds. Set a seed of 41 again.
+
+Remember, in stratified k-fold CV, the proportions of each label in each fold should be representative of the proportion of each label in the entire data set. *This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.*
 
 ```{r}
 # stratified k-fold CV
+n_folds <- 10
+
 set.seed(seed)
 success_ids <- which(sub_dat2$RainTomorrow == "Yes")
 failure_ids <- (1:n)[-success_ids]
@@ -124,10 +172,16 @@ for(i in 1:n_folds){
   rand_success_ids <- rand_success_ids[-(1:success_fold_size)]
   rand_failure_ids <- rand_failure_ids[-(1:failure_fold_size)]
 }
+```
 
-misclass_matrix_strat <- fnr_matrix_strat <- matrix(NA, nrow = n_folds, ncol = 3)
+### Logistic regression
+
+Now, fit logistic regression model using the stratified 10-fold CV approach to estimating the test error. Report the estimated test misclassification, false negative, and false positive rates under this model.
+
+```{r}
+misclass_matrix_strat <- fnr_matrix_strat <- fpr_matrix_strat <- matrix(NA, nrow = n_folds, ncol = 3)
 for(i in 1:n_folds){
-  err_vec <- fnr_vec <-  rep(NA, 3)
+  err_vec <- fnr_vec <- fpr_vec <-  rep(NA, 3)
   test_ids <- fold_ids[[i]]
   train_dat <- sub_dat2[-test_ids,]
   test_dat <- sub_dat2[test_ids,]
@@ -136,6 +190,8 @@ for(i in 1:n_folds){
   err_vec[1] <- mean(log_preds != test_dat$RainTomorrow)
   
   fnr_vec[1] <- mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  
+  fpr_vec[1] <- mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
 
   train_x <- train_dat %>%
     select(-RainTomorrow) 
@@ -145,15 +201,92 @@ for(i in 1:n_folds){
     select(-RainTomorrow) 
   test_x_std <- my_scale(test_x, mean_vec, sd_vec)
   
-  knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
-  err_vec[2] <- mean(knn_preds != test_dat$RainTomorrow)
-  fnr_vec[2] <- mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  # knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
+  # err_vec[2] <- mean(knn_preds != test_dat$RainTomorrow)
+  # fnr_vec[2] <- mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
   knn_preds_std <- knn(train_x_std,test_x_std,  train_dat$RainTomorrow, K)
   err_vec[3] <- mean(knn_preds_std != test_dat$RainTomorrow)
   fnr_vec[3] <-mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  fpr_vec[3] <-mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
   misclass_matrix_strat[i, ] <- err_vec
   fnr_matrix_strat[i,] <- fnr_vec
+  fpr_matrix_strat[i,] <- fpr_vec
 }
-colMeans(misclass_matrix_strat)
-colMeans(fnr_matrix_strat)
+colMeans(misclass_matrix_strat)[1]
+colMeans(fnr_matrix_strat)[1]
+colMeans(fpr_matrix_strat)[1]
+
 ```
+
+### KNN classification
+
+Once again using `K = 10` neighbors and 10 folds, fit a KNN classification model with stratified k-fold CV using standardized predictors. Report the estimated test misclassification, false negative, and false positive rates under this model.
+
+```{r}
+colMeans(misclass_matrix_strat)[3]
+colMeans(fnr_matrix_strat)[3]
+colMeans(fpr_matrix_strat)[3]
+```
+
+How do the prediction performances of your two models compare based on the estimated test error using stratified 10-fold CV?
+
+## Part 3: Comprehension
+
+1.  I also obtained estimates of the test error rates when performing regular 10-fold CV (i.e. non-stratified). The following shows my results:
+
+```{r  echo = F}
+set.seed(seed)
+# k-fold CV
+n_folds <- 10
+fold_size <- n / n_folds
+rand_ids <- sample(1:n)
+fold_ids <- list()
+for(i in 1:n_folds){
+  fold_ids[[i]] <- rand_ids[1:fold_size]
+  rand_ids <- rand_ids[-(1:fold_size)]
+}
+
+misclass_matrix <-  fnr_matrix <- fpr_matrix <- matrix(NA, nrow = n_folds, ncol = 3)
+for(i in 1:n_folds){
+  err_vec <- fnr_vec <- fpr_vec <- rep(NA, 3)
+  test_ids <- fold_ids[[i]]
+  train_dat <- sub_dat2[-test_ids,]
+  test_dat <- sub_dat2[test_ids,]
+  mod <- glm(RainTomorrow ~ . , data= train_dat, family = "binomial")
+  log_preds <- c("No", "Yes")[1+1*(predict(mod, newdata = test_dat, type = "response") >= 0.5)]
+  err_vec[1] <- mean(log_preds != test_dat$RainTomorrow)
+  fnr_vec[1] <- mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  fpr_vec[1] <- mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
+  train_x <- train_dat %>%
+    select(-RainTomorrow) 
+  mean_vec <- colMeans(train_x); sd_vec <- apply(train_x, 2, sd)
+  train_x_std <- my_scale(train_x, mean_vec, sd_vec)
+  test_x <- test_dat %>%
+    select(-RainTomorrow) 
+  test_x_std <- my_scale(test_x, mean_vec, sd_vec)
+  
+  # knn_preds <- knn(train_x,test_x,  train_dat$RainTomorrow, K)
+  # err_vec[2] <- mean(knn_preds != test_dat$RainTomorrow)
+  # fnr_vec[2] <- mean( (knn_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  
+  knn_preds_std <- knn(train_x_std,test_x_std,  train_dat$RainTomorrow, K)
+  err_vec[3] <- mean(knn_preds_std != test_dat$RainTomorrow)
+  fnr_vec[3] <- mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "Yes"])
+  fpr_vec[3] <- mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
+  misclass_matrix[i, ] <- err_vec
+  fnr_matrix[i,] <- fnr_vec
+  fpr_matrix[i,] <- fpr_vec
+}
+# colMeans(misclass_matrix)
+# colMeans(fnr_matrix)
+tab <- as.table(cbind(colMeans(misclass_matrix), colMeans(fnr_matrix), colMeans(fpr_matrix))[-2,])
+tab <- round(tab, 4)
+rownames(tab) <- c("Logistic", "KNN")
+colnames(tab) <- c("Misclass. rate", "FNR", "FPR")
+kableExtra::kable(tab)
+```
+
+Based on these results, what comparisons (if any) can you make about the performance of the models fit here and the models fit in Part 1 or Part 2? What is the correct way to explain why the results I obtained here are different than the rates you obtained via stratified k-fold CV (apart from the simple fact that we used different fold ids)?
+
+2.  Compare the magnitudes of your estimated misclassification test error rates when using the validation set approach vs the stratified k-fold CV approach. Does this make sense to you? Why or why not?
+3.  In this problem, do you think a false positive or a false negative rate is worse? Based on your answer, should you increase or decrease the threshold? Why?
