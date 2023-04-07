@@ -64,7 +64,7 @@ Your final implementation must be a function called `.knn_class()` (note the per
 
 ### Deliverable
 
-Once you've finished your implementation, check it by seeing if you get the same predicted labels as I do below using the following seed, choice of `K`, and train/test sets from the `palmerpenguins` data:
+Once you've finished your implementation, check it by seeing if you get the same predicted labels as I do below using the following seed, choice of `K`, and train/test sets from the `palmerpenguins` dataset. You may need to install the package in your console first!
 
 ```{r echo = T}
 library(palmerpenguins)
