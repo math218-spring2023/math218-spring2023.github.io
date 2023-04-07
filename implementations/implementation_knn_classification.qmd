@@ -1,10 +1,10 @@
 ---
 title: "KNN classification"
-date: "April 6, 2023"
+date: "April 11, 2023"
 editor: visual
 categories: "Implementations"
 description: "Part 1"
-draft: true
+draft: false
 editor_options: 
   chunk_output_type: console
 ---
@@ -50,7 +50,7 @@ source("../math218_fns.R")
 
 You and your (optional) group will implement KNN classification. You should feel free to copy whatever code is relevant from your KNN regression implementation.
 
-This implementation is group optional! I do encourage you to work together!
+I encourage you to work together, though each person should still submit their own individual document to Canvas!
 
 ## Discuss
 
@@ -103,7 +103,3 @@ table(preds = pred_y, true = test_y)
 # Submission
 
 Once you've finished, push your changes to GitHub. Upload a PDF of your implementation and your confirmatory "code check" to Canvas.
-
-::: callout-note
-Important! I am not self-selecting the groups for you. If you worked in a group and would like to submit a single file, please put everyone's name on the document and make sure that each person self-selects into a group in Canvas.
-:::
