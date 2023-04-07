@@ -80,6 +80,7 @@ train_dat <- penguins2[train_ids,]
 test_dat <- penguins2[-train_ids,]
 ```
 
+
 ```{r echo = F}
 train_x <- train_dat %>%
   select(-species)
@@ -87,16 +88,26 @@ test_x <-  test_dat %>%
   select(-species)
 train_y <- train_dat$species
 test_y <- test_dat$species
-pred_y <- .knn_class(K, train_x, train_y, test_x)
+pred_y_all <- .knn_class(K, train_x, train_y, test_x, T)
+pred_y <- pred_y_all$pred
 ```
 
 ```{r echo = T}
 pred_y
 ```
 
-Then, re-create the following table and use code to obtain and report the misclassification test error:
+::: callout-note
+It is possible we may get slightly different predictions if we implemented the random sampling differently. However, you should at least have the same predictions as I do for the following indices of the test data:
 
 ```{r echo = F}
+which(pred_y_all$ties == 0)
+```
+:::
+
+
+Then, re-create the following table and use code to obtain and report the misclassification test error:
+
+```{r echo = T}
 table(preds = pred_y, true = test_y)
 ```
 

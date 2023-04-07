@@ -36,13 +36,14 @@ my_scale <- function(df, mean_vec, sd_vec){
   return(nb_ids)
 }
 
-.knn_class <- function(K, train_x, train_y, test_x){
+.knn_class <- function(K, train_x, train_y, test_x, ties = F){
   n_test <- nrow(test_x)
   levs <- levels(train_y)
   if(length(n_test) == 0){
     n_test <- 1
   }
   y_pred <- rep(NA, n_test)
+  is_tie <- rep(0, n_test)
   for(i in 1:n_test){
     # get distances
     d_vec <- .dist(test_x[i,], train_x)
@@ -67,15 +68,23 @@ my_scale <- function(df, mean_vec, sd_vec){
     # } else{ ## otherwise, we will need to randomly choose one of the tied labels
     #   rand_id <- sample(max_label, 1)
     #   y_pred[i] <- label_df$label[rand_id]
+    #   is_tie[i] <- 1
     # }
     
     ### OPTION 2 (cleaner)
     max_df <- label_df %>%
       mutate(max_prop = max(prop)) %>%
       filter(prop == max_prop) 
+    if(nrow(max_df) == 1){
+      is_tie[i] <- 1
+    }
     rand_id <- sample(1:nrow(max_df), 1)
     y_pred[i] <- max_df$label[rand_id]
     
   }
-  return(levs[y_pred])
+  if(ties){
+    return(list(pred = levs[y_pred], ties = is_tie))
+  } else{
+    return(levs[y_pred])
+  }
 }

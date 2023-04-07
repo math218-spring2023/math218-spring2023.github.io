@@ -264,8 +264,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [19] "Gentoo"    "Chinstrap" "Adelie"    "Adelie"    "Adelie"    "Adelie"   </code></pre>
 </div>
 </div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is possible we may get slightly different predictions if we implemented the random sampling differently. However, you should at least have the same predictions as I do for the following indices of the test data:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  7 20 21 23</code></pre>
+</div>
+</div>
+</div>
+</div>
 <p>Then, re-create the following table and use code to obtain and report the misclassification test error:</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">preds =</span> pred_y, <span class="at">true =</span> test_y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           true
 preds       Adelie Chinstrap Gentoo
