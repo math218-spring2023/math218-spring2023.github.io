@@ -15,35 +15,35 @@ editor_options:
 library(tidyverse)
 source("../math218_fns.R")
 
-.knn_class <- function(K, train_x, train_y, test_x){
-  n_test <- nrow(test_x)
-  levs <- levels(train_y)
-  if(length(n_test) == 0){
-    n_test <- 1
-  }
-  y_pred <- rep(NA, n_test)
-  for(i in 1:n_test){
-    # get distances
-    d_vec <- .dist(test_x[i,], train_x)
-    
-    # get neighbors
-    nb_ids <- .get_nbs(K, d_vec)
-    
-    label_df <- data.frame(label = train_y[nb_ids]) %>%
-      group_by(label) %>% 
-      summarise(n = n()) %>%
-      mutate(prop = n / sum(n)) # not necessary, but maybe useful
-    
-    max_label <- which(label_df$n == max(label_df$n))
-    if(length(max_label) == 1){
-      y_pred[i] <- label_df$label[max_label]
-    } else{
-      rand_id <- sample(max_label, 1)
-      y_pred[i] <- label_df$label[rand_id]
-    }
-  }
-  return(levs[y_pred])
-}
+# .knn_class <- function(K, train_x, train_y, test_x){
+#   n_test <- nrow(test_x)
+#   levs <- levels(train_y)
+#   if(length(n_test) == 0){
+#     n_test <- 1
+#   }
+#   y_pred <- rep(NA, n_test)
+#   for(i in 1:n_test){
+#     # get distances
+#     d_vec <- .dist(test_x[i,], train_x)
+#     
+#     # get neighbors
+#     nb_ids <- .get_nbs(K, d_vec)
+#     
+#     label_df <- data.frame(label = train_y[nb_ids]) %>%
+#       group_by(label) %>% 
+#       summarise(n = n()) %>%
+#       mutate(prop = n / sum(n)) # not necessary, but maybe useful
+#     
+#     max_label <- which(label_df$n == max(label_df$n))
+#     if(length(max_label) == 1){
+#       y_pred[i] <- label_df$label[max_label]
+#     } else{
+#       rand_id <- sample(max_label, 1)
+#       y_pred[i] <- label_df$label[rand_id]
+#     }
+#   }
+#   return(levs[y_pred])
+# }
 
 
 ```
