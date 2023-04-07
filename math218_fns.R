@@ -75,7 +75,7 @@ my_scale <- function(df, mean_vec, sd_vec){
     max_df <- label_df %>%
       mutate(max_prop = max(prop)) %>%
       filter(prop == max_prop) 
-    if(nrow(max_df) == 1){
+    if(nrow(max_df) > 1){
       is_tie[i] <- 1
     }
     rand_id <- sample(1:nrow(max_df), 1)

@@ -80,7 +80,6 @@ train_dat <- penguins2[train_ids,]
 test_dat <- penguins2[-train_ids,]
 ```
 
-
 ```{r echo = F}
 train_x <- train_dat %>%
   select(-species)
@@ -103,7 +102,6 @@ It is possible we may get slightly different predictions if we implemented the r
 which(pred_y_all$ties == 0)
 ```
 :::
-
 
 Then, re-create the following table and use code to obtain and report the misclassification test error:
 
