@@ -62,7 +62,7 @@ Pick one quantitative and create side-by-side boxplots that display the distribu
 :::
 
 ```{r fig.width=4, fig.height=4}
-sub_dat2 <- read.csv("~/Desktop/weatherWaggaWagga.csv")
+sub_dat2 <- read.csv("data/weatherWaggaWagga.csv")
 sub_dat2 <- sub_dat2 %>%
   mutate(RainTomorrow = factor(RainTomorrow, levels = c("No", "Yes")))
 ```
@@ -224,7 +224,6 @@ for(i in 1:n_folds){
 ### Logistic regression
 
 Now, fit the logistic regression model again, but now using the stratified 10-fold CV approach to estimate the test error.
-
 
 ::: {style="color: maroon"}
 Report the estimated test misclassification, false negative, and false positive rates under this model.
