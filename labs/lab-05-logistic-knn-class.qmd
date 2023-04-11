@@ -22,6 +22,26 @@ source("../math218_fns.R")
 
 We will try to predict if it rained the next day in Wagga Wagga, Australia given certain environmental and climate conditions the previous day. Our data, obtained from [Kaggle](https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package), consist of measurements of these variables on Fridays from 2009-2016.
 
+```{r message = F}
+library(sp)
+library(ozmaps)
+library(sf)
+points <- cbind(147.3655, -35.1026)
+df <- data.frame(x = points[1], y = points[2], name = "Wagga Wagga")
+ww <- SpatialPointsDataFrame(coords =  points, data = df,
+              proj4string=CRS("+proj=longlat +ellips=WGS84"))
+ww <- st_as_sf(ww)
+ww <- st_transform(ww, crs = "+proj=lcc +lon_0=135 +lat_0=-30 +lat_1=-10 +lat_2=-45 +datum=WGS84")
+
+sf_oz <- ozmap_data("states")
+ggplot(sf_oz ) + 
+  geom_sf(aes(fill = NAME)) + 
+  coord_sf(crs = "+proj=lcc +lon_0=135 +lat_0=-30 +lat_1=-10 +lat_2=-45 +datum=WGS84") +
+  ggsflabel::geom_sf_label_repel(data = ww, aes(label = name),
+                           force = 5000,  nudge_y = 14,seed = 10) +
+  labs(x = "", y = "")
+```
+
 The variables are as follows:
 
 -   `Evaporation`: The so-called Class A pan evaporation (mm) in the 24 hours to 9am
@@ -35,12 +55,19 @@ The variables are as follows:
 
 ## Data
 
-First, load in your data located in the `weatherWaggaWagga.csv` file. We will consider `RainTomorrow = "yes"` to be the success class. Pick one quantitative and create side-by-side boxplots that display the distribution of that variable for each level of `RainTomorrow`. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.
+First, load in your data located in the `weatherWaggaWagga.csv` file. We will consider `RainTomorrow = "yes"` to be the success class.
+
+::: {style="color: maroon"}
+Pick one quantitative and create side-by-side boxplots that display the distribution of that variable for each level of `RainTomorrow`. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.
+:::
 
 ```{r fig.width=4, fig.height=4}
 sub_dat2 <- read.csv("~/Desktop/weatherWaggaWagga.csv")
 sub_dat2 <- sub_dat2 %>%
   mutate(RainTomorrow = factor(RainTomorrow, levels = c("No", "Yes")))
+```
+
+```{r eda, eval = F}
 sub_dat2 %>%
   ggplot(., aes(x = RainTomorrow, y = Pressure3pm)) +
   geom_boxplot()
@@ -54,11 +81,16 @@ We will compare the performance of logistic regression with that of KNN classifi
 
 ### Test/train split
 
-First split your data into an 80% train and 20% test set using a seed of 41.
+```{r}
+seed <- 41
+```
+
+::: {style="color: maroon"}
+First split your data into an 80% train and 20% test set using a seed of `r seed`.
+:::
 
 ```{r}
 n <- nrow(sub_dat2)
-seed <- 41
 set.seed(seed)
 train_ids <- sample(1:n, 0.8*n)
 train_dat <- sub_dat2[train_ids,]
@@ -81,13 +113,15 @@ test_dat <- sub_dat2[-train_ids,]
 
 #### Fit the model
 
+::: {style="color: maroon"}
 Fit a logistic regression to the training data for `RainTomorrow` using all the remaining variables in the dataset. Display a summary of the model, and interpret the coefficient for the variable you chose to visualize in the EDA section. How, if at all, is the probability of it raining tomorrow in Wagga Wagga associated with that predictor?
+:::
 
 ::: callout-note
 Hypothesis tests of the form $H_{0}: \ \beta_{j} =0$ vs $H_{a}: \ \beta_{j} \neq 0$ can be formulated for the coefficients in logistic regression just as they are in linear regression!
 :::
 
-```{r}
+```{r eval = F}
 mod <- glm(RainTomorrow ~. ,data= train_dat, family = "binomial")
 summary(mod)
 ```
@@ -96,11 +130,13 @@ summary(mod)
 
 Now, obtain predicted *labels* for the test data using a threshold probability of 0.5. Importantly, because the data are in `"yes"/"no"` and not 1/0, your predictions should also be in terms of `"yes"/"no"`.
 
-Then create a confusion matrix for the test set using the `table()` function. Using code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data. This can be achieved using either tidyverse or base `R`.
+::: {style="color: maroon"}
+Then create a confusion matrix for the test set. Using code that is as reproducible as possible, obtain and report the misclassification rate, false negative rate, and false positive rate for the data. This can be achieved using either tidyverse or base `R`.
 
 Comment on which is larger: your FPR or your FNR. Do these values make sense to you given the data?
+:::
 
-```{r}
+```{r eval = F}
 log_preds <- c("No", "Yes")[1+1*(predict(mod, newdata = test_dat, type = "response") >= 0.5)]
 table(log_preds, test_dat$RainTomorrow)
 mean(log_preds != test_dat$RainTomorrow)
@@ -110,12 +146,17 @@ mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
 
 ### KNN Classification
 
-Now we will fit a KNN model to predict `RainTomorrow` using `K = 10` neighbors. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the `knn()` function from the `class` library.
+Now we will fit a KNN model to predict `RainTomorrow` using `K = 20` neighbors. Set a seed of `r seed` in case there are ties. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the `knn()` function from the `class` library.
 
-Under this model, create a confusion matrix for the test set. Using code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data. How do your rates compare to those obtained under the logistic regression model?
+::: {style="color: maroon"}
+Under this model, create a confusion matrix for the test set. Using reproducible code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data.
 
-```{r}
-K <- 10
+How do your rates and the predicted labels themselves compare to those obtained under the logistic regression model?
+:::
+
+```{r eval = F}
+set.seed(seed)
+K <- 20
 
 train_x <- train_dat %>%
   select(-RainTomorrow) 
@@ -144,11 +185,17 @@ At this point, we know that k-fold CV is a better approach to estimating the tes
 
 ### Create folds
 
-Here, create your folds for stratified k-fold CV using 10 folds. Set a seed of 41 again.
+::: {style="color: maroon"}
+Here, create your list of fold indices for stratified k-fold CV using 10 folds. Set a seed of `r seed` again.
+:::
 
-Remember, in stratified k-fold CV, the proportions of each label in each fold should be representative of the proportion of each label in the entire data set. *This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.*
+Remember, in stratified k-fold CV, the proportions of each label in *each* fold should be representative of the proportion of each label in the *entire* data set.
 
-```{r}
+::: callout-caution
+You code should be as reproducible as possible! That means it should not be specific to this specific data or number of folds. This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.
+:::
+
+```{r eval = F}
 # stratified k-fold CV
 n_folds <- 10
 
@@ -176,9 +223,15 @@ for(i in 1:n_folds){
 
 ### Logistic regression
 
-Now, fit logistic regression model using the stratified 10-fold CV approach to estimating the test error. Report the estimated test misclassification, false negative, and false positive rates under this model.
+Now, fit the logistic regression model again, but now using the stratified 10-fold CV approach to estimate the test error.
 
-```{r}
+
+::: {style="color: maroon"}
+Report the estimated test misclassification, false negative, and false positive rates under this model.
+:::
+
+```{r eval = F}
+set.seed(seed)
 misclass_matrix_strat <- fnr_matrix_strat <- fpr_matrix_strat <- matrix(NA, nrow = n_folds, ncol = 3)
 for(i in 1:n_folds){
   err_vec <- fnr_vec <- fpr_vec <-  rep(NA, 3)
@@ -220,22 +273,25 @@ colMeans(fpr_matrix_strat)[1]
 
 ### KNN classification
 
-Once again using `K = 10` neighbors and 10 folds, fit a KNN classification model with stratified k-fold CV using standardized predictors. Report the estimated test misclassification, false negative, and false positive rates under this model.
+Once again using `K = 20` neighbors and 10 folds, fit a KNN classification model with stratified k-fold CV using standardized predictors. Set a seed of `r seed` again.
 
-```{r}
+::: {style="color: maroon"}
+Report the estimated test misclassification, false negative, and false positive rates under this model. How do the prediction performances of your two models compare based on the estimated test error using stratified 10-fold CV?
+:::
+
+```{r eval = F}
 colMeans(misclass_matrix_strat)[3]
 colMeans(fnr_matrix_strat)[3]
 colMeans(fpr_matrix_strat)[3]
 ```
 
-How do the prediction performances of your two models compare based on the estimated test error using stratified 10-fold CV?
-
 ## Part 3: Comprehension
 
 1.  I also obtained estimates of the test error rates when performing regular 10-fold CV (i.e. non-stratified). The following shows my results:
 
-```{r  echo = F}
+```{r echo = F}
 set.seed(seed)
+K <- 20
 # k-fold CV
 n_folds <- 10
 fold_size <- n / n_folds
@@ -283,7 +339,8 @@ tab <- as.table(cbind(colMeans(misclass_matrix), colMeans(fnr_matrix), colMeans(
 tab <- round(tab, 4)
 rownames(tab) <- c("Logistic", "KNN")
 colnames(tab) <- c("Misclass. rate", "FNR", "FPR")
-kableExtra::kable(tab)
+kableExtra::kable(tab) %>%
+  kableExtra::kable_styling()
 ```
 
 Based on these results, what comparisons (if any) can you make about the performance of the models fit here and the models fit in Part 1 or Part 2? What is the correct way to explain why the results I obtained here are different than the rates you obtained via stratified k-fold CV (apart from the simple fact that we used different fold ids)?

@@ -1,0 +1,124 @@
+---
+title: "Live code"
+description: "Model Assessment and KNN Classification"
+date: "April 11, 2023"
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(pROC)
+
+
+```
+
+## Introduction
+
+The `haberman` dataset contains cases from a study that was conducted between 1958 and 1970 at the University of Chicago's Billings Hospital on the survival of patients who had undergone surgery for breast cancer.
+
+```{r}
+library(imbalance)
+data(haberman)
+haberman %>% 
+  slice(1:5)
+```
+
+-   Variables:
+    -   `Age`: age of patient at time of operation
+    -   `Year`: patient's year of operation
+    -   `Positive`: number of positive axillary nodes detected
+    -   `Class`: Two possible survival status: "positive" (survival rate of less than 5 years), "negative" (survival rate or more than 5 years)
+-   We may be interested in predicting the probability of survival
+
+## Imbalanced data
+
+```{r}
+haberman %>%
+  count(Class) %>%
+  mutate(prop = n / sum(n))
+```
+
+-   What do you notice?
+
+    -   "Class imbalance": one (or more, if $J \geq 2$) of the possible labels is several underrepresented in the data
+
+-   Discuss: I claim that class imbalance is an issue for predictive models! Why do you think that is?
+
+## Logistic regression
+
+```{r}
+set.seed(2)
+haberman <- haberman %>%
+  mutate(Class = ifelse(Class == "positive", 1, 0))
+n <- nrow(haberman)
+train_ids <- sample(1:n, 0.8*n)
+train_dat <- haberman[train_ids,]
+test_dat <- haberman[-train_ids,]
+log_mod <- glm(Class ~ Positive, data = train_dat, family = "binomial")
+pred_probs <- predict(log_mod, newdata = test_dat, type = "response")
+pred_class <- as.numeric(pred_probs >= 0.5)
+table(preds = pred_class, true = test_dat$Class)
+roc(test_dat$Class,  pred_class)
+```
+
+## Oversampling
+
+```{r}
+# Randomly duplicating examples from the minority class and adding them to the training dataset.
+set.seed(3)
+train_minority <- which(train_dat$Class == 1)
+train_majority <- which(train_dat$Class == 0)
+n_min <- length(train_minority)
+n_maj <- length(train_majority)
+over_ids <- sample(train_minority, size = 40, replace = T)
+
+train_dat_oversample <- rbind(train_dat, train_dat[over_ids,])
+mod_oversample <-  glm(Class ~ Positive, data = train_dat_oversample, family = "binomial")
+pred_probs <- predict(mod_oversample, newdata = test_dat, type = "response")
+pred_class <- as.numeric(pred_probs >= 0.5) 
+table(preds = pred_class, true = test_dat$Class)
+# the random oversampling may increase the likelihood of overfitting occurring, since it makes exact copies of the minority class examples
+roc(test_dat$Class,  pred_class)
+```
+
+## Undersampling
+
+```{r}
+# Randomly remove examples from the majority class in the training dataset.
+set.seed(3)
+remove_ids <- sample(train_majority, n_maj - n_min, replace = F)
+
+mod_undersample <-  glm(Class ~ Positive, data = train_dat[-remove_ids,], family = "binomial")
+pred_probs <- predict(mod_undersample, newdata = test_dat, type = "response")
+pred_class <-as.numeric(pred_probs >= 0.5) 
+table(preds = pred_class, true = test_dat$Class)
+# the random oversampling may increase the likelihood of overfitting occurring, since it makes exact copies of the minority class examples
+roc(test_dat$Class,  pred_class)
+```
+
+## k-fold CV
+
+```{r}
+set.seed(1)
+K <- 4
+rand_ids <- sample(which(haberman$Class == 0))
+fold_ids1 <- rand_ids[1:75]
+fold_ids2 <- rand_ids[76:150]
+fold_ids3 <- rand_ids[151:225]
+fold_ids4 <- which(haberman$Class == 1)
+fold_ids <- list(fold_ids1, fold_ids2, fold_ids3, fold_ids4)
+for(k in 1:K){
+  test_ids <- fold_ids[[k]]
+  mod <- glm(Class ~ Positive, data = haberman[-test_ids,],
+             family = "binomial") 
+  pred_probs <- predict(mod, newdata = haberman[test_ids,], type = "response")
+  pred_class <- as.numeric(pred_probs >= 0.5)
+  
+}
+```

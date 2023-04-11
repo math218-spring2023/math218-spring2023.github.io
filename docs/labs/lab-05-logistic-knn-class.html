@@ -59,6 +59,9 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../styles.css">
@@ -161,6 +164,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>We will try to predict if it rained the next day in Wagga Wagga, Australia given certain environmental and climate conditions the previous day. Our data, obtained from <a href="https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package">Kaggle</a>, consist of measurements of these variables on Fridays from 2009-2016.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="lab-05-logistic-knn-class_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <p>The variables are as follows:</p>
 <ul>
 <li><code>Evaporation</code>: The so-called Class A pan evaporation (mm) in the 24 hours to 9am</li>
@@ -175,16 +183,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
-<p>First, load in your data located in the <code>weatherWaggaWagga.csv</code> file. We will consider <code>RainTomorrow = "yes"</code> to be the success class. Pick one quantitative and create side-by-side boxplots that display the distribution of that variable for each level of <code>RainTomorrow</code>. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.</p>
+<p>First, load in your data located in the <code>weatherWaggaWagga.csv</code> file. We will consider <code>RainTomorrow = "yes"</code> to be the success class.</p>
+<div style="color: maroon">
+<p>Pick one quantitative and create side-by-side boxplots that display the distribution of that variable for each level of <code>RainTomorrow</code>. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.</p>
+</div>
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="lab-05-logistic-knn-class_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="384"></p>
+
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  RainTomorrow   n
-1           No 288
-2          Yes  65</code></pre>
-</div>
+<div class="cell">
+
 </div>
 </section>
 <section id="part-1-validation-set-approach" class="level2">
@@ -192,7 +199,12 @@ ul.task-list li input[type="checkbox"] {
 <p>We will compare the performance of logistic regression with that of KNN classification using a validation set approach.</p>
 <section id="testtrain-split" class="level3">
 <h3 class="anchored" data-anchor-id="testtrain-split">Test/train split</h3>
+<div class="cell">
+
+</div>
+<div style="color: maroon">
 <p>First split your data into an 80% train and 20% test set using a seed of 41.</p>
+</div>
 <div class="cell">
 
 </div>
@@ -201,7 +213,9 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="logistic-regression">Logistic regression</h3>
 <section id="fit-the-model" class="level4">
 <h4 class="anchored" data-anchor-id="fit-the-model">Fit the model</h4>
+<div style="color: maroon">
 <p>Fit a logistic regression to the training data for <code>RainTomorrow</code> using all the remaining variables in the dataset. Display a summary of the model, and interpret the coefficient for the variable you chose to visualize in the EDA section. How, if at all, is the probability of it raining tomorrow in Wagga Wagga associated with that predictor?</p>
+</div>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -216,82 +230,30 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-glm(formula = RainTomorrow ~ ., family = "binomial", data = train_dat)
 
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--2.0465  -0.4421  -0.2349  -0.0830   3.0848  
-
-Coefficients:
-             Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)  76.23317   44.93089   1.697  0.08976 .  
-Evaporation   0.07526    0.08969   0.839  0.40141    
-Sunshine      0.01264    0.09066   0.139  0.88916    
-WindSpeed3pm  0.03595    0.02721   1.321  0.18651    
-Humidity3pm   0.08671    0.02028   4.276 1.91e-05 ***
-Pressure3pm  -0.08679    0.04378  -1.983  0.04740 *  
-Cloud3pm      0.38056    0.14020   2.714  0.00664 ** 
-Temp3pm       0.13956    0.05842   2.389  0.01690 *  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 269.59  on 281  degrees of freedom
-Residual deviance: 158.32  on 274  degrees of freedom
-AIC: 174.32
-
-Number of Fisher Scoring iterations: 6</code></pre>
-</div>
 </div>
 </section>
 <section id="predict" class="level4">
 <h4 class="anchored" data-anchor-id="predict">Predict</h4>
 <p>Now, obtain predicted <em>labels</em> for the test data using a threshold probability of 0.5. Importantly, because the data are in <code>"yes"/"no"</code> and not 1/0, your predictions should also be in terms of <code>"yes"/"no"</code>.</p>
-<p>Then create a confusion matrix for the test set using the <code>table()</code> function. Using code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data. This can be achieved using either tidyverse or base <code>R</code>.</p>
+<div style="color: maroon">
+<p>Then create a confusion matrix for the test set. Using code that is as reproducible as possible, obtain and report the misclassification rate, false negative rate, and false positive rate for the data. This can be achieved using either tidyverse or base <code>R</code>.</p>
 <p>Comment on which is larger: your FPR or your FNR. Do these values make sense to you given the data?</p>
+</div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>         
-log_preds No Yes
-      No  56   8
-      Yes  2   5</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1408451</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6153846</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.03448276</code></pre>
-</div>
+
 </div>
 </section>
 </section>
 <section id="knn-classification" class="level3">
 <h3 class="anchored" data-anchor-id="knn-classification">KNN Classification</h3>
-<p>Now we will fit a KNN model to predict <code>RainTomorrow</code> using <code>K = 10</code> neighbors. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the <code>knn()</code> function from the <code>class</code> library.</p>
-<p>Under this model, create a confusion matrix for the test set. Using code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data. How do your rates compare to those obtained under the logistic regression model?</p>
+<p>Now we will fit a KNN model to predict <code>RainTomorrow</code> using <code>K = 20</code> neighbors. Set a seed of 41 in case there are ties. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the <code>knn()</code> function from the <code>class</code> library.</p>
+<div style="color: maroon">
+<p>Under this model, create a confusion matrix for the test set. Using reproducible code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data.</p>
+<p>How do your rates and the predicted labels themselves compare to those obtained under the logistic regression model?</p>
+</div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>             
-knn_preds_std No Yes
-          No  55   9
-          Yes  3   4</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1690141</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6923077</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.05172414</code></pre>
-</div>
+
 </div>
 </section>
 </section>
@@ -300,42 +262,46 @@ knn_preds_std No Yes
 <p>At this point, we know that k-fold CV is a better approach to estimating the test error compared to a validation set approach. Because we have relatively few observations with responses falling into one of the classes, we will implement <em>stratified</em> k-fold CV.</p>
 <section id="create-folds" class="level3">
 <h3 class="anchored" data-anchor-id="create-folds">Create folds</h3>
-<p>Here, create your folds for stratified k-fold CV using 10 folds. Set a seed of 41 again.</p>
-<p>Remember, in stratified k-fold CV, the proportions of each label in each fold should be representative of the proportion of each label in the entire data set. <em>This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.</em></p>
+<div style="color: maroon">
+<p>Here, create your list of fold indices for stratified k-fold CV using 10 folds. Set a seed of 41 again.</p>
+</div>
+<p>Remember, in stratified k-fold CV, the proportions of each label in <em>each</em> fold should be representative of the proportion of each label in the <em>entire</em> data set.</p>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Danger
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.</p>
+</div>
+</div>
 <div class="cell">
 
 </div>
 </section>
 <section id="logistic-regression-1" class="level3">
 <h3 class="anchored" data-anchor-id="logistic-regression-1">Logistic regression</h3>
-<p>Now, fit logistic regression model using the stratified 10-fold CV approach to estimating the test error. Report the estimated test misclassification, false negative, and false positive rates under this model.</p>
+<p>Now, fit logistic regression model using the stratified 10-fold CV approach to estimating the test error.</p>
+<div style="color: maroon">
+<p>Report the estimated test misclassification, false negative, and false positive rates under this model.</p>
+</div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1242337</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4928571</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.04189017</code></pre>
-</div>
+
 </div>
 </section>
 <section id="knn-classification-1" class="level3">
 <h3 class="anchored" data-anchor-id="knn-classification-1">KNN classification</h3>
-<p>Once again using <code>K = 10</code> neighbors and 10 folds, fit a KNN classification model with stratified k-fold CV using standardized predictors. Report the estimated test misclassification, false negative, and false positive rates under this model.</p>
+<p>Once again using <code>K = 20</code> neighbors and 10 folds, fit a KNN classification model with stratified k-fold CV using standardized predictors. Set a seed of 41 again.</p>
+<div style="color: maroon">
+<p>Report the estimated test misclassification, false negative, and false positive rates under this model. How do the prediction performances of your two models compare based on the estimated test error using stratified 10-fold CV?</p>
+</div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1471264</code></pre>
+
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6428571</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.04189017</code></pre>
-</div>
-</div>
-<p>How do the prediction performances of your two models compare based on the estimated test error using stratified 10-fold CV?</p>
 </section>
 </section>
 <section id="part-3-comprehension" class="level2">
@@ -346,7 +312,7 @@ knn_preds_std No Yes
 <div class="cell">
 <div class="cell-output-display">
 
-<table>
+<table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;">   </th>
@@ -364,9 +330,9 @@ knn_preds_std No Yes
   </tr>
   <tr>
    <td style="text-align:left;"> KNN </td>
-   <td style="text-align:right;"> 0.1486 </td>
-   <td style="text-align:right;"> 0.6446 </td>
-   <td style="text-align:right;"> 0.0347 </td>
+   <td style="text-align:right;"> 0.1229 </td>
+   <td style="text-align:right;"> 0.6028 </td>
+   <td style="text-align:right;"> 0.0106 </td>
   </tr>
 </tbody>
 </table>
