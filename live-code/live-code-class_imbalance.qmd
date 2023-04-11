@@ -1,21 +1,19 @@
 ---
 title: "Live code"
-description: "Model Assessment and KNN Classification"
+description: "Class Imbalance"
 date: "April 11, 2023"
 categories: "Live code"
 format:
   html: 
     code-fold: false
     code-line-numbers: true
-draft: true
+draft: false
 ---
 
 ```{r}
 #| message: false
 library(tidyverse)
 library(pROC)
-
-
 ```
 
 ## Introduction
@@ -102,23 +100,23 @@ table(preds = pred_class, true = test_dat$Class)
 roc(test_dat$Class,  pred_class)
 ```
 
-## k-fold CV
+<!-- ## k-fold CV -->
 
-```{r}
-set.seed(1)
-K <- 4
-rand_ids <- sample(which(haberman$Class == 0))
-fold_ids1 <- rand_ids[1:75]
-fold_ids2 <- rand_ids[76:150]
-fold_ids3 <- rand_ids[151:225]
-fold_ids4 <- which(haberman$Class == 1)
-fold_ids <- list(fold_ids1, fold_ids2, fold_ids3, fold_ids4)
-for(k in 1:K){
-  test_ids <- fold_ids[[k]]
-  mod <- glm(Class ~ Positive, data = haberman[-test_ids,],
-             family = "binomial") 
-  pred_probs <- predict(mod, newdata = haberman[test_ids,], type = "response")
-  pred_class <- as.numeric(pred_probs >= 0.5)
-  
-}
-```
+<!-- ```{r} -->
+<!-- set.seed(1) -->
+<!-- K <- 4 -->
+<!-- rand_ids <- sample(which(haberman$Class == 0)) -->
+<!-- fold_ids1 <- rand_ids[1:75] -->
+<!-- fold_ids2 <- rand_ids[76:150] -->
+<!-- fold_ids3 <- rand_ids[151:225] -->
+<!-- fold_ids4 <- which(haberman$Class == 1) -->
+<!-- fold_ids <- list(fold_ids1, fold_ids2, fold_ids3, fold_ids4) -->
+<!-- for(k in 1:K){ -->
+<!--   test_ids <- fold_ids[[k]] -->
+<!--   mod <- glm(Class ~ Positive, data = haberman[-test_ids,], -->
+<!--              family = "binomial")  -->
+<!--   pred_probs <- predict(mod, newdata = haberman[test_ids,], type = "response") -->
+<!--   pred_class <- as.numeric(pred_probs >= 0.5) -->
+
+<!-- } -->
+<!-- ``` -->
