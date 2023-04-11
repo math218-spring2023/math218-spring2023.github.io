@@ -185,7 +185,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <p>First, load in your data located in the <code>weatherWaggaWagga.csv</code> file. We will consider <code>RainTomorrow = "yes"</code> to be the success class.</p>
 <div style="color: maroon">
-<p>Pick one quantitative and create side-by-side boxplots that display the distribution of that variable for each level of <code>RainTomorrow</code>. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.</p>
+<p>Pick one quantitative variable and create side-by-side boxplots that display the distribution of that variable for each level of <code>RainTomorrow</code>. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.</p>
 </div>
 <div class="cell">
 
@@ -247,7 +247,7 @@ Note
 </section>
 <section id="knn-classification" class="level3">
 <h3 class="anchored" data-anchor-id="knn-classification">KNN Classification</h3>
-<p>Now we will fit a KNN model to predict <code>RainTomorrow</code> using <code>K = 20</code> neighbors. Set a seed of 41 in case there are ties. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the <code>knn()</code> function from the <code>class</code> library.</p>
+<p>Now we will fit a KNN model to predict <code>RainTomorrow</code> using <code>K = 20</code> neighbors. Set a seed of 41 in case there are ties. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the <code>knn()</code> function from the <code>class</code> library. Paste any functions you may need in the chunk labeled <code>functions</code> at the top of the document.</p>
 <div style="color: maroon">
 <p>Under this model, create a confusion matrix for the test set. Using reproducible code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data.</p>
 <p>How do your rates and the predicted labels themselves compare to those obtained under the logistic regression model?</p>
@@ -259,25 +259,12 @@ Note
 </section>
 <section id="part-2-stratified-k-fold-cv" class="level2">
 <h2 class="anchored" data-anchor-id="part-2-stratified-k-fold-cv">Part 2: stratified k-fold CV</h2>
-<p>At this point, we know that k-fold CV is a better approach to estimating the test error compared to a validation set approach. Because we have relatively few observations with responses falling into one of the classes, we will implement <em>stratified</em> k-fold CV.</p>
+<p>At this point, we know that k-fold CV is a better approach to estimating the test error compared to a validation set approach. For this lab, we will implement <em>stratified</em> k-fold CV. In stratified k-fold CV, the proportions of each label in <em>each</em> fold should be representative of the proportion of each label in the <em>entire</em> data set.</p>
 <section id="create-folds" class="level3">
 <h3 class="anchored" data-anchor-id="create-folds">Create folds</h3>
 <div style="color: maroon">
-<p>Here, create your list of fold indices for stratified k-fold CV using 10 folds. Set a seed of 41 again.</p>
-</div>
-<p>Remember, in stratified k-fold CV, the proportions of each label in <em>each</em> fold should be representative of the proportion of each label in the <em>entire</em> data set.</p>
-<div class="callout-caution callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Danger
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You code should be as reproducible as possible! That means it should not be specific to this specific data or number of folds. This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.</p>
-</div>
+<p>Here, create your list of fold indices for stratified k-fold CV using 10 folds of roughly equal size. Set a seed of 41 again. “Roughly equal” means that either all 10 folds are the same size, or 9 folds have the same size and the tenth fold has a little less.</p>
+<p>Your code should be as reproducible as possible! That means it should not be specific to this specific data or number of folds. This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.</p>
 </div>
 <div class="cell">
 

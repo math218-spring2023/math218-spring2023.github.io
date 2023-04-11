@@ -58,7 +58,7 @@ The variables are as follows:
 First, load in your data located in the `weatherWaggaWagga.csv` file. We will consider `RainTomorrow = "yes"` to be the success class.
 
 ::: {style="color: maroon"}
-Pick one quantitative and create side-by-side boxplots that display the distribution of that variable for each level of `RainTomorrow`. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.
+Pick one quantitative variable and create side-by-side boxplots that display the distribution of that variable for each level of `RainTomorrow`. Also display a table of the total number of successes and failures in the data. Interpret your plot, and comment on the table.
 :::
 
 ```{r fig.width=4, fig.height=4}
@@ -146,7 +146,7 @@ mean( (log_preds != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
 
 ### KNN Classification
 
-Now we will fit a KNN model to predict `RainTomorrow` using `K = 20` neighbors. Set a seed of `r seed` in case there are ties. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the `knn()` function from the `class` library.
+Now we will fit a KNN model to predict `RainTomorrow` using `K = 20` neighbors. Set a seed of `r seed` in case there are ties. As our predictors are on completely different scales, first properly standardize your train and test data sets before fitting the model. You may either use your own implementation of KNN classification, or you may use the `knn()` function from the `class` library. Paste any functions you may need in the chunk labeled `functions` at the top of the document.
 
 ::: {style="color: maroon"}
 Under this model, create a confusion matrix for the test set. Using reproducible code, obtain and report the misclassification rate, false negative rate, and false positive rate for the data.
@@ -181,18 +181,14 @@ mean( (knn_preds_std != test_dat$RainTomorrow)[test_dat$RainTomorrow == "No"])
 
 ## Part 2: stratified k-fold CV
 
-At this point, we know that k-fold CV is a better approach to estimating the test error compared to a validation set approach. Because we have relatively few observations with responses falling into one of the classes, we will implement *stratified* k-fold CV.
+At this point, we know that k-fold CV is a better approach to estimating the test error compared to a validation set approach. For this lab, we will implement *stratified* k-fold CV. In stratified k-fold CV, the proportions of each label in *each* fold should be representative of the proportion of each label in the *entire* data set.
 
 ### Create folds
 
 ::: {style="color: maroon"}
-Here, create your list of fold indices for stratified k-fold CV using 10 folds. Set a seed of `r seed` again.
-:::
+Here, create your list of fold indices for stratified k-fold CV using 10 folds of roughly equal size. Set a seed of `r seed` again. "Roughly equal" means that either all 10 folds are the same size, or 9 folds have the same size and the tenth fold has a little less.
 
-Remember, in stratified k-fold CV, the proportions of each label in *each* fold should be representative of the proportion of each label in the *entire* data set.
-
-::: callout-caution
-You code should be as reproducible as possible! That means it should not be specific to this specific data or number of folds. This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.
+Your code should be as reproducible as possible! That means it should not be specific to this specific data or number of folds. This is the most difficult part of the lab, so think carefully about what you want to do! It could be helpful to write down your thoughts.
 :::
 
 ```{r eval = F}
