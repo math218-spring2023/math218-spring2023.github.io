@@ -1,0 +1,156 @@
+---
+title: "Classification Trees"
+date: "April 6, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/palmer_penguins.png"
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: true
+---
+
+# Housekeeping
+
+-   
+
+::: footer
+[PalmerPenguins](https://allisonhorst.github.io/palmerpenguins/articles/intro.html)
+:::
+
+```{r}
+#| message: false
+library(tidyverse)
+library(palmerpenguins)
+data(penguins)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+
+```
+
+# Classification Trees
+
+## Classification trees
+
+-   Interpretation of the tree is the same as for regression tree!
+
+-   Will end up with paths to regions $R_{1}, R_{2}, \ldots, R_{T}$ where $T$ is the number of terminal nodes or leaves
+
+-   What do you think we will predict for $\hat{y}$ now in a classification task?
+
+    -   Recall: in regression trees, the prediction $\hat{y}$ for an observation that falls into a given region $R_{m}$ is the average of the training responses in that $R_{m}$
+
+## Building the tree
+
+-   Just like in regression trees, we will use recursive binary splitting to grow the tree
+
+-   Top-down, greedy approach that makes the "best" split at that moment in time
+
+-   In regression trees, we used residual sum of squares to quantify "best", but we cannot use that here!
+
+-   What might we use instead to quantify "best" to decide each split?
+
+-   Consider the fraction of training observations in the region that belong to the most common class:
+
+$$E = 1 - \max_{k}(\hat{p}_{mk})$$
+
+where $\hat{p}_{mk}$ is the proportion of training observations in the region $R_{m}$ that are from class $k$
+
+-   Convince yourself that smaller $E$ would correspond to a "good" split!
+
+-   Unfortunately, this error is not sufficiently sensitive to tree-growing
+
+## Gini Index
+
+-   The **Gini index** is a measure of the total *variance* across the $K$ classes
+
+$$G_{m} = \sum_{k=1}^{K} \hat{p}_{mk} (1 - \hat{p}_{mk})$$
+
+-   $G_{m}$ is small if all the $\hat{p}_{mk}$'s are close to zero or one
+
+-   For this reason, Gini index is referred to as a measure of node *purity*
+
+-   A small $G_{m}$ indicates that the node contains most of its observations from a single class
+
+## Gini index: example
+
+$$G_{m} = \sum_{k=1}^{K} \hat{p}_{mk} (1 - \hat{p}_{mk})$$
+
+-   Example: 3 classes and 9 observations in three regions
+
+```{r}
+data.frame(Region1 = c(rep("A", 9), rep("B", 0), rep("C", 0)),
+           Region2 = c(rep("A", 2), rep("B", 2), rep("C", 5)),
+           Region3 = c(rep("A", 3), rep("B", 3), rep("C", 3))) %>%
+  print.data.frame()
+```
+
+-   In these three regions, what are the Gini indices $G_{1}, G_{2}, G_{3}$?
+
+    -   $G_{1} = 1(1-1) + 0(1-0) + 0(1-0) = 0$
+    -   $G_{2} = \frac{2}{9}(1-\frac{2}{9}) +\frac{2}{9}(1-\frac{2}{9}) + \frac{5}{9}(1-\frac{5}{9}) \approx 0.60$
+    -   $G_{3} = \frac{1}{3}(1-\frac{1}{3}) + \frac{1}{3}(1-\frac{1}{3})+\frac{1}{3}(1-\frac{1}{3}) = \frac{2}{3} \approx 0.67$
+
+## Entropy
+
+-   Alternative to Gini index is **cross-entropy**:
+
+$$D_{m} = -\sum_{k=1}^{K} \hat{p}_{mk} \log\hat{p}_{mk}$$
+
+-   Very similar to Gini index, so cross-entropy is also a measure of node purity
+
+-   Same example: 3 classes and 9 observations in three regions
+
+```{r}
+data.frame(Region1 = c(rep("A", 9), rep("B", 0), rep("C", 0)),
+           Region2 = c(rep("A", 2), rep("B", 2), rep("C", 5)),
+           Region3 = c(rep("A", 3), rep("B", 3), rep("C", 3))) %>%
+  print.data.frame()
+```
+
+-   In these three regions, what are the cross-entropies $D_{1}, D_{2}, D_{3}$?
+
+    -   $D_{1} = -(1\log(1) + 0\log(0) + 0\log(0)) = 0$
+    -   $D_{2} = -(\frac{2}{9}\log(\frac{2}{9}) +\frac{2}{9}\log(\frac{2}{9}) + \frac{5}{9}\log(\frac{5}{9})) \approx 1$
+    -   $D_{3} = \frac{1}{3}(1-\frac{1}{3}) + \frac{1}{3}(1-\frac{1}{3})+\frac{1}{3}(1-\frac{1}{3}) = \frac{2}{3} \approx 1.1$
+
+```{r}
+library(tree)
+set.seed(45) # 45
+n <- nrow(penguins)
+train_ids <- sample(1:n, 0.7*n)
+train_dat <- penguins[train_ids,]
+test_dat <- penguins[-train_ids,]
+
+penguins_full <- tree(species ~ bill_length_mm  + bill_depth_mm +
+                        flipper_length_mm + sex,
+                      data = train_dat,
+                      control = tree.control(nobs = nrow(train_dat), minsize = 2))
+plot(penguins_full)
+text(penguins_full, pretty = 0, cex = 0.5)
+title("Full tree")
+
+```
+
+```{r}
+cv_tree <- cv.tree(penguins_full, FUN = prune.misclass)
+data.frame(size = cv_tree$size, dev = cv_tree$dev) %>%
+  ggplot(., aes(x = size, y = dev)) +
+  geom_point() + 
+  geom_line()+
+  scale_x_continuous(breaks  = cv_tree$size)
+best_size <- min(cv_tree$size[which(cv_tree$dev == min(cv_tree$dev))])
+prune_penguins <- prune.misclass(penguins_full, best = best_size)
+plot(prune_penguins)
+text(prune_penguins, pretty = 0, cex = 1)
+title("Pruned tree")
+
+predict(prune_penguins, newdata = test_dat)
+
+predict(prune_penguins, newdata = test_dat, type = "class")
+```

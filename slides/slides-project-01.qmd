@@ -1,0 +1,163 @@
+---
+title: "Project work day"
+date: "April 13, 2023"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: true
+---
+
+# Project work day!
+
+Please sit with your group members!
+
+## Agenda
+
+1.  What are merge conflicts?
+2.  Practice dealing with merge conflicts
+3.  Project proposal details
+4.  Work!
+
+# Merge Conflicts
+
+## Pulling
+
+-   Thus far, we have mostly *pushed* our local changes back to GitHub
+
+-   However, if two or more people are working on the same project, you need some way to obtain the changes that others have made and update your version accordingly
+
+    -   We do this by **pulling** changes from GitHub
+
+## What are merge conflicts?
+
+- When two collaborators make changes to a file and push the file to their repo, git merges these two files.
+
+::: fragment
+
+
+```{r echo=FALSE, out.width=300, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/merge-no-conflict.png")
+```
+
+:::
+
+
+
+::: {style="color: maroon"}
+- If these two files have conflicting content on the same line, git will produce a merge conflict.
+:::
+
+::: fragment
+
+```{r echo=FALSE, out.width=300, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/merge-conflict.png")
+```
+
+:::
+
+## Resolving merge conflicts {.scrollable}
+
+-   Merge conflicts need to be resolved manually, as they require a human intervention
+
+::: fragment
+
+```{r echo=FALSE, out.width=800, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/merge-conflict-identifiers.png")
+```
+
+:::
+
+-   To resolve the merge conflict
+    -   decide if you want to keep only your text or the text on GitHub or incorporate changes from both texts
+    -   delete the conflict markers `<<<<<<<`, `=======`, `>>>>>>>` and make the changes you want in the final merge
+
+# Merge conflict activity
+
+## Practice dealing with merge conflicts
+
+-   Follow along as we complete each step of the exercise instructions.
+
+-   Raise your hand if you have any questions during the exercise.
+
+## Push error
+
+```{r echo=FALSE, out.width=800, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/1-push-error.png")
+```
+
+## Merge conflict message
+
+```{r echo=FALSE, out.width=800, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/2-merge-conflict-message.png")
+```
+
+## Merge conflict in .Rmd
+
+```{r echo=FALSE, out.width=800, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/3-merge-conflict-rmd.png")
+```
+
+## Fixed .Rmd
+
+```{r echo=FALSE, out.width=800, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/4-fixed-rmd.png")
+```
+
+## Resolved conflict
+
+```{r echo=FALSE, out.width=800, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/5-resolved-message.png")
+```
+
+## Push
+
+```{r echo=FALSE, out.width=800, fig.align="center"}
+knitr::include_graphics("figs/merge-conflicts/6-push-ready.png")
+```
+
+## Tips for collaborating via GitHub
+
+-   Always **pull** first before you start working.
+
+-   Knit, commit, and push often to minimize merge conflicts and/or to make merge conflicts easier to resolve.
+
+-   Communicate with your partners when you are working on a given file
+
+-   If you find yourself in a situation that is difficult to resolve, ask questions ASAP, don't let it linger and get bigger.
+
+-   Each team member can create their own R Markdown document that only they work in. That way, those individual/personal documents shouldn't have merge conflicts. Then when it becomes necessary, you can work in and add to the entire group's .Rmd file.
+
+    -   Example: make a copy of the the `project-proposal.Rmd` file and then rename the file such that it identifies you uniquely!
+
+# Project proposal details
+
+## Requirements
+
+-   Pick a dataset and come up with at least two research questions, motivated by some EDA
+
+    -   Upload the selected dataset to your GitHub repository (see next slide)
+
+-   Must be completed in the `project-proposal.Rmd` file
+
+    -   The R markdown file has some guidance in the structure of the project proposal
+
+-   Submit PDF of project proposal to Canvas by Sunday, 4/23 at 11:59pm
+
+## Adding data
+
+-   You'll notice that your project Repo has a `data` folder with the `haberman.csv` dataset in it
+
+-   Once your group has decided on a dataset, ONE team member should add the data to the `data` folder and then delete the `haberman.csv` file
+
+-   Then push the changes back up to GitHub!
+
+-   If you encounter a type of file that you don't recognize and have trouble loading it in:
+
+    -   Try Google
+
+    -   Ask me!

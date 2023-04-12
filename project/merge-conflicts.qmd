@@ -1,0 +1,45 @@
+---
+title: "Merge Conflicts"
+description: ":("
+editor: visual
+callout-appearance: default
+draft: false
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: false
+---
+
+## Instructions
+
+0.  Everyone: decide on a team name
+1.  Everyone: Clone your project repo from GitHub and open up the R Markdown file called `project-proposal.Rmd`
+2.  Assign the numbers 1-4 to each of the team members.
+3.  Take turns in completing the steps below as written, ***one member at a time***:
+    i.  Member 1: Change the team name in `project-proposal.Rmd` to something *different* from your team name. Knit, commit, and push.
+
+    ii. Member 2: Without pulling first, change the team name to the correct name in your version of `project-proposal.Rmd`. Knit, commit, and push.
+
+        -   You will get an error in GitHub Desktop, and be asked to FETCH the changes. Show the error to your team members.
+            -   A MERGE CONFLICT occurred because you edited the same part of the document as Member 1. Resolve the conflict with whichever name you want to keep.
+        -   Knit, commit and push. You should have no issues pushing now!
+
+    iii. Member 3: Change the date to the date the proposal is due (04/23/2023).
+
+         -   Knit, commit, push. You will get an error asking you to fetch. Read it, show the error to your group.
+         -   Pull the new changes. No merge conflicts should occur, since you edited a different part of the document from Members 1 and 2.
+         -   Knit, commit, and push your changes.
+
+    iv. Member 4: Add everyone's names in the `author` section.
+
+        -   Knit, commit, push. You will get an error asking you to fetch. Read it, show the error to your group.
+        -   Pull the new changes. No merge conflicts should occur, since you edited a different part of the document from Members 1-3.
+        -   Knit, commit, and push your changes.
+
+    v.  Everyone: Pull, and observe the changes in your document (although Member 4 shouldn't observe any because they have the most recent version)
+
+## Helpful Tips
+
+-   Consider working in the same space with your group members when possible (although with large groups it's difficult to crowd around a single laptop)
+
+-   Each team member can create their own R Markdown document that only they work in. That way, those individual/personal documents shouldn't have merge conflicts. Then when it becomes necessary, you can work in and add to the entire group's .Rmd file.
