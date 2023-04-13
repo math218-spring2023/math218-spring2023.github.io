@@ -3,7 +3,7 @@ title: "Lab 05: Logistic Regression + KNN Classification"
 description: "Rain in WaggaWagga"
 editor: visual
 callout-appearance: default
-draft: true
+draft: false
 editor_options: 
   chunk_output_type: console
 execute: 
@@ -342,3 +342,7 @@ Based on these results, what comparisons (if any) can you make about the perform
 
 2.  Compare the magnitudes of your estimated misclassification test error rates when using the validation set approach vs the stratified k-fold CV approach. Does this make sense to you? Why or why not?
 3.  In this problem, do you think a false positive or a false negative rate is worse? Based on your answer, should you increase or decrease the threshold? Why?
+
+## Submission
+
+When you're finished, knit to PDF one last time and upload the PDF to Canvas. Commit and push your code back to GitHub one last time.
