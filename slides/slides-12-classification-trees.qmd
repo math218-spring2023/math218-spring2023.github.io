@@ -2,7 +2,7 @@
 title: "Classification Trees"
 date: "April 18, 2023"
 title-slide-attributes:
-    data-background-image: "figs/title/palmer_penguins.png"
+    data-background-image: "figs/title/gini.png"
     data-background-opacity: "0.3"
 format: 
   revealjs:
@@ -17,10 +17,10 @@ draft: true
 
 # Housekeeping
 
--   
+- Project proposals due this Sunday to Canvas!
 
 ::: footer
-[PalmerPenguins](https://allisonhorst.github.io/palmerpenguins/articles/intro.html)
+[Image from Wikipedia](https://en.wikipedia.org/wiki/Gini_coefficient)
 :::
 
 ```{r}
@@ -57,11 +57,7 @@ library(randomForest)
 
 -   What might we use instead to quantify "best" to decide each split?
 
--   Consider the fraction of training observations in the region that belong to the most common class:
-
-$$E = 1 - \max_{k}(\hat{p}_{mk})$$
-
-where $\hat{p}_{mk}$ is the proportion of training observations in the region $R_{m}$ that are from class $k$
+-   Consider the fraction of training observations in the region that belong to the most common class: $$E = 1 - \max_{k}(\hat{p}_{mk}),$$ where $\hat{p}_{mk}$ is the proportion of training observations in the region $R_{m}$ that are from class $k$
 
 -   Convince yourself that smaller $E$ would correspond to a "good" split!
 
@@ -69,7 +65,11 @@ where $\hat{p}_{mk}$ is the proportion of training observations in the region $R
 
 ## Gini Index
 
--   The **Gini index** is a measure of the total *variance* across the $K$ classes
+:::: {.columns}
+
+::: {.column width="50%"}
+
+The **Gini index** is a measure of the total *variance* across the $K$ classes
 
 $$G_{m} = \sum_{k=1}^{K} \hat{p}_{mk} (1 - \hat{p}_{mk})$$
 
@@ -79,11 +79,12 @@ $$G_{m} = \sum_{k=1}^{K} \hat{p}_{mk} (1 - \hat{p}_{mk})$$
 
 -   A small $G_{m}$ indicates that the node contains most of its observations from a single class
 
-## Gini index: example
+:::
 
-$$G_{m} = \sum_{k=1}^{K} \hat{p}_{mk} (1 - \hat{p}_{mk})$$
-
+::: {.column width="50%"}
 -   Example: 3 classes and 9 observations in three regions
+
+::: fragment
 
 ```{r}
 data.frame(Region1 = c(rep("A", 9), rep("B", 0), rep("C", 0)),
@@ -91,22 +92,38 @@ data.frame(Region1 = c(rep("A", 9), rep("B", 0), rep("C", 0)),
            Region3 = c(rep("A", 3), rep("B", 3), rep("C", 3))) %>%
   print.data.frame()
 ```
+
+:::
 
 -   In these three regions, what are the Gini indices $G_{1}, G_{2}, G_{3}$?
 
     -   $G_{1} = 1(1-1) + 0(1-0) + 0(1-0) = 0$
     -   $G_{2} = \frac{2}{9}(1-\frac{2}{9}) +\frac{2}{9}(1-\frac{2}{9}) + \frac{5}{9}(1-\frac{5}{9}) \approx 0.60$
     -   $G_{3} = \frac{1}{3}(1-\frac{1}{3}) + \frac{1}{3}(1-\frac{1}{3})+\frac{1}{3}(1-\frac{1}{3}) = \frac{2}{3} \approx 0.67$
+    
+:::
+
+::::
 
 ## Entropy
 
--   Alternative to Gini index is **cross-entropy**:
+:::: {.columns}
+
+::: {.column width="55%"}
+
+Alternative to Gini index is **cross-entropy**:
 
 $$D_{m} = -\sum_{k=1}^{K} \hat{p}_{mk} \log\hat{p}_{mk}$$
 
 -   Very similar to Gini index, so cross-entropy is also a measure of node purity
 
--   Same example: 3 classes and 9 observations in three regions
+:::
+
+::: {.column width="45%"}
+
+-   In these three regions, what are the cross-entropies $D_{1}, D_{2}, D_{3}$?
+
+::: fragment
 
 ```{r}
 data.frame(Region1 = c(rep("A", 9), rep("B", 0), rep("C", 0)),
@@ -115,11 +132,15 @@ data.frame(Region1 = c(rep("A", 9), rep("B", 0), rep("C", 0)),
   print.data.frame()
 ```
 
--   In these three regions, what are the cross-entropies $D_{1}, D_{2}, D_{3}$?
+:::
 
-    -   $D_{1} = -(1\log(1) + 0\log(0) + 0\log(0)) = 0$
-    -   $D_{2} = -(\frac{2}{9}\log(\frac{2}{9}) +\frac{2}{9}\log(\frac{2}{9}) + \frac{5}{9}\log(\frac{5}{9})) \approx 1$
-    -   $D_{3} = \frac{1}{3}(1-\frac{1}{3}) + \frac{1}{3}(1-\frac{1}{3})+\frac{1}{3}(1-\frac{1}{3}) = \frac{2}{3} \approx 1.1$
+-   $D_{1} = -(1\log(1) + 0\log(0) + 0\log(0)) = 0$
+-   $D_{2} = -(\frac{2}{9}\log(\frac{2}{9}) +\frac{2}{9}\log(\frac{2}{9}) + \frac{5}{9}\log(\frac{5}{9})) \approx 1$
+-   $D_{3} = \frac{1}{3}(1-\frac{1}{3}) + \frac{1}{3}(1-\frac{1}{3})+\frac{1}{3}(1-\frac{1}{3}) = \frac{2}{3} \approx 1.1$
+
+:::
+
+::::
 
 ```{r echo = F, eval = F}
 set.seed(45) # 45
@@ -251,6 +272,8 @@ text(prune_obesity, pretty = 0, cex = 0.6)
 
 ## Classification Tree: predictions
 
+Use the `predict()` function like usual to obtain predictions:
+
 ```{r echo = T, eval = F}
 head(predict(prune_obesity, newdata = test_dat))
 ```
@@ -259,7 +282,7 @@ head(predict(prune_obesity, newdata = test_dat))
 round(head(predict(prune_obesity, newdata = test_dat)), 6)
 ```
 
--   What does `predict()` output by default?
+- Is this what we wanted?
 
 ::: fragment
 ```{r echo = T}
@@ -276,7 +299,11 @@ print(paste0("Misclass rate: ", round(mean(tree_preds != test_dat$class),3)))
 ```
 :::
 
-## Bagged classification trees
+## Bagged classification trees {.scrollable}
+
+Quickly discuss/remind ourselves: what does bagging for trees look like?
+
+::: fragment
 
 ```{r echo = T}
 obesity_bag <- randomForest(class ~ ., data = obesity, ntree = 100,
@@ -284,11 +311,19 @@ obesity_bag <- randomForest(class ~ ., data = obesity, ntree = 100,
 varImpPlot(obesity_bag)
 ```
 
+:::
+
+- The "importance" is defined as the total amount that the Gini index decreases by splits over a given predictor $X_{j}$, averaged over the $B$ trees
+
 ## Aggregating predictions
 
--   How does a bagged model predict a single class across $B$ different trees?
+-  Discuss: how does a bagged model predict a single class across $B$ different trees?
 
     -   i.e. What does it mean to aggregate multiple labels?
+    
+- For a given test point, each tree will output a predicted label $\hat{y}^{(b)}$. We will take a *majority vote* approach again! 
+
+  - The overall prediction for a test point is the most commonly occurring label among the $B$ predictions
 
 ::: fragment
 ```{r}

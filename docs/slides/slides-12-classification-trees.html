@@ -386,7 +386,7 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="figs/title/palmer_penguins.png" data-background-opacity="0.3" class="quarto-title-block center">
+<section id="title-slide" data-background-image="figs/title/gini.png" data-background-opacity="0.3" class="quarto-title-block center">
   <h1 class="title">Classification Trees</h1>
 
 <div class="quarto-title-authors">
@@ -397,10 +397,10 @@
 <section id="housekeeping" class="title-slide slide level1 center">
 <h1>Housekeeping</h1>
 <ul>
-<li class="fragment"></li>
+<li class="fragment">Project proposals due this Sunday to Canvas!</li>
 </ul>
 <div class="footer">
-<p><a href="https://allisonhorst.github.io/palmerpenguins/articles/intro.html">PalmerPenguins</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Gini_coefficient">Image from Wikipedia</a></p>
 </div>
 <div class="cell">
 
@@ -430,33 +430,27 @@
 <li class="fragment"><p>Top-down, greedy approach that makes the “best” split at that moment in time</p></li>
 <li class="fragment"><p>In regression trees, we used residual sum of squares to quantify “best”, but we cannot use that here!</p></li>
 <li class="fragment"><p>What might we use instead to quantify “best” to decide each split?</p></li>
-<li class="fragment"><p>Consider the fraction of training observations in the region that belong to the most common class:</p></li>
-</ul>
-<p><span class="math display">\[E = 1 - \max_{k}(\hat{p}_{mk})\]</span></p>
-<p>where <span class="math inline">\(\hat{p}_{mk}\)</span> is the proportion of training observations in the region <span class="math inline">\(R_{m}\)</span> that are from class <span class="math inline">\(k\)</span></p>
-<ul>
+<li class="fragment"><p>Consider the fraction of training observations in the region that belong to the most common class: <span class="math display">\[E = 1 - \max_{k}(\hat{p}_{mk}),\]</span> where <span class="math inline">\(\hat{p}_{mk}\)</span> is the proportion of training observations in the region <span class="math inline">\(R_{m}\)</span> that are from class <span class="math inline">\(k\)</span></p></li>
 <li class="fragment"><p>Convince yourself that smaller <span class="math inline">\(E\)</span> would correspond to a “good” split!</p></li>
 <li class="fragment"><p>Unfortunately, this error is not sufficiently sensitive to tree-growing</p></li>
 </ul>
 </section>
 <section id="gini-index" class="slide level2">
 <h2>Gini Index</h2>
-<ul>
-<li class="fragment">The <strong>Gini index</strong> is a measure of the total <em>variance</em> across the <span class="math inline">\(K\)</span> classes</li>
-</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The <strong>Gini index</strong> is a measure of the total <em>variance</em> across the <span class="math inline">\(K\)</span> classes</p>
 <p><span class="math display">\[G_{m} = \sum_{k=1}^{K} \hat{p}_{mk} (1 - \hat{p}_{mk})\]</span></p>
 <ul>
 <li class="fragment"><p><span class="math inline">\(G_{m}\)</span> is small if all the <span class="math inline">\(\hat{p}_{mk}\)</span>’s are close to zero or one</p></li>
 <li class="fragment"><p>For this reason, Gini index is referred to as a measure of node <em>purity</em></p></li>
 <li class="fragment"><p>A small <span class="math inline">\(G_{m}\)</span> indicates that the node contains most of its observations from a single class</p></li>
 </ul>
-</section>
-<section id="gini-index-example" class="slide level2">
-<h2>Gini index: example</h2>
-<p><span class="math display">\[G_{m} = \sum_{k=1}^{K} \hat{p}_{mk} (1 - \hat{p}_{mk})\]</span></p>
+</div><div class="column" style="width:50%;">
 <ul>
 <li class="fragment">Example: 3 classes and 9 observations in three regions</li>
 </ul>
+<div class="fragment">
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  Region1 Region2 Region3
@@ -469,6 +463,7 @@
 7       A       C       C
 8       A       C       C
 9       A       C       C</code></pre>
+</div>
 </div>
 </div>
 <ul>
@@ -479,17 +474,23 @@
 <li class="fragment"><span class="math inline">\(G_{3} = \frac{1}{3}(1-\frac{1}{3}) + \frac{1}{3}(1-\frac{1}{3})+\frac{1}{3}(1-\frac{1}{3}) = \frac{2}{3} \approx 0.67\)</span></li>
 </ul></li>
 </ul>
+</div>
+</div>
 </section>
 <section id="entropy" class="slide level2">
 <h2>Entropy</h2>
-<ul>
-<li class="fragment">Alternative to Gini index is <strong>cross-entropy</strong>:</li>
-</ul>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Alternative to Gini index is <strong>cross-entropy</strong>:</p>
 <p><span class="math display">\[D_{m} = -\sum_{k=1}^{K} \hat{p}_{mk} \log\hat{p}_{mk}\]</span></p>
 <ul>
-<li class="fragment"><p>Very similar to Gini index, so cross-entropy is also a measure of node purity</p></li>
-<li class="fragment"><p>Same example: 3 classes and 9 observations in three regions</p></li>
+<li class="fragment">Very similar to Gini index, so cross-entropy is also a measure of node purity</li>
 </ul>
+</div><div class="column" style="width:45%;">
+<ul>
+<li class="fragment">In these three regions, what are the cross-entropies <span class="math inline">\(D_{1}, D_{2}, D_{3}\)</span>?</li>
+</ul>
+<div class="fragment">
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  Region1 Region2 Region3
@@ -504,14 +505,14 @@
 9       A       C       C</code></pre>
 </div>
 </div>
-<ul>
-<li class="fragment"><p>In these three regions, what are the cross-entropies <span class="math inline">\(D_{1}, D_{2}, D_{3}\)</span>?</p>
+</div>
 <ul>
 <li class="fragment"><span class="math inline">\(D_{1} = -(1\log(1) + 0\log(0) + 0\log(0)) = 0\)</span></li>
 <li class="fragment"><span class="math inline">\(D_{2} = -(\frac{2}{9}\log(\frac{2}{9}) +\frac{2}{9}\log(\frac{2}{9}) + \frac{5}{9}\log(\frac{5}{9})) \approx 1\)</span></li>
 <li class="fragment"><span class="math inline">\(D_{3} = \frac{1}{3}(1-\frac{1}{3}) + \frac{1}{3}(1-\frac{1}{3})+\frac{1}{3}(1-\frac{1}{3}) = \frac{2}{3} \approx 1.1\)</span></li>
-</ul></li>
 </ul>
+</div>
+</div>
 <div class="cell">
 
 </div>
@@ -578,6 +579,7 @@
 </section>
 <section id="classification-tree-predictions" class="slide level2">
 <h2>Classification Tree: predictions</h2>
+<p>Use the <code>predict()</code> function like usual to obtain predictions:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -593,7 +595,7 @@
 </div>
 </div>
 <ul>
-<li class="fragment">What does <code>predict()</code> output by default?</li>
+<li class="fragment">Is this what we wanted?</li>
 </ul>
 <div class="fragment">
 <div class="cell">
@@ -616,21 +618,33 @@
 </div>
 </div>
 </section>
-<section id="bagged-classification-trees" class="slide level2">
+<section id="bagged-classification-trees" class="slide level2 scrollable">
 <h2>Bagged classification trees</h2>
+<p>Quickly discuss/remind ourselves: what does bagging for trees look like?</p>
+<div class="fragment">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>obesity_bag <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> obesity, <span class="at">ntree =</span> <span class="dv">100</span>,</span>
 <span id="cb10-2"><a href="#cb10-2"></a>             <span class="at">mtry =</span> <span class="fu">ncol</span>(obesity) <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb10-3"><a href="#cb10-3"></a><span class="fu">varImpPlot</span>(obesity_bag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+<div class="cell-output-display">
+<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
 </div>
-<img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+<ul>
+<li class="fragment">The “importance” is defined as the total amount that the Gini index decreases by splits over a given predictor <span class="math inline">\(X_{j}\)</span>, averaged over the <span class="math inline">\(B\)</span> trees</li>
+</ul>
+</section>
 <section id="aggregating-predictions" class="slide level2">
 <h2>Aggregating predictions</h2>
 <ul>
-<li class="fragment"><p>How does a bagged model predict a single class across <span class="math inline">\(B\)</span> different trees?</p>
+<li class="fragment"><p>Discuss: how does a bagged model predict a single class across <span class="math inline">\(B\)</span> different trees?</p>
 <ul>
 <li class="fragment">i.e.&nbsp;What does it mean to aggregate multiple labels?</li>
+</ul></li>
+<li class="fragment"><p>For a given test point, each tree will output a predicted label <span class="math inline">\(\hat{y}^{(b)}\)</span>. We will take a <em>majority vote</em> approach again!</p>
+<ul>
+<li class="fragment">The overall prediction for a test point is the most commonly occurring label among the <span class="math inline">\(B\)</span> predictions</li>
 </ul></li>
 </ul>
 <div class="fragment">
