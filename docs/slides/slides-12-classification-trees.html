@@ -27,6 +27,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -328,7 +392,7 @@
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">4/6/23</p>
+  <p class="date">4/18/23</p>
 </section>
 <section id="housekeeping" class="title-slide slide level1 center">
 <h1>Housekeeping</h1>
@@ -449,141 +513,157 @@
 </ul></li>
 </ul>
 <div class="cell">
-<div class="cell-output-display">
-<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
-</div>
+
 </div>
 <div class="cell">
-<div class="cell-output-display">
-<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+
 </div>
+</section></section>
+<section>
+<section id="example" class="title-slide slide level1 center">
+<h1>Example</h1>
+
+</section>
+<section id="obesity-data" class="slide level2">
+<h2>Obesity data</h2>
+<p>We have <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6710633/">data</a> on obesity levels based on eating habits and physical condition in individuals from Colombia, Peru and Mexico (although some of this data is actually synthetic (i.e.&nbsp;fake)!)</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>          class   n
+1  Insufficient 272
+2        Normal 287
+3       Obese_I 351
+4      Obese_II 297
+5     Obese_III 324
+6  Overweight_I 290
+7 Overweight_II 290</code></pre>
+</div>
+</div>
+<ul>
+<li class="fragment"><p>Variables include: gender, age, smoke status, family history, amount of physical activity, etc.</p></li>
+<li class="fragment"><p>Can we predict the obesity status based on these variables using decision trees? What variables might be important for classifying the status?</p></li>
+</ul>
+</section>
+<section id="analysis" class="slide level2">
+<h2>Analysis</h2>
+<ul>
+<li class="fragment"><p>Split data into 80% train, 20% test</p></li>
+<li class="fragment"><p>Fit three different models to the data and obtained predictions for the test data:</p>
+<ol type="1">
+<li class="fragment"><p>Pruned classification tree fit on the 80% train</p></li>
+<li class="fragment"><p>Bagged classification trees fit on all the data, but predictions obtained from OOB samples (B = 100 trees)</p></li>
+<li class="fragment"><p>Random forest classification fit on all the data, but predictions obtained from OOB samples (B = 100 trees)</p></li>
+</ol></li>
+</ul>
+</section>
+<section id="classification-tree" class="slide level2 scrollable">
+<h2>Classification Tree</h2>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" data-code-line-numbers="3|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>obesity_tree <span class="ot">&lt;-</span> <span class="fu">tree</span>(class <span class="sc">~</span> ., <span class="at">data =</span> train_dat,</span>
+<span id="cb4-2"><a href="#cb4-2"></a>                       <span class="at">control =</span> <span class="fu">tree.control</span>(<span class="at">nobs =</span> <span class="fu">nrow</span>(train_dat), <span class="at">minsize =</span> <span class="dv">2</span>))</span>
+<span id="cb4-3"><a href="#cb4-3"></a>cv_tree <span class="ot">&lt;-</span> <span class="fu">cv.tree</span>(obesity_tree, <span class="at">FUN =</span> prune.misclass)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>best_size <span class="ot">&lt;-</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>size[<span class="fu">which</span>(cv_tree<span class="sc">$</span>dev <span class="sc">==</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>dev))])</span>
+<span id="cb4-5"><a href="#cb4-5"></a>prune_obesity <span class="ot">&lt;-</span> <span class="fu">prune.misclass</span>(obesity_tree, <span class="at">best =</span> best_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
 <div class="cell-output-display">
-<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-5-2.png" width="960"></p>
+<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="classification-tree-predictions" class="slide level2">
+<h2>Classification Tree: predictions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Insufficient   Normal  Obese_I Obese_II Obese_III Overweight_I Overweight_II
+3      0.000000 0.093960 0.000000 0.000000         0     0.530201      0.375839
+4      0.000000 0.093960 0.000000 0.000000         0     0.530201      0.375839
+6      0.011905 0.892857 0.000000 0.000000         0     0.095238      0.000000
+10     0.000000 0.113821 0.000000 0.000000         0     0.853659      0.032520
+18     0.000000 0.000000 1.000000 0.000000         0     0.000000      0.000000
+24     0.000000 0.000000 0.951923 0.028846         0     0.000000      0.019231</code></pre>
+</div>
+</div>
+<ul>
+<li class="fragment">What does <code>predict()</code> output by default?</li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat, <span class="at">type =</span> <span class="st">"class"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Overweight_I Overweight_I Normal       Overweight_I Obese_I     
+[6] Obese_I     
+7 Levels: Insufficient Normal Obese_I Obese_II Obese_III ... Overweight_II</code></pre>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">What’s our misclassification rate?</li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Misclass rate: 0.158"</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="bagged-classification-trees" class="slide level2">
+<h2>Bagged classification trees</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>obesity_bag <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> obesity, <span class="at">ntree =</span> <span class="dv">100</span>,</span>
+<span id="cb10-2"><a href="#cb10-2"></a>             <span class="at">mtry =</span> <span class="fu">ncol</span>(obesity) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">varImpPlot</span>(obesity_bag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section id="aggregating-predictions" class="slide level2">
+<h2>Aggregating predictions</h2>
+<ul>
+<li class="fragment"><p>How does a bagged model predict a single class across <span class="math inline">\(B\)</span> different trees?</p>
+<ul>
+<li class="fragment">i.e.&nbsp;What does it mean to aggregate multiple labels?</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Misclass rate: 0.026"</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="random-forests" class="slide level2">
+<h2>Random forests</h2>
+<p>For random forests, we typically set the number of predictors to consider at each split to be <span class="math inline">\(\approx \sqrt{p}\)</span>, where <span class="math inline">\(p\)</span> is the total number of available predictors</p>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       Adelie  Chinstrap     Gentoo
-1   0.9894737 0.01052632 0.00000000
-2   0.9894737 0.01052632 0.00000000
-3   0.9894737 0.01052632 0.00000000
-4   0.9894737 0.01052632 0.00000000
-5   0.9894737 0.01052632 0.00000000
-6   0.0000000 0.97058824 0.02941176
-7   0.9894737 0.01052632 0.00000000
-8   0.9894737 0.01052632 0.00000000
-9   0.9894737 0.01052632 0.00000000
-10  0.9894737 0.01052632 0.00000000
-11  0.9894737 0.01052632 0.00000000
-12  0.9894737 0.01052632 0.00000000
-13  0.9894737 0.01052632 0.00000000
-14  0.9894737 0.01052632 0.00000000
-15  0.9894737 0.01052632 0.00000000
-16  0.9894737 0.01052632 0.00000000
-17  0.9894737 0.01052632 0.00000000
-18  0.9894737 0.01052632 0.00000000
-19  0.9894737 0.01052632 0.00000000
-20  0.9894737 0.01052632 0.00000000
-21  1.0000000 0.00000000 0.00000000
-22  0.9894737 0.01052632 0.00000000
-23  1.0000000 0.00000000 0.00000000
-24  0.9894737 0.01052632 0.00000000
-25  0.9894737 0.01052632 0.00000000
-26  0.9894737 0.01052632 0.00000000
-27  0.9894737 0.01052632 0.00000000
-28  0.9894737 0.01052632 0.00000000
-29  1.0000000 0.00000000 0.00000000
-30  0.9894737 0.01052632 0.00000000
-31  0.9894737 0.01052632 0.00000000
-32  0.9894737 0.01052632 0.00000000
-33  0.9894737 0.01052632 0.00000000
-34  0.9894737 0.01052632 0.00000000
-35  1.0000000 0.00000000 0.00000000
-36  0.9894737 0.01052632 0.00000000
-37  0.9894737 0.01052632 0.00000000
-38  0.9894737 0.01052632 0.00000000
-39  0.9894737 0.01052632 0.00000000
-40  0.9894737 0.01052632 0.00000000
-41  0.9894737 0.01052632 0.00000000
-42  0.9894737 0.01052632 0.00000000
-43  0.9894737 0.01052632 0.00000000
-44  0.9894737 0.01052632 0.00000000
-45  0.9894737 0.01052632 0.00000000
-46  0.0000000 0.00000000 1.00000000
-47  0.0000000 0.00000000 1.00000000
-48  0.0000000 0.00000000 1.00000000
-49  0.0000000 0.00000000 1.00000000
-50  0.0000000 0.00000000 1.00000000
-51  0.0000000 0.00000000 1.00000000
-52  0.0000000 0.00000000 1.00000000
-53  0.0000000 0.00000000 1.00000000
-54  0.0000000 0.00000000 1.00000000
-55  0.0000000 0.00000000 1.00000000
-56  0.0000000 0.00000000 1.00000000
-57  0.0000000 0.00000000 1.00000000
-58  0.0000000 0.00000000 1.00000000
-59  0.0000000 0.00000000 1.00000000
-60  0.0000000 0.00000000 1.00000000
-61  0.0000000 0.00000000 1.00000000
-62  0.0000000 0.00000000 1.00000000
-63  0.0000000 0.00000000 1.00000000
-64  0.0000000 0.00000000 1.00000000
-65  0.0000000 0.00000000 1.00000000
-66  0.0000000 0.00000000 1.00000000
-67  0.0000000 0.00000000 1.00000000
-68  0.0000000 0.00000000 1.00000000
-69  0.0000000 0.00000000 1.00000000
-70  0.0000000 0.00000000 1.00000000
-71  0.0000000 0.00000000 1.00000000
-72  0.0000000 0.00000000 1.00000000
-73  0.0000000 0.00000000 1.00000000
-74  0.0000000 0.00000000 1.00000000
-75  0.0000000 0.00000000 1.00000000
-76  0.0000000 0.00000000 1.00000000
-77  0.0000000 0.00000000 1.00000000
-78  0.0000000 0.00000000 1.00000000
-79  0.0000000 0.00000000 1.00000000
-80  0.0000000 0.00000000 1.00000000
-81  0.0000000 0.00000000 1.00000000
-82  0.0000000 0.00000000 1.00000000
-83  0.0000000 0.00000000 1.00000000
-84  0.0000000 0.00000000 1.00000000
-85  0.0000000 0.00000000 1.00000000
-86  0.0000000 0.00000000 1.00000000
-87  0.0000000 0.97058824 0.02941176
-88  0.0000000 1.00000000 0.00000000
-89  0.0000000 0.97058824 0.02941176
-90  0.0000000 0.97058824 0.02941176
-91  0.0000000 0.97058824 0.02941176
-92  0.0000000 0.97058824 0.02941176
-93  0.0000000 0.97058824 0.02941176
-94  0.0000000 0.97058824 0.02941176
-95  0.0000000 0.97058824 0.02941176
-96  0.0000000 0.97058824 0.02941176
-97  0.0000000 0.97058824 0.02941176
-98  0.0000000 0.97058824 0.02941176
-99  0.0000000 0.97058824 0.02941176
-100 0.0000000 0.97058824 0.02941176
-101 0.0000000 0.97058824 0.02941176
-102 0.2857143 0.71428571 0.00000000
-103 0.0000000 0.97058824 0.02941176
-104 0.0000000 0.97058824 0.02941176</code></pre>
+<pre><code>[1] "Misclass rate: 0.05"</code></pre>
 </div>
+</div>
+</div>
+</section>
+<section id="comparing-all-models" class="slide level2">
+<h2>Comparing all models</h2>
+<p>Which model would we prefer?</p>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>  [1] Adelie    Adelie    Adelie    Adelie    Adelie    Chinstrap Adelie   
-  [8] Adelie    Adelie    Adelie    Adelie    Adelie    Adelie    Adelie   
- [15] Adelie    Adelie    Adelie    Adelie    Adelie    Adelie    Adelie   
- [22] Adelie    Adelie    Adelie    Adelie    Adelie    Adelie    Adelie   
- [29] Adelie    Adelie    Adelie    Adelie    Adelie    Adelie    Adelie   
- [36] Adelie    Adelie    Adelie    Adelie    Adelie    Adelie    Adelie   
- [43] Adelie    Adelie    Adelie    Gentoo    Gentoo    Gentoo    Gentoo   
- [50] Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo   
- [57] Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo   
- [64] Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo   
- [71] Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo   
- [78] Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo    Gentoo   
- [85] Gentoo    Gentoo    Chinstrap Chinstrap Chinstrap Chinstrap Chinstrap
- [92] Chinstrap Chinstrap Chinstrap Chinstrap Chinstrap Chinstrap Chinstrap
- [99] Chinstrap Chinstrap Chinstrap Chinstrap Chinstrap Chinstrap
-Levels: Adelie Chinstrap Gentoo</code></pre>
+<pre><code>          model error_rate
+1   Pruned tree 0.15839243
+2        Bagged 0.02600473
+3 Random Forest 0.04964539</code></pre>
 </div>
 </div>
 
