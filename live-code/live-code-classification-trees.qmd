@@ -1,0 +1,82 @@
+---
+title: "Live code:"
+date: "April 20, 2023"
+description: "Classification trees"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+---
+
+## Data
+
+```{r message= F}
+library(tidyverse)
+obesity <- read.csv("https://raw.githubusercontent.com/math218-spring2023/class-data/main/obesity.csv")
+
+obesity <- obesity %>%
+  mutate_if(is.character, factor)
+obesity %>%
+  count(class)
+```
+
+## Train/test split
+
+```{r}
+set.seed(1)
+n <- nrow(obesity)
+train_ids <- sample(1:n, 0.8*n)
+train_dat <- obesity[train_ids,]
+test_dat <- obesity[-train_ids,]
+```
+
+## Fit classification tree + prune
+
+```{r}
+library(tree)
+obesity_tree <- tree(class ~ ., data = train_dat,
+                       control = tree.control(nobs = nrow(train_dat), minsize = 2))
+cv_tree <- cv.tree(obesity_tree, FUN = prune.misclass)
+best_size <- min(cv_tree$size[which(cv_tree$dev == min(cv_tree$dev))])
+prune_obesity <- prune.misclass(obesity_tree, best = best_size)
+plot(prune_obesity)
+text(prune_obesity, pretty = 0, cex = 0.6)
+```
+
+### Obtain predictions
+
+```{r}
+head(predict(prune_obesity, newdata = test_dat))
+
+head(predict(prune_obesity, newdata = test_dat, type = "class"))
+
+tree_preds <- predict(prune_obesity, newdata = test_dat, type = "class")
+
+mean(tree_preds != test_dat$class)
+```
+
+## Bagged classification trees
+
+```{r}
+library(randomForest)
+obesity_bag <- randomForest(class ~ ., data = obesity, ntree = 100,
+             mtry = ncol(obesity) - 1)
+varImpPlot(obesity_bag)
+bag_preds <- obesity_bag$predicted[-train_ids]
+mean(bag_preds != test_dat$class)
+```
+
+## Random forest classification
+
+```{r}
+m <- round(sqrt(ncol(obesity)-1))
+obesity_rf <- randomForest(class ~ ., data = obesity, ntree = 100,
+                           mtry = m)
+varImpPlot(obesity_rf)
+
+rf_preds <- obesity_rf$predicted[-train_ids]
+mean(rf_preds != test_dat$class)
+```

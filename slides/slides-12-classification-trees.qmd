@@ -206,12 +206,27 @@ Work through building a mini classification tree!
 
 # Example
 
-## Obesity data
-
-We have [data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6710633/) on obesity levels based on eating habits and physical condition in individuals from Colombia, Peru and Mexico (although some of this data is actually synthetic (i.e. fake)!)
+Copy and paste this code if you'd like to follow along!
 
 ```{r}
-obesity <- read.csv("data/obesity.csv")
+#| echo: true
+#| eval: true
+obesity <- read.csv("https://raw.githubusercontent.com/math218-spring2023/class-data/main/obesity.csv")
+```
+
+## Framing the data we are working with
+
+We have [data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6710633/) on obesity levels based on eating habits and physical condition in individuals from Colombia, Peru and Mexico (although some of this data is actually synthetic (i.e. fake)!).
+
+-   I want to be clear that discussion about weight can be triggering and difficult for some people
+
+-   I would like to frame this analysis by noting that weight is just one characteristic that scientists and doctors have used to represent health status, but it does not define health
+
+## Data
+
+
+```{r}
+# obesity <- read.csv("data/obesity.csv")
 obesity <- obesity %>%
   mutate_if(is.character, factor)
 obesity %>%

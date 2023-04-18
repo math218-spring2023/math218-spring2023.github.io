@@ -528,11 +528,21 @@
 <section>
 <section id="example" class="title-slide slide level1 center">
 <h1>Example</h1>
-
+<p>Copy and paste this code if you’d like to follow along!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>obesity <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://raw.githubusercontent.com/math218-spring2023/class-data/main/obesity.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="obesity-data" class="slide level2">
-<h2>Obesity data</h2>
-<p>We have <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6710633/">data</a> on obesity levels based on eating habits and physical condition in individuals from Colombia, Peru and Mexico (although some of this data is actually synthetic (i.e.&nbsp;fake)!)</p>
+<section id="framing-the-data-we-are-working-with" class="slide level2">
+<h2>Framing the data we are working with</h2>
+<p>We have <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6710633/">data</a> on obesity levels based on eating habits and physical condition in individuals from Colombia, Peru and Mexico (although some of this data is actually synthetic (i.e.&nbsp;fake)!).</p>
+<ul>
+<li class="fragment"><p>I want to be clear that discussion about weight can be triggering and difficult for some people</p></li>
+<li class="fragment"><p>I would like to frame this analysis by noting that weight is just one characteristic that scientists and doctors have used to represent health status, but it does not define health</p></li>
+</ul>
+</section>
+<section id="data" class="slide level2">
+<h2>Data</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>          class   n
@@ -568,16 +578,16 @@
 
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" data-code-line-numbers="3|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>obesity_tree <span class="ot">&lt;-</span> <span class="fu">tree</span>(class <span class="sc">~</span> ., <span class="at">data =</span> train_dat,</span>
-<span id="cb4-2"><a href="#cb4-2"></a>                       <span class="at">control =</span> <span class="fu">tree.control</span>(<span class="at">nobs =</span> <span class="fu">nrow</span>(train_dat), <span class="at">minsize =</span> <span class="dv">2</span>))</span>
-<span id="cb4-3"><a href="#cb4-3"></a>cv_tree <span class="ot">&lt;-</span> <span class="fu">cv.tree</span>(obesity_tree, <span class="at">FUN =</span> prune.misclass)</span>
-<span id="cb4-4"><a href="#cb4-4"></a>best_size <span class="ot">&lt;-</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>size[<span class="fu">which</span>(cv_tree<span class="sc">$</span>dev <span class="sc">==</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>dev))])</span>
-<span id="cb4-5"><a href="#cb4-5"></a>prune_obesity <span class="ot">&lt;-</span> <span class="fu">prune.misclass</span>(obesity_tree, <span class="at">best =</span> best_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="3|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>obesity_tree <span class="ot">&lt;-</span> <span class="fu">tree</span>(class <span class="sc">~</span> ., <span class="at">data =</span> train_dat,</span>
+<span id="cb5-2"><a href="#cb5-2"></a>                       <span class="at">control =</span> <span class="fu">tree.control</span>(<span class="at">nobs =</span> <span class="fu">nrow</span>(train_dat), <span class="at">minsize =</span> <span class="dv">2</span>))</span>
+<span id="cb5-3"><a href="#cb5-3"></a>cv_tree <span class="ot">&lt;-</span> <span class="fu">cv.tree</span>(obesity_tree, <span class="at">FUN =</span> prune.misclass)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>best_size <span class="ot">&lt;-</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>size[<span class="fu">which</span>(cv_tree<span class="sc">$</span>dev <span class="sc">==</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>dev))])</span>
+<span id="cb5-5"><a href="#cb5-5"></a>prune_obesity <span class="ot">&lt;-</span> <span class="fu">prune.misclass</span>(obesity_tree, <span class="at">best =</span> best_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -586,7 +596,7 @@
 <h2>Classification Tree: predictions</h2>
 <p>Use the <code>predict()</code> function like usual to obtain predictions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -604,7 +614,7 @@
 </ul>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat, <span class="at">type =</span> <span class="st">"class"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat, <span class="at">type =</span> <span class="st">"class"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] Overweight_I Overweight_I Normal       Overweight_I Obese_I     
 [6] Obese_I     
@@ -628,11 +638,11 @@
 <p>Quickly discuss/remind ourselves: what does bagging for trees look like?</p>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>obesity_bag <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> obesity, <span class="at">ntree =</span> <span class="dv">100</span>,</span>
-<span id="cb10-2"><a href="#cb10-2"></a>             <span class="at">mtry =</span> <span class="fu">ncol</span>(obesity) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">varImpPlot</span>(obesity_bag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>obesity_bag <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> obesity, <span class="at">ntree =</span> <span class="dv">100</span>,</span>
+<span id="cb11-2"><a href="#cb11-2"></a>             <span class="at">mtry =</span> <span class="fu">ncol</span>(obesity) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">varImpPlot</span>(obesity_bag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -666,7 +676,7 @@
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
+<p><img data-src="slides-12-classification-trees_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Misclass rate: 0.05"</code></pre>
