@@ -260,9 +260,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-3"><a href="#cb4-3"></a>                       <span class="at">control =</span> <span class="fu">tree.control</span>(<span class="at">nobs =</span> <span class="fu">nrow</span>(train_dat), <span class="at">minsize =</span> <span class="dv">2</span>))</span>
 <span id="cb4-4"><a href="#cb4-4"></a>cv_tree <span class="ot">&lt;-</span> <span class="fu">cv.tree</span>(obesity_tree, <span class="at">FUN =</span> prune.misclass)</span>
 <span id="cb4-5"><a href="#cb4-5"></a>best_size <span class="ot">&lt;-</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>size[<span class="fu">which</span>(cv_tree<span class="sc">$</span>dev <span class="sc">==</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>dev))])</span>
-<span id="cb4-6"><a href="#cb4-6"></a>prune_obesity <span class="ot">&lt;-</span> <span class="fu">prune.misclass</span>(obesity_tree, <span class="at">best =</span> best_size)</span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">plot</span>(prune_obesity)</span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="fu">text</span>(prune_obesity, <span class="at">pretty =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="do">## equivalent to: prune.tree(obesity_tree, best = best_size, method - "misclass")</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>prune_obesity <span class="ot">&lt;-</span> <span class="fu">prune.misclass</span>(obesity_tree, <span class="at">best =</span> best_size)</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="fu">plot</span>(prune_obesity)</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="fu">text</span>(prune_obesity, <span class="at">pretty =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="live-code-classification-trees_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>

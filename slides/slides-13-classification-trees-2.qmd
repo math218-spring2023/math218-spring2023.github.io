@@ -1,0 +1,195 @@
+---
+title: "Classification Trees"
+subtitle: "Coding"
+date: "April 20, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/gini.png"
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: true
+---
+
+# Housekeeping
+
+-   Lab 05 due this tonight!
+-   Project proposals due this Sunday to Canvas!
+
+::: footer
+[Image from Wikipedia](https://en.wikipedia.org/wiki/Gini_coefficient)
+:::
+
+```{r}
+#| message: false
+library(tidyverse)
+library(palmerpenguins)
+data(penguins)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+library(tree)
+library(randomForest)
+
+```
+
+# Coding classification trees
+
+
+Copy and paste this code if you'd like to follow along!
+
+```{r}
+#| echo: true
+#| eval: true
+obesity <- read.csv("https://raw.githubusercontent.com/math218-spring2023/class-data/main/obesity.csv")
+```
+
+## Framing the data we are working with
+
+We have [data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6710633/) on obesity levels based on eating habits and physical condition in individuals from Colombia, Peru and Mexico (although some of this data is actually synthetic (i.e. fake)!).
+
+-   I want to be clear that discussion about weight can be triggering and difficult for some people
+
+-   I would like to frame this analysis by noting that weight is just one characteristic that scientists and doctors have used to represent health status, but it does not define health
+
+## Data
+
+```{r}
+# obesity <- read.csv("data/obesity.csv")
+obesity <- obesity %>%
+  mutate_if(is.character, factor)
+obesity %>%
+  count(class)
+```
+
+-   Variables include: gender, age, smoke status, family history, amount of physical activity, etc.
+
+-   Can we predict the obesity status based on these variables using decision trees? What variables might be important for classifying the status?
+
+## Analysis
+
+-   Split data into 80% train, 20% test
+
+-   Fit three different models to the data and obtained predictions for the test data:
+
+    1.  Pruned classification tree fit on the 80% train
+
+    2.  Bagged classification trees fit on all the data, but predictions obtained from OOB samples (B = 100 trees)
+
+    3.  Random forest classification fit on all the data, but predictions obtained from OOB samples (B = 100 trees)
+
+## Classification Tree {.scrollable}
+
+```{r}
+set.seed(1)
+n <- nrow(obesity)
+train_ids <- sample(1:n, 0.8*n)
+train_dat <- obesity[train_ids,]
+test_dat <- obesity[-train_ids,]
+```
+
+```{r echo = T}
+#| code-line-numbers: "3|5"
+obesity_tree <- tree(class ~ ., data = train_dat,
+                       control = tree.control(nobs = nrow(train_dat), minsize = 2))
+cv_tree <- cv.tree(obesity_tree, FUN = prune.misclass)
+best_size <- min(cv_tree$size[which(cv_tree$dev == min(cv_tree$dev))])
+prune_obesity <- prune.misclass(obesity_tree, best = best_size)
+```
+
+::: fragment
+```{r}
+plot(prune_obesity)
+text(prune_obesity, pretty = 0, cex = 0.6)
+```
+:::
+
+## Classification Tree: predictions
+
+Use the `predict()` function like usual to obtain predictions:
+
+```{r echo = T, eval = F}
+head(predict(prune_obesity, newdata = test_dat))
+```
+
+```{r echo = F, eval = T}
+round(head(predict(prune_obesity, newdata = test_dat)), 6)
+```
+
+-   Is this what we wanted?
+
+::: fragment
+```{r echo = T}
+head(predict(prune_obesity, newdata = test_dat, type = "class"))
+```
+:::
+
+-   What's our misclassification rate?
+
+::: fragment
+```{r echo = F}
+tree_preds <- predict(prune_obesity, newdata = test_dat, type = "class")
+print(paste0("Misclass rate: ", round(mean(tree_preds != test_dat$class),3)))
+```
+:::
+
+## Bagged classification trees {.scrollable}
+
+Quickly discuss/remind ourselves: what does bagging for trees look like?
+
+::: fragment
+```{r echo = T}
+obesity_bag <- randomForest(class ~ ., data = obesity, ntree = 100,
+             mtry = ncol(obesity) - 1)
+varImpPlot(obesity_bag)
+```
+:::
+
+-   The "importance" is defined as the total amount that the Gini index decreases by splits over a given predictor $X_{j}$, averaged over the $B$ trees
+
+## Aggregating predictions
+
+-   Discuss: how does a bagged model predict a single class across $B$ different trees?
+
+    -   i.e. What does it mean to aggregate multiple labels?
+
+-   For a given test point, each tree will output a predicted label $\hat{y}^{(b)}$. We will take a *majority vote* approach again!
+
+    -   The overall prediction for a test point is the most commonly occurring label among the $B$ predictions
+
+::: fragment
+```{r}
+bag_preds <- obesity_bag$predicted[-train_ids]
+print(paste0("Misclass rate: ", round(mean(bag_preds != test_dat$class),3)))
+```
+:::
+
+## Random forests
+
+For random forests, we typically set the number of predictors to consider at each split to be $\approx \sqrt{p}$, where $p$ is the total number of available predictors
+
+::: fragment
+```{r}
+m <- round(sqrt(ncol(obesity)-1))
+obesity_rf <- randomForest(class ~ ., data = obesity, ntree = 100,
+                           mtry = m)
+varImpPlot(obesity_rf)
+
+rf_preds <- obesity_rf$predicted[-train_ids]
+print(paste0("Misclass rate: ", round(mean(rf_preds != test_dat$class),3)))
+```
+:::
+
+## Comparing all models
+
+Which model would we prefer?
+
+```{r}
+data.frame(model = c("Pruned tree", "Bagged", "Random Forest"), error_rate = c(mean(tree_preds != test_dat$class),
+             mean(bag_preds != test_dat$class),
+             mean(rf_preds != test_dat$class)))
+```

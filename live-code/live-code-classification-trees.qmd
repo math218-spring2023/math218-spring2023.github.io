@@ -41,6 +41,7 @@ obesity_tree <- tree(class ~ ., data = train_dat,
                        control = tree.control(nobs = nrow(train_dat), minsize = 2))
 cv_tree <- cv.tree(obesity_tree, FUN = prune.misclass)
 best_size <- min(cv_tree$size[which(cv_tree$dev == min(cv_tree$dev))])
+## equivalent to: prune.tree(obesity_tree, best = best_size, method - "misclass")
 prune_obesity <- prune.misclass(obesity_tree, best = best_size)
 plot(prune_obesity)
 text(prune_obesity, pretty = 0, cex = 0.6)
