@@ -256,14 +256,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="fit-classification-tree-prune">Fit classification tree + prune</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(tree)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>obesity_tree <span class="ot">&lt;-</span> <span class="fu">tree</span>(class <span class="sc">~</span> ., <span class="at">data =</span> train_dat,</span>
+<span id="cb4-2"><a href="#cb4-2"></a>my_tree <span class="ot">&lt;-</span> <span class="fu">tree</span>(class <span class="sc">~</span> ., <span class="at">data =</span> train_dat,</span>
 <span id="cb4-3"><a href="#cb4-3"></a>                       <span class="at">control =</span> <span class="fu">tree.control</span>(<span class="at">nobs =</span> <span class="fu">nrow</span>(train_dat), <span class="at">minsize =</span> <span class="dv">2</span>))</span>
-<span id="cb4-4"><a href="#cb4-4"></a>cv_tree <span class="ot">&lt;-</span> <span class="fu">cv.tree</span>(obesity_tree, <span class="at">FUN =</span> prune.misclass)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>cv_tree <span class="ot">&lt;-</span> <span class="fu">cv.tree</span>(my_tree, <span class="at">FUN =</span> prune.misclass)</span>
 <span id="cb4-5"><a href="#cb4-5"></a>best_size <span class="ot">&lt;-</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>size[<span class="fu">which</span>(cv_tree<span class="sc">$</span>dev <span class="sc">==</span> <span class="fu">min</span>(cv_tree<span class="sc">$</span>dev))])</span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="do">## equivalent to: prune.tree(obesity_tree, best = best_size, method - "misclass")</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>prune_obesity <span class="ot">&lt;-</span> <span class="fu">prune.misclass</span>(obesity_tree, <span class="at">best =</span> best_size)</span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="fu">plot</span>(prune_obesity)</span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="fu">text</span>(prune_obesity, <span class="at">pretty =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="do">## equivalent to: prune.tree(my_tree, best = best_size, method - "misclass")</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>prune_tree <span class="ot">&lt;-</span> <span class="fu">prune.misclass</span>(my_tree, <span class="at">best =</span> best_size)</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="fu">plot</span>(prune_tree)</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="fu">text</span>(prune_tree, <span class="at">pretty =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="live-code-classification-trees_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -271,7 +271,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="obtain-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="obtain-predictions">Obtain predictions</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_tree, <span class="at">newdata =</span> test_dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Insufficient     Normal   Obese_I   Obese_II Obese_III Overweight_I
 3    0.00000000 0.09395973 0.0000000 0.00000000         0    0.5302013
@@ -288,13 +288,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 18    0.00000000
 24    0.01923077</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat, <span class="at">type =</span> <span class="st">"class"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(prune_tree, <span class="at">newdata =</span> test_dat, <span class="at">type =</span> <span class="st">"class"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] Overweight_I Overweight_I Normal       Overweight_I Obese_I     
 [6] Obese_I     
 7 Levels: Insufficient Normal Obese_I Obese_II Obese_III ... Overweight_II</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>tree_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(prune_obesity, <span class="at">newdata =</span> test_dat, <span class="at">type =</span> <span class="st">"class"</span>)</span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>tree_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(prune_tree, <span class="at">newdata =</span> test_dat, <span class="at">type =</span> <span class="st">"class"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="fu">mean</span>(tree_preds <span class="sc">!=</span> test_dat<span class="sc">$</span>class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -327,13 +327,13 @@ Attaching package: 'randomForest'</code></pre>
 
     margin</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>obesity_bag <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> obesity, <span class="at">ntree =</span> <span class="dv">100</span>,</span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>my_bag <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> obesity, <span class="at">ntree =</span> <span class="dv">100</span>,</span>
 <span id="cb17-2"><a href="#cb17-2"></a>             <span class="at">mtry =</span> <span class="fu">ncol</span>(obesity) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">varImpPlot</span>(obesity_bag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">varImpPlot</span>(my_bag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="live-code-classification-trees_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>bag_preds <span class="ot">&lt;-</span> obesity_bag<span class="sc">$</span>predicted[<span class="sc">-</span>train_ids]</span>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>bag_preds <span class="ot">&lt;-</span> my_bag<span class="sc">$</span>predicted[<span class="sc">-</span>train_ids]</span>
 <span id="cb18-2"><a href="#cb18-2"></a><span class="fu">mean</span>(bag_preds <span class="sc">!=</span> test_dat<span class="sc">$</span>class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.02600473</code></pre>
@@ -344,13 +344,13 @@ Attaching package: 'randomForest'</code></pre>
 <h2 class="anchored" data-anchor-id="random-forest-classification">Random forest classification</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>m <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">sqrt</span>(<span class="fu">ncol</span>(obesity)<span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb20-2"><a href="#cb20-2"></a>obesity_rf <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> obesity, <span class="at">ntree =</span> <span class="dv">100</span>,</span>
+<span id="cb20-2"><a href="#cb20-2"></a>my_rf <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> obesity, <span class="at">ntree =</span> <span class="dv">100</span>,</span>
 <span id="cb20-3"><a href="#cb20-3"></a>                           <span class="at">mtry =</span> m)</span>
-<span id="cb20-4"><a href="#cb20-4"></a><span class="fu">varImpPlot</span>(obesity_rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="fu">varImpPlot</span>(my_rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="live-code-classification-trees_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>rf_preds <span class="ot">&lt;-</span> obesity_rf<span class="sc">$</span>predicted[<span class="sc">-</span>train_ids]</span>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>rf_preds <span class="ot">&lt;-</span> my_rf<span class="sc">$</span>predicted[<span class="sc">-</span>train_ids]</span>
 <span id="cb21-2"><a href="#cb21-2"></a><span class="fu">mean</span>(rf_preds <span class="sc">!=</span> test_dat<span class="sc">$</span>class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.04964539</code></pre>

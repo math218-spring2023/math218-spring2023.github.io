@@ -25,7 +25,7 @@
     "href": "assignments.html",
     "title": "Assignments",
     "section": "",
-    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nConditions and for loops\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nEncoding categorical variables\n\n\n\nMar 7, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLOOCV\n\n\n\nMar 9, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLists\n\n\n\nMar 10, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nRegression trees (part 1)\n\n\n\nMar 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nRegression trees (pruning)\n\n\n\nMar 16, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nBagging implementations\n\n\n\nMar 31, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nBagging trees\n\n\n\nMar 31, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic regression\n\n\n\nApr 4, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nClass Imbalance\n\n\n\nApr 11, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Intro to base R\n\n\n\nFeb 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nConditions and for loops\n\n\n\nFeb 17, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLinear regression\n\n\n\nFeb 23, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nCreating functions\n\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nEncoding categorical variables\n\n\n\nMar 7, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLOOCV\n\n\n\nMar 9, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLists\n\n\n\nMar 10, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nRegression trees (part 1)\n\n\n\nMar 14, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nRegression trees (pruning)\n\n\n\nMar 16, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nBagging implementations\n\n\n\nMar 31, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nBagging trees\n\n\n\nMar 31, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic regression\n\n\n\nApr 4, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nClass Imbalance\n\n\n\nApr 11, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nClassification trees\n\n\n\nApr 20, 2023\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments.html#labs",
@@ -2588,5 +2588,40 @@
     "title": "Lab 05: Logistic Regression + KNN Classification",
     "section": "Submission",
     "text": "Submission\nWhen you’re finished, knit to PDF one last time and upload the PDF to Canvas. Commit and push your code back to GitHub one last time."
+  },
+  {
+    "objectID": "live-code/live-code-classification-trees.html",
+    "href": "live-code/live-code-classification-trees.html",
+    "title": "Live code:",
+    "section": "",
+    "text": "library(tidyverse)\nobesity <- read.csv(\"https://raw.githubusercontent.com/math218-spring2023/class-data/main/obesity.csv\")\n\nobesity <- obesity %>%\n  mutate_if(is.character, factor)\nobesity %>%\n  count(class)\n\n          class   n\n1  Insufficient 272\n2        Normal 287\n3       Obese_I 351\n4      Obese_II 297\n5     Obese_III 324\n6  Overweight_I 290\n7 Overweight_II 290"
+  },
+  {
+    "objectID": "live-code/live-code-classification-trees.html#traintest-split",
+    "href": "live-code/live-code-classification-trees.html#traintest-split",
+    "title": "Live code:",
+    "section": "Train/test split",
+    "text": "Train/test split\n\nset.seed(1)\nn <- nrow(obesity)\ntrain_ids <- sample(1:n, 0.8*n)\ntrain_dat <- obesity[train_ids,]\ntest_dat <- obesity[-train_ids,]"
+  },
+  {
+    "objectID": "live-code/live-code-classification-trees.html#fit-classification-tree-prune",
+    "href": "live-code/live-code-classification-trees.html#fit-classification-tree-prune",
+    "title": "Live code:",
+    "section": "Fit classification tree + prune",
+    "text": "Fit classification tree + prune\n\nlibrary(tree)\nmy_tree <- tree(class ~ ., data = train_dat,\n                       control = tree.control(nobs = nrow(train_dat), minsize = 2))\ncv_tree <- cv.tree(my_tree, FUN = prune.misclass)\nbest_size <- min(cv_tree$size[which(cv_tree$dev == min(cv_tree$dev))])\n## equivalent to: prune.tree(my_tree, best = best_size, method - \"misclass\")\nprune_tree <- prune.misclass(my_tree, best = best_size)\nplot(prune_tree)\ntext(prune_tree, pretty = 0, cex = 0.6)\n\n\n\n\n\nObtain predictions\n\nhead(predict(prune_tree, newdata = test_dat))\n\n   Insufficient     Normal   Obese_I   Obese_II Obese_III Overweight_I\n3    0.00000000 0.09395973 0.0000000 0.00000000         0    0.5302013\n4    0.00000000 0.09395973 0.0000000 0.00000000         0    0.5302013\n6    0.01190476 0.89285714 0.0000000 0.00000000         0    0.0952381\n10   0.00000000 0.11382114 0.0000000 0.00000000         0    0.8536585\n18   0.00000000 0.00000000 1.0000000 0.00000000         0    0.0000000\n24   0.00000000 0.00000000 0.9519231 0.02884615         0    0.0000000\n   Overweight_II\n3     0.37583893\n4     0.37583893\n6     0.00000000\n10    0.03252033\n18    0.00000000\n24    0.01923077\n\nhead(predict(prune_tree, newdata = test_dat, type = \"class\"))\n\n[1] Overweight_I Overweight_I Normal       Overweight_I Obese_I     \n[6] Obese_I     \n7 Levels: Insufficient Normal Obese_I Obese_II Obese_III ... Overweight_II\n\ntree_preds <- predict(prune_tree, newdata = test_dat, type = \"class\")\n\nmean(tree_preds != test_dat$class)\n\n[1] 0.1583924"
+  },
+  {
+    "objectID": "live-code/live-code-classification-trees.html#bagged-classification-trees",
+    "href": "live-code/live-code-classification-trees.html#bagged-classification-trees",
+    "title": "Live code:",
+    "section": "Bagged classification trees",
+    "text": "Bagged classification trees\n\nlibrary(randomForest)\n\nrandomForest 4.7-1.1\n\n\nType rfNews() to see new features/changes/bug fixes.\n\n\n\nAttaching package: 'randomForest'\n\n\nThe following object is masked from 'package:dplyr':\n\n    combine\n\n\nThe following object is masked from 'package:ggplot2':\n\n    margin\n\nmy_bag <- randomForest(class ~ ., data = obesity, ntree = 100,\n             mtry = ncol(obesity) - 1)\nvarImpPlot(my_bag)\n\n\n\nbag_preds <- my_bag$predicted[-train_ids]\nmean(bag_preds != test_dat$class)\n\n[1] 0.02600473"
+  },
+  {
+    "objectID": "live-code/live-code-classification-trees.html#random-forest-classification",
+    "href": "live-code/live-code-classification-trees.html#random-forest-classification",
+    "title": "Live code:",
+    "section": "Random forest classification",
+    "text": "Random forest classification\n\nm <- round(sqrt(ncol(obesity)-1))\nmy_rf <- randomForest(class ~ ., data = obesity, ntree = 100,\n                           mtry = m)\nvarImpPlot(my_rf)\n\n\n\nrf_preds <- my_rf$predicted[-train_ids]\nmean(rf_preds != test_dat$class)\n\n[1] 0.04964539"
   }
 ]

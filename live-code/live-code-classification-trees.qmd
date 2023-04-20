@@ -8,7 +8,7 @@ format:
   html: 
     code-fold: false
     code-line-numbers: true
-draft: true
+draft: false
 ---
 
 ## Data
@@ -37,24 +37,24 @@ test_dat <- obesity[-train_ids,]
 
 ```{r}
 library(tree)
-obesity_tree <- tree(class ~ ., data = train_dat,
+my_tree <- tree(class ~ ., data = train_dat,
                        control = tree.control(nobs = nrow(train_dat), minsize = 2))
-cv_tree <- cv.tree(obesity_tree, FUN = prune.misclass)
+cv_tree <- cv.tree(my_tree, FUN = prune.misclass)
 best_size <- min(cv_tree$size[which(cv_tree$dev == min(cv_tree$dev))])
-## equivalent to: prune.tree(obesity_tree, best = best_size, method - "misclass")
-prune_obesity <- prune.misclass(obesity_tree, best = best_size)
-plot(prune_obesity)
-text(prune_obesity, pretty = 0, cex = 0.6)
+## equivalent to: prune.tree(my_tree, best = best_size, method - "misclass")
+prune_tree <- prune.misclass(my_tree, best = best_size)
+plot(prune_tree)
+text(prune_tree, pretty = 0, cex = 0.6)
 ```
 
 ### Obtain predictions
 
 ```{r}
-head(predict(prune_obesity, newdata = test_dat))
+head(predict(prune_tree, newdata = test_dat))
 
-head(predict(prune_obesity, newdata = test_dat, type = "class"))
+head(predict(prune_tree, newdata = test_dat, type = "class"))
 
-tree_preds <- predict(prune_obesity, newdata = test_dat, type = "class")
+tree_preds <- predict(prune_tree, newdata = test_dat, type = "class")
 
 mean(tree_preds != test_dat$class)
 ```
@@ -63,10 +63,10 @@ mean(tree_preds != test_dat$class)
 
 ```{r}
 library(randomForest)
-obesity_bag <- randomForest(class ~ ., data = obesity, ntree = 100,
+my_bag <- randomForest(class ~ ., data = obesity, ntree = 100,
              mtry = ncol(obesity) - 1)
-varImpPlot(obesity_bag)
-bag_preds <- obesity_bag$predicted[-train_ids]
+varImpPlot(my_bag)
+bag_preds <- my_bag$predicted[-train_ids]
 mean(bag_preds != test_dat$class)
 ```
 
@@ -74,10 +74,10 @@ mean(bag_preds != test_dat$class)
 
 ```{r}
 m <- round(sqrt(ncol(obesity)-1))
-obesity_rf <- randomForest(class ~ ., data = obesity, ntree = 100,
+my_rf <- randomForest(class ~ ., data = obesity, ntree = 100,
                            mtry = m)
-varImpPlot(obesity_rf)
+varImpPlot(my_rf)
 
-rf_preds <- obesity_rf$predicted[-train_ids]
+rf_preds <- my_rf$predicted[-train_ids]
 mean(rf_preds != test_dat$class)
 ```
