@@ -4,7 +4,7 @@ date: "April 21, 2023"
 editor: visual
 categories: "Implementations"
 description: "Classification trees"
-draft: true
+draft: false
 ---
 
 ## Introduction
@@ -16,7 +16,7 @@ library(tidyverse)
 library(tree)
 ```
 
-We will be working with the `seeds.txt` data, found in the `data` folder of this repo. You can load in the data using the following code:
+Starter code can be found in your `bag-classification-tree-implementation` GitHub repo. We will be working with the `seeds.txt` data, found in the `data` folder of this repo.
 
 ## OOB predictions for bagging classification trees
 
@@ -26,7 +26,7 @@ How do we obtain predictions for bagging classification trees?
 
 ### Option 1
 
-For classification trees, we can typically "aggregate" the predictions by taking the majority vote approach: for a given test/OOB observation, we predict the label $j$ that has the highest representation across the trees for which it was OOB. For example, if $B = 10$, and observation $y_{0}$ was OOB 6 times with the following counts of predicted labels:
+For classification trees, we typically "aggregate" the predictions by taking the majority vote approach: for a given test/OOB observation, we predict the label $j$ that has the highest representation across the trees for which it was OOB. For example, if $B = 10$, and observation $y_{0}$ was OOB 6 times with the following counts of predicted labels:
 
 ```{r echo = F}
 data.frame(label = c("A", "B", "C", "D"), count = c(3,1,0,2))
@@ -34,15 +34,25 @@ data.frame(label = c("A", "B", "C", "D"), count = c(3,1,0,2))
 
 we would predict label $\hat{y}_{0}$ = `"A"`.
 
+A slight twist here is that we will have more than observation to keep track of across the $B$ trees!
+
+::: callout-note
+Note: it's possible that we have ties in predicted labels in bagging. For the purposes of this lab, you don't have to worry about tied majority votes (so you can use the `which.max()` function if that's helpful to you), but know that ties are possible!
+:::
+
 ### Option 2
 
-Another way we can make make a prediction is to keep track of the estimated conditional class probabilities from each tree \$b\$. Then, after iterating through all the $B$ trees, we predict the label that has the highest *average* conditional class probability (where the average is taken with respect to the number of times the observation was OOB). For example, if the average conditional probabilities are as follows:
+Another way we can make make a prediction is to keep track of the estimated conditional class probabilities from each tree $b$. Then, after iterating through all the $B$ trees, we predict the label that has the highest *average* conditional class probability (where the average is taken with respect to the number of times the observation was OOB). For example, if the average conditional probabilities are as follows:
 
 ```{r echo = F}
 data.frame(label = c("A", "B", "C", "D"), avg_cond_prob = c(0.1, 0.5, 0, 0.4))
 ```
 
 then I would predict $\hat{y}_{0} =$ `"B"`.
+
+::: callout-note
+Note: it's possible that we have ties in predicted conditional class probabilities as well. For the purposes of this lab, you don't have to worry about ties here either!
+:::
 
 ## Implementation
 
@@ -60,6 +70,20 @@ seeds <- read.table("data/seeds.txt", header = TRUE) %>%
   variety = factor(variety))
 ```
 
-You should obtain two sets of predictions: one set where we use Option 1 (majority of majority class), and the other set were we use Option 2 (majority of average conditional class probabilities). We will then compare if the predictions using both options agree with each other. For this reason, *you should only run the `for` loop over the* $B$ *trees once in this implementation. We want to ensure that both options see the same bootstrapped datasets.*
+::: {style="color: maroon"}
+You should obtain two sets of OOB predictions using bagged classification trees: one set where we use Option 1 (majority of majority class), and the other set were we use Option 2 (majority of average conditional class probabilities).
+:::
 
-Then, after you've obtained your two sets of predictions, using the `table()` function to compare the predictions you obtained from Option 1 vs Option 2. Do the two methods lead to predictions that agree with each other? If there are are disagreements, clearly specify what the disagreements are.
+We will then compare if the predictions using both options agree with each other. For this reason, *you should only run the `for` loop over the* $B$ *trees once in this implementation. We want to ensure that both options see the same bootstrapped datasets.*
+
+::: callout-note
+I suggest you begin by focusing on a single option! Would you like to keep track of counts (Option 1) or probabilities (Option 2) first?
+:::
+
+## Results
+
+::: {style="color: maroon"}
+-   After you've obtained your two sets of predictions, using the `table()` function to compare the predictions you obtained from Option 1 vs Option 2. Do the two methods lead to predictions that agree with each other? If there are are disagreements, clearly specify what the disagreements are.
+
+-   What proportion of the time was each observation in your dataset out-of-bag? Does this agree with the theoretical result we obtained a few weeks ago about bootstrapping?
+:::

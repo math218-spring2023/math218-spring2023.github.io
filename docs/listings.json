@@ -26,6 +26,7 @@
       "/implementations/implementation_bootstrap.html",
       "/implementations/implementation_bagging_regression.html",
       "/implementations/implementation_knn_classification.html",
+      "/implementations/implementation_bagging_classification.html",
       "/project/description.html",
       "/project/merge-conflicts.html"
     ]

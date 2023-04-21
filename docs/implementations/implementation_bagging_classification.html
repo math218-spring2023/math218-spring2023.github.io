@@ -183,6 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#option-2" id="toc-option-2" class="nav-link" data-scroll-target="#option-2">Option 2</a></li>
   </ul></li>
   <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   </ul>
 </nav>
     </div>
@@ -227,7 +228,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will be working with the <code>seeds.txt</code> data, found in the <code>data</code> folder of this repo. You can load in the data using the following code:</p>
+<p>Starter code can be found in your <code>bag-classification-tree-implementation</code> GitHub repo. We will be working with the <code>seeds.txt</code> data, found in the <code>data</code> folder of this repo.</p>
 </section>
 <section id="oob-predictions-for-bagging-classification-trees" class="level2">
 <h2 class="anchored" data-anchor-id="oob-predictions-for-bagging-classification-trees">OOB predictions for bagging classification trees</h2>
@@ -235,7 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>How do we obtain predictions for bagging classification trees?</p>
 <section id="option-1" class="level3">
 <h3 class="anchored" data-anchor-id="option-1">Option 1</h3>
-<p>For classification trees, we can typically “aggregate” the predictions by taking the majority vote approach: for a given test/OOB observation, we predict the label <span class="math inline">\(j\)</span> that has the highest representation across the trees for which it was OOB. For example, if <span class="math inline">\(B = 10\)</span>, and observation <span class="math inline">\(y_{0}\)</span> was OOB 6 times with the following counts of predicted labels:</p>
+<p>For classification trees, we typically “aggregate” the predictions by taking the majority vote approach: for a given test/OOB observation, we predict the label <span class="math inline">\(j\)</span> that has the highest representation across the trees for which it was OOB. For example, if <span class="math inline">\(B = 10\)</span>, and observation <span class="math inline">\(y_{0}\)</span> was OOB 6 times with the following counts of predicted labels:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  label count
@@ -246,10 +247,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>we would predict label <span class="math inline">\(\hat{y}_{0}\)</span> = <code>"A"</code>.</p>
+<p>A slight twist here is that we will have more than observation to keep track of across the <span class="math inline">\(B\)</span> trees!</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note: it’s possible that we have ties in predicted labels in bagging. For the purposes of this lab, you don’t have to worry about tied majority votes (so you can use the <code>which.max()</code> function if that’s helpful to you), but know that ties are possible!</p>
+</div>
+</div>
 </section>
 <section id="option-2" class="level3">
 <h3 class="anchored" data-anchor-id="option-2">Option 2</h3>
-<p>Another way we can make make a prediction is to keep track of the estimated conditional class probabilities from each tree $b$. Then, after iterating through all the <span class="math inline">\(B\)</span> trees, we predict the label that has the highest <em>average</em> conditional class probability (where the average is taken with respect to the number of times the observation was OOB). For example, if the average conditional probabilities are as follows:</p>
+<p>Another way we can make make a prediction is to keep track of the estimated conditional class probabilities from each tree <span class="math inline">\(b\)</span>. Then, after iterating through all the <span class="math inline">\(B\)</span> trees, we predict the label that has the highest <em>average</em> conditional class probability (where the average is taken with respect to the number of times the observation was OOB). For example, if the average conditional probabilities are as follows:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  label avg_cond_prob
@@ -260,6 +275,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>then I would predict <span class="math inline">\(\hat{y}_{0} =\)</span> <code>"B"</code>.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note: it’s possible that we have ties in predicted conditional class probabilities as well. For the purposes of this lab, you don’t have to worry about ties here either!</p>
+</div>
+</div>
 </section>
 </section>
 <section id="implementation" class="level2">
@@ -268,8 +296,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 
 </div>
-<p>You should obtain two sets of predictions: one set where we use Option 1 (majority of majority class), and the other set were we use Option 2 (majority of average conditional class probabilities). We will then compare if the predictions using both options agree with each other. For this reason, <em>you should only run the <code>for</code> loop over the</em> <span class="math inline">\(B\)</span> <em>trees once in this implementation. We want to ensure that both options see the same bootstrapped datasets.</em></p>
-<p>Then, after you’ve obtained your two sets of predictions, using the <code>table()</code> function to compare the predictions you obtained from Option 1 vs Option 2. Do the two methods lead to predictions that agree with each other? If there are are disagreements, clearly specify what the disagreements are.</p>
+<div style="color: maroon">
+<p>You should obtain two sets of OOB predictions using bagged classification trees: one set where we use Option 1 (majority of majority class), and the other set were we use Option 2 (majority of average conditional class probabilities).</p>
+</div>
+<p>We will then compare if the predictions using both options agree with each other. For this reason, <em>you should only run the <code>for</code> loop over the</em> <span class="math inline">\(B\)</span> <em>trees once in this implementation. We want to ensure that both options see the same bootstrapped datasets.</em></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I suggest you begin by focusing on a single option! Would you like to keep track of counts (Option 1) or probabilities (Option 2) first?</p>
+</div>
+</div>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<div style="color: maroon">
+<ul>
+<li><p>After you’ve obtained your two sets of predictions, using the <code>table()</code> function to compare the predictions you obtained from Option 1 vs Option 2. Do the two methods lead to predictions that agree with each other? If there are are disagreements, clearly specify what the disagreements are.</p></li>
+<li><p>What proportion of the time was each observation in your dataset out-of-bag? Does this agree with the theoretical result we obtained a few weeks ago about bootstrapping?</p></li>
+</ul>
+</div>
 
 
 </section>
