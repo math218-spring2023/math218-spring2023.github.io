@@ -150,13 +150,17 @@ There is no page limit or requirement. For submission, submit the .pdf document 
 
 Due: `r plan`
 
-Your plan of analysis must be done using R Markdown. Based on the feedback from your proposal, the written plan of analysis should contain:
+Your plan of analysis must be done using R Markdown. Your group should create a new `.Rmd` file called `project_plan.Rmd` and work within that new document. Based on the feedback from your proposal, the written plan of analysis should contain:
 
 -   Your updated research question(s). Please be as clear as possible; do not be overly verbose.
 
--   For each research question: the methods/models you plan to use to answer. The methods *must* be appropriate for the given research question. I encourage you to briefly justify why each method you choose is suitable for the question.
+-   For each research question: the methods/models you plan to use to answer. The methods *must* be appropriate for the given research question. You should justify why each method you choose is suitable for the question.
 
--   Describe how exactly you plan to implement the methods you selected to answer your research question(s). This may include discussion of necessary data cleaning and preparation, which `R` packages you intend to use, how you plan on validating/comparing models, etc.
+-   Describe how exactly you plan to implement the methods you selected to answer your research question(s). This may include discussion of necessary data cleaning and preparation, which `R` packages you intend to use, **how you plan on validating/comparing models**, etc.
+
+    -   ::: {style="color: maroon"}
+        Remember: you need some form of (appropriate) model comparison for your final project, so you should clearly indicate the way you will perform comparisons.
+        :::
 
 If you chose to pursue a method that we did not cover in class, you must clearly describe the method in your plan.
 
