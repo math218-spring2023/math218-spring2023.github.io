@@ -17,7 +17,7 @@ draft: true
 
 # Housekeeping
 
--   
+-   Bagged classification trees implementation due tonight 11:59pm to Canvas
 
 ::: footer
 [Image (and recipe) from Food52](https://food52.com/recipes/87260-cornflake-clusters-recipe)
@@ -44,21 +44,21 @@ plot_theme <- theme(text = element_text(size = 16))
 
     -   We do not care about prediction because we have no response $Y$!
 
+    -   For this reason, the $X_{1}, X_{2},\ldots, X_{p}$ are often referred to as "features" in unsupervised learning, rather than "predictors"
+
 -   Example: a search engine might choose which search results to display to a particular individual based on the click histories of other individuals with similar search patterns
 
-## Real-life example 
+## Real-life example
 
-Marine eco-provinces 
+Marine eco-provinces
 
 ```{r fig.align = "center", fig.width = 8, fig.height = 5}
 knitr::include_graphics("figs/ecoprovince.jpeg")
 ```
 
 ::: footer
-[Elucidating ecological complexity: Unsupervised learning determines global marine eco-provinces]( https://www.science.org/doi/10.1126/sciadv.aay4740)
+[Elucidating ecological complexity: Unsupervised learning determines global marine eco-provinces](https://www.science.org/doi/10.1126/sciadv.aay4740)
 :::
-
-
 
 ## Unsupervised learning goals
 
@@ -80,7 +80,7 @@ knitr::include_graphics("figs/ecoprovince.jpeg")
 
 -   Subjective; no clearly defined goal for analysis
 
--   How to assess results obtained? No way to validate!
+-   How to assess results obtained? No way to validate without a true response!
 
 -   Despite challenges, unsupervised learning methods are of growing importance
 
@@ -100,9 +100,9 @@ knitr::include_graphics("figs/ecoprovince.jpeg")
 
     -   Apologies for another K!
 
-# K-Means clustering
+# K-Means clustering: introduction
 
-## K-Means clustering
+## General idea
 
 -   We seek to partition/divide the observations into a pre-specified number of clusters $K$
 
@@ -110,7 +110,7 @@ knitr::include_graphics("figs/ecoprovince.jpeg")
 
 -   Just like in $k$-fold CV or KNN, we first specify $K$.
 
-    -   Then the algorithm will assign each observation to exactly one of the $K$ clusters
+    -   Then the algorithm will assign each observation in the dataset to exactly one of the $K$ clusters
 
 ## Example 1: US Arrests
 
@@ -202,9 +202,11 @@ plotly::plot_ly( data = plot_df, x = ~X1, y = ~X2, z = ~X3,
                  type = "scatter3d", color = ~cluster)
 ```
 
-## Details of $K$-means clustering
+# K-means clustering: details
 
--   Procedure results from simple and intuitive mathematical problem. Start with notation
+## Notation
+
+-   Procedure results from simple and intuitive mathematical problem. We will start with notation
 
 -   Let $C_{1}, \ldots, C_{K}$ be the sets containing the indices of the observation in each cluster. These sets satisfy two properties:
 
@@ -214,13 +216,13 @@ plotly::plot_ly( data = plot_df, x = ~X1, y = ~X2, z = ~X3,
 
 -   For example, if the 10-th observation is in the second cluster, then $10 \in C_{2}$
 
-    -   More generally: if observation $i$ is in $k$-th cluster, then $i \in C_{k}$
+    -   More generally: if observation $i$ is in the $k$-th cluster, then $i \in C_{k}$
 
-## Details of $K$-means clustering (cont.)
+## Within-cluster-variation
 
 -   **Good** clustering is at the heart of $K$-means clustering procedure: we want the *within-cluster variation* to be as small as possible
 
--   Let $\text{WCV}(C_{k})$ denote the within-cluster variation for cluster $C_{k}$. Tells us the amount by which observations within a cluster are different from each other
+-   Let $\text{WCV}(C_{k})$ denote the within-cluster variation for cluster $C_{k}$. It tells us the amount by which observations within a cluster are different from each other
 
 -   $K$-means clustering solves the problem: $$\min_{C_{1}, \ldots, C_{K}}\left\{\sum_{k=1}^{K}\text{WCV}(C_{k})  \right\}$$
 
@@ -228,26 +230,73 @@ plotly::plot_ly( data = plot_df, x = ~X1, y = ~X2, z = ~X3,
 
     -   This is called the "objective"
 
-## How to define within-cluster variation?
+## Defining WCV
 
--   Once again, need to define
+Most common choice of WCV is (pairwise) *squared* Euclidean distance:
 
--   Most common choice is (pairwise) *squared* Euclidean distance: $$\text{WCV}(C_{k}) = \frac{1}{|C_{k}|} \sum_{i, i' \in C_{k}} \sum_{j=1}^{p} (x_{ij} - x_{i'j})^2$$ where $|C_{k}|$ is the number of observations in the $k$-th cluster
+$$\begin{align*} \text{WCV}(C_{k}) 
+&= \frac{1}{|C_{k}|} \sum_{i, i' \in C_{k}} d(\mathbf{x}_{i}, \mathbf{x}_{i'})\\
+&= \frac{1}{|C_{k}|} \sum_{i, i' \in C_{k}} \sum_{j=1}^{p} (x_{ij} - x_{i'j})^2
+\end{align*}
+$$ where $|C_{k}|$ is the number of observations in the $k$-th cluster and $d()$ is the usual Euclidean distance function we are familiar with
 
-## K-means clustering: Algorithm
+-   In words: WCV for the $k$-th cluster is the sum of all of the pairwise squared Euclidean distances between the observations in the $k$-th cluster, divided by the total number of observations in that cluster.
 
-1.  Randomly assign each observation to one of the $K$ clusters. This is how we *initialize* the cluster assignments.
+## Optimization problem
+
+Combining the the objective with our definition of WCV, $K$-means clustering tries to solve the following problem:
+
+$$\min_{C_{1}, \ldots, C_{K}}\left\{\sum_{k=1}^{K} \frac{1}{|C_{k}|} \sum_{i, i' \in C_{k}} d(\mathbf{x}_{i}, \mathbf{x}_{i'}) \right\}$$
+
+-   So, we need an algorithm to solve this problem; i.e. find the set of clusters $C_{1}, \ldots, C_{k}$ that minimize this function!
+
+-   We will learn one possible algorithm for solving this optimization problem
+
+## Algorithm
+
+0.  Choose $K$
+
+1.  Randomly assign each observation to one of the $K$ clusters. This is how we ***initialize*** the cluster assignments.
 
 2.  Iterate the following until the cluster assignments stop changing:
 
-<!-- -->
+    i.  For each cluster $k = 1,\ldots, K$, compute the cluster ***centroid***.
 
-i)  For each cluster $k = 1,\ldots, K$, compute the cluster *centroid*. The $k$-th cluster centroid is the vector of the $p$-feature means for observation in $C_{k}$
-ii) Assign each observation to the cluster who centroid is *closest*, defined using Euclidean distance here
+    ii. Assign each observation to the cluster whose centroid is ***closest***, where we determine "close" using Euclidean distance
+
+## Centroids
+
+-   Each cluster has a centroid that changes at every iteration
+
+-   The $k$-th cluster centroid is the vector of the $p$-feature means for observation in $C_{k}$
+
+-   E.g. we have two features `X1` and `X2`, and each observation (row) is currently in `cluster` 1 or 2.
+
+::: fragment
+```{r echo = F}
+set.seed(1)
+df <- data.frame(X1 = sample(1:6, 6, replace = T),
+                 X2 = sample(1:6, 6, replace = T),
+                 cluster = sample(1:2, 6, replace = T)) %>%
+  arrange(cluster)
+df
+```
+
+-   What are the centroids of each cluster?
+:::
+
+::: fragment
+```{r echo = F}
+df %>%
+  group_by(cluster) %>%
+  summarise_all(mean) %>%
+  rename("cluster_centroid" = 1)
+```
+:::
 
 ## In-class example
 
-## Details on algorithm
+## Important implementation concerns!
 
 -   This algorithm is not guaranteed to solve the minimization problem exactly
 
@@ -255,13 +304,11 @@ ii) Assign each observation to the cluster who centroid is *closest*, defined us
 
 -   The algorithm on previous slide provides a *local* optimum, i.e. a pretty good solution to the optimization problem!
 
-## Important implementation concerns!
-
 -   Because the algorithm finds a local optimum, our results will depend on the initial cluster assignments in Step 1
 
     -   Therefore, it is important to run the algorithm multiple times using different random initializations
 
-    -   Then select the *best* solution (i.e. the one with smallest $\sum_{k=1}^{K}\text{WCV}(C_{k})$)
+    -   Then select the *best* solution (i.e. the one with smallest objective value $\sum_{k=1}^{K}\text{WCV}(C_{k})$)
 
 ## Example 3: Simulated data {.scrollable}
 
@@ -272,7 +319,7 @@ ii) Assign each observation to the cluster who centroid is *closest*, defined us
 -   Above each plot is the value of the objective
 
 ::: fragment
-```{r fig.align="center", fig.width=12, fig.height=4.5, cache = T}
+```{r fig.align="center", fig.width=12, fig.height=4.25, cache = T}
 set.seed(22)
 n <- 50
 X <- matrix(rnorm(n*2), ncol = 2) 
@@ -335,7 +382,9 @@ seeds_df %>%
 ```
 :::
 
--   If I didn't know there were truly three classes, how would I choose $K$?
+-   ::: {style="color: maroon"}
+    If I didn't know there were truly three classes, how would I choose $K$?
+    :::
 :::
 :::
 
@@ -496,6 +545,8 @@ Is randomly initializing the most intelligent way to run the algorithm?
 
     -   More commonly used initialization method: k-means++
 
+# Summary
+
 ## Drawbacks
 
 -   Does not take into account the different densities of each cluster
@@ -509,8 +560,6 @@ Is randomly initializing the most intelligent way to run the algorithm?
 -   Lack of interpretation of clusters
 
 -   Can be slow for large $n$
-
-# Summary
 
 ## Considerations
 
