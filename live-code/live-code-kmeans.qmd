@@ -1,0 +1,98 @@
+---
+title: "Live code:"
+date: "April 27, 2023"
+description: "K-means clustering"
+editor: visual
+categories: "Live code"
+format:
+  html: 
+    code-fold: false
+    code-line-numbers: true
+draft: true
+---
+
+## kmeans()
+
+```{r setup, message = F}
+library(tidyverse)
+library(palmerpenguins)
+data("penguins")
+```
+
+We will use the `kmeans()` function implement $K$ means! The function requires the following two arguments at a minimum:
+
+- `x`: a data frame or matrix that contains only numeric entries
+- `centers`: the number of clusters K you'd like
+
+Optional arguments: 
+
+- `iter.max`: the maximum number of iterations allowed (default = 10). Because this is an iterative algorithm, the algorithm will run until convergence. In certain problems, it could take forever until convergence so we might want to force the algorithm from running forever. In other cases, the default of 10 iterations may be too few!
+
+- `nstart`: the number of random initializations you'd like (default = 1)
+
+We will remove the `year` variable and the qualitative `island` and `sex` variables from our data. I will retain the `species` variable even though it's qualitative for visualization purposes later.
+
+We should set a seed for reproducibility because of the random initial starts!
+
+```{r}
+penguins_clean <- penguins %>%
+  select(-island, -sex, -year) %>%
+  na.omit() 
+set.seed(1)
+penguins_kmeans <- kmeans(penguins_clean %>%
+                            select(-species), 
+                          centers = 3)
+```
+
+We can access the cluster assignments from the output:
+
+```{r}
+clusters <- penguins_kmeans$cluster
+clusters
+```
+
+Here we visualize the cluster assignments along with the true species to see if the clusters align with the species. I arbitrarily choose two of the variables for the axes. Doesn't look too great...
+
+```{r echo = F}
+penguins_clean %>%
+  mutate(cluster = clusters,
+         cluster = as.factor(cluster)) %>%
+  ggplot(., aes(x = bill_length_mm, y = bill_depth_mm, col = cluster, shape = species)) +
+  geom_point()
+```
+
+## Standardizing
+
+Remember, we try to minimize the total within-cluster-variation, which we define using pairwise squared Euclidean distance. Whenever distances are involved, we should know by now that variables being on different scales can have large implications for the results obtained. What happens if we standardize all of our quantitative variables?
+
+```{r}
+penguins_clean <- penguins_clean %>%
+  mutate_if(is.numeric, scale)
+
+set.seed(1)
+penguins_kmeans <- kmeans(penguins_clean %>%
+         select(-species), centers = 3, iter.max = 25)
+clusters <- penguins_kmeans$cluster
+```
+
+```{r echo = F}
+penguins_clean %>%
+  mutate(cluster = clusters,
+         cluster = as.factor(cluster)) %>%
+  ggplot(., aes(x = bill_length_mm, y = bill_depth_mm, col = cluster, shape = species)) +
+  geom_point()
+```
+
+Looks much more reasonable!
+
+## Other output
+
+We can obtain the WCV for each cluster (`withinss`), as well as the total (sum) WCV (`tot.withinss`). You can also find the number of observations in each cluster from `size`, and the final centroids using `centers`.
+
+```{r}
+penguins_kmeans$withinss
+penguins_kmeans$tot.withinss
+penguins_kmeans$size
+penguins_kmeans$centers
+```
+

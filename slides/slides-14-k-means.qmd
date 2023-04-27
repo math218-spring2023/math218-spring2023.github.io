@@ -427,6 +427,8 @@ data.frame(K = 1:KK, objective = tot.withinss) %>%
 :::
 :::
 
+# Live code
+
 # Where k-means fails
 
 ## Example 5: spherical data
