@@ -235,7 +235,7 @@ plotly::plot_ly( data = plot_df, x = ~X1, y = ~X2, z = ~X3,
 Most common choice of WCV is (pairwise) *squared* Euclidean distance:
 
 $$\begin{align*} \text{WCV}(C_{k}) 
-&= \frac{1}{|C_{k}|} \sum_{i, i' \in C_{k}} d(\mathbf{x}_{i}, \mathbf{x}_{i'})\\
+&= \frac{1}{|C_{k}|} \sum_{i, i' \in C_{k}} d(\mathbf{x}_{i}, \mathbf{x}_{i'})^2\\
 &= \frac{1}{|C_{k}|} \sum_{i, i' \in C_{k}} \sum_{j=1}^{p} (x_{ij} - x_{i'j})^2
 \end{align*}
 $$ where $|C_{k}|$ is the number of observations in the $k$-th cluster and $d()$ is the usual Euclidean distance function we are familiar with
