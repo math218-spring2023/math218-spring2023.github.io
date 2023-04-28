@@ -1,6 +1,6 @@
 ---
 title: "Live code:"
-date: "April 27, 2023"
+date: "April 28, 2023"
 description: "K-means clustering"
 editor: visual
 categories: "Live code"
@@ -8,7 +8,7 @@ format:
   html: 
     code-fold: false
     code-line-numbers: true
-draft: true
+draft: false
 ---
 
 ## kmeans()
@@ -21,14 +21,14 @@ data("penguins")
 
 We will use the `kmeans()` function implement $K$ means! The function requires the following two arguments at a minimum:
 
-- `x`: a data frame or matrix that contains only numeric entries
-- `centers`: the number of clusters K you'd like
+-   `x`: a data frame or matrix that contains only numeric entries
+-   `centers`: the number of clusters K you'd like
 
-Optional arguments: 
+Optional arguments:
 
-- `iter.max`: the maximum number of iterations allowed (default = 10). Because this is an iterative algorithm, the algorithm will run until convergence. In certain problems, it could take forever until convergence so we might want to force the algorithm from running forever. In other cases, the default of 10 iterations may be too few!
+-   `iter.max`: the maximum number of iterations allowed (default = 10). Because this is an iterative algorithm, the algorithm will run until convergence. In certain problems, it could take forever until convergence so we might want to force the algorithm from running forever. In other cases, the default of 10 iterations may be too few!
 
-- `nstart`: the number of random initializations you'd like (default = 1)
+-   `nstart`: the number of random initializations you'd like (default = 1)
 
 We will remove the `year` variable and the qualitative `island` and `sex` variables from our data. I will retain the `species` variable even though it's qualitative for visualization purposes later.
 
@@ -95,4 +95,3 @@ penguins_kmeans$tot.withinss
 penguins_kmeans$size
 penguins_kmeans$centers
 ```
-
