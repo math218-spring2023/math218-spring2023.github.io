@@ -17,7 +17,7 @@ draft: true
 
 # Housekeeping
 
--   Bagged classification trees implementation due tonight 11:59pm to Canvas
+-   Project plans of analysis due Sunday!
 
 ::: footer
 [Image (and recipe) from Food52](https://food52.com/recipes/87260-cornflake-clusters-recipe)
