@@ -1,0 +1,282 @@
+---
+title: "Hierarhical Clustering"
+date: "May 4, 2023"
+title-slide-attributes:
+    data-background-image: "figs/title/cornflake_clusters.png"
+    data-background-opacity: "0.3"
+format: 
+  revealjs:
+    theme: custom.scss
+    transition: none
+    incremental: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+draft: true
+---
+
+# Housekeeping
+
+-   Project drafts due Sunday!
+-   K-means implementation open today
+    -   Due last day of classes (Monday, 5/15)
+
+::: footer
+[Image (and recipe) from Food52](https://food52.com/recipes/87260-cornflake-clusters-recipe)
+:::
+
+```{r}
+#| message: false
+library(tidyverse)
+library(cluster)    # clustering algorithms
+library(factoextra) # clustering algorithms & visualization
+library(ggdendro)
+source("../math218_fns.R")
+plot_theme <- theme(text = element_text(size = 16))
+
+
+```
+
+# Hierarchical clustering
+
+## Motivation
+
+-   Disadvantage of $K$-means is pre-specifying $K$!
+
+-   What if we don't want to commit to a single choice?
+
+-   We will construct a (upside-down) tree-based representation of the observations *dendrogram*
+
+-   Specifically focus on *bottom-up* hierarchical clustering, by constructing leaves first and then the trunk
+
+    -   Intuition/idea: rather than clustering everything at beginning, why don't we build iteratively
+
+## Example
+
+Dendrogram of hierarchically clustered `USArrests` data using number of `Murder` arrests (per 100,000) and percent urban population
+
+```{r echo = F, fig.align="center", fig.width=9, fig.height=7}
+data("USArrests")
+ggdendrogram(hclust(dist(USArrests[,c(1,3)]))) +
+  theme(text = element_text(size = 20))
+```
+
+## "Algorithm"
+
+The approach in words:
+
+-   Start with each point in its own cluster
+
+-   Identify the "closest" two clusters and merge them together
+
+-   Repeat
+
+-   Finish when all points have eventually been combined into a single cluster
+
+## Dendrogram
+
+-   Each *leaf* of the dendrogram is one of the $n$ observations
+
+-   As we move up the tree, some leaves fuse into branches
+
+    -   These correspond to observations that similar to each other
+
+-   Branches and/or leaves will fuse as we move up the tree
+
+-   The earlier (lower in the tree) fusions occur, the more similar the groups
+
+    -   For any two observations, look for the point in tree where branches containing these two observations are first fused
+
+    -   The height of this fusion on *vertical* axis indicates how *different* they are
+
+-   **Caution!** Cannot draw conclusions about similar based on proximity of observations on the *horizontal* axis
+
+    -   Why?
+
+## Identifying clusters
+
+-   To identify clusters based on dendrogram, simply make a horizontal cut across dendrogram
+
+-   Distinct sets of observations beneath the cut are interpreted as clusters
+
+-   This makes hierarchical clustering attractive: one single dendrogram can be used to obtain *any* number of clusters
+
+    -   What do people do in practice?
+
+## "Hierarchical"
+
+-   Clusters obtained by cutting at a given height are *nested* within the clusters obtained by cutting at any greater height
+
+-   Is this realistic?
+
+## More rigorous algorithm
+
+Need to define some sort of *dissimilarity* measure between pairs of observations (e.g. Euclidean distance)
+
+1.  Begin with $n$ observations and a measure of all the $\binom{n}{2}$ pairwise dissimilarities. Treat each observation as its own cluster.
+
+2.  For $i = n, n-1, n-2,\ldots, 2$:
+
+```{=html}
+<!-- -->
+```
+i)  Examine all pairwise *inter-cluster* dissimilarities among the $i$ clusters and identify the pair of clusters that are least dissimilar. Fuse these two clusters. Their dissimiliarity is the height in the dendrogram where the fusion should be placed.
+
+ii) Compute the new pairwise inter-cluster dissimilarities among the remaining $i-1$ remaining clusters
+
+## Dissimilarity between groups
+
+-   How do we define dissimilarity between two clusters if one or both contains multiple observations?
+
+    -   i.e. How did we determine that $\{A,C\}$ should be fused with $\{B\}$?
+
+-   Develop the notion of *linkage*, which defines dissimilarity between two groups of observations
+
+## Common linkage types
+
+-   **Complete**: maximal intercluster dissimilarity. Compute all pairwise dissimilarities between observations in cluster $A$ and observations in cluster $B$. Record the *largest* of these dissimilarities.
+
+-   **Single**: minimal intercluster dissimilarity. Compute all pairwise dissimilarities between observations in cluster $A$ and observations in cluster $B$. Record the *smallest* of these dissimilarities.
+
+-   **Average**: mean intercluster dissimilarity. Compute all pairwise dissimilarities between observations in cluster $A$ and observations in cluster $B$. Record the *average* of these dissimilarities.
+
+-   **Centroid**: dissimilarity between the centroid for cluster $A$ and the centroid for cluster $B$
+
+## Example: old faithful
+
+`faithful` data: waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.
+
+::: columns
+::: {.column width="40%"}
+-   Two features (standardized): eruption and waiting times
+
+-   Hierarchical clustering using all four linkage types
+
+-   In each case, performed clustering and then cut to obtain six groups
+:::
+
+::: {.column width="60%"}
+::: fragment
+```{r fig.align="center", fig.width=8, fig.height=7.5}
+data(faithful)
+faithful <- scale(faithful)
+d <- dist(faithful)
+
+avg <- cutree(hclust(d, method = "average"), 6)
+comp <- cutree(hclust(d, method = "complete"), 6)
+single <- cutree(hclust(d, method = "single"), 6)
+centroid <- cutree(hclust(d, method = "centroid"), 6)
+
+data.frame(average = avg,complete = comp, single, centroid) %>%
+  cbind(faithful) %>%
+  pivot_longer(cols = 1:4, names_to = "method", values_to = "cluster") %>%
+  mutate(cluster = as.factor(cluster)) %>%
+  ggplot(., aes(x = eruptions, y = waiting, col = cluster)) +
+  geom_point() +
+  facet_wrap(~method) +
+  theme(text = element_text(size = 20))
+
+#https://www.cs.princeton.edu/courses/archive/fall18/cos324/files/hierarchical-clustering.pdf
+```
+:::
+:::
+:::
+
+## Choice of linkage
+
+-   Average and complete are generally preferred over single linkage
+
+    -   Tend to yield more balanced dendrograms
+
+-   Centroid linkage often used in genomics
+
+    -   Drawback of inversion, where two clusters are fused at a height *below* either of the individual clusters
+
+# Your turn!
+
+## Summary
+
+::: columns
+::: {.column width="50%"}
+Decisions
+
+-   Should the features be standardized?
+
+-   What dissimilarity measured should we use?
+
+-   What type of linkage should we use?
+
+-   Where should we cut the dendrogram?
+:::
+
+::: {.column width="50%"}
+Considerations
+
+-   How do we validate the clusters we obtained?
+
+    -   Are we truly discovering subgroups, or are we simply clustering the noise?
+
+-   Do all observations belong in a cluster? Or are some actually "outliers"
+
+-   Clustering methods generally not robust to small changes in data
+:::
+:::
+
+# Live code
+
+# Examples
+
+## Spherical data {.scrollable}
+
+::: columns
+::: {.column width="50%"}
+Generated the following data:
+
+```{r fig.align="center", fig.width=6, fig.height=6}
+set.seed(3)
+n <- 200
+r <- 3
+alpha <- 2 * pi * runif(n)
+x1 <- r * cos(alpha) + 0 + rnorm(n, 0, 0.2)
+y1 <- r * sin(alpha) + 0 + rnorm(n, 0, 0.2)
+r <- 0.5
+alpha <- 2 * pi * runif(n)
+x2 <- r * cos(alpha) + 0 + rnorm(n, 0, 0.2)
+y2 <- r * sin(alpha) + 0 + rnorm(n, 0, 0.2)
+df <- data.frame(x = c(x1,x2), y = c(y1,y2))
+df %>%
+  ggplot(., aes(x=x,y=y)) +
+  geom_point()
+```
+:::
+
+::: {.column width="50%"}
+::: fragment
+```{r fig.align="center", fig.width=5, fig.height=5}
+hc_out <- hclust(dist(df[,1:2]), method = "complete")
+df %>%
+  mutate(cluster = factor(cutree(hc_out, 2))) %>%
+  ggplot(., aes(x =x, y=y)) +
+  geom_point(aes(col = cluster)) +
+  guides(col = "none") +
+  ggtitle("Complete Linkage")+
+  theme(text = element_text(size = 20))
+```
+:::
+
+::: fragment
+```{r fig.align="center", fig.width=5, fig.height=5}
+hc_out <- hclust(dist(df[,1:2]), method = "single")
+df %>%
+  mutate(cluster = factor(cutree(hc_out, 2))) %>%
+  ggplot(., aes(x =x, y=y)) +
+  geom_point(aes(col = cluster)) +
+  # geom_point(data = data.frame(km_out$centers), mapping = aes(x = x, y = y),
+  #            pch = 4, size = 4) +
+  guides(col = "none") +
+  ggtitle("Single Linkage") +
+  theme(text = element_text(size = 20))
+```
+:::
+:::
+:::

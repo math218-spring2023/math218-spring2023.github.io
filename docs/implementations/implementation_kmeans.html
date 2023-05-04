@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-04-28">
+<meta name="dcterms.date" content="2023-05-04">
 <meta name="description" content="Clustering">
 
 <title>Math 218 - Spring 2023 - K-means</title>
@@ -176,13 +176,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#part-1" id="toc-part-1" class="nav-link active" data-scroll-target="#part-1">Part 1</a></li>
-  <li><a href="#part-2-formatting" id="toc-part-2-formatting" class="nav-link" data-scroll-target="#part-2-formatting">Part 2: Formatting</a></li>
-  <li><a href="#part-3-obtain-initial-centroids-and-store-into-a-data-frame" id="toc-part-3-obtain-initial-centroids-and-store-into-a-data-frame" class="nav-link" data-scroll-target="#part-3-obtain-initial-centroids-and-store-into-a-data-frame">Part 3: Obtain initial centroids and store into a data frame</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#creating-functions" id="toc-creating-functions" class="nav-link" data-scroll-target="#creating-functions">Creating functions</a>
+  <ul class="collapse">
+  <li><a href="#part-1-defining-variables" id="toc-part-1-defining-variables" class="nav-link" data-scroll-target="#part-1-defining-variables">Part 1: defining variables</a></li>
+  <li><a href="#part-2-formatting" id="toc-part-2-formatting" class="nav-link" data-scroll-target="#part-2-formatting">Part 2: formatting</a></li>
+  <li><a href="#part-3-obtain-initial-centroids-and-store-into-a-data-frame" id="toc-part-3-obtain-initial-centroids-and-store-into-a-data-frame" class="nav-link" data-scroll-target="#part-3-obtain-initial-centroids-and-store-into-a-data-frame">Part 3: obtain initial centroids and store into a data frame</a></li>
   <li><a href="#part-4-re-assign-step" id="toc-part-4-re-assign-step" class="nav-link" data-scroll-target="#part-4-re-assign-step">Part 4: re-assign step</a></li>
   <li><a href="#part-5-obtain-centroids" id="toc-part-5-obtain-centroids" class="nav-link" data-scroll-target="#part-5-obtain-centroids">Part 5: obtain centroids</a></li>
+  </ul></li>
+  <li><a href="#run-the-algorithm" id="toc-run-the-algorithm" class="nav-link" data-scroll-target="#run-the-algorithm">Run the algorithm</a>
+  <ul class="collapse">
   <li><a href="#part-6-putting-it-all-together" id="toc-part-6-putting-it-all-together" class="nav-link" data-scroll-target="#part-6-putting-it-all-together">Part 6: putting it all together!</a></li>
   <li><a href="#part-7-visualize" id="toc-part-7-visualize" class="nav-link" data-scroll-target="#part-7-visualize">Part 7: Visualize!</a></li>
+  </ul></li>
   <li><a href="#submit" id="toc-submit" class="nav-link" data-scroll-target="#submit">Submit</a></li>
   </ul>
 </nav>
@@ -211,7 +218,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 28, 2023</p>
+      <p class="date">May 4, 2023</p>
     </div>
   </div>
   
@@ -221,13 +228,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>For this assignment, you will implement the two-means clustering algorithm that we learned in class. The algorithm iterates between two steps, so the implementation will ask you to create two functions that perform these step. You will then call/use these two functions in your code.</p>
+<p>Because this implementation has many steps, there are some provided “code checks” along the way. After each part of this implementation, you should verify that your code is working properly.</p>
+<p>Your code should be as reproducible as possible!</p>
+</section>
+<section id="creating-functions" class="level2">
+<h2 class="anchored" data-anchor-id="creating-functions">Creating functions</h2>
 <p>To get started, we will need some data. In the following, I generate <span class="math inline">\(n = 50\)</span> observations with <span class="math inline">\(p=2\)</span> features each. The data are generated to have two true clusters: the first 25 observations are in cluster 1 and the second 25 observations belong to cluster 2. I also add an <code>id</code> column to keep track of the observation’s index. Take a look at <code>df</code> to see the data.</p>
 <div class="cell">
 
 </div>
 <p>We will run 2-means clustering.</p>
-<section id="part-1" class="level3">
-<h3 class="anchored" data-anchor-id="part-1">Part 1</h3>
+<section id="part-1-defining-variables" class="level3">
+<h3 class="anchored" data-anchor-id="part-1-defining-variables">Part 1: defining variables</h3>
 <p>Create/store three variables:</p>
 <ul>
 <li><span class="math inline">\(n\)</span>: the number of observations</li>
@@ -239,7 +254,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </section>
 <section id="part-2-formatting" class="level3">
-<h3 class="anchored" data-anchor-id="part-2-formatting">Part 2: Formatting</h3>
+<h3 class="anchored" data-anchor-id="part-2-formatting">Part 2: formatting</h3>
 <p>The data frame <code>df</code> currently only has the features and <code>id</code> for each observation. However, because <span class="math inline">\(K\)</span>-means re-assigns each observation to a cluster, we should add another column to <code>df</code>:</p>
 <ul>
 <li><code>cluster</code>: holds the cluster assignment of the observation</li>
@@ -251,7 +266,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </section>
 <section id="part-3-obtain-initial-centroids-and-store-into-a-data-frame" class="level3">
-<h3 class="anchored" data-anchor-id="part-3-obtain-initial-centroids-and-store-into-a-data-frame">Part 3: Obtain initial centroids and store into a data frame</h3>
+<h3 class="anchored" data-anchor-id="part-3-obtain-initial-centroids-and-store-into-a-data-frame">Part 3: obtain initial centroids and store into a data frame</h3>
 <p>As discussed in class, there are many ways we could initialize the centroids. For the sake of getting the code running, for now you can simply take the first <span class="math inline">\(K\)</span> observations as your centroids. Create a data frame called <code>centroid_df</code> that has <span class="math inline">\(K\)</span> rows and the following <span class="math inline">\(p+1\)</span> columns:</p>
 <ul>
 <li><code>cluster</code>: which of the <span class="math inline">\(K\)</span> clusters the centroid corresponds to. This is arbitrary, so simply assign <code>cluster</code> to be 1, 2, … K to each centroid.</li>
@@ -261,10 +276,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>CODE CHECK</strong>: your <code>centroid_df</code> data frame should look like this:</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+CODE CHECK
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Your <code>centroid_df</code> data frame should look like this:</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="figs/kmeans/part3.png" class="img-fluid" style="width:30.0%"></p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -287,10 +317,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># your code here</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>CODE CHECK</strong>: if you run your <code>get_clusts()</code> function on the current data, you should return the following vector of cluster assignments:</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+CODE CHECK
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you run your <code>get_clusts()</code> function on the current data, you should return the following vector of cluster assignments:</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="figs/kmeans/part4.png" class="img-fluid" style="width:70.0%"></p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -300,18 +345,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>CODE CHECK</strong>: if you run your <code>get_centroids()</code> function on the current data, you should return the following data frame (column order shouldn’t really matter):</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+CODE CHECK
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you run your <code>get_centroids()</code> function on the current data, you should return the following data frame (column order shouldn’t really matter):</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="figs/kmeans/part5.png" class="img-fluid" style="width:30.0%"></p>
 </div>
 </div>
+</div>
+</div>
+</div>
 </section>
+</section>
+<section id="run-the-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="run-the-algorithm">Run the algorithm</h2>
 <section id="part-6-putting-it-all-together" class="level3">
 <h3 class="anchored" data-anchor-id="part-6-putting-it-all-together">Part 6: putting it all together!</h3>
 <p>Now, we need to put everything together into a single algorithm. We want to continue iterating back and forth between re-assigning and calculating centroids until we converge (i.e.&nbsp;when the cluster assignments stop changing). We can use a <code>while</code> loop for this! The syntax is <code>while(condidition){}</code> that says while the <code>condition</code> is <code>TRUE</code>, continue to run the loop. The caution here is that your loop could run FOREVER if you don’t have a line of code somewhere that will “break” the loop. <strong>IF THIS HAPPENS</strong>: you can always interrupt code in <code>R</code> by typing <code>Ctrl + C</code>.</p>
-<p>At the bottom of the while loop, I provide code that will check if we have converged or not.</p>
-<p>To test your code, I suggest stepping through each line code of within the <code>while</code> loop one-at-a-time and then going back to the top of the loop and stepping through the code again, rather than run the entire loop at once. Once you’re happy with it, define <code>flag &lt;- TRUE</code> above the <code>while()</code> loop, and run your loop!</p>
+<p>At the bottom of the while loop, I provide code that will check if we have converged or not using the <code>identical()</code> function. <em>Note that this function requires the two objects to be exactly identical (same ordering of columns, rows, column names, etc.)</em></p>
+<p>To test your code, I suggest stepping through each line code of within the <code>while</code> loop one-at-a-time and then going back to the top of the loop and stepping through the code again, rather than run the entire loop at once. Once you’re happy with it, uncomment where I set <code>flag &lt;- TRUE</code> above the <code>while()</code> loop, and run your loop!</p>
 <p>Be careful about the inputs/arguments that each function expects!</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define flag = T</span></span>
@@ -327,7 +390,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># check if centroid assignments have changed</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">all_equal</span>(centroid_df_new, centroid_df) <span class="sc">==</span> <span class="cn">TRUE</span>){ </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">identical</span>(centroid_df_new, centroid_df) <span class="sc">==</span> <span class="cn">TRUE</span>){ </span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if no: set flag = FALSE, and break out of loop</span></span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"done"</span>)</span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    flag <span class="ot">&lt;-</span> F</span>
@@ -337,22 +400,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(centroid_df_new)</span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    centroid_df <span class="ot">&lt;-</span> centroid_df_new</span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a> <span class="fu">return</span>(centroid_df_new) </span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>CODE CHECK</strong>: if run your algorithm given the same data and initial centroids as described above, your final centroids should be (note: the cluster value is arbitrary):</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+CODE CHECK
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you run your algorithm given the same data and initial centroids as described above, your final centroids should be (note: the cluster value is arbitrary):</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="figs/kmeans/final_centroids.png" class="img-fluid" style="width:30.0%"></p>
 </div>
 </div>
+</div>
+</div>
+</div>
 </section>
 <section id="part-7-visualize" class="level3">
 <h3 class="anchored" data-anchor-id="part-7-visualize">Part 7: Visualize!</h3>
-<p>Using <code>df</code>, plot the observations by their features and color by the final cluster assignment. Use <code>centroid_df</code> to add the centroids to your plot, and use the <code>shape</code> aesthetic to denote whether an observation was clustered into a correct group. Recall that the observations with <code>id</code> 1-25 were truly a cluster, and those with <code>id</code> 26-50 were truly another cluster. <strong>What do you notice about the observations that are incorrectly clustered, if any?</strong></p>
+<div style="color: maroon">
+<p>Using <code>df</code>, plot the observations by their features and color by the final cluster assignment. Use <code>centroid_df</code> to add the centroids to your plot, and use the <code>shape</code> aesthetic to denote whether an observation was clustered into a correct group. Recall that the observations with <code>id</code> 1-25 were truly a cluster, and those with <code>id</code> 26-50 were truly another cluster.</p>
+<p><strong>What do you notice about the observations that are incorrectly clustered, if any?</strong></p>
+</div>
 </section>
-<section id="submit" class="level3">
-<h3 class="anchored" data-anchor-id="submit">Submit</h3>
+</section>
+<section id="submit" class="level2">
+<h2 class="anchored" data-anchor-id="submit">Submit</h2>
 <p>Don’t forget to set <code>eval = TRUE</code> in all the code chunk headers before you submit! Knit + commit + push one last time, then submit the PDF to Canvas.</p>
 
 

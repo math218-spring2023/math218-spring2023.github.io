@@ -1,11 +1,21 @@
 ---
 title: "K-means"
-date: "April 28, 2023"
+date: "May 4, 2023"
 editor: visual
 categories: "Implementations"
 description: "Clustering"
-draft: true
+draft: false
 ---
+
+## Introduction
+
+For this assignment, you will implement the two-means clustering algorithm that we learned in class. The algorithm iterates between two steps, so the implementation will ask you to create two functions that perform these step. You will then call/use these two functions in your code.
+
+Because this implementation has many steps, there are some provided "code checks" along the way. After each part of this implementation, you should verify that your code is working properly.
+
+Your code should be as reproducible as possible!
+
+## Creating functions
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -28,7 +38,7 @@ df <- data.frame(x) %>%
 
 We will run 2-means clustering.
 
-### Part 1
+### Part 1: defining variables
 
 Create/store three variables:
 
@@ -40,7 +50,7 @@ Create/store three variables:
 # your code
 ```
 
-### Part 2: Formatting
+### Part 2: formatting
 
 The data frame `df` currently only has the features and `id` for each observation. However, because $K$-means re-assigns each observation to a cluster, we should add another column to `df`:
 
@@ -54,11 +64,11 @@ Note: we won't use these clusters yet, but it's good to have a data frame with a
 # your code
 ```
 
-### Part 3: Obtain initial centroids and store into a data frame
+### Part 3: obtain initial centroids and store into a data frame
 
 As discussed in class, there are many ways we could initialize the centroids. For the sake of getting the code running, for now you can simply take the first $K$ observations as your centroids. Create a data frame called `centroid_df` that has $K$ rows and the following $p+1$ columns:
 
--   `cluster`: which of the $K$ clusters the centroid corresponds to. This is arbitrary, so simply assign `cluster` to be 1, 2, ... K to each centroid. 
+-   `cluster`: which of the $K$ clusters the centroid corresponds to. This is arbitrary, so simply assign `cluster` to be 1, 2, ... K to each centroid.
 -   the remaining $p$ columns should hold the $p$ feature values
 
 You might want to consider `slice()`-ing or indexing the original `df` data frame.
@@ -67,11 +77,18 @@ You might want to consider `slice()`-ing or indexing the original `df` data fram
 # your code
 ```
 
-**CODE CHECK**: your `centroid_df` data frame should look like this:
+::: {.callout-tip collapse=true}
+## CODE CHECK
+
+Your `centroid_df` data frame should look like this:
+
 
 ```{r out.width="30%", echo = F}
 knitr::include_graphics("figs/kmeans/part3.png")
 ```
+
+:::
+
 
 ### Part 4: re-assign step
 
@@ -87,7 +104,7 @@ Write a function called `get_clusts()` that finds the nearest centroid to each o
 
     -   You will most likely want to write a `for` loop in this function
     -   To calculate the Euclidean distance between a vector `x` another vector `y`, you can paste in your Euclidean distance function that you created into the code chunk at the top of the document. Then you can use your distance function in your implementation
-    - You may assume there aren't any ties in distance!
+    -   You may assume there aren't any ties in distance!
 
 ```{r part4, eval = FALSE}
 get_clusts <- function(_____){
@@ -95,12 +112,16 @@ get_clusts <- function(_____){
 }
 ```
 
-**CODE CHECK**: if you run your `get_clusts()` function on the current data, you should return the following vector of cluster assignments:
+::: {.callout-tip collapse=true}
+## CODE CHECK
 
+If you run your `get_clusts()` function on the current data, you should return the following vector of cluster assignments:
 
 ```{r out.width="70%", echo = F}
 knitr::include_graphics("figs/kmeans/part4.png")
 ```
+
+:::
 
 ### Part 5: obtain centroids
 
@@ -110,19 +131,26 @@ We're so close! Write a function called `get_centroids()` that finds the centroi
 # your code
 ```
 
-**CODE CHECK**: if you run your `get_centroids()` function on the current data, you should return the following data frame (column order shouldn't really matter):
+::: {.callout-tip collapse=true}
+## CODE CHECK
+
+If you run your `get_centroids()` function on the current data, you should return the following data frame (column order shouldn't really matter):
 
 ```{r out.width="30%", echo = F}
 knitr::include_graphics("figs/kmeans/part5.png")
 ```
 
+:::
+
+## Run the algorithm
+
 ### Part 6: putting it all together!
 
 Now, we need to put everything together into a single algorithm. We want to continue iterating back and forth between re-assigning and calculating centroids until we converge (i.e. when the cluster assignments stop changing). We can use a `while` loop for this! The syntax is `while(condidition){}` that says while the `condition` is `TRUE`, continue to run the loop. The caution here is that your loop could run FOREVER if you don't have a line of code somewhere that will "break" the loop. **IF THIS HAPPENS**: you can always interrupt code in `R` by typing `Ctrl + C`.
 
-At the bottom of the while loop, I provide code that will check if we have converged or not.
+At the bottom of the while loop, I provide code that will check if we have converged or not using the `identical()` function. *Note that this function requires the two objects to be exactly identical (same ordering of columns, rows, column names, etc.)*
 
-To test your code, I suggest stepping through each line code of within the `while` loop one-at-a-time and then going back to the top of the loop and stepping through the code again, rather than run the entire loop at once. Once you're happy with it, define `flag <- TRUE` above the `while()` loop, and run your loop!
+To test your code, I suggest stepping through each line code of within the `while` loop one-at-a-time and then going back to the top of the loop and stepping through the code again, rather than run the entire loop at once. Once you're happy with it, uncomment where I set `flag <- TRUE` above the `while()` loop, and run your loop!
 
 Be careful about the inputs/arguments that each function expects!
 
@@ -140,7 +168,7 @@ while(flag){
   
   
   # check if centroid assignments have changed
-  if(all_equal(centroid_df_new, centroid_df) == TRUE){ 
+  if(identical(centroid_df_new, centroid_df) == TRUE){ 
     # if no: set flag = FALSE, and break out of loop
     print("done")
     flag <- F
@@ -150,20 +178,28 @@ while(flag){
     print(centroid_df_new)
     centroid_df <- centroid_df_new
   }
- return(centroid_df_new) 
 }
 ```
 
-**CODE CHECK**: if run your algorithm given the same data and initial centroids as described above, your final centroids should be (note: the cluster value is arbitrary):
+::: {.callout-tip collapse=true}
+## CODE CHECK
+
+If you run your algorithm given the same data and initial centroids as described above, your final centroids should be (note: the cluster value is arbitrary):
 
 ```{r out.width = "30%", echo = F}
 knitr::include_graphics("figs/kmeans/final_centroids.png")
 ```
 
+:::
+
 ### Part 7: Visualize!
 
-Using `df`, plot the observations by their features and color by the final cluster assignment. Use `centroid_df` to add the centroids to your plot, and use the `shape` aesthetic to denote whether an observation was clustered into a correct group. Recall that the observations with `id` 1-25 were truly a cluster, and those with `id` 26-50 were truly another cluster. **What do you notice about the observations that are incorrectly clustered, if any?**
+::: {style="color: maroon"}
+Using `df`, plot the observations by their features and color by the final cluster assignment. Use `centroid_df` to add the centroids to your plot, and use the `shape` aesthetic to denote whether an observation was clustered into a correct group. Recall that the observations with `id` 1-25 were truly a cluster, and those with `id` 26-50 were truly another cluster.
 
-### Submit
+**What do you notice about the observations that are incorrectly clustered, if any?**
+:::
+
+## Submit
 
 Don't forget to set `eval = TRUE` in all the code chunk headers before you submit! Knit + commit + push one last time, then submit the PDF to Canvas.
