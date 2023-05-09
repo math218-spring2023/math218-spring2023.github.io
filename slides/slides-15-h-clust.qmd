@@ -1,5 +1,5 @@
 ---
-title: "Hierarhical Clustering"
+title: "Hierarchical Clustering"
 date: "May 4, 2023"
 title-slide-attributes:
     data-background-image: "figs/title/cornflake_clusters.png"
@@ -117,9 +117,8 @@ Need to define some sort of *dissimilarity* measure between pairs of observation
 
 2.  For $i = n, n-1, n-2,\ldots, 2$:
 
-```{=html}
 <!-- -->
-```
+
 i)  Examine all pairwise *inter-cluster* dissimilarities among the $i$ clusters and identify the pair of clusters that are least dissimilar. Fuse these two clusters. Their dissimiliarity is the height in the dendrogram where the fusion should be placed.
 
 ii) Compute the new pairwise inter-cluster dissimilarities among the remaining $i-1$ remaining clusters

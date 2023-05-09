@@ -235,7 +235,7 @@ In addition to the write-up, you must also create presentation slides that summa
 
 Due: `r presentation`
 
-On the last day of class everyone will present their projects. There will be a five-minute (tentative) time limit for each presentation followed by two minutes for questions, for a total of seven-minutes per presentation. You may, and should, use the slides as detailed in the previous section during your presentation.
+On the last day of class everyone will present their projects. There will be a seven-minute (tentative) time limit for each presentation followed by three minutes for questions, for a total of ten minutes per presentation. You may, and should, use the slides as detailed in the previous section during your presentation.
 
 ## Participation
 
