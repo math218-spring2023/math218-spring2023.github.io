@@ -40,13 +40,19 @@ participation <- "TBD"
 
 -   Feel free to sign up for 15-minute meetings via [Calendly](https://calendly.com/beckytang/meet-with-becky)
 
--   Project presentation order: TBD
+-   Project presentation order:
+
+    1.  nack
+    2.  woodbstatsmajors
+    3.  team-k-fold
+    4.  omelette
+    5.  felt
+    6.  chrysanthemum
+    7.  palmerspenguins
 
 -   Examples of previous projects:
 
     -   [Glass classification](examples/gauss-seidel.pdf)
-
-    -   More forthcoming
 
 # Introduction
 
